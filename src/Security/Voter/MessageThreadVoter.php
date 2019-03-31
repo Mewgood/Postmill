@@ -6,7 +6,7 @@ use App\Entity\MessageThread;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class MessageThreadVoter extends Voter {
+final class MessageThreadVoter extends Voter {
     const ATTRIBUTES = ['access', 'reply'];
 
     /**
@@ -26,9 +26,8 @@ class MessageThreadVoter extends Voter {
 
         switch ($attribute) {
         case 'access':
-            return $subject->userCanAccess($token->getUser());
         case 'reply':
-            return $subject->userCanReply($token->getUser());
+            return $subject->userIsParticipant($token->getUser());
         default:
             throw new \LogicException('Unknown attribute '.$attribute);
         }

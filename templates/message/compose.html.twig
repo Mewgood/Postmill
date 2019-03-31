@@ -1,24 +1,20 @@
-{% extends 'base.html.twig' %}
+{% extends 'user/base.html.twig' %}
 
 {% block page_classes %}
   compose-message-page
 {% endblock %}
 
 {% block title %}
-  {{ 'compose_message.title'|trans({'%username%': receiver.username}) }}
+  {{ 'compose_message.title'|trans({'%username%': user.username}) }}
 {% endblock %}
 
 {% block body %}
   <h1 class="page-heading">
     {{- 'compose_message.title'|trans({'%username%': '<a href="%s">%s</a>'|format(
-      path('user', {username: receiver.username})|escape,
-      receiver.username|escape
+      path('user', {username: user.username})|escape,
+      user.username|escape
     )})|raw -}}
   </h1>
 
-  {{ form_start(form) }}
-    {{ form_row(form.title, {attr: {rows: 3}}) }}
-
-    {{ form_row(form.body, {attr: {rows: 8}}) }}
-  {{ form_end(form) }}
+  {{ include('message/_form.html.twig', {form: form}, with_context=false) }}
 {% endblock %}

@@ -22,7 +22,10 @@ class MessageControllerTest extends WebTestCase {
 
         $crawler = $client->request('GET', '/messages');
 
-        $this->assertContains('Example message.', $crawler->filter('tbody tr td:nth-child(1)')->text());
+        $this->assertContains(
+            'This is a message. There are many like it, but this one originates from a fixture.',
+            $crawler->filter('tbody tr td:nth-child(1)')->text()
+        );
         $this->assertEquals('1', trim($crawler->filter('tbody tr td:nth-child(3)')->text()));
     }
 
@@ -57,11 +60,11 @@ class MessageControllerTest extends WebTestCase {
             'PHP_AUTH_PW' => $password,
         ]);
 
-        $crawler = $client->request('GET', '/message/1');
+        $crawler = $client->request('GET', '/messages/thread/1');
 
         $this->assertContains(
             'This is a message. There are many like it, but this one originates from a fixture.',
-            $crawler->filter('#mt1 .message-thread-inner .message-body p')->text()
+            $crawler->filter('.message__body p')->text()
         );
     }
 
@@ -71,14 +74,14 @@ class MessageControllerTest extends WebTestCase {
             'PHP_AUTH_PW' => 'example3',
         ]);
 
-        $client->request('GET', '/message/1');
+        $client->request('GET', '/messages/thread/1');
 
         $this->assertTrue($client->getResponse()->isForbidden());
     }
 
     public function testCannotReadMessagesWhileLoggedOut() {
         $client = $this->createClient();
-        $client->request('GET', '/message/1');
+        $client->request('GET', '/messages/thread/1');
 
         $this->assertTrue($client->getResponse()->isRedirect());
         $this->assertStringEndsWith('/login', $client->getResponse()->headers->get('Location'));
@@ -91,15 +94,15 @@ class MessageControllerTest extends WebTestCase {
         ]);
         $client->followRedirects();
 
-        $crawler = $client->request('GET', '/message/1');
+        $crawler = $client->request('GET', '/messages/thread/1');
 
-        $form = $crawler->selectButton('message_reply[submit]')->form([
-            'message_reply[body]' => 'aaa',
+        $form = $crawler->filter('form[name="message"] button')->form([
+            'message[body]' => 'aaa',
         ]);
 
         $crawler = $client->submit($form);
 
-        $this->assertContains('aaa', $crawler->filter('.message-reply:last-child .message-body p')->text());
+        $this->assertContains('aaa', $crawler->filter('.message__body')->eq(2)->text());
     }
 
     public function authProvider() {

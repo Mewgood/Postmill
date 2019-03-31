@@ -2,7 +2,7 @@
 
 namespace App\Tests\Fixtures;
 
-use App\Entity\MessageReply;
+use App\Entity\Message;
 use App\Entity\MessageThread;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -16,18 +16,21 @@ class LoadExampleMessages extends AbstractFixture implements DependentFixtureInt
         /** @noinspection PhpParamsInspection */
         $thread = new MessageThread(
             $this->getReference('user-zach'),
-            'This is a message. There are many like it, but this one originates from a fixture.',
-            '192.168.0.3',
-            $this->getReference('user-emma'),
-            'Example message.'
+            $this->getReference('user-emma')
         );
 
-        /* @noinspection PhpParamsInspection */
-        $thread->addReply(new MessageReply(
-             $this->getReference('user-emma'),
-             'This is a reply to the message originating from a fixture.',
-             '192.168.0.4',
-             $thread
+        $thread->addMessage(new Message(
+            $thread,
+            $this->getReference('user-zach'),
+            'This is a message. There are many like it, but this one originates from a fixture.',
+            '192.168.0.4'
+        ));
+
+        $thread->addMessage(new Message(
+            $thread,
+            $this->getReference('user-emma'),
+            'This is a reply to the message originating from a fixture.',
+            '192.168.0.3'
         ));
 
         $manager->persist($thread);

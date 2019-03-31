@@ -12,8 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorMap({
  *     "comment": "CommentNotification",
  *     "comment_mention": "CommentMention",
- *     "message_thread": "MessageThreadNotification",
- *     "message_reply": "MessageReplyNotification",
+ *     "message": "MessageNotification",
  *     "submission_mention": "SubmissionMention",
  * })
  */

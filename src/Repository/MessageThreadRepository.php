@@ -22,8 +22,7 @@ class MessageThreadRepository extends ServiceEntityRepository {
      */
     public function findUserMessages(User $user, int $page = 1) {
         $qb = $this->createQueryBuilder('mt')
-            ->where('mt.sender = :user')
-            ->orWhere('mt.receiver = :user')
+            ->where(':user MEMBER OF mt.participants')
             ->orderBy('mt.id', 'DESC')
             ->setParameter(':user', $user);
 

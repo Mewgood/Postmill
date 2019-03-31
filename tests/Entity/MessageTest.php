@@ -2,7 +2,7 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\MessageReply;
+use App\Entity\Message;
 use App\Entity\MessageThread;
 use App\Entity\User;
 use App\Entity\UserBlock;
@@ -24,89 +24,34 @@ class MessageTest extends TestCase {
         $this->receiver = new User('u', 'p');
     }
 
-    public function testNewMessageThreadsSendNotifications() {
-        new MessageThread($this->sender, 'b', null, $this->receiver, 'a');
+    public function testNewMessagesSendNotifications() {
+        $thread = new MessageThread($this->sender, $this->receiver);
 
-        $this->assertCount(0, $this->sender->getNotifications());
-        $this->assertCount(1, $this->receiver->getNotifications());
-    }
-
-    public function testNewMessageRepliesSendsNotifications() {
-        $thread = $this->createMock(MessageThread::class);
-
-        $thread
-            ->method('getSender')
-            ->willReturn($this->receiver);
-
-        $thread
-            ->method('getReceiver')
-            ->willReturn($this->sender);
-
-        new MessageReply($this->sender, 'c', null, $thread);
-        new MessageReply($this->receiver, 'd', null, $thread);
+        new Message($thread, $this->sender, 'c', null);
+        new Message($thread, $this->receiver, 'd', null);
 
         $this->assertCount(1, $this->receiver->getNotifications());
         $this->assertCount(1, $this->sender->getNotifications());
     }
 
     public function testNonParticipantsCannotAccessThread() {
-        $thread = new MessageThread(new User('u', 'p'), 'b', null, new User('u', 'p'), 'a');
+        $thread = new MessageThread($this->sender, $this->receiver);
 
-        $this->assertFalse($thread->userCanAccess(new User('u', 'p')));
+        $this->assertFalse($thread->userIsParticipant(new User('u', 'p')));
     }
 
     public function testBothParticipantsCanAccessOwnThread() {
-        $this->sender = new User('u', 'p');
-        $this->receiver = new User('u', 'p');
+        $thread = new MessageThread($this->sender, $this->receiver);
 
-        $thread = new MessageThread($this->sender, 'b', null, $this->receiver, 'a');
-
-        $this->assertTrue($thread->userCanAccess($this->receiver));
-        $this->assertTrue($thread->userCanAccess($this->sender));
-    }
-
-    public function testBothParticipantsCanReplyToThread() {
-        $this->sender = new User('u', 'p');
-        $this->receiver = new User('u', 'p');
-
-        $thread = new MessageThread($this->sender, 'b', null, $this->receiver, 'a');
-
-        $this->assertTrue($thread->userCanReply($this->receiver));
-        $this->assertTrue($thread->userCanReply($this->sender));
+        $this->assertTrue($thread->userIsParticipant($this->receiver));
+        $this->assertTrue($thread->userIsParticipant($this->sender));
     }
 
     public function testThrowsExceptionWhenStartingThreadWithBlockedUser() {
-        $this->sender = new User('u', 'p');
-        $this->receiver = new User('u', 'p');
-
         $this->receiver->addBlock(new UserBlock($this->receiver, $this->sender, 'c'));
 
         $this->expectException(\DomainException::class);
 
-        new MessageThread($this->sender, 'b', null, $this->receiver, 'a');
-    }
-
-    public function testThrowsExceptionWhenAddingReplyFromBlockedUser() {
-        $this->sender = new User('u', 'p');
-        $this->receiver = new User('u', 'p');
-
-        $thread = new MessageThread($this->sender, 'b', null, $this->receiver, 'a');
-
-        $this->receiver->addBlock(new UserBlock($this->receiver, $this->sender, 'c'));
-
-        $this->expectException(\DomainException::class);
-
-        $thread->addReply(new MessageReply($this->sender, 'b', null, $thread));
-    }
-
-    public function testBlockedUsersCannotReply() {
-        $this->sender = new User('u', 'p');
-        $this->receiver = new User('u', 'p');
-
-        $thread = new MessageThread($this->sender, 'b', null, $this->receiver, 'a');
-
-        $this->receiver->addBlock(new UserBlock($this->receiver, $this->sender, 'c'));
-
-        $this->assertFalse($thread->userCanReply($this->sender));
+        new MessageThread($this->sender, $this->receiver);
     }
 }

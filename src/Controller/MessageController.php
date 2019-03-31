@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Message;
 use App\Entity\MessageThread;
 use App\Entity\User;
-use App\Form\MessageReplyType;
-use App\Form\MessageThreadType;
+use App\Form\MessageType;
 use App\Form\Model\MessageData;
 use App\Repository\MessageThreadRepository;
 use Doctrine\ORM\EntityManager;
@@ -14,27 +14,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @IsGranted("ROLE_USER")
+ */
 final class MessageController extends AbstractController {
     /**
-     * @IsGranted("ROLE_USER")
-     *
      * @param MessageThreadRepository $repository
      * @param int                     $page
      *
      * @return Response
      */
-    public function list(MessageThreadRepository $repository, int $page) {
-        $messages = $repository->findUserMessages($this->getUser(), $page);
+    public function threads(MessageThreadRepository $repository, int $page) {
+        $messageThreads = $repository->findUserMessages($this->getUser(), $page);
 
-        return $this->render('message/list.html.twig', [
-            'messages' => $messages,
+        return $this->render('message/threads.html.twig', [
+            'threads' => $messageThreads,
         ]);
     }
 
     /**
      * Start a new message thread.
      *
-     * @IsGranted("ROLE_USER")
      * @IsGranted("message", subject="receiver", statusCode=403)
      * @Entity("receiver", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
      *
@@ -45,46 +45,45 @@ final class MessageController extends AbstractController {
      * @return Response
      */
     public function compose(Request $request, EntityManager $em, User $receiver) {
-        $data = new MessageData($this->getUser(), $request->getClientIp());
+        $data = new MessageData();
 
-        $form = $this->createForm(MessageThreadType::class, $data);
+        $form = $this->createForm(MessageType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $thread = $data->toThread($receiver);
+            $thread = $data->toThread($this->getUser(), $receiver, $request->getClientIp());
 
             $em->persist($thread);
             $em->flush();
 
-            return $this->redirectToRoute('message', [
+            return $this->redirectToRoute('message_thread', [
                 'id' => $thread->getId(),
             ]);
         }
 
         return $this->render('message/compose.html.twig', [
             'form' => $form->createView(),
-            'receiver' => $receiver,
+            'user' => $receiver,
         ]);
     }
 
     /**
      * View a message thread.
      *
-     * @IsGranted("ROLE_USER")
      * @IsGranted("access", subject="thread", statusCode=403)
      *
      * @param MessageThread $thread
      *
      * @return Response
      */
-    public function message(MessageThread $thread) {
-        return $this->render('message/message.html.twig', [
+    public function thread(MessageThread $thread) {
+        return $this->render('message/thread.html.twig', [
             'thread' => $thread,
         ]);
     }
 
     public function replyForm($threadId) {
-        $form = $this->createForm(MessageReplyType::class, null, [
+        $form = $this->createForm(MessageType::class, null, [
             'action' => $this->generateUrl('reply_to_message', [
                 'id' => $threadId,
             ]),
@@ -96,8 +95,7 @@ final class MessageController extends AbstractController {
     }
 
     /**
-     * @IsGranted("ROLE_USER")
-     * @IsGranted("reply", subject="thread", statusCode=40333)
+     * @IsGranted("reply", subject="thread", statusCode=403)
      *
      * @param Request       $request
      * @param EntityManager $em
@@ -106,17 +104,18 @@ final class MessageController extends AbstractController {
      * @return Response
      */
     public function reply(Request $request, EntityManager $em, MessageThread $thread) {
-        $data = new MessageData($this->getUser(), $request->getClientIp());
+        $data = new MessageData();
 
-        $form = $this->createForm(MessageReplyType::class, $data);
+        $form = $this->createForm(MessageType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $thread->addReply($data->toReply($thread));
+            $message = $data->toMessage($thread, $this->getUser(), $request->getClientIp());
+            $thread->addMessage($message);
 
             $em->flush();
 
-            return $this->redirectToRoute('message', [
+            return $this->redirectToRoute('message_thread', [
                 'id' => $thread->getId(),
             ]);
         }
@@ -126,4 +125,38 @@ final class MessageController extends AbstractController {
             'thread' => $thread,
         ]);
     }
+
+    /**
+     * @IsGranted("delete", subject="message", statusCode=403)
+     *
+     * @param Request       $request
+     * @param EntityManager $em
+     * @param Message       $message
+     *
+     * @return Response
+     */
+    public function delete(Request $request, EntityManager $em, Message $message) {
+        $this->validateCsrf('delete_message', $request->request->get('token'));
+
+        $em->refresh($message);
+
+        $thread = $message->getThread();
+        $thread->removeMessage($message);
+
+        if (\count($thread->getMessages()) === 0) {
+            $em->remove($thread);
+            $threadRemove = true;
+        }
+
+        $em->flush();
+
+        if ($threadRemove ?? false) {
+            return $this->redirectToRoute('message_threads');
+        }
+
+        return $this->redirectToRoute('message_thread', [
+            'id' => $thread->getId(),
+        ]);
+    }
+
 }

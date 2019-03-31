@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\Comment;
 use App\Entity\CommentVote;
-use App\Entity\MessageReply;
+use App\Entity\Message;
 use App\Entity\MessageThread;
 use App\Entity\Submission;
 use App\Entity\SubmissionVote;
@@ -94,8 +94,7 @@ class PruneIpAddressesCommand extends Command {
         $count += $this->clearIpsForEntity(CommentVote::class, $maxTime);
         $count += $this->clearIpsForEntity(Submission::class, $maxTime);
         $count += $this->clearIpsForEntity(SubmissionVote::class, $maxTime);
-        $count += $this->clearIpsForEntity(MessageThread::class, $maxTime);
-        $count += $this->clearIpsForEntity(MessageReply::class, $maxTime);
+        $count += $this->clearIpsForEntity(Message::class, $maxTime);
 
         if ($input->getOption('dry-run')) {
             $this->manager->rollback();

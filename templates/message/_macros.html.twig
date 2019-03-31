@@ -1,62 +1,44 @@
-{% macro message_thread(message, options) %}
-  {% set recursive = options.recursive ?? true %}
-  {{ block('message_thread') }}
+{% macro message(message) %}
+  {{ block('message') }}
 {% endmacro %}
 
-{% macro message_reply(message) %}
-  {{ block('message_reply') }}
-{% endmacro %}
-
-{% block message_thread %}
-  {% from _self import message_user %}
-  <article class="message-thread" id="mt{{ message.id }}">
-    <div class="message-thread-inner">
-      <h1 class="message-head">
-        {{ 'heading.message_thread'|trans({
-          '%sender%': message_user(message),
-          '%receiver%': message_user(message, false),
-          '%timestamp%': block('message_date'),
-        })|raw }}
-      </h1>
-      {{ block('message_body') }}
-    </div>
-
-    {% if recursive %}
-      {% for message in message.replies %}
-        {{ block('message_reply') }}
-      {% endfor %}
-    {% endif %}
-  </article>
-{% endblock %}
-
-{% block message_reply %}
-  {% from _self import message_user %}
-  <article class="message-reply" id="mr{{ message.id }}">
-    <h1 class="message-head">
-      {{ 'heading.message_reply'|trans({
-        '%sender%': message_user(message),
-        '%timestamp%': block('message_date'),
+{% block message %}
+  {%- from _self import message_date, message_receivers -%}
+  {%- from 'user/_macros.html.twig' import user_link -%}
+  <article class="message" id="message_{{ message.id }}">
+    <h1 class="message__head">
+      {{ 'heading.message_thread'|trans({
+        '%receiver%': message_receivers(message),
+        '%sender%': user_link(message.sender),
+        '%timestamp%': message_date(message)
       })|raw }}
     </h1>
-    {{ block('message_body') }}
+
+    <div class="message__body">
+      {{- message.body|cached_markdown({ context: 'message', message: message })|raw -}}
+    </div>
+
+    {% if is_granted('delete', message) %}
+      <form action="{{ path('delete_message', { id: message.id }) }}" method="POST" class="message__buttons">
+        <input type="hidden" name="token" value="{{ csrf_token('delete_message') }}">
+        <button class="js-confirm-message-delete">{{ 'action.delete'|trans }}</button>
+      </form>
+    {% endif %}
   </article>
-{% endblock %}
+{% endblock message %}
 
-{% macro message_user(message, sender=true) %}
-  {%- set user = sender ? message.sender : message.receiver -%}
-  <a href="{{ path('user', {username: user.username}) }}" class="message-{{ sender ? 'sender' : 'receiver' }} {{ user == app.user ? 'message-self' }}">
-    {{- user.username -}}
-  </a>
-{% endmacro %}
-
-{% block message_date %}
-  {% with {date: message.timestamp|localizeddate()} %}
+{% macro message_date(message) %}
+  {% with { date: message.timestamp|localizeddate('long', 'short') } %}
     <time datetime="{{ message.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
       {{- 'time.on_timestamp'|trans({'%timestamp%': date}) -}}
     </time>
   {% endwith %}
-{% endblock %}
+{% endmacro message_date %}
 
-{% block message_body %}
-  <div class="message-body">{{ message.body|cached_markdown({ context: 'message', message: message })|raw }}</div>
-{% endblock %}
+{% macro message_receivers(message) %}
+  {%- from 'user/_macros.html.twig' import user_link -%}
+  {%- for receiver in message.thread.participants if receiver is not same as(message.sender) -%}
+    {{ loop.index != 1 ? ', ' }}
+    {{ user_link(receiver) }}
+  {%- endfor -%}
+{% endmacro message_receivers %}

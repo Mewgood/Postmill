@@ -17,7 +17,7 @@
   {% set active = 'wiki' %}
 {% elseif route in ['user_bans', 'ip_bans', 'ban_ip', 'create_forum_category', 'manage_forum_categories', 'users'] %}
   {% set active = 'admin' %}
-{% elseif route in ['message_list', 'notifications', 'message'] %}
+{% elseif route in ['message_threads', 'notifications', 'message'] %}
   {% set active = 'messages' %}
 {% elseif route == 'submit' %}
   {% set active = 'submit' %}

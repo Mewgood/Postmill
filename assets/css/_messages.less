@@ -1,14 +1,16 @@
 @import (reference) '_mixins';
 
-.message-thread-inner,
-.message-reply {
+.message {
   border: solid 1px var(--border);
   margin-bottom: 1rem;
   padding: 1rem 1rem 0;
-}
 
-.message-head {
-  .meta();
-  font-weight: normal;
-}
+  &__head {
+    .meta();
+    font-weight: normal;
+  }
 
+  &__buttons {
+    .meta-nav();
+  }
+}
