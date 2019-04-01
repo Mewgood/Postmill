@@ -5,9 +5,10 @@
   border-radius: 3px;
   cursor: pointer;
   display: inline-block;
-  font-size: 120%;
+  font-size: 1.2rem;
   padding: 0.5rem 1rem;
   text-align: center;
+  transition: background-color 0.3s;
   white-space: nowrap;
 
   &:hover {
@@ -15,28 +16,26 @@
   }
 
   &--inline {
-    font-size: 100%;
     display: inline;
+    font-size: 1em;
     padding: 0.25rem 0.5rem;
   }
 
   &:not(&--secondary) {
+    --button-active: var(--primary-bright);
     background-color: var(--primary);
     color: var(--primary-fg);
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: var(--primary-bright);
-    }
   }
 
   &--secondary {
+    --button-active: var(--accent-alt);
     background-color: var(--accent);
     color: var(--accent-fg);
-    transition: background-color 0.3s;
+  }
 
-    &:hover {
-      background-color: var(--accent-alt);
-    }
+  &:hover,
+  &:focus {
+    background-color: var(--button-active);
+    outline: none;
   }
 }
