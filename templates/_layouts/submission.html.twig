@@ -75,11 +75,11 @@
             {% endif %}
 
             {% if submission.url is not empty and '://' in submission.url %}
-              <small class="submission__host">
-                {%- with {host: submission.url|split('://')[1]|split('/')[0]} -%}
+              {% with { host: submission.url|split('://')[1]|split('/')[0] } %}
+                <a href="{{ path('search', { q: host }) }}" class="submission__host">
                   {{- host[0:4] == 'www.' ? host[4:] : host -}}
-                {%- endwith -%}
-              </small>
+                </a>
+              {%- endwith -%}
             {% endif %}
           </h1>
 
