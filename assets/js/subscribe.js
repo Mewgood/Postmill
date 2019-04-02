@@ -40,7 +40,9 @@ $(() => {
         }).fail(err => {
             console && console.log('Failed to (un)subscribe', err);
         }).always(() => {
-            $button.prop('disabled', false);
+            $button
+                .prop('disabled', false)
+                .blur();
         });
     });
 });

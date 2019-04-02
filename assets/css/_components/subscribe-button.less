@@ -1,54 +1,22 @@
-@import (reference) '../_mixins';
-
+// extension of .button
 .subscribe-button {
-  .unbuttonize;
+  padding: 0;
 
-  cursor: pointer;
-  display: inline-block;
+  &:not(.button--inline) {
+    --font-size: 1rem;
+  }
 
   &__inner {
     display: flex;
   }
 
-  &__label,
-  &__subscriber-count {
-    background-color: var(--primary);
-    color: var(--primary-fg);
-    padding: 0.5rem 1rem;
-  }
-
   &__label {
-    border-radius: 4px 0 0 4px;
+    border-right: solid 1px currentColor;
+    padding: var(--padding-v) var(--padding-h);
   }
 
   &__subscriber-count {
-    border-radius: 0 4px 4px 0;
-    margin-left: 1px;
-  }
-
-  &:active {
-    .subscribe-button__label {
-      color: var(--fg-grey);
-    }
-  }
-
-  &:hover {
-    .subscribe-button__label {
-      background-color: var(--primary-alt);
-    }
-  }
-
-  /**
-   * Make widget suitable when space is tight, e.g. in table cells.
-   */
-  &--inline {
-    vertical-align: top;
-    display: inline;
-
-    // todo: find out if it's better to let elements have their own modifiers
-    .subscribe-button__label,
-    .subscribe-button__subscriber-count {
-      padding: 0.25rem 0.5rem;
-    }
+    padding-left: var(--padding-h);
+    padding: var(--padding-v) var(--padding-h);
   }
 }
