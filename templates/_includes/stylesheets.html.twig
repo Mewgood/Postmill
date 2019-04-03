@@ -2,12 +2,12 @@
 
 {% if hierarchy[0].appendToDefaultStyle ?? true %}
   {% if not night_mode %}
-    <link rel="stylesheet" href="{{ preload(asset('build/postmill.css')) }}">
+    {{ encore_entry_link_tags('postmill') }}
   {% else %}
-    <link rel="stylesheet" href="{{ preload(asset('build/postmill-night.css')) }}">
+    {{ encore_entry_link_tags('postmill-night') }}
   {% endif %}
 
-  <link rel="stylesheet" href="{{ preload(asset('build/core.css')) }}">
+  {{ encore_entry_link_tags('core') }}
 {% endif %}
 
 {% for revision in hierarchy %}

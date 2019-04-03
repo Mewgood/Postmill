@@ -1,7 +1,7 @@
 {
     "private": true,
     "devDependencies": {
-        "@symfony/webpack-encore": "^0.24.0",
+        "@symfony/webpack-encore": "^0.26.0",
         "font-blast": "^0.7.0",
         "fontello-cli": "git+https://git@gitlab.com/postmill/fontello-cli.git",
         "less": "^3.9.0",
