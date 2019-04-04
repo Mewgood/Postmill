@@ -3,8 +3,6 @@
 import $ from 'jquery';
 import translator from 'bazinga-translator';
 
-const LOADING_HTML = '<span class="icon icon--spin"><svg><use xlink:href="#spinner"/></svg></span>';
-
 /**
  * Get the current vote selection (-1: downvoted, 0: not voted on, 1: upvoted).
  *
@@ -80,7 +78,7 @@ function vote($form, isUp) {
     };
 
     $form.removeClass('vote--failed');
-    $form.find('.vote__net-score').html(LOADING_HTML);
+    $form.find('.vote__net-score').html($form.data('load-prototype'));
 
     $.post(url, data).done(() => {
         const newScore = getNewScore($form, isUp, $form.data('score'));

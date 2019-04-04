@@ -1,4 +1,4 @@
-{% macro icon(name, alt_text = '') %}
+{% macro icon(name, alt_text = '', extra_classes='') %}
   {#- prevent preloading sprite sheet more than once -#}
   {%- set icon_asset = asset('build/images/icons.svg') -%}
   {%- if not app.request.attributes.get('icons_are_linked') -%}
@@ -7,7 +7,7 @@
   {%- do app.request.attributes.set('icons_are_linked', true) -%}
 
   {%- filter spaceless -%}
-    <span class="icon {{ alt_text ? 'icon--with-alt-text' }}">
+    <span class="icon {{ alt_text ? 'icon--with-alt-text' }} {{ extra_classes }}">
       {%- if alt_text is not empty -%}
         {#- Attempt to display an empty SVG. If this fails, the alt text will
             display. We assume that no support for SVG via <img> = no inline SVG
