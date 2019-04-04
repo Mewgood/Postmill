@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity()
@@ -16,7 +17,7 @@ class Moderator {
      * @ORM\Column(type="uuid")
      * @ORM\Id()
      *
-     * @var Uuid
+     * @var UuidInterface
      */
     private $id;
 
@@ -48,10 +49,11 @@ class Moderator {
         $this->forum = $forum;
         $this->user = $user;
         $this->timestamp = new \DateTime('@'.time());
-        $forum->addModerator($this);
+        $forum->getModerators()->add($this);
+        $user->getModeratorTokens()->add($this);
     }
 
-    public function getId(): Uuid {
+    public function getId(): UuidInterface {
         return $this->id;
     }
 

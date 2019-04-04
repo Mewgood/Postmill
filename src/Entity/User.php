@@ -285,6 +285,7 @@ class User implements UserInterface, EquatableInterface {
         $this->bans = new ArrayCollection();
         $this->ipBans = new ArrayCollection();
         $this->blocks = new ArrayCollection();
+        $this->moderatorTokens = new ArrayCollection();
     }
 
     public function getId(): ?int {

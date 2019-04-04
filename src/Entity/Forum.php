@@ -241,10 +241,14 @@ class Forum {
             return true;
         }
 
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('user', $user));
+        // optimised to significantly lessen the number of SQL queries performed
+        // when logged in as the user being checked.
+        $user->getModeratorTokens()->get(-1);
 
-        return count($this->moderators->matching($criteria)) > 0;
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('forum', $this));
+
+        return count($user->getModeratorTokens()->matching($criteria)) > 0;
     }
 
     public function addModerator(Moderator $moderator) {

@@ -304,8 +304,7 @@ final class ForumController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $forum->addModerator($data->toModerator());
-
+            $em->persist($data->toModerator());
             $em->flush();
 
             $this->addFlash('success', 'flash.forum_moderator_added');
