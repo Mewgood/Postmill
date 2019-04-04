@@ -204,8 +204,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             'SELECT ip FROM comments WHERE user_id = :id AND ip IS NOT NULL UNION ALL '.
             'SELECT ip FROM submission_votes WHERE user_id = :id AND ip IS NOT NULL UNION ALL '.
             'SELECT ip FROM comment_votes WHERE user_id = :id AND ip IS NOT NULL UNION ALL '.
-            'SELECT ip FROM message_threads WHERE sender_id = :id AND ip IS NOT NULL UNION ALL '.
-            'SELECT ip FROM message_replies WHERE sender_id = :id AND ip IS NOT NULL'.
+            'SELECT ip FROM messages WHERE sender_id = :id AND ip IS NOT NULL'.
         ') q';
 
         $sth = $this->_em->getConnection()->prepare($sql);
