@@ -1,9 +1,17 @@
 @font-face {
-    font-family: OpenDyslexic;
-    src: url(../../fonts/OpenDyslexic3-Regular.ttf);
+  font-display: swap;
+  font-family: OpenDyslexic;
+  font-weight: 400;
+  src:
+    local('OpenDyslexic3 Regular'),
+    url(../../fonts/OpenDyslexic3-Regular.ttf);
 }
 
 @font-face {
-    font-family: OpenDyslexic-Bold;
-    src: url(../../fonts/OpenDyslexic3-Bold.ttf);
+  font-display: swap;
+  font-family: OpenDyslexic;
+  font-weight: 500;
+  src:
+    local('OpenDyslexic3 Bold'),
+    url(../../fonts/OpenDyslexic3-Bold.ttf);
 }
