@@ -1,11 +1,13 @@
 .icon {
-  line-height: 1;
-  vertical-align: text-bottom;
-
   svg {
     fill: currentColor;
     height: 1em;
     width: 1em;
+  }
+
+  &:not(&--no-align) {
+    top: .125em;
+    position: relative;
   }
 
   &--spin {

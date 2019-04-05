@@ -30,14 +30,14 @@
     <header class="site-nav__header">
       <a href="{{ path('front') }}"
          class="no-underline site-nav__link {{ active == 'home' ? 'site-nav__link--active' }}">
-        <span class="no-desktop">{{ icon('home') }}</span>
+        <span class="no-desktop">{{ icon('home', '', 'icon--no-align') }}</span>
         <b class="no-mobile no-underline__exempt">{{ site_name() }}</b>
       </a>
     </header>
 
     <div class="site-nav__main-menu-container site-nav__mobile-hidden dropdown dropdown--mobile-only">
       <button type="button" class="site-nav__link site-nav__mobile-toggle no-desktop dropdown__toggle">
-        {{- icon('menu') -}}
+        {{- icon('menu', '', 'icon--no-align') -}}
       </button>
 
       {# left portion of site nav #}
@@ -90,12 +90,12 @@
 
     <form action="{{ path('search') }}" class="site-nav__mobile-hidden site-nav__search dropdown dropdown--mobile-only">
       <button type="button" class="site-nav__link site-nav__mobile-toggle no-desktop dropdown__toggle">
-        {{- icon('search') -}}
+        {{- icon('search', '', 'icon--no-align') -}}
       </button>
 
       <div class="site-nav__search-row dropdown__menu">
         <label class="site-nav__search-label" for="site-nav-search" aria-hidden="true">
-          {{ icon('search') }}
+          {{ icon('search', '', 'icon--no-align') }}
         </label>
         <input name="q"
                type="search"
@@ -123,10 +123,10 @@
                    {{ active == 'messages' ? 'site-nav__link--active' }}"
              title="{{ 'nav.notifications_count'|trans({'%count%': notification_count|localizednumber}) }}">
             {% if notification_count > 0 %}
-              {{ icon('envelope-open') }}
+              {{ icon('envelope-open', '', 'icon--no-align') }}
               <small class="no-underline__exempt" aria-hidden="true">{{ notification_count|localizednumber }}</small>
             {% else %}
-              {{ icon('envelope') }}
+              {{ icon('envelope', '', 'icon--no-align') }}
             {% endif %}
           </a>
         </li>
@@ -134,7 +134,7 @@
         <li>
           <a href="{{ path('submit', { forum_name: forum.name ?? null }) }}"
              class="no-underline no-wrap site-nav__link {{ route == 'submit' ? 'site-nav__link--active' }}">
-            {{ icon('plus') }}
+            {{ icon('plus', '', 'icon--no-align') }}
             <span class="no-underline__exempt no-mobile">{{ 'nav.submit'|trans }}</span>
           </a>
         </li>
@@ -142,7 +142,7 @@
         {# user menu #}
         <li class="dropdown dropdown--right">
           <button type="button" class="dropdown__toggle no-underline site-nav__link no-wrap {{ active == 'user' ? 'site-nav__link--active' }}">
-            {{ icon('user') }}
+            {{ icon('user', '', 'icon--no-align') }}
             <strong class="no-underline__exempt no-mobile">{{ app.user.username }}</strong>
             <span class="dropdown__arrow no-mobile" aria-hidden="true"></span>
           </button>

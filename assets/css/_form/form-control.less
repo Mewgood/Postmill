@@ -50,7 +50,9 @@
   }
 
   select&:not([multiple]) {
+    box-sizing: content-box;
     height: calc(1rem + var(--font-size) * var(--line-height));
+    padding: 0 0.5rem;
   }
 
   &:invalid {
