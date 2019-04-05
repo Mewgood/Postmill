@@ -273,6 +273,13 @@ class User implements UserInterface, EquatableInterface {
      */
     private $notifyOnMentions = true;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string|null
+     */
+    private $preferredFonts;
+
     public function __construct(string $username, string $password, \DateTime $created = null) {
         $this->setUsername($username);
         $this->password = $password;
@@ -675,6 +682,14 @@ class User implements UserInterface, EquatableInterface {
 
     public function setNotifyOnMentions(bool $notifyOnMentions): void {
         $this->notifyOnMentions = $notifyOnMentions;
+    }
+
+    public function getPreferredFonts(): ?string {
+        return $this->preferredFonts;
+    }
+
+    public function setPreferredFonts(?string $preferredFonts): void {
+        $this->preferredFonts = $preferredFonts;
     }
 
     /**

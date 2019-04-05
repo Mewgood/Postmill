@@ -30,11 +30,23 @@ final class AppExtension extends AbstractExtension {
      */
     private $enableWebhooks;
 
-    public function __construct(string $siteName, ?string $branch, ?string $version, bool $enableWebhooks) {
+    /**
+     * @var array
+     */
+    private $fontsConfig;
+
+    public function __construct(
+        string $siteName,
+        ?string $branch,
+        ?string $version,
+        bool $enableWebhooks,
+        array $fontsConfig
+    ) {
         $this->siteName = $siteName;
         $this->branch = $branch;
         $this->version = $version;
         $this->enableWebhooks = $enableWebhooks;
+        $this->fontsConfig = $fontsConfig;
     }
 
     public function getFunctions(): array {
@@ -50,6 +62,19 @@ final class AppExtension extends AbstractExtension {
             }),
             new TwigFunction('app_webhooks_enabled', function () {
                 return $this->enableWebhooks;
+            }),
+            new TwigFunction('font_list', function (): array {
+                return \array_keys($this->fontsConfig);
+            }),
+            new TwigFunction('font_names', function (string $font): array {
+                $font = \strtolower($font);
+
+                return $this->fontsConfig[$font]['alias'] ?? [$font];
+            }),
+            new TwigFunction('font_entrypoint', function (string $font): ?string {
+                $font = \strtolower($font);
+
+                return $this->fontsConfig[$font]['entrypoint'] ?? null;
             }),
         ];
     }

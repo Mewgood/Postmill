@@ -219,6 +219,9 @@ help:
     required_field: This field is required.
     notify_on_reply: Get notifications when someone replies to your posts.
     notify_on_mentions: Get notifications when someone links to your user profile.
+    preferred_fonts: 'Comma-separated list of the fonts you prefer. These can be fonts from your system, or from the list of server-provided fonts below.'
+    preferred_fonts_served: 'Server-provided fonts (available everywhere): '
+    preferred_fonts_aliases: 'Aliased font names: '
 
 inbox:
     message_reply_head: 'Re: %title%'
@@ -326,6 +329,7 @@ label:
     from_time: 'From: %time%'
     last_message: Last message
     participants: Participants
+    preferred_fonts: Preferred font(s)
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'

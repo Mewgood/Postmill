@@ -84,6 +84,13 @@ class UserData implements UserInterface {
 
     private $notifyOnMentions;
 
+    /**
+     * @Assert\Length(max=200, groups={"settings"})
+     *
+     * @var string|null
+     */
+    private $preferredFonts;
+
     private $admin = false;
 
     public static function fromUser(User $user): self {
@@ -103,6 +110,7 @@ class UserData implements UserInterface {
         $self->showThumbnails = $user->showThumbnails();
         $self->notifyOnReply = $user->getNotifyOnReply();
         $self->notifyOnMentions = $user->getNotifyOnMentions();
+        $self->preferredFonts = $user->getPreferredFonts();
         $self->admin = $user->isAdmin();
 
         return $self;
@@ -128,6 +136,7 @@ class UserData implements UserInterface {
         $user->setShowThumbnails($this->showThumbnails);
         $user->setNotifyOnReply($this->notifyOnReply);
         $user->setNotifyOnMentions($this->notifyOnMentions);
+        $user->setPreferredFonts($this->preferredFonts);
         $user->setAdmin($this->admin);
     }
 
@@ -149,6 +158,7 @@ class UserData implements UserInterface {
             'showThumbnails',
             'notifyOnReply',
             'notifyOnMentions',
+            'preferredFonts',
         ];
 
         foreach ($settings as $setting) {
@@ -298,6 +308,14 @@ class UserData implements UserInterface {
 
     public function setNotifyOnMentions(bool $notifyOnMentions): void {
         $this->notifyOnMentions = $notifyOnMentions;
+    }
+
+    public function getPreferredFonts(): ?string {
+        return $this->preferredFonts;
+    }
+
+    public function setPreferredFonts(?string $preferredFonts): void {
+        $this->preferredFonts = $preferredFonts;
     }
 
     public function isAdmin(): bool {

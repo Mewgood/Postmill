@@ -14,14 +14,14 @@ audit-php:
 
 audit-node:
     stage: audit
-    image: node:8
+    image: node:10
     allow_failure: true
     script:
         - yarn audit
 
 .build-assets: &build-assets
     stage: build-assets
-    image: node:8
+    image: node:10
     except:
         - schedules
     cache:

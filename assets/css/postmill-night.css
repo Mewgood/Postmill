@@ -1,10 +1,8 @@
-@import '~typeface-roboto';
 @import '~typeface-roboto-mono';
 
 /*! https://postmill.xyz/ */
 
 :root {
-  --font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
   --font-size: 14px;
   --line-height: 1.5;
   --mono-font-family: Roboto Mono, monospace;

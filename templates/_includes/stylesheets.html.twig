@@ -1,5 +1,19 @@
 {% set hierarchy = revision.hierarchy ?? theme.latestRevision.hierarchy ?? [] %}
 
+{%- set fonts = (app.user.preferredFonts ?? 'default')|trim(', ')|split(',') %}
+{%- set font_family = '' %}
+{%- for font in fonts %}
+  {%- set font = font|trim %}
+  {%- set entrypoint = font_entrypoint(font) %}
+  {%- if entrypoint %}
+    {{- encore_entry_link_tags(entrypoint) }}
+  {%- endif %}
+  {%- for name in font_names(font) %}
+    {%- set font_family = font_family~' "'~(name|e('css'))~'",' %}
+  {%- endfor %}
+{%- endfor %}
+<style>:root { --font-family: {{ font_family|trim(' ,')|raw }} }</style>
+
 {% if hierarchy[0].appendToDefaultStyle ?? true %}
   {% if not night_mode %}
     {{ encore_entry_link_tags('postmill') }}
