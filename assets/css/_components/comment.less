@@ -22,33 +22,13 @@
  * </article>
  */
 .comment {
-  background: var(--bg-page);
-  border: solid 1px var(--border-light);
-  border-left-width: 3px;
+  @border-thin: 1px;
+  @border-thick: 3px;
+
+  border-bottom: solid @border-thin var(--border-light);
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
-
-  & .comment {
-    margin-left: 10px;
-  }
-
-  // new approach to borders - may or may not deprecate the old approach
-  &--with-context {
-    border-width: 0 0 1px;
-
-    & > .comment {
-      &__row {
-        border: solid var(--border-light);
-        border-width: 1px 1px 0;
-      }
-
-      &__replies {
-        border: solid var(--border-light);
-        border-width: 0 1px 0 1px;
-      }
-    }
-  }
 
   &__context {
     p {
@@ -59,13 +39,21 @@
 
   &__row {
     .vote-flex;
+    border: solid @border-thin var(--border-light);
+    border-bottom: none;
+    border-left-width: @border-thick;
     padding-top: 0.5rem;
   }
 
   &__replies {
+    border-left: solid @border-thick var(--border-light);
     display: flex;
     flex-direction: column;
-    padding: 0 0.5rem;
+    padding-left: 1rem;
+
+    @media screen and (max-width: 480px) {
+      padding-left: 0.25rem;
+    }
   }
 
   &__info {
@@ -86,8 +74,9 @@
     }
   }
 
-  &--nested {
-    margin-bottom: 0.5rem;
+  &--nested:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
   }
 }
 
