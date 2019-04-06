@@ -1,4 +1,6 @@
 {{ form_start(form, {attr: {class: 'comment-form'}}) }}
+  {{ form_errors(form) }}
+
   <div class="comment-row">
     {{ form_row(form.comment, {attr: {rows: 6}}) }}
   </div>
