@@ -156,6 +156,7 @@ final class UserController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      *
      * @param EntityManager $em

@@ -139,6 +139,7 @@ flash:
     wiki_page_deleted: The wiki page has been deleted.
     editing_credentials_of_other_user: You are editing the credentials of another user. This can prevent them from logging in.
     notifications_cleared: Your notifications have been cleared.
+    you_must_reauthenticate: You must reauthenticate to access this page.
 
 forum:
     moderators: Moderators
