@@ -1,9 +1,13 @@
 .form-control {
+  @height: calc(var(--font-size) * var(--line-height) + 1rem + 2px);
+
   background-color: var(--bg-page); // todo
   border: solid 1px var(--border);
   color: var(--text);
-  display: block;
+  display: inline-block;
+  min-height: @height;
   padding: 0.5rem;
+  transition: background-color .1s, box-shadow .1s, border-color .1s, color .1s;
 
   input&:not([type]),
   &[type="text"],
@@ -16,7 +20,6 @@
   textarea& {
     -webkit-appearance: none; // disable ugly shade on iOS
     border-radius: 0; // disable rounded corners on iOS
-    transition: box-shadow 0.1s, border-color 0.1s;
   }
 
   input&:not([type]),
@@ -34,15 +37,12 @@
 
   &[type="date"],
   &[type="time"] {
-    min-height: calc(1rem + var(--font-size) * var(--line-height));
     min-width: 5rem; // fix for iOS
   }
 
   textarea& {
-    min-height: calc(1rem + var(--font-size) * var(--line-height));
     max-width: 100%;
     resize: vertical;
-    transition: box-shadow 0.1s;
 
     &:not([cols]) {
       width: 100%;
@@ -50,9 +50,13 @@
   }
 
   select&:not([multiple]) {
-    box-sizing: content-box;
-    height: calc(1rem + var(--font-size) * var(--line-height));
-    padding: 0 0.5rem;
+    // dropdown caret doesn't acknowledge min-height
+    height: @height;
+
+    // having vertical padding cuts off the text inside. having height set is
+    // enough to achieve a padding effect.
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   &:invalid {

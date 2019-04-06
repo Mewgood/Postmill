@@ -11,8 +11,6 @@ add_moderator:
 ban_add:
     title: Utesteng en IP-adresse
 
-'Expires at (YYYY-MM-DD hh:mm)': Varer til (ÅÅÅÅ-MM-DD tt:mm)
-
 ban_list:
     title: Utestengelser
     ip: IP-adresse

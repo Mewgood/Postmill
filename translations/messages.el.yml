@@ -27,8 +27,6 @@ add_moderator:
 ban_add:
     title: Κάντε απαγόρευση μιας διεύθυνσης IP
 
-'Expires at (YYYY-MM-DD hh:mm)': Λήγει σε (EEEE-ΜΜ-ΗΗ ΩΩ:ΛΛ)
-
 ban_list:
     title: Απαγορευσεις
     ip: Διεύθυνση IP

@@ -31,8 +31,6 @@ add_moderator:
 ban_add:
     title: Forbari IP-adreson
 
-'Expires at (YYYY-MM-DD hh:mm)': Finiĝos je (YYYY-MM-DD hh:mm)
-
 ban_list:
     title: Forbaroj
     ip: IP-adreso

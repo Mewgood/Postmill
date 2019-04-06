@@ -36,8 +36,6 @@ add_moderator:
 ban_add:
     title: Bannir une adresse IP
 
-'Expires at (YYYY-MM-DD hh:mm)': Expire le (AAAA-MM-JJ hh:mm)
-
 ban_list:
     ip: Adresse IP
     timestamp: Heure

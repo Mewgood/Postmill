@@ -11,8 +11,6 @@ add_moderator:
 ban_add:
     title: Verban een IP-adres
 
-'Expires at (YYYY-MM-DD hh:mm)': Verloopt om (YYYY-MM-DD hh:mm)
-
 ban_list:
     title: Verbanningen
     ip: IP-adres

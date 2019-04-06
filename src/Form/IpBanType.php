@@ -35,7 +35,7 @@ final class IpBanType extends AbstractType {
             ])
             ->add('expiryDate', DateTimeType::class, [
                 'date_widget' => 'single_text',
-                'label' => 'Expires at (YYYY-MM-DD hh:mm)',
+                'label' => 'label.expires',
                 'time_widget' => 'single_text',
                 'required' => false,
             ])

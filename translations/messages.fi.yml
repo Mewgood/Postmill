@@ -12,8 +12,6 @@ add_moderator:
 ban_add:
     title: Bannaa IP-osoite
 
-'Expires at (YYYY-MM-DD hh:mm)': Päättyy (VVVV-KK-PP hh:mm)
-
 ban_list:
     title: Bannit
     ip: IP-osoite

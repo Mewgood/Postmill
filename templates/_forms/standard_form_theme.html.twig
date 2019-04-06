@@ -136,7 +136,7 @@
       {{- label|trans({}, translation_domain) -}}
     {%- endif %}
     {% if show_required_indicator -%}
-      <b class="required-indicator" role="presentation" title="{{ 'help.required_field'|trans }}">*</b>
+      <b class="required-indicator" role="presentation" title="{{ 'help.required_field'|trans }}" aria-label="{{ 'help.required_field'|trans }}">*</b>
     {%- endif -%}
     </{{ element|default('label') }}>
   {%- endif -%}
@@ -213,7 +213,7 @@
   <div class="compound-form-widget">
     {{- form_widget(form.first, { attr: attr|merge(form.first.vars.attr) }) -}}
     {{- form_widget(form.second, { attr: attr|merge(form.second.vars.attr)|merge({
-      'placeholder': 'placeholder.repeat'|trans,
+      'placeholder': 'placeholder.repeat',
       'aria-label': form.second.vars.label is defined
         ? form.second.vars.label|trans
         : (form.second.vars.label_format is defined

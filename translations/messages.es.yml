@@ -35,8 +35,6 @@ add_moderator:
 ban_add:
     title: Veta una dirección IP
 
-'Expires at (YYYY-MM-DD hh:mm)': Expira el (YYYY-MM-DD hh:mm)
-
 ban_list:
     title: Vetos
     ip: Dirección IP

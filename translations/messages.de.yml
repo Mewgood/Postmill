@@ -11,8 +11,6 @@ add_moderator:
 ban_add:
     title: Eine IP Adresse sperren
 
-'Expires at (YYYY-MM-DD hh:mm)': Läuft um (YYYY-MM-DD hh:mm) ab
-
 ban_list:
     title: Sperrungen
     ip: IP Adresse
