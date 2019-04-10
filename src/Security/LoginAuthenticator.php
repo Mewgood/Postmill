@@ -67,13 +67,6 @@ final class LoginAuthenticator extends AbstractGuardAuthenticator {
     }
 
     public function start(Request $request, AuthenticationException $authException = null) {
-        $referer = $request->headers->get('Referer');
-
-        if ($referer && $request->isMethod('GET')) {
-            // store referer for later redirection
-            $this->saveTargetPath($request->getSession(), 'main', $referer);
-        }
-
         return new RedirectResponse($this->urlGenerator->generate('login'));
     }
 
@@ -134,9 +127,6 @@ final class LoginAuthenticator extends AbstractGuardAuthenticator {
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
 
         if ($targetPath) {
-            $this->removeTargetPath($request->getSession(), $providerKey);
-
-            // redirect to referer saved when we started
             return new RedirectResponse($targetPath);
         }
 
