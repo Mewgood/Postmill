@@ -130,7 +130,7 @@ forum:
     edit: Redakti diskutejon
     subscribe: Aboni
     unsubscribe: Malaboni
-    subscriber_count: '{0} Sen abonantoj|{1} %count% abonanto|[1,Inf[ %count% abonantoj'
+    subscriber_count: '{0} Sen abonantoj|{1} %formatted_count% abonanto|[1,Inf[ %formatted_count% abonantoj'
     add_moderator: Aldoni kontrolanton
 
 forum_form:

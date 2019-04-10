@@ -15,7 +15,10 @@
     </span>
 
     <span class="subscribe-button__subscriber-count"
-          aria-label="{{ 'forum.subscriber_count'|trans({'%count%': subscriber_count}) }}">
+          aria-label="{{ 'forum.subscriber_count'|trans({
+            '%count%': subscriber_count,
+            '%formatted_count%': subscriber_count|localizednumber,
+          }) }}">
       {{- subscriber_count|localizednumber -}}
     </span>
   </span>

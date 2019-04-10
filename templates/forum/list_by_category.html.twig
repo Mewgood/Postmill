@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% from 'forum/_list_macros.html.twig' import forum_list_header %}
+{% from 'forum/_list_macros.html.twig' import forum_list_tabs %}
 
 {% block page_classes %}
   forums-by-category-page
@@ -10,7 +10,11 @@
 {% endblock %}
 
 {% block body %}
-  {{ forum_list_header() }}
+  <h1 class="page-heading">{{ 'forum_list.page_title'|trans }}</h1>
+
+  <nav class="tabs forum-list-view-selector">
+    {{ forum_list_tabs() }}
+  </nav>
 
   <ul class="grouped-forum-listing">
     {% for category in forum_categories %}

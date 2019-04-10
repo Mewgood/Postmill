@@ -147,7 +147,8 @@ forum:
     edit: Edit forum
     subscribe: Subscribe
     unsubscribe: Unsubscribe
-    subscriber_count: '{0} No subscribers|{1} %count% subscriber|[1,Inf[ %count% subscribers'
+    subscriber_count: '{0} No subscribers|{1} %formatted_count% subscriber|[1,Inf[ %formatted_count% subscribers'
+    submission_count: '{0} No submissions|{1} %formatted_count% submission|[1,Inf[ %formatted_count% submissions'
     add_moderator: Add moderator
 
 forum_form:

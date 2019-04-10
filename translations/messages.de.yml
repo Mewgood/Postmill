@@ -80,7 +80,7 @@ forum:
     edit: Forum bearbeiten
     subscribe: Abonnieren
     unsubscribe: Abbestellen
-    subscriber_count: '{0} Keine Abonnenten|{1} %count% Abonnent|[1,Inf[ %count% Abonnenten'
+    subscriber_count: '{0} Keine Abonnenten|{1} %formatted_count% Abonnent|[1,Inf[ %formatted_count% Abonnenten'
     add_moderator: Moderator hinzufügen
 
 forum_form:

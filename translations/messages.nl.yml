@@ -84,7 +84,7 @@ forum:
     edit: Bewerk forum
     subscribe: Abonneren
     unsubscribe: Zeg abonnement op
-    subscriber_count: '{0} Geen abonnees|{1} %count% abbonee|[1,Inf[ %count% abbonees'
+    subscriber_count: '{0} Geen abonnees|{1} %formatted_count% abbonee|[1,Inf[ %formatted_count% abbonees'
     add_moderator: Moderator toevoegen
 
 forum_form:

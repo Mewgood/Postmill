@@ -118,7 +118,7 @@ forum:
     edit: Alterar fórum
     subscribe: Inscrever
     unsubscribe: Desinscrever
-    subscriber_count: '{0} Sem inscritos|{1} %count% inscrito|[1,Inf[ %count% inscritos'
+    subscriber_count: '{0} Sem inscritos|{1} %formatted_count% inscrito|[1,Inf[ %formatted_count% inscritos'
     add_moderator: Adicionar moderador
 
 forum_form:

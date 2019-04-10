@@ -1,79 +1,106 @@
 {% extends 'base.html.twig' %}
-{% from 'forum/list_by_category.html.twig' import forum_view_selector %}
+{% from '_macros/icon.html.twig' import icon %}
+{% from 'forum/_list_macros.html.twig' import create_forum, forum_list_tabs %}
 
-{% block page_classes %}
-  forum-list-page
-{% endblock %}
+{% block page_classes 'forum-list-page' %}
 
-{% block title %}
-  {{- 'forum_list.page_title'|trans -}}
-{% endblock %}
+{% block title 'forum_list.page_title'|trans %}
 
 {% block head %}
+  {{ include('_includes/meta_pagination.html.twig', {pager: forums}, with_context=false) }}
   <link rel="canonical" href="{{ url('forum_list') }}">
-  {% include '_includes/meta_pagination.html.twig' with {pager: forums} %}
 {% endblock %}
 
-{% from _self import table_head as th %}
-{% from 'forum/_list_macros.html.twig' import forum_list_header %}
+{% set forum_sort_modes = {
+  'by_name': 'forum_list.name'|trans,
+  'by_title': 'forum_list.title'|trans,
+  'by_submissions': 'forum_list.submission_count'|trans,
+  'by_subscribers': 'forum_list.subscribers'|trans,
+} %}
 
 {% block body %}
-  {{ forum_list_header() }}
+  <h1 class="page-heading">{{ 'forum_list.page_title'|trans }}</h1>
 
-  <table class="table forum-list">
-    <thead>
-      <tr>
-        <th class="table__shrink">{{ th('forum_list.name'|trans, 'by_name', sortBy) }}</th>
-        <th>{{ th('forum_list.title'|trans, 'by_title', sortBy) }}</th>
-        <th class="table__shrink">{{ th('forum_list.submission_count'|trans, 'by_submissions', sortBy) }}</th>
-        <th class="table__shrink">{{ th('forum_list.subscribers'|trans, 'by_subscribers', sortBy) }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for forum in forums %}
-        <tr>
-          <td class="table__shrink">
-            <a href="{{ path('forum', {forum_name: forum.name}) }}"><strong>{{ forum.name }}</strong></a>
+  <nav class="tabs forum-list-view-selector">
+    {{ forum_list_tabs() }}
+    <ul class="tabs__bar unlistify">
+      <li class="dropdown">
+        <button class="tab dropdown__toggle"
+                aria-label="{{ 'label.sort_by_mode'|trans({
+                  '%mode%': forum_sort_modes[sortBy]
+                }) }}">
+          {{ icon('sort') }}
+          {{ forum_sort_modes[sortBy] }}
+          <span class="dropdown__arrow" aria-hidden="true"></span>
+        </button>
+        <ul class="dropdown__menu card unlistify">
+          {% for mode, label in forum_sort_modes %}
+            <li>
+              <a href="{{ path('forum_list', { sortBy: mode }) }}"
+                 class="menu-link {{ app.request.attributes.get('sortBy') == mode ? 'menu-link--active' }}">
+                {{- label -}}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+    </ul>
+  </nav>
 
-            {% if forum.featured %}
-              <span title="{{ 'help.forum_is_featured'|trans }}">&#x2b50;</span>
-            {% endif %}
+  {{ create_forum() }}
 
-            {% if is_granted('ROLE_USER') and app.user.hidingForum(forum) %}
-              <span title="{{ 'help.forum_is_hidden'|trans }}">&#x274c;</span>
-            {% endif %}
-          </td>
-          <td>{{ forum.title }}</td>
-          <td class="table__shrink">{{ forum.submissions|length|localizednumber }}</td>
-          {% if is_granted('ROLE_USER') %}
-            {% from 'forum/_macros.html.twig' import subscribe_button %}
-            {% set subscribed = forum.subscribed(app.user) %}
-            <td class="table__shrink">
-              <form action="{{ path(subscribed ? 'unsubscribe' : 'subscribe', {forum_name: forum.name}) }}"
-                    method="POST"
-                    class="subscribe-form"
-                    data-forum="{{ forum.name }}">
-                <input type="hidden" name="token" value="{{ csrf_token('subscribe') }}">
-                {{ subscribe_button(forum, subscribed, true) }}
-              </form>
-            </td>
-          {% else %}
-            <td class="table__shrink">{{ forum.subscriptions|length|localizednumber }}</td>
+  {% for forum in forums %}
+    <article class="forum-card">
+      <div class="forum-card__main-column">
+        <h2 class="forum-card__heading">
+          <a href="{{ path('forum', {forum_name: forum.name}) }}">
+            <span class="forum-card__name">/f/{{ forum.name }}</span>
+            &mdash;
+            <span class="forum-card__title n">{{ forum.title }}</span>
+            {#- remove spacing -#}
+          </a>
+
+          {% if forum.featured %}
+            <span title="{{ 'help.forum_is_featured'|trans }}"
+                  aria-label="{{ 'help.forum_is_featured'|trans }}">&#x2b50;</span>
           {% endif %}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 
-  {% include '_includes/pagination.html.twig' with {pager: forums} %}
+          {% if is_granted('ROLE_USER') and app.user.hidingForum(forum) %}
+            <span title="{{ 'help.forum_is_hidden'|trans }}"
+                  aria-label="{{ 'help.forum_is_hidden'|trans }}">&#x274c;</span>
+          {% endif %}
+        </h2>
+
+        <p class="forum-card__description no-margin">
+          {{- forum.description -}}
+        </p>
+      </div>
+
+      <div class="forum-card__subscribe-column">
+        {% if is_granted('ROLE_USER') %}
+          {% from 'forum/_macros.html.twig' import subscribe_button %}
+          {% set subscribed = forum.subscribed(app.user) %}
+          <form action="{{ path(subscribed ? 'unsubscribe' : 'subscribe', {forum_name: forum.name}) }}"
+                method="POST"
+                class="subscribe-form"
+                data-forum="{{ forum.name }}">
+            <input type="hidden" name="token" value="{{ csrf_token('subscribe') }}">
+            {{ subscribe_button(forum, subscribed, true) }}
+          </form>
+        {% else %}
+          <p class="no-margin">{{ 'forum.subscriber_count'|trans({
+            '%count%': forum.subscriptions|length,
+            '%formatted_count%': forum.subscriptions|length|localizednumber,
+          }) }}</p>
+        {% endif %}
+
+        <p class="no-margin">{{ 'forum.submission_count'|trans({
+          '%count%': forum.submissions|length,
+          '%formatted_count%': forum.submissions|length|localizednumber,
+        }) }}</p>
+      </div>
+    </article>
+  {% endfor %}
+
+  {{ include('_includes/pagination.html.twig', {pager: forums}, with_context=false) }}
 {% endblock %}
-
-{% macro table_head(label, newSortBy, currentSortBy) %}
-  {%- if newSortBy == currentSortBy -%}
-    {{ label }} &#x25BC;
-  {% else %}
-    <a href="{{ path('forum_list', app.request.attributes.get('_route_params')|merge({sortBy: newSortBy})) }}">
-      {{- label -}}
-    </a>
-  {%- endif -%}
-{% endmacro %}

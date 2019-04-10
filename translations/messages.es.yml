@@ -134,7 +134,7 @@ forum:
     edit: Editar foro
     subscribe: Suscribirse
     unsubscribe: Desuscribirse
-    subscriber_count: '{0} Sin suscriptoras|{1} %count% suscriptora|[1,Inf[ %count% suscriptoras'
+    subscriber_count: '{0} Sin suscriptoras|{1} %formatted_count% suscriptora|[1,Inf[ %formatted_count% suscriptoras'
     add_moderator: Agregar moderadora
 
 forum_form:

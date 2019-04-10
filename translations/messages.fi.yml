@@ -86,7 +86,7 @@ forum:
     edit: Muokkaa foorumia
     subscribe: Tilaa
     unsubscribe: Poista tilaus
-    subscriber_count: '{0} Ei tilaajia|{1} %count% tilaaja|[1,Inf[ %count% tilaajaa'
+    subscriber_count: '{0} Ei tilaajia|{1} %formatted_count% tilaaja|[1,Inf[ %formatted_count% tilaajaa'
     add_moderator: Lisää moderaattori
 
 

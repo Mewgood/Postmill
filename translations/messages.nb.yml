@@ -87,7 +87,7 @@ forum:
     edit: Rediger forum
     subscribe: Abonnere
     unsubscribe: Avabonnere
-    subscriber_count: '{0} Ingen abonnenter|{1} %count% abonnent|[1,Inf[ %count% abonnenter'
+    subscriber_count: '{0} Ingen abonnenter|{1} %formatted_count% abonnent|[1,Inf[ %formatted_count% abonnenter'
     add_moderator: Legg til moderator
 
 forum_form:

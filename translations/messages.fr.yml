@@ -136,7 +136,7 @@ forum:
     edit: Modifier le forum
     subscribe: S'abonner
     unsubscribe: Se désabonner
-    subscriber_count: '{0} Aucun abonnement|{1} %count% personne abonnée|[1,Inf[ %count% personnes abonnées'
+    subscriber_count: '{0} Aucun abonnement|{1} %formatted_count% personne abonnée|[1,Inf[ %formatted_count% personnes abonnées'
     add_moderator: Ajouter un modérateur
 
 forum_form:

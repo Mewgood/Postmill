@@ -121,7 +121,7 @@ forum:
     edit: Επεξεργασία φόρουμ
     subscribe: Εγγραφείτε
     unsubscribe: Διαγραφείτε
-    subscriber_count: '{0} Μηδενικούς συνδρομητές|{1} %count% συνδρομητής|[1,Inf[ %count% συνδρομητές'
+    subscriber_count: '{0} Μηδενικούς συνδρομητές|{1} %formatted_count% συνδρομητής|[1,Inf[ %formatted_count% συνδρομητές'
     add_moderator: Προσθέστε συντονιστή
 
 
