@@ -11,10 +11,9 @@ const KEY_DOWN = 40;
 const FOCUSABLE_ELEMENTS = `> .dropdown__toggle,
 > .dropdown__menu a[href],
 > .dropdown__menu button:not([disabled]),
-> .dropdown__menu input:not([disabled])`;
+> .dropdown__menu input:not([type="hidden"]):not([disabled])`;
 
 const MENU_ACTIONS = `.dropdown__menu a[href],
-.dropdown__menu input[type="button"],
 .dropdown__menu button[type="submit"],
 .dropdown__menu button:not([type])`;
 

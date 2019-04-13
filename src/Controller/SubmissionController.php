@@ -287,4 +287,40 @@ final class SubmissionController extends AbstractController {
             'slug' => Slugger::slugify($submission->getTitle()),
         ]);
     }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("moderator", subject="forum", statusCode=403)
+     *
+     * @param EntityManager $em
+     * @param Request       $request
+     * @param Forum         $forum
+     * @param Submission    $submission
+     * @param bool          $pin
+     *
+     * @return Response
+     */
+    public function pin(EntityManager $em, Request $request, Forum $forum, Submission $submission, bool $pin) {
+        $this->validateCsrf('pin', $request->request->get('token'));
+
+        $submission->setSticky($pin);
+
+        $em->flush();
+
+        if ($pin) {
+            $this->addFlash('notice', 'flash.submission_pinned');
+        } else {
+            $this->addFlash('notice', 'flash.submission_unpinned');
+        }
+
+        if ($request->headers->has('Referer')) {
+            return $this->redirect($request->headers->get('Referer'));
+        }
+
+        return $this->redirectToRoute('submission', [
+            'forum_name' => $forum->getName(),
+            'submission_id' => $submission->getId(),
+            'slug' => Slugger::slugify($submission->getTitle()),
+        ]);
+    }
 }

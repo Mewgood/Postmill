@@ -37,6 +37,8 @@ action:
     clear: Clear
     clear_all: Clear all
     dismiss: Dismiss
+    pin: Pin
+    unpin: Unpin
 
 add_moderator:
     title: Add moderator to %forum%
@@ -141,6 +143,8 @@ flash:
     editing_credentials_of_other_user: You are editing the credentials of another user. This can prevent them from logging in.
     notifications_cleared: Your notifications have been cleared.
     you_must_reauthenticate: You must reauthenticate to access this page.
+    submission_pinned: The submission was pinned.
+    submission_unpinned: The submission was unpinned.
 
 forum:
     moderators: Moderators

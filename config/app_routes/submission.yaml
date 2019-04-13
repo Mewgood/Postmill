@@ -64,6 +64,20 @@ unlock:
     methods: [POST]
     requirements: { submission_id: "%number_regex%" }
 
+pin:
+    controller: App\Controller\SubmissionController::pin
+    defaults: { pin: true, slug: '-' }
+    path: /f/{forum_name}/{submission_id}/{slug}/pin
+    methods: [POST]
+    requirements: { submission_id: "%number_regex%" }
+
+unpin:
+    controller: App\Controller\SubmissionController::pin
+    defaults: { pin: false, slug: '-' }
+    path: /f/{forum_name}/{submission_id}/{slug}/unpin
+    methods: [POST]
+    requirements: { submission_id: "%number_regex%" }
+
 submit:
     controller: App\Controller\SubmissionController::submit
     defaults: { forum_name: null }

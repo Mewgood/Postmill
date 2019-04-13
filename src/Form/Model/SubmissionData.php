@@ -52,8 +52,6 @@ class SubmissionData {
      */
     private $forum;
 
-    private $sticky = false;
-
     public function __construct(Forum $forum = null) {
         $this->forum = $forum;
     }
@@ -66,7 +64,6 @@ class SubmissionData {
         $self->body = $submission->getBody();
         $self->userFlag = $submission->getUserFlag();
         $self->forum = $submission->getForum();
-        $self->sticky = $submission->isSticky();
 
         return $self;
     }
@@ -79,7 +76,7 @@ class SubmissionData {
             $this->forum,
             $user,
             $ip,
-            $this->sticky,
+            false,
             $this->userFlag
         );
     }
@@ -101,7 +98,6 @@ class SubmissionData {
         }
 
         $submission->setUserFlag($this->userFlag);
-        $submission->setSticky($this->sticky);
     }
 
     public function getEntityId() {
@@ -146,13 +142,5 @@ class SubmissionData {
 
     public function setForum($forum) {
         $this->forum = $forum;
-    }
-
-    public function isSticky(): bool {
-        return $this->sticky;
-    }
-
-    public function setSticky(bool $sticky) {
-        $this->sticky = $sticky;
     }
 }

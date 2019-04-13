@@ -203,6 +203,12 @@
       "css": "home",
       "code": 59411,
       "src": "fontawesome"
+    },
+    {
+      "uid": "6373242453e92e8ce419b8391463867a",
+      "css": "pin-outline",
+      "code": 59412,
+      "src": "typicons"
     }
   ]
 }

@@ -77,8 +77,6 @@ final class SubmissionType extends AbstractType {
             $editing && $this->authorizationChecker->isGranted('moderator', $forum) ||
             $this->authorizationChecker->isGranted('ROLE_ADMIN')
         ) {
-            $builder->add('sticky', CheckboxType::class, ['required' => false]);
-
             $this->addUserFlagOption($builder, $forum);
         }
 

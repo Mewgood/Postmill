@@ -190,8 +190,8 @@
 
   {% if is_granted('moderator', submission.forum) %}
     <li class="dropdown">
-      <button class="dropdown__toggle fg-inherit text-sm unbuttonize" type="button">
-        <span>{{ 'nav.actions'|trans }}</span>
+      <button class="dropdown__toggle fg-inherit text-sm unbuttonize no-underline" type="button">
+        <span class="no-underline__exempt">{{ 'nav.actions'|trans }}</span>
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
       <ul class="card dropdown__menu unlistify">
@@ -199,6 +199,7 @@
           {{ block('submission_nav_edit') }}
           {{ block('submission_nav_delete') }}
         {% endif %}
+        {{ block('submission_nav_pin') }}
         {{ block('submission_nav_lock') }}
         {{ block('submission_nav_ban') }}
         {{ block('submission_nav_global_ban') }}
@@ -242,6 +243,22 @@
     </li>
   {% endif %}
 {% endblock submission_nav_delete %}
+
+{% block submission_nav_pin %}
+  {% from '_macros/icon.html.twig' import icon %}
+  <li>
+    <form action="{{ path(submission.sticky ? 'unpin' : 'pin', {
+      forum_name: submission.forum.name,
+      submission_id: submission.id,
+    }) }}" method="post">
+      <input type="hidden" name="token" value="{{ csrf_token('pin') }}">
+      <button class="unbuttonize menu-link no-wrap">
+        {{- submission.sticky ? icon('pin-outline') : icon('pin') }}
+        {{ submission.sticky ? 'action.unpin'|trans : 'action.pin'|trans -}}
+      </button>
+    </form>
+  </li>
+{% endblock submission_nav_pin %}
 
 {% block submission_nav_lock %}
   {% from '_macros/icon.html.twig' import icon %}
