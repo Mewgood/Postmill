@@ -15,7 +15,7 @@
     '%forum%': '<a href="%s">/f/%s</a>'|format(path('forum', {forum_name: forum.name})|e, forum.name|e)
   })|raw }}</h1>
 
-  <nav class="unlistify tabs">
+  <nav class="nav nav--guttered">
     {{ forum_post_types(forum.name, 'comments') }}
   </nav>
 
@@ -24,7 +24,7 @@
       {{ comment(comment, {show_context: true}) }}
     {% endfor %}
   {% else %}
-    <p><small class="dimmed">{{ 'flash.no_entries_to_display'|trans }}</small></p>
+    <p><small class="fg-muted text-md">{{ 'flash.no_entries_to_display'|trans }}</small></p>
   {% endif %}
 
   {{ include('_includes/pagination.html.twig', {pager: comments}, with_context=false) }}

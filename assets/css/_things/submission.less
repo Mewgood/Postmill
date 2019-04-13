@@ -1,0 +1,75 @@
+.submission {
+  margin-bottom: 1rem;
+
+  &__row {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  &__inner {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 1.33rem;
+    font-weight: normal;
+    margin: 0;
+
+    // don't make giant new lines if only the tiny host text wraps.
+    // also aligns icons correctly.
+    line-height: 0;
+
+    > * {
+      // restore line-height for children
+      line-height: var(--line-height);
+    }
+  }
+
+  &__link {
+    color: var(--submission-link);
+
+    &:visited {
+      color: var(--submission-link-visited);
+    }
+  }
+
+  &--sticky &__link {
+    color: var(--submission-link-sticky);
+  }
+
+  &__host {
+    color: var(--submission-link);
+  }
+
+  &__body {
+    margin-bottom: -0.5rem;
+    padding-top: 0.5rem;
+    max-width: var(--paragraph-width);
+  }
+
+  &__header {
+    > * {
+      margin-bottom: 0;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    &__thumb {
+      display: none;
+    }
+  }
+
+  @media not screen and (max-width: 480px) {
+    &--has-image &__inner {
+      padding-left: calc(1rem + 70px);
+      position: relative;
+    }
+
+    &__thumb {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+}

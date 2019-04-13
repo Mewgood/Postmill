@@ -3,8 +3,8 @@
   messages: { path: path('message_threads'), label: 'nav.messages'|trans },
 } %}
 
-<nav class="tabs">
-  <ul class="tabs__bar unlistify">
+<nav class="nav nav--guttered">
+  <ul class="nav unlistify">
     {% for name, link in links %}
       <li>
         <a href="{{ link.path }}" class="tab {{ active == name ? 'tab--active' }}">

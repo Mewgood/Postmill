@@ -1,0 +1,21 @@
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+
+  &--guttered {
+    margin-left: -1rem;
+    margin-bottom: 0;
+
+    > * {
+      margin-left: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &--guttered&.no-margin {
+    > * {
+      margin-bottom: 0;
+    }
+  }
+}

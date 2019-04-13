@@ -1,0 +1,26 @@
+@import (reference) '../_variables';
+//
+// DEPRECATED
+.form {
+  &__row {
+    @media screen and (min-width: @desktop-min-width) {
+      max-width: 40rem;
+    }
+
+    margin-bottom: 1rem;
+  }
+
+  &__button-row {
+    align-items: stretch !important;
+    display: flex;
+    min-width: 0;
+
+    @media not screen and (min-width: @desktop-min-width) {
+      flex-direction: column;
+    }
+
+    .button {
+      margin-bottom: 1rem;
+    }
+  }
+}

@@ -1,13 +1,7 @@
 .alert {
-  border-radius: 0.5rem;
-  display: flex;
-  flex-direction: column;
   margin-bottom: 1rem;
+  overflow: auto;
   padding: 1rem 1rem 0;
-
-  &--animate {
-    animation: alert-fadein 1s;
-  }
 
   &--notice {
     background: var(--bg-blue);
@@ -20,9 +14,4 @@
   &--warn {
     background: var(--bg-orange);
   }
-}
-
-@keyframes alert-fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }

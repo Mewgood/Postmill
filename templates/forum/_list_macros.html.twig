@@ -1,5 +1,5 @@
 {% macro forum_list_tabs() %}
-  <ul class="unlistify tabs__bar">
+  <ul class="unlistify nav">
     {% with { active: app.request.attributes.get('_route') == 'forum_list' } %}
       <li>
         <a href="{{ path('forum_list') }}" class="tab {{ active ? 'tab--active' }}">

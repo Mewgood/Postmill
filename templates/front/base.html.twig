@@ -21,10 +21,10 @@
 {% endblock %}
 
 {% block body %}
-  <nav class="tabs">
+  <nav class="nav nav--guttered">
     {{ front_post_types('submissions') }}
 
-    <ul class="unlistify tabs__bar">
+    <ul class="unlistify nav">
       {{ submission_sort(sort_by) }}
       {{ submission_filter(listing, sort_by) }}
       {{ submission_time(sort_by) }}

@@ -25,7 +25,7 @@ class UserControllerTest extends WebTestCase {
 
         $this->assertContains(
             'This value is too long. It should have 72 characters or less.',
-            $crawler->filter('.form__error')->text()
+            $crawler->filter('.form-error-list li')->text()
         );
     }
 

@@ -77,9 +77,9 @@
 
 {%- block form_errors -%}
   {%- if errors|length > 0 -%}
-    <ul class="form__errors">
+    <ul class="form-error-list no-margin">
       {%- for error in errors -%}
-        <li class="form__error">{{ error.message }}</li>
+        <li>{{ error.message }}</li>
       {%- endfor -%}
     </ul>
   {%- endif -%}
@@ -91,9 +91,9 @@
     {{- form_label(form) -}}
     {{- form_errors(form) -}}
     {{- block('textarea_widget') -}}
-    <p class="form__markdown-help">
+    <p class="no-margin text-align-right">
       {#- TODO: don't link to an external site -#}
-      <a href="http://commonmark.org/help/" target="_blank">
+      <a href="http://commonmark.org/help/" target="_blank" class="text-sm">
         {{- 'markdown_type.help'|trans -}}
       </a>
     </p>

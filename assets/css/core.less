@@ -2,59 +2,66 @@
 
 /*! https://postmill.xyz/ */
 
-// global element styles (must be first)
+// the order of stuff here is important. don't change things around
+// unnecessarily.
+
 @import '_global';
 
-// components
-@import '_colors/card';
-@import '_colors/fg';
-
-@import '_components/alert';
-@import '_components/button';
-@import '_components/clear-notification-button';
-@import '_components/comment';
-@import '_components/diff-table';
-@import '_components/dimmed';
-@import '_components/dropdown';
-@import '_components/empty';
-@import '_components/form';
-@import '_components/icon';
-@import '_components/markdown-input';
-@import '_components/site-nav';
-@import '_components/sidebar';
-@import '_components/source-code';
-@import '_components/subscribe-button';
-@import '_components/table';
-@import '_components/tabs';
-@import '_components/user-bio';
+@import '_resets/unbuttonize';
+@import '_resets/unheaderize';
+@import '_resets/unlistify';
 
 @import '_form/compound-form-widget';
 @import '_form/fieldset';
+@import '_form/form'; // DEPRECATED
 @import '_form/form-control';
+@import '_form/form-error-list';
 @import '_form/form-row';
 @import '_form/form-help';
+@import '_form/markdown-input';
 @import '_form/required-indicator';
 
-@import '_things/forum-card';
+@import '_widgets/button'; // must come before other widget types
+@import '_widgets/clear-notification-button';
+@import '_widgets/dropdown';
+@import '_widgets/menu-link';
+@import '_widgets/subscribe-button';
+@import '_widgets/tab';
 
+@import '_layout/content-wrapper';
+@import '_layout/site-alerts';
+@import '_layout/site-footer';
+@import '_layout/site-nav';
+@import '_layout/sidebar';
+
+@import '_things/alert';
+@import '_things/comment';
+@import '_things/empty';
+@import '_things/diff-table';
+@import '_things/forum-card';
+@import '_things/icon';
+@import '_things/message';
+@import '_things/nav';
+@import '_things/submission';
+@import '_things/submission-meta';
+@import '_things/table';
+@import '_things/user-flag';
+@import '_things/vote';
+@import '_things/wiki-article';
+@import '_things/wiki-lock-notice';
+
+// overriding modifier classes
 @import '_utilities/break-text';
+@import '_utilities/card';
+@import '_utilities/fg';
 @import '_utilities/no-desktop';
 @import '_utilities/no-margin';
 @import '_utilities/no-mobile';
 @import '_utilities/no-underline';
 @import '_utilities/no-wrap';
 @import '_utilities/text-align';
-@import '_utilities/unlistify';
-
-@import '_widgets/menu-link';
-@import '_widgets/tab';
+@import '_utilities/text-size';
 
 // legacy, non-BEM
-@import '_comments';
 @import '_common';
 @import '_forums';
-@import '_messages';
-@import '_navigation';
-@import '_submissions';
-@import '_votes';
-@import '_wiki';

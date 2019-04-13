@@ -19,8 +19,8 @@
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
     {% if error %}
-      <ul class="form__errors">
-        <li class="form__error">{{ error.messageKey|trans(error.messageData, 'security') }}</li>
+      <ul class="form-error-list no-margin">
+        <li>{{ error.messageKey|trans(error.messageData, 'security') }}</li>
       </ul>
     {% endif %}
 

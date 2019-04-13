@@ -1,5 +1,5 @@
-<nav class="tabs">
-  <ul class="tabs__bar unlistify">
+<nav class="nav nav--guttered">
+  <ul class="nav unlistify">
     {% with { active: current_page == 'css' } %}
       <li>
         <a href="{{ path('edit_theme_css', { username: theme.author.username, name: theme.name }) }}"

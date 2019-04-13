@@ -32,10 +32,10 @@
     </h1>
   {% endfilter %}
 
-  <nav class="tabs">
+  <nav class="nav nav--guttered">
     {{ forum_post_types(forum.name, 'submissions') }}
 
-    <ul class="unlistify tabs__bar">
+    <ul class="unlistify nav">
       {{ submission_sort(sort_by) }}
       {{ submission_time(sort_by) }}
     </ul>

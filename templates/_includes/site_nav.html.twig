@@ -36,7 +36,7 @@
     </header>
 
     <div class="site-nav__main-menu-container site-nav__mobile-hidden dropdown dropdown--mobile-only">
-      <button type="button" class="site-nav__link site-nav__mobile-toggle no-desktop dropdown__toggle">
+      <button type="button" class="site-nav__link site-nav__mobile-toggle no-desktop dropdown__toggle unbuttonize">
         {{- icon('menu', '', 'icon--no-align') -}}
       </button>
 
@@ -59,7 +59,7 @@
         {% if is_granted('ROLE_ADMIN') %}
           <li class="dropdown">
             <button type="button"
-                    class="dropdown__toggle no-underline no-wrap site-nav__link {{ active == 'admin' ? 'site-nav__link--active' }}">
+                    class="dropdown__toggle no-underline no-wrap site-nav__link unbuttonize {{ active == 'admin' ? 'site-nav__link--active' }}">
               <span class="no-underline__exempt">{{ 'label.admin'|trans }}</span>
               <span class="dropdown__arrow" aria-hidden="true"></span>
             </button>
@@ -89,7 +89,7 @@
     </div>
 
     <form action="{{ path('search') }}" class="site-nav__mobile-hidden site-nav__search dropdown dropdown--mobile-only">
-      <button type="button" class="site-nav__link site-nav__mobile-toggle no-desktop dropdown__toggle">
+      <button type="button" class="site-nav__link site-nav__mobile-toggle no-desktop dropdown__toggle unbuttonize">
         {{- icon('search', '', 'icon--no-align') -}}
       </button>
 
@@ -141,7 +141,7 @@
 
         {# user menu #}
         <li class="dropdown dropdown--right">
-          <button type="button" class="dropdown__toggle no-underline site-nav__link no-wrap {{ active == 'user' ? 'site-nav__link--active' }}">
+          <button type="button" class="dropdown__toggle no-underline site-nav__link no-wrap unbuttonize {{ active == 'user' ? 'site-nav__link--active' }}">
             {{ icon('user', '', 'icon--no-align') }}
             <strong class="no-underline__exempt no-mobile">{{ app.user.username }}</strong>
             <span class="dropdown__arrow no-mobile" aria-hidden="true"></span>
@@ -178,7 +178,7 @@
             </li>
             <li>
               <form action="{{ logout_path() }}" method="POST">
-                <button class="menu-link">
+                <button class="menu-link unbuttonize">
                   {{ icon('logout') }}
                   {{ 'nav.log_out'|trans }}
                 </button>

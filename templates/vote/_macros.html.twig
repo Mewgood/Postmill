@@ -29,7 +29,7 @@
       {% endif %}
 
       <button type="submit" name="choice" value="{{ user_choice == upvoted ? retract : upvote }}"
-              class="vote__button vote__up"
+              class="unbuttonize vote__button vote__up"
               title="{{ (user_choice == upvoted ? 'action.retract_upvote' : 'action.upvote')|trans }}">
         <span aria-hidden="true">{{ icon('up', 'up', 'icon--no-align') }}</span>
       </button>
@@ -37,7 +37,7 @@
       <span class="vote__net-score">{{ entity.netScore }}</span>
 
       <button type="submit" name="choice" value="{{ user_choice == downvoted ? retract : downvote }}"
-              class="vote__button vote__down"
+              class="unbuttonize vote__button vote__down"
               title="{{ (user_choice == downvoted ? 'action.retract_downvote' : 'action.downvote')|trans }}">
         <span aria-hidden="true">{{ icon('down', 'down', 'icon--no-align') }}</span>
       </button>

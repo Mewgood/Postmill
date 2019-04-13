@@ -1,5 +1,5 @@
 {% macro front_post_types(current) %}
-  <ul class="unlistify tabs__bar">
+  <ul class="unlistify nav">
     <li>
       <a href="{{ path('front') }}"
          class="tab {{ current == 'submissions' ? 'tab--active' }}">
@@ -16,7 +16,7 @@
 {% endmacro front_post_types %}
 
 {% macro forum_post_types(forum_name, current) %}
-  <ul class="unlistify tabs__bar">
+  <ul class="unlistify nav">
     <li>
       <a href="{{ path('forum', { forum_name: forum_name }) }}"
          class="tab {{ current == 'submissions' ? 'tab--active' }}">
@@ -113,7 +113,7 @@
 {% macro _tab_button(choice_label, label_name, label_key, icon) %}
   {% from '_macros/icon.html.twig' import icon %}
   <button type="button"
-          class="dropdown__toggle tab no-underline"
+          class="dropdown__toggle tab no-underline unbuttonize"
           aria-label="{{ label_name|trans({ (label_key): choice_label }) }}">
     {{ icon(icon) }}
     <span class="no-underline__exempt">{{ choice_label }}</span>

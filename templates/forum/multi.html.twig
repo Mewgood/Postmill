@@ -11,8 +11,8 @@
 {% block title '/f/'~forums|join(', /f/') %}
 
 {% block body %}
-  <nav class="tabs">
-    <ul class="unlistify tabs__bar">
+  <nav class="nav nav--guttered">
+    <ul class="unlistify nav">
       {{ submission_sort(sort_by) }}
       {{ submission_time(sort_by) }}
     </ul>

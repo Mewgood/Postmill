@@ -36,6 +36,7 @@ action:
     unhide: Unhide
     clear: Clear
     clear_all: Clear all
+    dismiss: Dismiss
 
 add_moderator:
     title: Add moderator to %forum%
@@ -229,6 +230,8 @@ inbox:
 
 item:
     short_url: 'Short URL'
+    op_abbr: OP
+    op: Original poster
 
 label:
     name: Name
@@ -402,6 +405,7 @@ nav:
     recent_comments: Recent comments
     notifications: Notifications
     notifications_count: 'Notifications (%count%)'
+    actions: Actions
 
 placeholder:
     choose_one: Choose one…

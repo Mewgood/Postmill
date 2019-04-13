@@ -48,7 +48,7 @@
     <details class="sidebar__section">
       <summary class="sidebar__title">{{ 'heading.hide_this_forum'|trans }}</summary>
 
-      <p class="dimmed">{{ 'help.hidden_forums'|trans }}</p>
+      <p class="fg-muted text-md">{{ 'help.hidden_forums'|trans }}</p>
 
       <form action="{{ path(is_hidden ? 'unhide_forum' : 'hide_forum', {username: app.user.username, forum: forum.id}) }}" method="POST">
         <input type="hidden" name="token" value="{{ csrf_token('hide_forum') }}">

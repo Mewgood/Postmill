@@ -1,17 +1,15 @@
-@import (reference) '../_mixins';
-
 /*
  * <article class="comment">
  *   <div class="comment__context">optional context thing</p>
  *
  *   <div class="comment__row">
- *     <div class="comment__vote">...</div>
- *
  *     <div class="comment__main">
  *       <h1 class="comment__info">...</h1>
  *       <div class="comment__body">...</div>
  *       <nav class="comment__nav">...</nav>
  *     </div>
+
+ *     <div class="comment__vote">...</div>
  *   </div>
  *
  *   <!-- exists only with replies -->
@@ -32,17 +30,22 @@
 
   &__context {
     p {
-      .meta;
       margin-bottom: 0;
     }
   }
 
   &__row {
-    .vote-flex;
     border: solid @border-thin var(--border-light);
     border-bottom: none;
     border-left-width: @border-thick;
+    display: flex;
+    flex-direction: row-reverse;
     padding-top: 0.5rem;
+  }
+
+  &__main {
+    flex-grow: 1;
+    min-width: 0;
   }
 
   &__replies {
@@ -57,8 +60,8 @@
   }
 
   &__info {
-    .meta;
     font-weight: normal;
+    margin-bottom: 0.5rem;
   }
 
   &__body {
@@ -67,11 +70,8 @@
   }
 
   &__nav {
-    .meta-nav;
-
-    ul {
-      margin-bottom: 0.5rem;
-    }
+    margin-top: -0.5rem; // dig into margin of last element in comment body
+    margin-bottom: 0.5rem;
   }
 
   &--nested:last-child {

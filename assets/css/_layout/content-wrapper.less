@@ -1,0 +1,29 @@
+@import '../_variables';
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "body sidebar" "footer sidebar";
+  flex: 1 0 auto;
+
+  @media not screen and (min-width: @desktop-min-width) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  > .body {
+    grid-area: body;
+    min-width: 0;
+    margin: 1rem;
+  }
+
+  > .sidebar {
+    grid-area: sidebar;
+    flex: none;
+    min-width: 0;
+  }
+
+  > footer {
+    grid-area: footer;
+  }
+}

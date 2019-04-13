@@ -32,7 +32,7 @@
     {{ include('_includes/pagination.html.twig', {pager: logs}, with_context=false) }}
   {% else %}
     <p class="no-entries">
-      <small class="dimmed">{{ 'flash.no_entries_to_display'|trans }}</small>
+      <small class="fg-muted text-md">{{ 'flash.no_entries_to_display'|trans }}</small>
     </p>
   {% endif %}
 {% endblock %}

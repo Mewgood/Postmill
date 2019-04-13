@@ -19,14 +19,12 @@
       </span>
     </p>
 
-    <p class="submission-meta__short-url">
-      <span>
-        {{ 'item.short_url'|trans }}
-      </span>
+    <h4 class="no-margin fg-muted unheaderize text-xs">{{ 'item.short_url'|trans }}</h4>
 
-      <span>
-        {{ url('submission_shortcut', {id: submission.id})|e }}
-      </span>
+    <p>
+      <kbd class="submission-meta__short-url">
+        {{- url('submission_shortcut', {id: submission.id}) -}}
+      </kbd>
     </p>
   </section>
 
@@ -35,7 +33,7 @@
 
 {% block body %}
   <nav class="submission-permalink-nav">
-    <ul>
+    <ul class="nav nav--guttered unlistify">
       <li>
         <a href="{{ path('forum', {forum_name: forum.name}) }}">
           {{ 'comments.return_to_forum'|trans({'%forum%': '/f/<strong>'~forum.name~'</strong>'})|raw -}}

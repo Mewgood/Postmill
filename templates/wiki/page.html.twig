@@ -40,8 +40,8 @@
     {% endif %}
 
     {% if is_granted('lock', page) or is_granted('delete', page) %}
-      <nav class="horizontal-nav">
-        <ul>
+      <nav>
+        <ul class="nav nav--guttered unlistify">
           {% if is_granted('lock', page) %}
             <li>
               <form action="{{ path(page.locked ? 'wiki_unlock' : 'wiki_lock', {path: page.path}) }}" method="post">
@@ -55,7 +55,7 @@
             <li>
               <form action="{{ path('wiki_delete', { path: page.path }) }}" method="post">
                 <input type="hidden" name="token" value="{{ csrf_token('wiki_delete') }}">
-                <button class="button button--inline confirm-wiki-delete">{{ 'action.delete'|trans }}</button>
+                <button class="button button--inline js-confirm-wiki-delete">{{ 'action.delete'|trans }}</button>
               </form>
             </li>
           {% endif %}

@@ -21,16 +21,17 @@
 {% block body %}
   <h1 class="page-heading">{{ 'forum_list.page_title'|trans }}</h1>
 
-  <nav class="tabs forum-list-view-selector">
+  <nav class="forum-list-view-selector nav nav--guttered">
     {{ forum_list_tabs() }}
-    <ul class="tabs__bar unlistify">
+    <ul class="unlistify nav">
       <li class="dropdown">
-        <button class="tab dropdown__toggle"
+        <button type="button"
+                class="tab dropdown__toggle unbuttonize no-underline"
                 aria-label="{{ 'label.sort_by_mode'|trans({
                   '%mode%': forum_sort_modes[sortBy]
                 }) }}">
           {{ icon('sort') }}
-          {{ forum_sort_modes[sortBy] }}
+          <span class="no-underline__exempt">{{ forum_sort_modes[sortBy] }}</span>
           <span class="dropdown__arrow" aria-hidden="true"></span>
         </button>
         <ul class="dropdown__menu card unlistify">
@@ -52,7 +53,7 @@
   {% for forum in forums %}
     <article class="forum-card">
       <div class="forum-card__main-column">
-        <h2 class="forum-card__heading">
+        <h2 class="forum-card__heading break-text">
           <a href="{{ path('forum', {forum_name: forum.name}) }}">
             <span class="forum-card__name">/f/{{ forum.name }}</span>
             &mdash;
@@ -71,7 +72,7 @@
           {% endif %}
         </h2>
 
-        <p class="forum-card__description no-margin">
+        <p class="forum-card__description no-margin break-text">
           {{- forum.description -}}
         </p>
       </div>
@@ -94,7 +95,7 @@
           }) }}</p>
         {% endif %}
 
-        <p class="no-margin">{{ 'forum.submission_count'|trans({
+        <p class="no-margin fg-muted text-sm">{{ 'forum.submission_count'|trans({
           '%count%': forum.submissions|length,
           '%formatted_count%': forum.submissions|length|localizednumber,
         }) }}</p>

@@ -24,20 +24,23 @@
       {{ app.user ? 'user-logged-in' : 'user-anonymous' }}
       {{ (app.user.nightMode ?? false) ? 'night-mode' }}
       {{ (app.user.enablePostPreviews ?? true) ? 'js-enable-post-previews' }}">
-    {% block site_nav %}
-      {{ include('_includes/site_nav.html.twig', {forum: forum ?? null}, with_context=false) }}
-    {% endblock %}
-
     {% block site_alerts %}
       <div class="site-alerts">
         {%- for type, notices in app.flashes -%}
           {%- for notice in notices -%}
-            <div class="alert alert--{{ type }} alert--animate alert--dismissable" role="alert">
-              <p>{{ notice|trans }}</p>
+            <div class="alert alert--{{ type }} site-alerts__alert" role="alert">
+              <p class="no-margin site-alerts__text">{{ notice|trans }}</p>
+              <button class="site-alerts__dismiss unbuttonize fg-inherit no-underline"
+                      aria-label="{{ 'action.dismiss'|trans }}"
+                      type="button">&times;</button>
             </div>
           {%- endfor -%}
         {%- endfor -%}
       </div>
+    {% endblock %}
+
+    {% block site_nav %}
+      {{ include('_includes/site_nav.html.twig', {forum: forum ?? null}, with_context=false) }}
     {% endblock %}
 
     {% block site_main %}
@@ -46,12 +49,12 @@
         <aside class="sidebar">{% block sidebar %}{% endblock %}</aside>
 
         <footer class="site-footer">
-          <p class="site-footer-version">
-            {{ 'site_footer.version'|trans({
+          <p>
+            <span class="site-footer__dim text-xs">{{ 'site_footer.version'|trans({
               '%branch%': app_branch(),
               '%version%': app_version(),
               '%app%': '<a href="https://postmill.xyz/">Postmill</a>',
-            })|raw }}
+            })|raw }}</span>
           </p>
         </footer>
       </div>

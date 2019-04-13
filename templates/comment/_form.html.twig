@@ -1,9 +1,10 @@
 {{ form_start(form, {attr: {class: 'comment-form'}}) }}
   {{ form_errors(form) }}
 
-  <div class="comment-row">
-    {{ form_row(form.comment, {attr: {rows: 6}}) }}
-  </div>
+  {{ form_row(form.comment, {
+    attr: { 'aria-label': 'comment_form.comment'|trans, rows: 6 },
+    label_attr: { hidden: true }
+  }) }}
 
   {% if form.userFlag is defined %}
     {{ form_row(form.userFlag) }}
