@@ -6,6 +6,7 @@ action:
     retract_upvote: Repreni porvoĉdonon
     retract_downvote: Repreni kontraŭvoĉdonon
     edit: Redakti
+    create_theme: Krei etoson
     edit_theme: Radakti etoson
     new_theme: Novan etoson
     go_to_home_page: Iri al hejmpaĝo
@@ -24,6 +25,14 @@ action:
     add: Aldoni
     post: Afiŝi
     save: Konservi
+    search: Serĉi
+    hide: Kaŝi
+    unhide: Malkaŝi
+    clear: Forigi
+    clear_all: Forigi ĉion
+    dismiss: Forgesi
+    pin: Kejli
+    unpin: Malkejli
 
 add_moderator:
     title: Aldoni kontrolanton al %forum%
@@ -79,6 +88,9 @@ comment_form:
 compose_message:
     title: Kreas mesaĝon por %username%
 
+content:
+    empty: Nenio estas ĉi tie...
+
 create_forum:
     create_new_forum: Kreas novan diskutejon
 
@@ -123,6 +135,12 @@ flash:
     no_password_resets: Pasvortaj restarigoj estis malebligitaj de la administranto.
     webhook_added: La reto-hoko aldoniĝis korekte
     webhook_edited: La reto-hoko redaktiĝis korekte.
+    wiki_page_deleted: La vikia paĝo estis ĵus forigita
+    editing_credentials_of_other_user: Vi redaktas la ensalutilojn de alia uzulo. Ĉi tio povas malebligi al ili ensaluti.
+    notifications_cleared: Viaj sciigoj ĵus estis forigitaj.
+    you_must_reauthenticate: Vi devas reensaluti por aliri al ĉi tiu paĝo.
+    submission_pinned: La afiŝo estis kejlita.
+    submission_unpinned: La afiŝo estis malkejlita.
 
 forum:
     moderators: Kontrolantoj
@@ -131,6 +149,7 @@ forum:
     subscribe: Aboni
     unsubscribe: Malaboni
     subscriber_count: '{0} Sen abonantoj|{1} %formatted_count% abonanto|[1,Inf[ %formatted_count% abonantoj'
+    submission_count: '{0} Sen afiŝoj|{1} %formatted_count% afiŝo|[1,Inf[ %formatted_count% afiŝoj'
     add_moderator: Aldoni kontrolanton
 
 forum_form:
@@ -178,6 +197,11 @@ heading:
     message_thread: "%sender% skribis al %receiver% %timestamp%"
     message_reply: "%sender% respondis %timestamp%"
     category: 'Kategorio: %category%'
+    hide_this_forum: Kaŝi tiun diskutejon
+    you_were_mentioned: Vi estis menciita de %user%
+    search: Serĉi
+    search_results: '{0} Sen resultoj por %query%|{1} 1 resulto por %query%:|]1,Inf[ %count% resultoj por %query%:'
+    notifications: Sciigoj
 
 help:
     delete_forum_warning: Ĉiu enhavo en ĉi tiu diskutejo senrevene estos forigita
@@ -187,12 +211,27 @@ help:
     revision_summary: Enigu resumon de via ŝanĝoj
     parent_theme_input: Enigu la <uzantnomo>/<estoso> de la estoso vi volas plivastigi. Alternative vi povas enigi UUID, por plivastigi konkretan revizion.
     will_appear_in_the_url: Ĝi aperos en la URL
+    forum_is_featured: Ĉi tiu diskutejo estas elstarigita.
+    forum_is_hidden: Vi ĵus elektis kaŝi ĉi tiun diskutejon.
+    hidden_forums: >
+        Se vi markas diskutejojn kiel kaŝitajn, vi ne vidos afiŝojn el tiuj diskutejoj
+        kiam  vi esploras la listo de afiŝoj "elstarigitaj" kaj "ciûj". Vi ankoraŭ
+        povas aboni kaj administri diskutejojn, kiujn vi decidis kaŝi.
+    hidden_forums_no_comment_hiding: Komentoj afiŝitaj en kaŝitaj diskutejoj ankoraŭ estos montritaj en la listo "novaj komentoj".
+    required_field: Ĉi tiu kampo estas deviga.
+    notify_on_reply: Ricevi sciigojn kiam iu respondas al viaj afiŝoj.
+    notify_on_mentions: Ricevi sciigojn kiam iu ligas al via uzulprofilon.
+    preferred_fonts: 'Diskoma listo de la tiparoj, kiuj vi preferas. Ĉi tiuj povas esti tiparoj el via sistemo aŭ el la listo de servilo-disponigitaj tiparoj malsupre..'
+    preferred_fonts_served: 'Servilo-disponigitaj tiparoj (disponebla ĉie): '
+    preferred_fonts_aliases: 'Alinomitaj nombroj de tiparoj: '
 
 inbox:
     message_reply_head: 'Re: %title%'
 
 item:
     short_url: 'Mallonga URL'
+    op_abbr: OA
+    op: Origina afiŝinto
 
 label:
     name: Nomo
@@ -286,6 +325,17 @@ label:
     user_associated_with_ip: Uzanto de IP
     body: Korpo
     let_forums_override_preferred_theme: Lasi, ke diskutejoj transpasos preferitan estoson
+    search: Serĉi afiŝon...
+    show_thumbnails: Montri bildetojn
+    search_query: Serĉmendo
+    notify_on_reply: Sciigi por respondoj
+    notify_on_mentions: Sciigi por mencioj
+    sort_by_mode: 'Klasi laŭ: %mode%'
+    filter_on_mode: 'Filtri laŭ: %mode%'
+    from_time: 'De: %time%'
+    last_message: Lasta mesaĝo
+    participants: Partoprenantoj
+    preferred_fonts: Preferred font(s)
 
 log:
     comment_deletion: '%user% forigis komenton de %author% en "%submission%"'
@@ -328,6 +378,8 @@ nav:
     my_account: Mia konto
     user_settings: Uzanto-agordoj
     forums: Diskutejoj
+    submissions: Afiŝoj
+    comments: Komentoj
     messages: Mesaĝoj
     wiki: Vikio
     next: Sekva
@@ -351,14 +403,22 @@ nav:
     new_category: Novan kategorion
     webhooks: Reto-hokoj
     add_webhook: Aldoni reto-hokon
+    hidden_forums: Kaŝitaj diskutejoj
+    recent_comments: Freŝaj komentoj
+    notifications: Sciigoj
+    notifications_count: 'Sciigoj (%count%)'
+    actions: Agoj
 
 placeholder:
     default: (defaŭlto)
     choose_one: Elekti unu…
+    repeat: (ripeti)
 
 prompt:
     confirm_comment_delete: Ĉu vi vere volas forigi ĉi tiun komenton?
+    confirm_message_delete: Ĉu vi vere volas forigi ĉi tiun mesaĝon?
     confirm_submission_delete: Ĉu vi vere volas forigi ĉi tiun afiŝon?
+    confirm_wiki_delete: Ĉu vi vere volas forigi ĉi tiun vikipaĝon? Ĝi estos malfareble perdita por ĉiam.
 
 request_password_reset:
     title: Peti ligilon al pasvorta restarigo
@@ -412,11 +472,17 @@ submissions:
     sort_by_top: Supraj
     sort_by_controversial: Disputigaj
     sort_by_most_commented: Plej komentitaj
+    time_all: Ĉiame
+    time_year: Lasta jaro
+    time_month: Lasta monato
+    time_week: Lasta semajno
+    time_day: Lastaj 24 horoj
     total_votes: '{1} %count% voĉdono|[0,Inf[ %count% voĉdonoj'
     vote_stats: (+%up%, −%down%)
     ip_ban: IP-forbaro
     edit_info: (redaktis %edited_at%)
     moderator_info: (kontrolanto redaktis %edit_at%)
+    new_comments: '(%count% novaj)'
 
 time:
     on_timestamp: je %timestamp%
@@ -443,6 +509,7 @@ title:
     block_list: Listo de forbaroj
     blocking_user: Forbarata %user%
     recent_comments: Novaj komentoj
+    recent_comments_forum: Novaj komentoj en %forum%
     history_for_theme: Montrata historion de estoso %theme%
     viewing_theme_source: Rigardata historion de estoso %theme%
     messages: Mesaĝoj
@@ -463,6 +530,10 @@ title:
     add_forum_webhook: Aldonado de reto-hoko por %forum%
     editing_forum_webhook: Redaktado de reto-hoko en %forum%
     forum_webhooks: Reto-hokoj por %forum%
+    search_site: Serĉi en la retejo
+    search_forum: Serĉi en ĉi tiu diskutejo
+    hidden_forums: Kaŝitaj diskutejoj
+    notifications: Sciigoj
 
 user:
     submissions: Afiŝoj
