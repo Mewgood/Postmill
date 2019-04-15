@@ -5,9 +5,16 @@
   border: solid 1px var(--border);
   color: var(--text);
   display: inline-block;
+  font-size: var(--font-size);
   min-height: @height;
   padding: 0.5rem;
   transition: background-color .1s, box-shadow .1s, border-color .1s, color .1s;
+
+  @supports (-webkit-overflow-scrolling: touch) {
+    // fix zoom-on-focus in iOS
+    --font-size: ~'max(16px, var(--font-size))';
+    --font-size: 16px;
+  }
 
   input&:not([type]),
   &[type="text"],
@@ -50,6 +57,20 @@
   }
 
   select&:not([multiple]) {
+    -moz-appearence: none;
+    -webkit-appearance: none;
+    background-image: url('caret-black.svg');
+    background-size: 12px 12px;
+    background-position: calc(100% - 2px) 50%;
+    background-repeat: no-repeat;
+    padding-right: 16px;
+
+    .night-mode & {
+      background-image: url('caret-white.svg');
+    }
+
+    border-radius: 0; // disable rounded corners on iOS
+
     // dropdown caret doesn't acknowledge min-height
     height: @height;
 
