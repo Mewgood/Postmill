@@ -57,22 +57,8 @@
   }
 
   select&:not([multiple]) {
-    -moz-appearence: none;
-    -webkit-appearance: none;
-    background-image: url('caret-black.svg');
-    background-size: 12px 12px;
-    background-position: calc(100% - 2px) 50%;
-    background-repeat: no-repeat;
-    padding-right: 16px;
-
-    .night-mode & {
-      background-image: url('caret-white.svg');
-    }
-
     border-radius: 0; // disable rounded corners on iOS
-
-    // dropdown caret doesn't acknowledge min-height
-    height: @height;
+    height: @height; // dropdown caret doesn't acknowledge min-height
 
     // having vertical padding cuts off the text inside. having height set is
     // enough to achieve a padding effect.

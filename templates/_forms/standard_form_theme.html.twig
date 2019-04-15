@@ -19,7 +19,14 @@
 
 {% block choice_widget %}
   {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
-  {{- parent() -}}
+  {%- if not multiple and not expanded -%}
+    <span class="styled-select">
+      {{- parent() -}}
+      <span class="styled-select__caret" aria-hidden="true"></span>
+    </span>
+  {%- else -%}
+    {{- parent() -}}
+  {%- endif -%}
 {% endblock choice_widget %}
 
 {# form layout #}
