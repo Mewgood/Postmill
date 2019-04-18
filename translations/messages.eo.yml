@@ -335,7 +335,7 @@ label:
     from_time: 'De: %time%'
     last_message: Lasta mesaĝo
     participants: Partoprenantoj
-    preferred_fonts: Preferred font(s)
+    preferred_fonts: Preferata(j) tiparo(j)
 
 log:
     comment_deletion: '%user% forigis komenton de %author% en "%submission%"'
