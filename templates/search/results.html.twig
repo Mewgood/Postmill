@@ -31,13 +31,13 @@
     {% if result.entity == 'comment' %}
       {{ comment(result[0], {
         show_context: true,
-        raw_body: '<p>%s</p>'|format(result.body_excerpt)
+        raw_body: '<p>%s</p>'|format(result.body_excerpt|search_highlight)
       }) }}
     {% elseif result.entity == 'submission' %}
       {{ submission(result[0], {
         show_body: true,
-        raw_title: result.title_highlighted,
-        raw_body: result.body_excerpt is not empty ? '<p>%s</p>'|format(result.body_excerpt) : null
+        raw_title: result.title_highlighted|search_highlight,
+        raw_body: result.body_excerpt is not empty ? '<p>%s</p>'|format(result.body_excerpt|search_highlight) : null
       }) }}
     {% endif %}
   {% else %}
