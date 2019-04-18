@@ -5,6 +5,7 @@
 
 {% block title user.username %}
 {% block page_classes 'user-page' %}
+{% block site_nav_user_menu_active 'profile' %}
 
 {% block head %}
   {{ include('_includes/meta_pagination.html.twig', {pager: contributions}, with_context=false) }}

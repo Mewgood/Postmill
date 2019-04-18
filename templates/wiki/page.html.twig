@@ -9,6 +9,9 @@
   <link rel="canonical" href="{{ url('wiki', {path: page.path}) }}">
 {% endblock %}
 
+{% block site_nav_active 'places' %}
+{% block site_nav_main_menu_active 'wiki' %}
+
 {% block body %}
   <article class="wiki-article">
     <h1 class="page-heading wiki-article__title">{{ block('title') }}</h1>

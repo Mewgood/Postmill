@@ -1,4 +1,4 @@
-{% macro icon(name, alt_text = '', extra_classes='') %}
+{% macro icon(name, alt_text = '', extra_classes='', alt_text_extra_classes='') %}
   {#- prevent preloading sprite sheet more than once -#}
   {%- set icon_asset = asset('build/images/icons.svg') -%}
   {%- if not app.request.attributes.get('icons_are_linked') -%}
@@ -17,7 +17,7 @@
             SVG icons are disabled. -#}
             <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%2F%3E"
                  alt="{{ alt_text }}"
-                 class="icon__alt"
+                 class="icon__alt {{ alt_text_extra_classes }}"
                  aria-hidden="true"
                  width="0"
                  height="0">

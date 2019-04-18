@@ -6,6 +6,7 @@
   {{ include('_includes/meta_pagination.html.twig', {pager: submissions}) }}
 {% endblock %}
 
+{% block site_nav_user_menu_active 'profile' %}
 {% block page_classes 'user-submissions-page' %}
 
 {% block title 'user.submissions'|trans %}

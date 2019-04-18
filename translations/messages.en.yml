@@ -410,6 +410,10 @@ nav:
     notifications: Notifications
     notifications_count: 'Notifications (%count%)'
     actions: Actions
+    places: Places
+    home: Home
+    user: User
+    search: Search
 
 placeholder:
     choose_one: Choose one…

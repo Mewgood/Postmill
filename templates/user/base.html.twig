@@ -2,6 +2,8 @@
 
 {% from _self import timestamp %}
 
+{% block site_nav_active app.user is same as(user) ? 'user' %}
+
 {% block sidebar %}
   <section class="sidebar__section">
     <h1 class="sidebar__title no-margin break-text">

@@ -1,6 +1,7 @@
 {% extends forum is defined and forum ? 'forum/base.html.twig' : 'base.html.twig' %}
 
 {% block page_classes 'create-submission-page' %}
+{% block site_nav_active 'submit' %}
 {% block title 'title.create_submission'|trans %}
 
 {% block body %}

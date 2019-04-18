@@ -4,6 +4,9 @@
   wiki-create-page
 {% endblock %}
 
+{% block site_nav_active 'places' %}
+{% block site_nav_main_menu_active 'wiki' %}
+
 {% block title %}
   {{ 'wiki.create_title'|trans({'%path%': path}) }}
 {% endblock %}

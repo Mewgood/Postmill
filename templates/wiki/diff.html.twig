@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block page_classes 'wiki-diff-page' %}
+
+{% block site_nav_active 'places' %}
+{% block site_nav_main_menu_active 'wiki' %}
+
 {% block title 'title.wiki_diff'|trans({
   'from': from.id[0:8],
   'to': to.id[0:8],

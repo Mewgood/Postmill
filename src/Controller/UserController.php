@@ -263,6 +263,7 @@ final class UserController extends AbstractController {
     public function blockList(User $user, int $page) {
         return $this->render('user/block_list.html.twig', [
             'blocks' => $user->getPaginatedBlocks($page),
+            'user' => $user,
         ]);
     }
 

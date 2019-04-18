@@ -5,6 +5,8 @@
   {% include '_includes/meta_pagination.html.twig' with {pager: notifications} %}
 {% endblock head %}
 
+{% block site_nav_active 'notifications' %}
+
 {% block title 'title.notifications'|trans %}
 
 {% block body %}

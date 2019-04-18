@@ -4,6 +4,7 @@
 
 {% block page_classes 'comment-list-page' %}
 {% block title 'title.recent_comments'|trans %}
+{% block site_nav_active 'front' %}
 
 {% block head %}
   {{ include('_includes/meta_pagination.html.twig', {pager: comments}, with_context=false) }}

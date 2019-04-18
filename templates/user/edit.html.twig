@@ -1,9 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'user/base.html.twig' %}
 {% from '_macros/icon.html.twig' import icon %}
 
 {% block title 'edit_user.title'|trans({'%username%': user.username}) %}
 
 {% block page_classes %}edit-user-page{% endblock %}
+{% block site_nav_user_menu_active 'account' %}
 
 {% block body %}
   <h1 class="page-heading break-text">{{ block('title') }}</h1>

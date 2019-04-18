@@ -1,3 +1,4 @@
+{% use '_layouts/site_nav.html.twig' %}
 <!DOCTYPE html>
 <html class="no-js" lang="{{ app.request.locale }}" prefix="og: http://ogp.me/ns#">
   <head>
@@ -39,9 +40,7 @@
       </div>
     {% endblock %}
 
-    {% block site_nav %}
-      {{ include('_includes/site_nav.html.twig', {forum: forum ?? null}, with_context=false) }}
-    {% endblock %}
+    {{ block('site_nav') }}
 
     {% block site_main %}
       <div class="content-wrapper">
