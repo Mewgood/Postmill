@@ -30,10 +30,16 @@ final class LocaleListener {
      */
     private $translator;
 
+    /**
+     * @var string[]
+     */
+    private $availableLocales;
+
     public function __construct(
         SessionInterface $session,
         TokenStorageInterface $tokenStorage,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        array $availableLocales
     ) {
         if (!$translator instanceof LocaleAwareInterface) {
             throw new \InvalidArgumentException(
@@ -44,18 +50,21 @@ final class LocaleListener {
         $this->session = $session;
         $this->tokenStorage = $tokenStorage;
         $this->translator = $translator;
+        $this->availableLocales = $availableLocales;
     }
 
     public function onKernelRequest(GetResponseEvent $event) {
         $request = $event->getRequest();
 
-        if (!$request->hasPreviousSession()) {
-            return;
+        if ($request->hasPreviousSession()) {
+            $locale = $this->session->get('_locale');
         }
 
-        $locale = $request->getSession()->get('_locale');
+        if (!isset($locale)) {
+            $locale = $request->getPreferredLanguage($this->availableLocales);
+        }
 
-        if ($locale) {
+        if (isset($locale)) {
             $request->setLocale($locale);
         }
     }

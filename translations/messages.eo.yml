@@ -481,7 +481,7 @@ submissions:
     vote_stats: (+%up%, −%down%)
     ip_ban: IP-forbaro
     edit_info: (redaktis %edited_at%)
-    moderator_info: (kontrolanto redaktis %edit_at%)
+    moderator_info: (kontrolanto redaktis %edited_at%)
     new_comments: '{1} (%count% nova)|[1,Inf[ (%count% novaj)'
 
 time:

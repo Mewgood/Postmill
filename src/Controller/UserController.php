@@ -129,7 +129,7 @@ final class UserController extends AbstractController {
         }
 
         $data = new UserData();
-        $data->setLocale($this->defaultLocale);
+        $data->setLocale($request->getLocale());
 
         $form = $this->createForm(UserType::class, $data);
         $form->handleRequest($request);
