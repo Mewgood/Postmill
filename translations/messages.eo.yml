@@ -482,7 +482,7 @@ submissions:
     ip_ban: IP-forbaro
     edit_info: (redaktis %edited_at%)
     moderator_info: (kontrolanto redaktis %edit_at%)
-    new_comments: '(%count% novaj)'
+    new_comments: '{1} (%count% nova)|[1,Inf[ (%count% novaj)'
 
 time:
     on_timestamp: je %timestamp%

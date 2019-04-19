@@ -25,9 +25,10 @@ $(function () {
             const number = newComments.toLocaleString(lang);
 
             $el.before(' ');
-            $el.text(translator.trans('submissions.new_comments', {
-                count: number
-            }));
+            $el.text(translator.transChoice('submissions.new_comments',
+                newComments,
+                { count: number }
+            ));
         });
 
     $('.js-update-comment-count[data-submission-id][data-comment-count]')
