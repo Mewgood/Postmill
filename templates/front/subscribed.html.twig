@@ -21,7 +21,7 @@
     {% endif %}
 
     {% if forums|length > 0 %}
-      <ul class="sidebar__list unlistify">
+      <ul class="unlistify sidebar__no-padding">
         {% for name in forums %}
           <li><a href="{{ path('forum', {forum_name: name}) }}" class="menu-link">{{ name }}</a></li>
         {% endfor %}
