@@ -10,6 +10,10 @@
   padding: 0.5rem;
   transition: background-color .1s, box-shadow .1s, border-color .1s, color .1s;
 
+  // work around bug that occurs in chrome (and safari?) when parent line-height
+  // is less than the widget's.
+  line-height: var(--line-height);
+
   @supports (-webkit-overflow-scrolling: touch) {
     // fix zoom-on-focus in iOS
     --font-size: ~'max(16px, var(--font-size))';
@@ -47,6 +51,20 @@
     min-width: 5rem; // fix for iOS
   }
 
+  // should only be used in combination with .unstylable-widget. leave
+  // .form-control off otherwise.
+  &[type="checkbox"],
+  &[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 0; // disable rounded corners on iOS
+    min-height: unset;
+  }
+
+  &[type="radio"] {
+    border-radius: 50%;
+  }
+
   textarea& {
     max-width: 100%;
     resize: vertical;
@@ -76,7 +94,7 @@
     outline: none; // remove default browser style
   }
 
-  &[disabled] {
+  &:disabled {
     background-color: var(--bg-grey);
     color: var(--fg-grey);
   }

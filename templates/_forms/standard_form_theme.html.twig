@@ -1,5 +1,23 @@
 {% use 'form_div_layout.html.twig' %}
 
+{%- block checkbox_widget -%}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
+  <span class="unstylable-widget">
+    {{- parent() -}}
+    {{- icon('ok', 'X', 'icon--no-align unstylable-widget__check') -}}
+  </span>
+{%- endblock checkbox_widget %}
+
+{%- block radio_widget -%}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
+  <span class="unstylable-widget">
+    {{- parent() -}}
+    <span class="unstylable-widget__circle" aria-hidden="true"></span>
+  </span>
+{%- endblock radio_widget %}
+
 {# apply proper class to widgets  #}
 {% block form_widget_simple %}
   {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
@@ -18,11 +36,11 @@
 {% endblock textarea_widget %}
 
 {% block choice_widget %}
-  {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
   {%- if not multiple and not expanded -%}
-    <span class="styled-select">
+    <span class="unstylable-widget">
+      {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
       {{- parent() -}}
-      <span class="styled-select__caret" aria-hidden="true"></span>
+      <span class="unstylable-widget__caret" aria-hidden="true"></span>
     </span>
   {%- else -%}
     {{- parent() -}}
