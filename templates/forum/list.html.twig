@@ -37,7 +37,7 @@
           <span class="no-underline__exempt">{{ forum_sort_modes[sortBy] }}</span>
           <span class="dropdown__arrow" aria-hidden="true"></span>
         </button>
-        <ul class="dropdown__menu card unlistify">
+        <ul class="dropdown__menu dropdown-card unlistify">
           {% for mode, label in forum_sort_modes %}
             <li>
               <a href="{{ path('forum_list', { sortBy: mode }) }}"

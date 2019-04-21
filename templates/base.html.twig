@@ -16,9 +16,9 @@
         theme: app.user.preferredTheme ?? null,
         night_mode: app.user.nightMode ?? false,
       }, with_context=false) }}
-    {% endblock %}
+    {% endblock stylesheets %}
 
-    {% block head %}{% endblock %}
+    {% block head '' %}
   </head>
 
   <body class="{% block page_classes '' %}
@@ -38,26 +38,28 @@
           {%- endfor -%}
         {%- endfor -%}
       </div>
-    {% endblock %}
+    {% endblock site_alerts %}
 
     {{ block('site_nav') }}
 
     {% block site_main %}
-      <div class="content-wrapper">
-        <main class="body">{% block body %}{% endblock %}</main>
+      <div class="site-content content-container">
+        <main class="body content-card">{% block body %}{% endblock %}</main>
         <aside class="sidebar">{% block sidebar %}{% endblock %}</aside>
-
-        <footer class="site-footer">
-          <p>
-            <span class="site-footer__dim text-xs">{{ 'site_footer.version'|trans({
-              '%branch%': app_branch(),
-              '%version%': app_version(),
-              '%app%': '<a href="https://postmill.xyz/">Postmill</a>',
-            })|raw }}</span>
-          </p>
-        </footer>
       </div>
-    {% endblock %}
+    {% endblock site_main %}
+
+    {% block site_footer %}
+      <footer class="site-footer">
+        <p>
+          <span class="fg-muted text-xs">{{ 'site_footer.version'|trans({
+            '%branch%': app_branch(),
+            '%version%': app_version(),
+            '%app%': '<a href="https://postmill.xyz/">Postmill</a>',
+          })|raw }}</span>
+        </p>
+      </footer>
+    {% endblock site_footer %}
 
     {% block javascripts %}
       <script src="{{ preload(asset('bundles/fosjsrouting/js/router.js', 'static_asset')) }}"></script>
@@ -81,6 +83,6 @@
         {# load fallback locale #}
         <script src="{{ preload(asset('js/translations/en.js', 'static_asset')) }}"></script>
       {% endif %}
-    {% endblock %}
+    {% endblock javascripts %}
   </body>
 </html>

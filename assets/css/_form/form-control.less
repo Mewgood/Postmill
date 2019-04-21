@@ -1,8 +1,9 @@
 .form-control {
   @height: calc(var(--font-size) * var(--line-height) + 1rem + 2px);
 
-  background-color: var(--bg-page); // todo
+  background-color: var(--form-bg);
   border: solid 1px var(--border);
+  border-radius: 0; // disable rounded corners on iOS
   color: var(--text);
   display: inline-block;
   font-size: var(--font-size);
@@ -11,7 +12,7 @@
   transition: background-color .1s, box-shadow .1s, border-color .1s, color .1s;
 
   // work around bug that occurs in chrome (and safari?) when parent line-height
-  // is less than the widget's.
+  // is less than the widget's, making the <select> text disappear
   line-height: var(--line-height);
 
   @supports (-webkit-overflow-scrolling: touch) {
@@ -28,9 +29,11 @@
   &[type="search"],
   &[type="date"],
   &[type="time"],
+  &[type="checkbox"],
+  &[type="radio"],
   textarea& {
-    -webkit-appearance: none; // disable ugly shade on iOS
-    border-radius: 0; // disable rounded corners on iOS
+    // remove ugly shade on iOS, and disable native styling for checkbox/radio
+    -webkit-appearance: none;
   }
 
   input&:not([type]),
@@ -55,9 +58,6 @@
   // .form-control off otherwise.
   &[type="checkbox"],
   &[type="radio"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border-radius: 0; // disable rounded corners on iOS
     min-height: unset;
   }
 
@@ -75,7 +75,6 @@
   }
 
   select&:not([multiple]) {
-    border-radius: 0; // disable rounded corners on iOS
     height: @height; // dropdown caret doesn't acknowledge min-height
 
     // having vertical padding cuts off the text inside. having height set is

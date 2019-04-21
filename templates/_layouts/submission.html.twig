@@ -194,7 +194,7 @@
         <span class="no-underline__exempt">{{ 'nav.actions'|trans }}</span>
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
-      <ul class="card dropdown__menu unlistify">
+      <ul class="dropdown-card dropdown__menu unlistify">
         {% if submission.user is not same as(self) %}
           {{ block('submission_nav_edit') }}
           {{ block('submission_nav_delete') }}

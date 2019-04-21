@@ -7,11 +7,10 @@
   --line-height: 1.5;
   --mono-font-family: Roboto Mono, monospace;
   --mono-font-size: 14px;
-  --paragraph-width: 80ch;
 
   --link: var(--primary);
   --submission-link: var(--text);
-  --submission-link-visited: var(--fg-grey);
+  --submission-link-visited: var(--text-muted);
   --submission-link-sticky: var(--fg-green);
 
   --primary: #c00;
@@ -22,17 +21,14 @@
   --accent: var(--bg-grey);
   --accent-alt: #dedede;
   --accent-fg: #000;
-  --card: var(--bg-page);
 
-  --notification: #f60;
-
+  --bg-page: #fafafa;
+  --bg-content: #fff;
   --bg-red: #fdd;
   --bg-orange: #fed;
   --bg-green: #dfd;
   --bg-blue: #def;
   --bg-grey: #efefef;
-  --bg-sidebar: #fafafa;
-  --bg-page: #fff;
 
   --text: #000;
   --text-muted: #505050;
@@ -45,6 +41,11 @@
   --fg-grey: #888;
   --border: #aaa;
   --border-light: #ddd;
+
+  --card-bg: var(--bg-content);
+  --card-shadow: 1px 1px 2px var(--border);
+  --form-bg: var(--bg-content);
+  --notification: #f60;
 }
 
 ::selection {

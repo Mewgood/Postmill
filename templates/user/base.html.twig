@@ -5,7 +5,7 @@
 {% block site_nav_active app.user is same as(user) ? 'user' %}
 
 {% block sidebar %}
-  <section class="sidebar__section">
+  <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title no-margin break-text">
       <a href="{{ path('user', {username: user.username}) }}" class="user-bio__user-link">{{ user.username }}</a>
     </h1>
@@ -27,14 +27,14 @@
   {% if is_granted('ROLE_USER') and user is not same as(app.user) %}
     {% if is_granted('message', user)  %}
       {% set item %}
-        <li><a href="{{ path('compose_message', {username: user.username}) }}">{{ 'user.message'|trans }}</a></li>
+        <li><a href="{{ path('compose_message', {username: user.username}) }}" class="menu-link">{{ 'user.message'|trans }}</a></li>
       {% endset %}
       {% set toolbox_items = toolbox_items|merge([item]) %}
     {% endif %}
 
     {% if not app.user.isBlocking(user) %}
       {% set item %}
-        <li><a href="{{ path('block_user', {username: user.username}) }}">{{ 'nav.block_user'|trans }}</a></li>
+        <li><a href="{{ path('block_user', {username: user.username}) }}" class="menu-link">{{ 'nav.block_user'|trans }}</a></li>
       {% endset %}
       {% set toolbox_items = toolbox_items|merge([item]) %}
     {% endif %}
@@ -42,15 +42,15 @@
     {% if is_granted('ROLE_ADMIN') %}
       {% set item %}
         {% if not user.banned %}
-          <li><a href="{{ path('ban_user', {username: user.username}) }}">{{ 'action.ban'|trans }}</a></li>
+          <li><a href="{{ path('ban_user', {username: user.username}) }}" class="menu-link">{{ 'action.ban'|trans }}</a></li>
         {% else %}
-          <li><a href="{{ path('unban_user', {username: user.username}) }}">{{ 'action.unban'|trans }}</a></li>
+          <li><a href="{{ path('unban_user', {username: user.username}) }}" class="menu-link">{{ 'action.unban'|trans }}</a></li>
         {% endif %}
       {% endset %}
       {% set toolbox_items = toolbox_items|merge([item]) %}
 
       {% set item %}
-        <li><a href="{{ path('user_forum_bans', {username: user.username}) }}">{{ 'nav.forum_bans'|trans }}</a></li>
+        <li><a href="{{ path('user_forum_bans', {username: user.username}) }}" class="menu-link">{{ 'nav.forum_bans'|trans }}</a></li>
       {% endset %}
       {% set toolbox_items = toolbox_items|merge([item]) %}
     {% endif %}
@@ -58,20 +58,20 @@
 
   {% if user is same as(app.user) %}
     {% set item %}
-      <li><a href="{{ path('edit_biography', {username: user.username}) }}">{{ 'nav.edit_biography'|trans }}</a></li>
+      <li><a href="{{ path('edit_biography', {username: user.username}) }}" class="menu-link">{{ 'nav.edit_biography'|trans }}</a></li>
     {% endset %}
     {% set toolbox_items = toolbox_items|merge([item]) %}
 
     {% set item %}
-      <li><a href="{{ path('hidden_forums', {username: user.username}) }}">{{ 'nav.hidden_forums'|trans }}</a></li>
+      <li><a href="{{ path('hidden_forums', {username: user.username}) }}" class="menu-link">{{ 'nav.hidden_forums'|trans }}</a></li>
     {% endset %}
     {% set toolbox_items = toolbox_items|merge([item]) %}
   {% endif %}
 
   {% if toolbox_items %}
-    <section class="sidebar__section sidebar__section--user-toolbox">
+    <section class="sidebar__section sidebar-card sidebar__section--user-toolbox">
       <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
-      <ul class="sidebar__list unlistify">
+      <ul class="unlistify sidebar__no-padding">
         {% for item in toolbox_items %}
           {{ item }}
         {% endfor %}
@@ -80,7 +80,7 @@
   {% endif %}
 
   {% if is_granted('ROLE_ADMIN') %}
-    <section class="sidebar__section sidebar__section--user-roles">
+    <section class="sidebar__section sidebar-card sidebar__section--user-roles">
       <h1 class="sidebar__title">{{ 'heading.user_roles'|trans }}</h1>
       <form action="{{ path(user.trusted ? 'mark_user_untrusted' : 'mark_user_trusted', {username: user.username}) }}" method="post" class="form">
         <input type="hidden" name="token" value="{{ csrf_token('mark_trusted') }}">
@@ -92,11 +92,11 @@
   {% endif %}
 
   {% if user.moderatorTokens|length > 0 %}
-    <section class="sidebar__section sidebar__section--user-moderator-info">
+    <section class="sidebar__section sidebar-card sidebar__section--user-moderator-info">
       <h1 class="sidebar__title break-text">{{ 'user.moderates'|trans({'%username%': user.username}) }}</h1>
-      <ul>
+      <ul class="unlistify sidebar__no-padding">
         {% for token in user.moderatorTokens %}
-          <li><a href="{{ path('forum', {forum_name: token.forum.name}) }}">{{ token.forum.name }}</a></li>
+          <li><a href="{{ path('forum', {forum_name: token.forum.name}) }}" class="menu-link">{{ token.forum.name }}</a></li>
         {% endfor %}
       </ul>
     </section>

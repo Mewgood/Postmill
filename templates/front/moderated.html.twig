@@ -16,11 +16,11 @@
   {{ parent() }}
 
   {%- if forums|length > 0 -%}
-    <section class="sidebar__section">
+    <section class="sidebar__section sidebar-card">
       <h1 class="sidebar__title">{{ 'heading.forums_you_moderate'|trans }}</h1>
-      <ul class="sidebar__list unlistify">
+      <ul class="unlistify sidebar__no-padding">
         {% for forum in forums %}
-          <li><a href="{{ path('forum', {forum_name: forum}) }}">{{ forum }}</a></li>
+          <li><a href="{{ path('forum', {forum_name: forum}) }}" class="menu-link">{{ forum }}</a></li>
         {% endfor %}
       </ul>
     </section>

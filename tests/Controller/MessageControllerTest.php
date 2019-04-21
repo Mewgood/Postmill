@@ -37,7 +37,7 @@ class MessageControllerTest extends WebTestCase {
 
         $crawler = $client->request('GET', '/messages');
 
-        $this->assertContains('There are no messages to display.', $crawler->filter('.content-wrapper p')->text());
+        $this->assertContains('There are no messages to display.', $crawler->filter('main p')->text());
     }
 
     public function testMustBeLoggedInToViewMessageList() {

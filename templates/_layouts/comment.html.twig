@@ -153,7 +153,7 @@
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
 
-      <ul class="dropdown__menu card unlistify no-margin">
+      <ul class="dropdown__menu dropdown-card unlistify no-margin">
         {% if comment.user is not same as(self) %}
           {{ block('comment_nav_delete') }}
           {{ block('comment_nav_edit') }}

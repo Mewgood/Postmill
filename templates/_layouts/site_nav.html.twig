@@ -1,7 +1,7 @@
 {% block site_nav %}
   {% set active %}{% block site_nav_active '' %}{% endset %}
   <nav class="site-nav">
-    <div class="site-nav__container">
+    <div class="site-nav__container content-container">
       {{ block('site_nav_header') }}
       {{ block('site_nav_main_menu') }}
       {{ block('site_nav_search') }}
@@ -62,7 +62,7 @@
         <span class="no-underline__exempt">{{ 'label.admin'|trans }}</span>
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
-      <ul class="card dropdown__menu no-wrap unlistify">
+      <ul class="dropdown-card dropdown__menu no-wrap unlistify">
         {{ block('site_nav_main_menu_admin_items') }}
       </ul>
     </li>
@@ -177,7 +177,7 @@
       <span class="dropdown__arrow no-mobile" aria-hidden="true"></span>
     </button>
 
-    <ul class="card dropdown__menu unlistify no-wrap">
+    <ul class="dropdown-card dropdown__menu unlistify no-wrap">
       {{ block('site_nav_user_menu_dropdown_items') }}
     </ul>
   </li>

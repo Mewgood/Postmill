@@ -1,5 +1,7 @@
 // extension of .button
 .subscribe-button {
+  background: transparent;
+  overflow: hidden;
   padding: 0;
 
   &:not(.button--inline) {
@@ -11,11 +13,13 @@
   }
 
   &__label {
-    border-right: solid 1px currentColor;
+    background: var(--bg);
+    margin-right: 1px;
     padding: var(--padding-v) var(--padding-h);
   }
 
   &__subscriber-count {
+    background: var(--bg);
     padding-left: var(--padding-h);
     padding: var(--padding-v) var(--padding-h);
   }
