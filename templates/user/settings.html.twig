@@ -41,6 +41,8 @@
     <fieldset class="fieldset">
       <legend>{{ 'label.appearance'|trans }}</legend>
 
+      {{ form_row(form.preferredTheme) }}
+
       {{ form_row(form.preferredFonts, {
         attr: {
           placeholder: font_names('default')|join(', '),
@@ -52,12 +54,17 @@
         raw_help: true,
       }) }}
 
-      {{ form_row(form.preferred_theme, {attr: {class: 'select2'}}) }}
-
-      {{ form_row(form.show_custom_stylesheets) }}
+      {{ form_row(form.showCustomStylesheets) }}
 
       {{ form_row(form.night_mode) }}
+
+      {# waiting to be reused #}
+      {#{{ form_row(form.show_custom_stylesheets) }}#}
     </fieldset>
+
+    <div class="form__row form__button-row">
+      <button class="button">{{ 'user_settings_form.save'|trans }}</button>
+    </div>
   {{ form_end(form) }}
 {% endblock %}
 

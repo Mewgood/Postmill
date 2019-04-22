@@ -1,0 +1,46 @@
+/*! https://postmill.xyz/ */
+/* web design is my passion */
+
+:root {
+  --link: var(--primary);
+  --submission-link: var(--link);
+  --submission-link-visited: var(--text);
+  --submission-link-sticky: var(--fg-green);
+
+  --primary: #f08;
+  --primary-alt: #f09;
+  --primary-bright: #f4c;
+  --primary-alpha: #f082;
+  --primary-fg: #fff;
+  --accent: #fdf;
+  --accent-alt: #faf;
+  --accent-fg: #000;
+
+  --bg-page: #faf;
+  --bg-content: #faf4fa;
+  --bg-red: #fdd;
+  --bg-orange: #fed;
+  --bg-green: #dfd;
+  --bg-blue: #def;
+  --bg-grey: #efefef;
+
+  --text: #902;
+  --text-muted: #c65;
+  --text-invert: #fafafa;
+  --fg-broken: #222;
+  --fg-red: #f00;
+  --fg-orange: #f80;
+  --fg-green: #080;
+  --fg-blue: #08f;
+  --fg-grey: #988;
+  --border: #aaa;
+  --border-light: #ddd;
+
+  --card-bg: var(--bg-content);
+  --card-shadow: 0 0 4px 4px #f00;
+  --dropdown-card-bg: var(--accent);
+  --dropdown-card-shadow: var(--card-shadow), 0 0 4px 4px #f00 inset;
+  --form-bg: var(--accent);
+  --notification: #c05;
+  --site-nav-bg: linear-gradient(to bottom, var(--primary-bright), var(--primary));
+}

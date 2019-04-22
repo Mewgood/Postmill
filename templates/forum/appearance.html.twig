@@ -3,6 +3,8 @@
 {% block title 'title.forum_appearance'|trans({'%forum%': '/f/%s'|format(forum.name)}) %}
 {% block page_classes 'forum-appearance-page' %}
 
+{% form_theme form '_forms/aligned_form_theme.html.twig' %}
+
 {% block body %}
   <h1 class="page-heading">
     {{ 'title.forum_appearance'|trans({'%forum%': '<a href="%s">/f/%s</a>'|format(
@@ -12,14 +14,11 @@
   </h1>
 
   {{ form_start(form) }}
-    {{ form_row(form.theme, {attr: {class: 'select2'}}) }}
+    {{ form_row(form.suggestedTheme) }}
 
-    {# todo: some navigation widget thing #}
-    <nav>
-      <ul>
-        <li><a href="{{ path('themes') }}">{{ 'nav.themes'|trans }}</a></li>
-        <li><a href="{{ path('create_theme') }}">{{ 'nav.create_theme'|trans }}</a></li>
-      </ul>
-    </nav>
+    <div class="form-row form-row--single-line">
+      <div class="form-row__align" aria-hidden="true"></div>
+      <button class="button">{{ 'action.save'|trans }}</button>
+    </div>
   {{ form_end(form) }}
 {% endblock %}

@@ -1,16 +1,9 @@
-@import '~typeface-roboto-mono';
-
 /*! https://postmill.xyz/ */
 
 :root {
-  --font-size: 14px;
-  --line-height: 1.5;
-  --mono-font-family: Roboto Mono, monospace;
-  --mono-font-size: 14px;
-
   --link: var(--primary);
   --submission-link: var(--text);
-  --submission-link-visited: var(--text-muted);
+  --submission-link-visited: var(--fg-grey);
   --submission-link-sticky: var(--fg-green);
 
   --primary: #c00;
@@ -22,8 +15,8 @@
   --accent-alt: #dedede;
   --accent-fg: #000;
 
-  --bg-page: #fafafa;
-  --bg-content: #fff;
+  --bg-page: #fff;
+  --bg-content: transparent;
   --bg-red: #fdd;
   --bg-orange: #fed;
   --bg-green: #dfd;
@@ -42,13 +35,14 @@
   --border: #aaa;
   --border-light: #ddd;
 
-  --card-bg: var(--bg-content);
-  --card-shadow: 1px 1px 2px var(--border);
+  --card-bg: #fff;
+  --card-shadow: none;
+  --dropdown-card-shadow: 1px 1px 2px var(--border);
+  --sidebar-card-bg: #efe;
   --form-bg: var(--bg-content);
   --notification: #f60;
 }
 
-::selection {
-  background-color: var(--primary);
-  color: var(--text-invert);
+.site-content > .body {
+  margin-top: 0 !important;
 }

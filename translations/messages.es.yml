@@ -9,9 +9,6 @@ action:
     retract_upvote: Retirar voto positivo
     retract_downvote: Retirar voto negativo
     edit: Editar
-    create_theme: Crear tema
-    edit_theme: Editar tema
-    new_theme: Nuevo tema
     go_to_home_page: Ir a página principal
     ban: Vetar
     unban: Dejar de vetar
@@ -99,8 +96,6 @@ flash:
     forum_moderator_added: La usuaria ha sido ascendida a moderadora.
     notification_cleared: La notificación fue eliminada exitosamente.
     reset_password_email_sent: Un correo de recuperación ha sido enviado a la dirección que especificó.
-    theme_created: Tu tema ha sido creado.
-    theme_updated: El tema ha sido actualizado.
     submission_edited: La publicación ha sido editada.
     submission_deleted: La publicación ha sido borrada.
     user_account_registered: Tu cuenta ha sido registrada.
@@ -187,10 +182,7 @@ heading:
 help:
     delete_forum_warning: ¡Todo el contenido de este foro será borrado irreversiblemente!
     forum_description: Una descripción corta del foro. Los motores de búsqueda presentarán una descripción en sus resultados.
-    append_to_default_style: Deja esto marcado a no ser que tu CSS proporcione una hoja de estilo completa para el sitio entero. Ajustar esto no tiene efecto cuando extiendes un tema existente.
     block_users: Bloquear usuarias impide que te envíen mensajes privados, y no recibirás notificaciones cuando te respondan.
-    revision_summary: Introducir un resumen de tus cambios.
-    parent_theme_input: Introduce el <username>/<theme> del tema que deseas extender. Alternativamente, puedes introducir un UUID para extender una revisión particular.
     will_appear_in_the_url: Aparecerá en la URL.
 
 inbox:
@@ -204,11 +196,6 @@ label:
     author: Autora
     password: Contraseña
     confirm: Corfirmar
-    theme: Tema
-    common_css: CSS común
-    day_css: CSS diurno
-    night_css: CSS nocturno
-    append_to_default_style: Añade un estilo predeterminado
     save_settings: Guardar ajustes
     source_code: Código fuente
     sidebar: Barra lateral
@@ -226,12 +213,8 @@ label:
     blocked: Bloqueada
     comment: Comentar
     last_revised: Revisado por última vez
-    parent_theme: Tema padre
-    history: Historia
     id: ID
     date: Fecha
-    revision_id: ID de revisión
-    hierarchy: Jerarquía
     page_title: Mensajes
     title: Título
     replies: Respuestas
@@ -321,9 +304,7 @@ moderator_form:
 
 nav:
     appearance: Apariencia
-    create_theme: Crear tema
     delete_forum: Borrar foro
-    themes: Temas
     submit: Publicar
     log_in: Ingresar
     log_out: Cerrar sesión
@@ -346,8 +327,6 @@ nav:
     user_bans: Vetos de usuarias
     ip_bans: Vetos IP
     add_ban: Añadir veto
-    css: CSS
-    theme_settings: Ajustes del tema
     filter_results: Filtrar resultados
     users: Usuarias
     forum_bans: Vetos de foro
@@ -440,9 +419,6 @@ title:
     messages: Mensajes
     sign_up: Registrarse
     submissions_in_featured_forums: Publicaciones en foros destacados
-    new_theme: Nuevo tema
-    editing_theme: Editando tema %name%
-    custom_themes: Temas personalizados
     bans_in_forum: Vetos en %forum%
     showing_ban_history_for_user_in_forum: Mostrando el historial de vetos de %user% en %forum%
     banning_user_from_forum: Vetando %user% de %forum%
@@ -450,8 +426,6 @@ title:
     block_list: Lista de bloqueo
     blocking_user: Bloqueando %user%
     recent_comments: Comentarios recientes
-    history_for_theme: Mostrando la historia para el tema %theme%
-    viewing_theme_source: Viendo el código de %theme%
     editing_biography_for_user: Editando biografía para %user%
     showing_moderation_log_for_forum: Mostrando registro de moderación para %forum%
     active_global_user_bans: Vetos de usuarias activas, globales

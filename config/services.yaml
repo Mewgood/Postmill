@@ -7,6 +7,7 @@ imports:
 parameters:
     days_to_keep_logs: 7
     fonts_config: "%env(json:file:resolve:APP_FONTS)%"
+    themes_config: "%env(json:file:resolve:APP_THEMES)%"
     ratelimit_ip_whitelist: "%env(csv:RATELIMIT_WHITELIST)%"
     submission_sort_modes: hot|new|top|controversial|most_commented
     user_forum_creation_interval: 1 day
@@ -22,6 +23,7 @@ services:
             $defaultLocale: "%env(APP_LOCALE)%"
             $enableWebhooks: "%env(bool:APP_ENABLE_WEBHOOKS)%"
             $fontsConfig: "%fonts_config%"
+            $themesConfig: "%themes_config%"
             $secret: "%env(APP_SECRET)%"
             $siteName: "%env(SITE_NAME)%"
         public: false

@@ -1,0 +1,10 @@
+/*! https://postmill.xyz/ */
+
+@import '../_modern-night';
+
+:root {
+  --primary: #4ea7ff;
+  --primary-alt: #26b;
+  --primary-bright: #66b2ff;
+  --primary-alpha: #4ea7ff22;
+}

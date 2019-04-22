@@ -236,9 +236,6 @@
             "ref": "f7895777cd673fcefbc321a9063077a24e5df646"
         }
     },
-    "sabberworm/php-css-parser": {
-        "version": "8.1.0"
-    },
     "sensio/framework-extra-bundle": {
         "version": "4.0",
         "recipe": {

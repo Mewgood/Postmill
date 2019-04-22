@@ -6,9 +6,6 @@ action:
     retract_upvote: Repreni porvoĉdonon
     retract_downvote: Repreni kontraŭvoĉdonon
     edit: Redakti
-    create_theme: Krei etoson
-    edit_theme: Radakti etoson
-    new_theme: Novan etoson
     go_to_home_page: Iri al hejmpaĝo
     ban: Forbari
     unban: Malforbari
@@ -107,8 +104,6 @@ flash:
     forum_moderator_added: La uzanto fariĝis kontrolanto
     notification_cleared: La avizo estis sukcese vakigita.
     reset_password_email_sent: Restariga retletero sendiĝis al la adreso, kiun vi specifis.
-    theme_created: Via estoso estis ĵus kreita.
-    theme_updated: Via estoso estis ĵus ĝisdatigita.
     submission_deleted: La afiŝo foriĝis.
     user_account_registered: Via konto estis ĵus registrita.
     submission_edited: La afiŝo redaktiĝis.
@@ -206,10 +201,7 @@ heading:
 help:
     delete_forum_warning: Ĉiu enhavo en ĉi tiu diskutejo senrevene estos forigita
     forum_description: Mallonga priskrivo de la diskutejo. Retserĉiloj montros ĉi tiun priskrivon en siaj rezultoj
-    append_to_default_style: Lasu tion krom se via CSS disponigas kompletan stilfolion por la tuta ejo. Agordi ĉi tion ne efikas dum la plivastigado de eksistenta estoso.
     block_users: Bloki uzantoj evitas, ke ili sendu al vi privatajn mesaĝojn, kaj vi ne ricevos avizojn, kiam ili respondos al vi.
-    revision_summary: Enigu resumon de via ŝanĝoj
-    parent_theme_input: Enigu la <uzantnomo>/<estoso> de la estoso vi volas plivastigi. Alternative vi povas enigi UUID, por plivastigi konkretan revizion.
     will_appear_in_the_url: Ĝi aperos en la URL
     forum_is_featured: Ĉi tiu diskutejo estas elstarigita.
     forum_is_hidden: Vi ĵus elektis kaŝi ĉi tiun diskutejon.
@@ -238,11 +230,6 @@ label:
     author: Aŭtoro
     password: Pasvorto
     confirm: Konfirmu
-    theme: Estoso
-    common_css: Kutima CSS
-    day_css: Taga CSS
-    night_css: Nokta CSS
-    append_to_default_style: Aldoni al defaŭlta stilo
     save_settings: Konservi agordojn
     source_code: Fontkodo
     sidebar: Flankpanelo
@@ -260,12 +247,8 @@ label:
     blocked: Blokita
     comment: Komento
     last_revised: Lasta reviziita
-    parent_theme: Supera estoso
-    history: Historio
     id: ID
     date: Dato
-    revision_id: Revizia identigaĵo
-    hierarchy: Hierarkio
     title: Titolo
     front_page: Ĉefpaĝo
     default: Defaŭlta
@@ -367,9 +350,7 @@ moderator_form:
 
 nav:
     appearance: Aspekto
-    create_theme: Krei estoson
     delete_forum: Malkrei diskutejon
-    themes: Estosoj
     submit: Afiŝi
     log_in: Saluti
     log_out: Adiaŭi
@@ -394,8 +375,6 @@ nav:
     user_bans: Uzantaj forbaroj
     ip_bans: IP-forbaroj
     add_ban: Aldoni forbaron
-    css: CSS
-    theme_settings: Estosa agardoj
     filter_results: Filtri rezultojn
     users: Uzantoj
     forum_bans: Diskutejaj forbaroj
@@ -499,9 +478,6 @@ title:
     log_in: Ensaluti
     sign_up: Registriĝi
     submissions_in_featured_forums: Afiŝoj en substrekitaj diskutejoj
-    new_theme: Nova estoso
-    editing_theme: Redaktata estoso %name%
-    custom_themes: Laŭmendaj estosoj
     bans_in_forum: Forbaroj en %forum%
     showing_ban_history_for_user_in_forum: Montrata forbaran historion de %user% en %forum%
     banning_user_from_forum: Forbarata %user% for %forum%
@@ -510,8 +486,6 @@ title:
     blocking_user: Forbarata %user%
     recent_comments: Novaj komentoj
     recent_comments_forum: Novaj komentoj en %forum%
-    history_for_theme: Montrata historion de estoso %theme%
-    viewing_theme_source: Rigardata historion de estoso %theme%
     messages: Mesaĝoj
     editing_biography_for_user: Redaktado de biografio de %user%
     showing_moderation_log_for_forum: Montrata moderigan protokolon por %forum%

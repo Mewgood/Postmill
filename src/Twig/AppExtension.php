@@ -35,18 +35,22 @@ final class AppExtension extends AbstractExtension {
      */
     private $fontsConfig;
 
+    private $themesConfig;
+
     public function __construct(
         string $siteName,
         ?string $branch,
         ?string $version,
         bool $enableWebhooks,
-        array $fontsConfig
+        array $fontsConfig,
+        array $themesConfig
     ) {
         $this->siteName = $siteName;
         $this->branch = $branch;
         $this->version = $version;
         $this->enableWebhooks = $enableWebhooks;
         $this->fontsConfig = $fontsConfig;
+        $this->themesConfig = $themesConfig;
     }
 
     public function getFunctions(): array {
@@ -75,6 +79,18 @@ final class AppExtension extends AbstractExtension {
                 $font = \strtolower($font);
 
                 return $this->fontsConfig[$font]['entrypoint'] ?? null;
+            }),
+            new TwigFunction('theme_list', function (): array {
+                return \array_keys($this->fontsConfig);
+            }),
+            new TwigFunction('theme_entrypoint', function (string $name, bool $nightMode): ?string {
+                if ($name === '_default') {
+                    $name = $this->themesConfig['_default'];
+                }
+
+                $config = $this->themesConfig[\strtolower($name)];
+
+                return $config['entrypoint'][$nightMode ? 'night' : 'day'] ?? $config['entrypoint'];
             }),
         ];
     }

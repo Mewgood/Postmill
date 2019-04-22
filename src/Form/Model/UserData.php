@@ -246,11 +246,11 @@ class UserData implements UserInterface {
         $this->showCustomStylesheets = $showCustomStylesheets;
     }
 
-    public function getPreferredTheme() {
+    public function getPreferredTheme(): ?Theme {
         return $this->preferredTheme;
     }
 
-    public function setPreferredTheme($preferredTheme) {
+    public function setPreferredTheme(?Theme $preferredTheme): void {
         $this->preferredTheme = $preferredTheme;
     }
 

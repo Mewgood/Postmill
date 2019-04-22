@@ -1,0 +1,38 @@
+{
+    "_default": "postmill",
+    "postmill": {
+        "name": "Postmill",
+        "entrypoint": {
+            "day": "themes/postmill/day",
+            "night": "themes/postmill/night"
+        }
+    },
+    "postmill-classic": {
+        "name": "Postmill Classic",
+        "entrypoint": {
+            "day": "themes/postmill-classic/day",
+            "night": "themes/postmill-classic/night"
+        }
+    },
+    "c4c": {
+        "name": "c4c",
+        "entrypoint": {
+            "day": "themes/c4c/day",
+            "night": "themes/c4c/night"
+        }
+    },
+    "jst": {
+        "name": "jstpst",
+        "entrypoint": {
+            "day": "themes/jst/day",
+            "night": "themes/jst/night"
+        }
+    },
+    "forest": {
+        "name": "Forest",
+        "entrypoint": {
+            "day": "themes/forest/day",
+            "night": "themes/forest/night"
+        }
+    }
+}

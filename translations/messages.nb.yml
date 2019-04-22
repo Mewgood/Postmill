@@ -73,8 +73,6 @@ flash:
     forum_moderator_added: Brukeren har blitt lagt til som moderator.
     user_account_registered: Din konto har blitt registrert.
     reset_password_email_sent: En epost har blitt sendt til adressen du oppga.
-    theme_created: Temaet ditt har blitt opprettet.
-    theme_updated: Temaet ditt har blitt lagret.
     submission_deleted: Innlegget ble slettet.
     submission_edited: Innlegget ble endret.
     user_password_updated: Passordet ditt ble oppdatert.

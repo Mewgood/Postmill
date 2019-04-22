@@ -9,9 +9,6 @@ action:
     retract_upvote: Retirer upvote
     retract_downvote: Retirer downvote
     edit: Modifier
-    create_theme: Créer un thème
-    edit_theme: Modifier un thème
-    new_theme: Nouveau thème
     go_to_home_page: Aller à la page d'accueil
     ban: Bannir
     unban: Ne plus bannir
@@ -101,8 +98,6 @@ flash:
     forum_moderator_added: L'utilisateur a été promu modérateur.
     notification_cleared: La notification a été effacée avec succès.
     reset_password_email_sent: Un courrier électronique pour réinitialiser votre compte à été envoyé à l'adresse spécifiée.
-    theme_created: Votre thème a été créé.
-    theme_updated: Le thème a été mis à jour.
     submission_edited: Le post a été modifié.
     submission_deleted: Le post a été supprimé.
     user_account_registered: Votre compte a été créé.
@@ -188,10 +183,7 @@ heading:
 help:
     delete_forum_warning: Tout le contenu de ce forum sera supprimé pour toujours!
     forum_description: Une courte description du forum. Les moteurs de recherche afficheront cette description dans leurs résultats.
-    append_to_default_style: Laissez décoché sauf si votre CSS est une feuille de style complète visant le site tout entier. Régler cela n'aura pas d'effet si un thème existant est étendu.
     block_users: Bloquer un utilisateur l'empêche de vous envoyer des messages privés, et vous ne recevrez pas de notifications lorsqu'ils vous répondent.
-    revision_summary: Veuillez saisir un résumé de vos modifications.
-    parent_theme_input: Veuillez saisir l'<utilisateur>/<thème> du thème que vous voulez étendre. Vous pouvez également saisir un UUID pour étendre une modification particulière.
     will_appear_in_the_url: Apparaîtra dans l'URL.
 
 inbox:
@@ -204,11 +196,6 @@ label:
     author: Auteur
     password: Mot de passe
     confirm: Confirmer
-    theme: Thème
-    common_css: CSS commun
-    day_css: CSS de jour
-    night_css: CSS de nuit
-    append_to_default_style: Ajouter au style par défaut
     save_settings: Sauvegarder les réglages
     source_code: Code source
     sidebar: Barre latérale
@@ -226,12 +213,8 @@ label:
     blocked: Bloqué
     comment: Commenter
     last_revised: Dernière modification
-    parent_theme: Thème parent
-    history: Historique
     id: ID
     date: Date
-    revision_id: ID de révision
-    hierarchy: Hiérarchie
     title: Titre
     replies: Réponses
     from: De
@@ -321,9 +304,7 @@ moderator_form:
 
 nav:
     appearance: Apparence
-    create_theme: Créer un thème
     delete_forum: Supprimer le forum
-    themes: Thèmes
     submit: Poster
     log_in: Connexion
     log_out: Déconnexion
@@ -347,8 +328,6 @@ nav:
     user_bans: Bans d'utilisateurs
     ip_bans: Bans d'IP
     add_ban: Ajouter un ban
-    css: CSS
-    theme_settings: Réglages de thème
     filter_results: Filtrer les résultats
     users: Utilisateurs
     forum_bans: Bans du forum
@@ -446,9 +425,6 @@ title:
     log_in: Connexion
     sign_up: Inscription
     submissions_in_featured_forums: Posts dans les forums mis en avant
-    new_theme: Nouveau thème
-    editing_theme: Modification du thème %name%
-    custom_themes: Thèmes personnalisés
     bans_in_forum: Bans dans %forum%
     showing_ban_history_for_user_in_forum: Affichage de l'historique des bans de %user% dans %forum%
     banning_user_from_forum: Bannir %user% de %forum%
@@ -456,8 +432,6 @@ title:
     block_list: Liste de bloquage
     blocking_user: Bloquer %user%
     recent_comments: Commentaires récents
-    history_for_theme: Afficage de l'historique du %theme%
-    viewing_theme_source: Affichage du code source de %theme%
     messages: Messages
     editing_biography_for_user: Modification de la biographie de %user%
     showing_moderation_log_for_forum: Affichage du registre de modération de %forum%

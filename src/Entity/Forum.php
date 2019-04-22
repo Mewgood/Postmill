@@ -125,7 +125,7 @@ class Forum {
      *
      * @var Theme|null
      */
-    private $theme;
+    private $suggestedTheme;
 
     /**
      * @ORM\OneToMany(targetEntity="ForumLogEntry", mappedBy="forum", cascade={"persist", "remove"})
@@ -379,12 +379,12 @@ class Forum {
         $this->category = $category;
     }
 
-    public function getTheme(): ?Theme {
-        return $this->theme;
+    public function getSuggestedTheme(): ?Theme {
+        return $this->suggestedTheme;
     }
 
-    public function setTheme(?Theme $theme) {
-        $this->theme = $theme;
+    public function setSuggestedTheme(?Theme $suggestedTheme): void {
+        $this->suggestedTheme = $suggestedTheme;
     }
 
     /**

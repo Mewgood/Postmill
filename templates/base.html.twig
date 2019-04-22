@@ -12,11 +12,15 @@
     <link rel="search" type="application/opensearchdescription+xml" title="{{ site_name() }}" href="{{ path('opensearch_description') }}">
 
     {% block stylesheets %}
-      {{ include('_includes/stylesheets.html.twig', {
-        theme: app.user.preferredTheme ?? null,
-        night_mode: app.user.nightMode ?? false,
-      }, with_context=false) }}
+      {{ include('_includes/stylesheets.html.twig', with_context=false) }}
     {% endblock stylesheets %}
+
+    {% block theme_css %}
+      {{ encore_entry_link_tags(theme_entrypoint(
+        app.user.preferredTheme.configKey ?? '_default',
+        app.user.nightMode ?? false
+      )) }}
+    {% endblock theme_css %}
 
     {% block head '' %}
   </head>

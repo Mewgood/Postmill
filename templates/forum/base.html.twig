@@ -4,16 +4,14 @@
   <link rel="alternate" type="application/atom+xml" href="{{ path('forum_feed', {forum_name: forum.name}) }}" title="{{ forum.name }}">
 {% endblock %}
 
-{% block stylesheets %}
-  {% if (app.user.showCustomStylesheets ?? true) and forum.theme %}
-    {{ include('_includes/stylesheets.html.twig', {
-      theme: forum.theme,
-      night_mode: app.user.nightMode ?? false
-    }, with_context=false) }}
+{% block theme_css %}
+  {% set theme = (app.user.showCustomStylesheets ?? true) ? forum.suggestedTheme %}
+  {% if theme %}
+    {{ encore_entry_link_tags(theme_entrypoint(theme.configKey, app.user.nightMode ?? false)) }}
   {% else %}
     {{ parent() }}
   {% endif %}
-{% endblock %}
+{% endblock theme_css %}
 
 {% block sidebar %}
   <section class="sidebar__section sidebar-card sidebar__section--forum-meta forum-meta">

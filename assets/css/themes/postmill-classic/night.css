@@ -1,13 +1,6 @@
-@import '~typeface-roboto-mono';
-
 /*! https://postmill.xyz/ */
 
 :root {
-  --font-size: 14px;
-  --line-height: 1.5;
-  --mono-font-family: Roboto Mono, monospace;
-  --mono-font-size: 14px;
-
   --link: #faa;
   --submission-link: #fff;
   --submission-link-visited: var(--text-muted);
@@ -23,7 +16,7 @@
   --accent-fg: #fff;
 
   --bg-page: #000;
-  --bg-content: #161616;
+  --bg-content: transparent;
   --bg-red: #660000;
   --bg-orange: #663500;
   --bg-green: #004200;
@@ -42,22 +35,15 @@
   --border: #666;
   --border-light: rgb(51, 51, 51);
 
-  --card-bg: var(--bg-content);
-  --card-shadow: 0 0 0 1px var(--border-light);
+  --card-bg: transparent;
+  --card-shadow: none;
   --dropdown-card-bg: #000;
-  --dropdown-card-shadow: none;
+  --dropdown-card-shadow: 1px 1px 2px var(--border);
+  --sidebar-card-bg: #010;
   --form-bg: #000;
   --notification: #f60;
 }
 
-::selection {
-  background-color: var(--primary);
-  color: var(--text-invert);
-}
-
-.select2-container {
-  /* Fix for select2 being bad on dark pages.
-   * It doesn't matter that the select box is bright, since regular select boxes
-   * wouldn't have their colours overridden anyway. */
-  color: #000;
+.site-content > .body {
+  margin-top: 0 !important;
 }

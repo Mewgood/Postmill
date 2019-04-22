@@ -1,5 +1,3 @@
-{% set hierarchy = revision.hierarchy ?? theme.latestRevision.hierarchy ?? [] %}
-
 {%- set fonts = (app.user.preferredFonts ?? 'default')|trim(', ')|split(',') %}
 {%- set font_family = '' %}
 {%- for font in fonts %}
@@ -14,21 +12,4 @@
 {%- endfor %}
 <style>:root { --font-family: {{ font_family|trim(' ,')|raw }} }</style>
 
-{% if hierarchy[0].appendToDefaultStyle ?? true %}
-  {% if not night_mode %}
-    {{ encore_entry_link_tags('postmill') }}
-  {% else %}
-    {{ encore_entry_link_tags('postmill-night') }}
-  {% endif %}
-
-  {{ encore_entry_link_tags('core') }}
-{% endif %}
-
-{% for revision in hierarchy %}
-  {% if revision.commonCss is not null %}
-    <link rel="stylesheet" href="{{ path('stylesheet', {themeId: revision.id, field: 'common'}) }}">
-  {% endif %}
-  {% if (night_mode ? revision.nightCss ? revision.dayCss) is not null %}
-    <link rel="stylesheet" href="{{ path('stylesheet', {themeId: revision.id, field: night_mode ? 'night' : 'day'}) }}">
-  {% endif %}
-{% endfor %}
+{{ encore_entry_link_tags('core') }}

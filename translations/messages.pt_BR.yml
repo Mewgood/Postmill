@@ -6,9 +6,6 @@ action:
     retract_upvote: Retirar voto positivo
     retract_downvote: Retirar voto negativo
     edit: Alterar
-    create_theme: Criar tema
-    edit_theme: Alterar tema
-    new_theme: Novo tema
     go_to_home_page: Ir para a página inicial
     ban: Banir
     unban: Desbanir
@@ -86,8 +83,6 @@ flash:
     forum_updated: As alterações foram salvas.
     forum_moderator_added: O usuário foi promovido a moderador.
     reset_password_email_sent: Um email de recuperação foi enviado ao enderço que você especificou.
-    theme_created: Seu tema foi criado.
-    theme_updated: O tema foi atualizado.
     submission_edited: A postagem foi alterada.
     submission_deleted: A postagem foi apagada.
     user_account_registered: Sua conta foi registrada.
@@ -169,10 +164,7 @@ heading:
 help:
     delete_forum_warning: Todo o conteúdo deste fórum será apagado permanentemente!
     forum_description: Uma curta descrição dp fórum. Motores de busca vão mostrar esta descrição nos resultados.
-    append_to_default_style: Deixe desmarcado a menos que seu CSS ofereça uma folha de estilo completa para o site inteiro. Ativar isto não tem nehum efeito ao extender um tema existente.
     block_users: Bloquear usuários impede que eles lhe enviem mensagens privadas, e você não receberá notificações quando eles lhe responderem.
-    revision_summary: Insira um sumário das suas alterações.
-    parent_theme_input: Insira o <username>/<theme> do tema que você quer extender. Ou então, insira uma UUID para extender uma revisão específica.
 
 inbox:
     message_reply_head: 'Re: %title%'
@@ -182,11 +174,6 @@ label:
     author: Autor
     password: Senha
     confirm: Confirmar
-    theme: Tema
-    common_css: CSS comum
-    day_css: CSS diurno
-    night_css: CSS noturno
-    append_to_default_style: Anexar ao estilo padrão
     save_settings: Salvar configurações
     source_code: Código fonte
     sidebar: Barra lateral
@@ -204,12 +191,8 @@ label:
     blocked: Bloqueado
     comment: Comentário
     last_revised: Revisado em
-    parent_theme: Tema pai
-    history: Histórico
     id: ID
     date: Data
-    revision_id: ID de revisão
-    hierarchy: Hierarquia
     title: Título
     replies: Respostas
     from: De
@@ -261,9 +244,7 @@ moderator_form:
 
 nav:
     appearance: Aparência
-    create_theme: Criar tema
     delete_forum: Apagar fórum
-    themes: Temas
     submit: Postar
     log_in: Entrar
     log_out: Sair
@@ -366,9 +347,6 @@ title:
     log_in: Entrar
     sign_up: Registrar
     submissions_in_featured_forums: Postagens nos fóruns em destaque
-    new_theme: Novo tema
-    editing_theme: Alterando tema %name%
-    custom_themes: Temas customizados
     bans_in_forum: Banimentos em %forum%
     showing_ban_history_for_user_in_forum: Mostrando banimentos para %user% em %forum%
     banning_user_from_forum: Banindo %user% de %forum%
@@ -376,8 +354,6 @@ title:
     block_list: Lista de bloqueios
     blocking_user: Bloqueando %user%
     recent_comments: Comentários recentes
-    history_for_theme: Mostrando histórico para o tema %theme%
-    viewing_theme_source: Vendo código fonte de %theme%
     messages: Mensagens
     editing_biography_for_user: Alterando biografia para %user%
     showing_moderation_log_for_forum: Mostrando registro de moderação para %forum%

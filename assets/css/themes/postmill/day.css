@@ -1,0 +1,11 @@
+/*! https://postmill.xyz/ */
+
+@import '../_modern';
+
+:root {
+  --primary: #c00;
+  --primary-alt: #a00;
+  --primary-bright: #e10;
+  --primary-alpha: #c002;
+  --notification: #f60;
+}

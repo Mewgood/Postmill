@@ -6,9 +6,6 @@ action:
     retract_upvote: Ανακαλέστε ψήφο
     retract_downvote: Ανακαλέστε καταψήφο
     edit: Επεξεργασία
-    create_theme: Δημιουργία φύλλο στυλ
-    edit_theme: Επεξεργασία φύλλο στυλ
-    new_theme: Νέο φύλλο στυλ
     go_to_home_page: Επιστροφή στην Αρχική σελίδα
     ban: Απαγόρευση
     unban: Αντιστρέψτε την απαγόρευση
@@ -88,8 +85,6 @@ flash:
     forum_updated: Οι αλλαγές έχουν αποθηκευτεί.
     forum_moderator_added: Ο χρήστης έχει γίνει συντονιστής.
     reset_password_email_sent: Ένα μήνυμα επαναφοράς στάλθηκε στη διεύθυνση που καθορίσατε.
-    theme_created: Το φύλλο στυλ σας έχει δημιουργηθεί.
-    theme_updated: Το φύλλο στυλ σας έχει αναβαθμιστεί.
     submission_edited: Έχετε κάνει τις αλλαγές
     submission_deleted: Η υποβολή διαγράφηκε.
     user_account_registered: Ο λογαριασμός σας έχει εγγραφεί.
@@ -174,9 +169,6 @@ help:
     delete_forum_warning: Όλο το περιεχόμενο σε αυτό το φόρουμ θα διαγραφεί για πάντα!
     forum_description: Σύντομη περιγραφή του φόρουμ. Οι μηχανές αναζήτησης θα παρουσιάσουν αυτήν την περιγραφή στα αποτελέσματά τους.
     block_users: Ο αποκλεισμός χρηστών τους εμποδίζει να σας στέλνουν προσωπικά μηνύματα και δεν θα λαμβάνετε ειδοποιήσεις όταν σας απαντούν.
-    revision_summary: Εισαγάγετε μια σύνοψη των αλλαγών σας.
-    parent_theme_input: Καταχωρίστε το <όνομα χρήστη> / <φύλλο στυλ> του θέματος που θέλετε να επεκτείνετε. Εναλλακτικά, μπορείτε να εισαγάγετε ένα UUID για να επεκτείνετε μια συγκεκριμένη αναθεώρηση.
-    append_to_default_style: Αφήστε αυτό το στοιχείο εκτός εάν το CSS σας παρέχει ένα πλήρες φύλλο στυλ για ολόκληρη την ιστοσελίδα. Η ρύθμιση αυτή δεν επηρεάζει την επέκταση ενός υπάρχοντος φύλλου στυλ.
 
 inbox:
     message_reply_head: 'Re: %τίτλος%'
@@ -186,11 +178,6 @@ label:
     author: Author
     password: Κωδικός πρόσβασης
     confirm: Επιβεβαιώνω
-    theme: Στυλ
-    common_css: Κοινός CSS
-    day_css: CSS ημέρας
-    night_css: CSS νύχτας
-    append_to_default_style: Προσάρτηση στο προεπιλεγμένο στυλ
     save_settings: Αποθήκευση ρυθμίσεων
     source_code: Κωδικός προγραμματισμού
     sidebar: Πλευρικός πίνακας
@@ -207,13 +194,8 @@ label:
     preferred_theme: Προτιμώμενο φύλλο στυλ
     blocked: Αποκλεισμένος
     comment: Σχόλιο
-    last_revised: Τελευταία αναθεώρηση
-    parent_theme: Γονικό φύλλο στυλ
-    history: Ιστορία
     id: Ταυτότητα
     date: Ημερομηνία
-    revision_id: Αναθεώρησης Ταυτότητα
-    hierarchy: Ιεραρχία
     title: Τίτλος
     replies: Απαντήσεις
     from: Από
@@ -270,9 +252,7 @@ moderator_form:
 
 nav:
     appearance: Εμφάνιση
-    create_theme: Δημιουργία στυλ
     delete_forum: Διαγραφή φόρουμ
-    themes: Στυλ
     submit: Υποβάλλε
     log_in: Σύνδεση
     log_out: Αποσυνδέση
@@ -295,8 +275,6 @@ nav:
     user_bans: Απαγορεύσεις χρηστών
     ip_bans: Απαγορεύσεις IP
     add_ban: Προσθέστε απαγόρευση
-    css: CSS
-    theme_settings: Ρυθμίσεις φύλλου στυλ
 
 placeholder:
     default: (Προκαθορισμένο)
@@ -375,9 +353,6 @@ title:
     log_in: Σύνδεση
     sign_up: Εγγραφείτε
     submissions_in_featured_forums: Υποβολές σε επιλεγμένα φόρουμ
-    new_theme: Νέο φύλλο στυλ
-    editing_theme: Επεξεργασία φύλλο στυλ %name%
-    custom_themes: Προσαρμοσμένα φύλλα στυλ
     bans_in_forum: Λίστα απαγορεύσεων στο %forum%
     showing_ban_history_for_user_in_forum: Εμφάνιση του ιστορικού απαγόρευσης για %user% στο %forum%
     banning_user_from_forum: Απαγόρευση %user% από %forum%
@@ -385,8 +360,6 @@ title:
     block_list: Λίστα των μπλοκαρισμένων
     blocking_user: Αποκλείοντας τον %user%
     recent_comments: Πρόσφατα σχόλια
-    history_for_theme: Εμφάνιση ιστορικού για φύλλο στυλ %theme%
-    viewing_theme_source: Προβολή πηγής %theme%
     messages: Μηνύματα
     editing_biography_for_user: Επεξεργασία βιογραφίας για τον %user%
     showing_moderation_log_for_forum: Εμφανίζεται λίστα των ενεργειών του συντονιστή για τον %forum%

@@ -8,17 +8,29 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ThemeSelectorType extends AbstractType {
+final class ThemeSelectorType extends AbstractType {
+    /**
+     * @var array
+     */
+    private $themesConfig;
+
+    public function __construct(array $themesConfig) {
+        $this->themesConfig = $themesConfig;
+    }
+
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'class' => Theme::class,
-            'choice_label' => 'name',
-            'group_by' => 'author.username',
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('t')->join('t.revisions', 'tr');
+            'choice_label' => function (Theme $theme, $key, $value) {
+                $name = $this->themesConfig[$theme->getConfigKey()]['name'];
+
+                if ($this->themesConfig['_default'] === $theme->getConfigKey()) {
+                    $name .= '*';
+                }
+
+                return $name;
             },
             'placeholder' => 'placeholder.default',
-            'required' => false,
         ]);
     }
 

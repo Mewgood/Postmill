@@ -12,9 +12,6 @@ action:
     retract_upvote: Retract upvote
     retract_downvote: Retract downvote
     edit: Edit
-    create_theme: Create theme
-    edit_theme: Edit theme
-    new_theme: New theme
     go_to_home_page: Go to home page
     ban: Ban
     unban: Unban
@@ -111,8 +108,6 @@ flash:
     forum_moderator_added: The user has been promoted to moderator.
     notification_cleared: The notification was successfully cleared.
     reset_password_email_sent: A reset email has been sent to the address you specified.
-    theme_created: Your theme has been created.
-    theme_updated: The theme has been updated.
     submission_edited: The submission was edited.
     submission_deleted: The submission was deleted.
     user_account_registered: Your account has been registered.
@@ -210,10 +205,7 @@ heading:
 help:
     delete_forum_warning: All content on this forum will be irreversibly deleted!
     forum_description: A short description of the forum. Search engines will present this description in their results.
-    append_to_default_style: Leave this checked unless your CSS provides a complete stylesheet for the entire site. Setting this has no effect when extending an existing theme.
     block_users: Blocking users prevents them from sending you private messages, and you won't receive notifications when they reply to you.
-    revision_summary: Enter a summary of your changes.
-    parent_theme_input: Enter the <username>/<theme> of the theme you wish to extend. Alternatively, you can enter a UUID to extend a particular revision.
     will_appear_in_the_url: Will appear in the URL.
     forum_is_featured: This forum is featured.
     forum_is_hidden: You have chosen to hide this forum.
@@ -233,7 +225,7 @@ inbox:
     message_reply_head: 'Re: %title%'
 
 item:
-    short_url: 'Short URL'
+    short_url: 'Short URL: '
     op_abbr: OP
     op: Original poster
 
@@ -242,11 +234,7 @@ label:
     author: Author
     password: Password
     confirm: Confirm
-    theme: Theme
-    common_css: Common CSS
-    day_css: Daytime CSS
-    night_css: Night CSS
-    append_to_default_style: Append to default style
+    suggested_theme: Suggested theme
     save_settings: Save settings
     source_code: Source code
     sidebar: Sidebar
@@ -264,12 +252,8 @@ label:
     blocked: Blocked
     comment: Comment
     last_revised: Last revised
-    parent_theme: Parent theme
-    history: History
     id: ID
     date: Date
-    revision_id: Revision ID
-    hierarchy: Hierarchy
     title: Title
     replies: Replies
     from: From
@@ -369,9 +353,7 @@ moderator_form:
 
 nav:
     appearance: Appearance
-    create_theme: Create theme
     delete_forum: Delete forum
-    themes: Themes
     submit: Submit
     log_in: Log in
     log_out: Log out
@@ -396,8 +378,6 @@ nav:
     user_bans: User bans
     ip_bans: IP bans
     add_ban: Add ban
-    css: CSS
-    theme_settings: Theme settings
     filter_results: Filter results
     users: Users
     forum_bans: Forum bans
@@ -506,9 +486,6 @@ title:
     log_in: Log in
     sign_up: Sign up
     submissions_in_featured_forums: Submissions in featured forums
-    new_theme: New theme
-    editing_theme: Editing theme %name%
-    custom_themes: Custom themes
     bans_in_forum: Bans in %forum%
     showing_ban_history_for_user_in_forum: Showing ban history for %user% in %forum%
     banning_user_from_forum: Banning %user% from %forum%
@@ -517,8 +494,6 @@ title:
     blocking_user: Blocking %user%
     recent_comments: Recent comments
     recent_comments_forum: Recent comments in %forum%
-    history_for_theme: Showing history for theme %theme%
-    viewing_theme_source: Viewing source of %theme%
     messages: Messages
     editing_biography_for_user: Editing biography for %user%
     showing_moderation_log_for_forum: Showing moderation log for %forum%

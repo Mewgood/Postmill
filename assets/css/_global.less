@@ -1,4 +1,12 @@
-@import (reference) '_variables';
+@import '~typeface-roboto-mono';
+@import '_variables';
+
+:root {
+  --font-size: 14px;
+  --line-height: 1.5;
+  --mono-font-family: Roboto Mono, monospace;
+  --mono-font-size: 14px;
+}
 
 html {
   background: var(--bg-page);
@@ -12,6 +20,11 @@ html {
 
 *, *::before, *::after {
   box-sizing: inherit;
+}
+
+::selection {
+  background-color: var(--primary);
+  color: var(--text-invert);
 }
 
 body {
@@ -100,4 +113,9 @@ hr {
 
 summary {
   cursor: pointer;
+}
+
+.night-mode .select2-container {
+  // Temporary fix for select2 being bad on dark pages.
+  color: #000;
 }

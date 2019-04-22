@@ -8,7 +8,6 @@ use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\Intl;
@@ -46,13 +45,6 @@ final class UserSettingsType extends AbstractType {
             ->add('night_mode', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('show_custom_stylesheets', CheckboxType::class, [
-                'label' => 'label.let_forums_override_preferred_theme',
-                'required' => false,
-            ])
-            ->add('preferred_theme', ThemeSelectorType::class, [
-                'label' => 'label.preferred_theme',
-            ])
             ->add('openExternalLinksInNewTab', CheckboxType::class, [
                 'required' => false,
                 'label' => 'label.open_external_links_in_new_tab',
@@ -82,7 +74,14 @@ final class UserSettingsType extends AbstractType {
             ->add('preferredFonts', TextType::class, [
                 'required' => false,
             ])
-            ->add('save', SubmitType::class);
+            ->add('preferredTheme', ThemeSelectorType::class, [
+                'label' => 'label.preferred_theme',
+                'required' => false,
+            ])
+            ->add('showCustomStylesheets', CheckboxType::class, [
+                'label' => 'label.let_forums_override_preferred_theme',
+                'required' => false,
+            ]);
     }
 
     /**

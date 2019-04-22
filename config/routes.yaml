@@ -31,9 +31,6 @@ _security:
 _submission:
     resource: app_routes/submission.yaml
 
-_theme:
-    resource: app_routes/theme.yaml
-
 _user:
     resource: app_routes/user.yaml
 

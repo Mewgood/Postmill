@@ -577,7 +577,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->preferredTheme;
     }
 
-    public function setPreferredTheme(?Theme $preferredTheme) {
+    public function setPreferredTheme(?Theme $preferredTheme): void {
         $this->preferredTheme = $preferredTheme;
     }
 
