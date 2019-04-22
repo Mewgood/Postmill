@@ -12,9 +12,11 @@
 {% block javascripts %}
   {{ parent() }}
 
-  <script>
-    $('.delete-submission-button').click(function () {
-      return confirm(Translator.trans('submission_form.confirm_delete'));
-    });
-  </script>
+  {% cspscript %}
+    <script>
+      $('.delete-submission-button').click(function () {
+        return confirm(Translator.trans('submission_form.confirm_delete'));
+      });
+    </script>
+  {% endcspscript %}
 {% endblock %}

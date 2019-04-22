@@ -10,6 +10,9 @@
     {%- set font_family = font_family~' "'~(name|e('css'))~'",' %}
   {%- endfor %}
 {%- endfor %}
-<style>:root { --font-family: {{ font_family|trim(' ,')|raw }} }</style>
+
+{% cspstyle %}
+  <style>:root { --font-family: {{ font_family|trim(' ,')|raw }} }</style>
+{% endcspstyle %}
 
 {{ encore_entry_link_tags('core') }}

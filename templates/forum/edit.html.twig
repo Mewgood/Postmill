@@ -16,9 +16,11 @@
 {% block javascripts %}
   {{ parent() }}
 
-  <script>
-    $('.delete-forum').click(function () {
-      return confirm(Translator.trans('forum_form.confirm_delete'));
-    });
-  </script>
+  {% cspscript %}
+    <script>
+      $('.delete-forum').click(function () {
+        return confirm(Translator.trans('forum_form.confirm_delete'));
+      });
+    </script>
+  {% endcspscript %}
 {% endblock %}

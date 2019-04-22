@@ -176,6 +176,18 @@
     "monolog/monolog": {
         "version": "1.23.0"
     },
+    "nelmio/security-bundle": {
+        "version": "2.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.4",
+            "ref": "65726efb67ff51d89de38195bc0d230fa811f64d"
+        },
+        "files": [
+            "config/packages/nelmio_security.yaml"
+        ]
+    },
     "nikic/php-parser": {
         "version": "v4.0.1"
     },
@@ -452,15 +464,6 @@
     "symfony/security-core": {
         "version": "v4.2.2"
     },
-    "symfony/security-csrf": {
-        "version": "v4.2.2"
-    },
-    "symfony/security-guard": {
-        "version": "v4.2.2"
-    },
-    "symfony/security-http": {
-        "version": "v4.2.2"
-    },
     "symfony/serializer": {
         "version": "v4.0.3"
     },
@@ -564,6 +567,9 @@
     },
     "twig/twig": {
         "version": "v2.4.4"
+    },
+    "ua-parser/uap-php": {
+        "version": "v3.8.8"
     },
     "webmozart/assert": {
         "version": "1.2.0"

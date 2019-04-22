@@ -36,7 +36,8 @@
     {% include '_includes/empty.html.twig' %}
   {% endif %}
 
-  <script class="js-update-comment-count"
-          data-comment-count="{{ submission.comments|length }}"
-          data-submission-id="{{ submission.id }}"></script>
+  <div class="js-update-comment-count"
+       data-comment-count="{{ submission.comments|length }}"
+       data-submission-id="{{ submission.id }}"
+       hidden></div>
 {% endblock %}

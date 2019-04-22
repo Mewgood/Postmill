@@ -25,7 +25,7 @@
 {% endblock form_widget_simple %}
 
 {%- block honeypot_row -%}
-  <div style="display: none">
+  <div hidden>
     {{- form_widget(form) -}}
   </div>
 {%- endblock honeypot_row -%}
@@ -180,15 +180,19 @@
       {%- if not reload -%}
         <img src="{{ captcha_code }}" alt="" title="captcha" width="{{ captcha_width }}" height="{{ captcha_height }}">
       {%- else -%}
-        <a class="captcha_reload" href="javascript:reload_{{ image_id }}();">
-          <img src="{{ captcha_code }}" alt="" id="{{ image_id }}" title="{{ 'Renew'|trans({}, 'gregwar_captcha') }}" width="{{ captcha_width }}" height="{{ captcha_height }}">
+        <a class="captcha_reload" href="#" id="reload_{{ image_id }}">
+          <img src="{{ captcha_code }}" alt="" title="{{ 'Renew'|trans({}, 'gregwar_captcha') }}" width="{{ captcha_width }}" height="{{ captcha_height }}">
         </a>
-        <script type="text/javascript">
-          function reload_{{ image_id }}() {
-            var img = document.getElementById('{{ image_id }}');
-            img.src = '{{ captcha_code }}?n=' + (new Date()).getTime();
-          }
-        </script>
+        {% cspscript %}
+          <script>
+            (function (linkId) {
+              document.getElementById(linkId).addEventListener('click', function () {
+                var img = this.getElementsByTagName('img')[0];
+                img.src = '{{ captcha_code|e('js') }}?n=' + (new Date()).getTime();
+              });
+            })('reload_{{ image_id|e('js') }}');
+          </script>
+        {% endcspscript %}
       {%- endif -%}
     </div>
     {{- form_widget(form) -}}
@@ -214,11 +218,6 @@
   {{- block('form_rows') -}}
   {{- form_rest(form) -}}
 {% endblock form_widget_compound %}
-
-{% block honeypot_widget %}
-  {%- set attr = attr|merge({'style': 'display: none'}) -%}
-  {{- block('form_widget') -}}
-{% endblock honeypot_widget %}
 
 {# repeated form type #}
 
