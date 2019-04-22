@@ -203,6 +203,7 @@ class User implements UserInterface, EquatableInterface {
     private $trusted = false;
 
     /**
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @ORM\ManyToOne(targetEntity="Theme")
      *
      * @var Theme|null
