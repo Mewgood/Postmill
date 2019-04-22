@@ -403,7 +403,6 @@ user_settings:
 
 user_settings_form:
     locale: Γλώσσα
-    night_mode: Νυχτερινή λειτουργία
     save: Αποθήκευσε τις αλλαγές
 
 wiki:

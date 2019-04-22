@@ -1,4 +1,4 @@
-.menu-link {
+.menu-item {
   color: var(--text);
   display: block;
   padding: 0.5rem 1rem;
@@ -16,10 +16,16 @@
     }
   }
 
-  &:hover {
-    background-color: var(--accent);
-    color: var(--accent-fg);
-    text-decoration: none;
+  &:any-link,
+  input&[type="submit"],
+  input&[type="reset"],
+  input&[type="button"],
+  button& {
+    &:not(:disabled):hover {
+      background-color: var(--accent);
+      color: var(--accent-fg);
+      text-decoration: none;
+    }
   }
 
   &:focus {

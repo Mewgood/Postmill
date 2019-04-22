@@ -72,19 +72,19 @@
 {% block site_nav_main_menu_admin_items %}
   {% from '_macros/icon.html.twig' import icon %}
   <li>
-    <a href="{{ path('user_bans') }}" class="menu-link {{ active_menu_item == 'bans' ? 'menu-link--active' }}">
+    <a href="{{ path('user_bans') }}" class="menu-item {{ active_menu_item == 'bans' ? 'menu-item--active' }}">
       {{ icon('hammer') }}
       {{ 'label.bans'|trans }}
     </a>
   </li>
   <li>
-    <a href="{{ path('manage_forum_categories') }}" class="menu-link {{ active_menu_item == 'forum_categories' ? 'menu-link--active' }}">
+    <a href="{{ path('manage_forum_categories') }}" class="menu-item {{ active_menu_item == 'forum_categories' ? 'menu-item--active' }}">
       {{ icon('sitemap') }}
       {{ 'nav.forum_categories'|trans }}
     </a>
   </li>
   <li>
-    <a href="{{ path('users') }}" class="menu-link {{ active_menu_item == 'users' ? 'menu-link--active' }}">
+    <a href="{{ path('users') }}" class="menu-item {{ active_menu_item == 'users' ? 'menu-item--active' }}">
       {{ icon('user') }}
       {{ 'nav.users'|trans }}
     </a>
@@ -185,37 +185,60 @@
 
 {% block site_nav_user_menu_dropdown_items %}
   {% from '_macros/icon.html.twig' import icon %}
+  <li class="no-desktop">
+    <span class="menu-item ">
+      {{ 'nav.logged_in_as_user'|trans({
+        '%user%': '<strong>%s</strong>'|format(app.user.username|e)
+      })|raw }}
+    </span>
+  </li>
+  <li class="no-desktop"><hr></li>
   <li>
     <a href="{{ path('user', {username: app.user.username}) }}"
-       class="menu-link {{ active_menu_item == 'profile' ? 'menu-link--active' }}">
+       class="menu-item {{ active_menu_item == 'profile' ? 'menu-item--active' }}">
       {{ icon('user') }}
       {{ 'nav.profile'|trans }}
     </a>
   </li>
   <li>
     <a href="{{ path('edit_user', {username: app.user.username}) }}"
-       class="menu-link {{ active_menu_item == 'account' ? 'menu-link--active' }}">
+       class="menu-item {{ active_menu_item == 'account' ? 'menu-item--active' }}">
       {{ icon('lock') }}
       {{ 'nav.my_account'|trans }}
     </a>
   </li>
   <li>
     <a href="{{ path('user_settings', {username: app.user.username}) }}"
-       class="menu-link {{ active_menu_item == 'preferences' ? 'menu-link--active' }}">
+       class="menu-item {{ active_menu_item == 'preferences' ? 'menu-item--active' }}">
        {{ icon('settings') }}
        {{ 'nav.user_settings'|trans }}
     </a>
   </li>
   <li>
     <a href="{{ path('user_block_list', {username: app.user.username}) }}"
-       class="menu-link {{ active_menu_item == 'block_list' ? 'menu-link--active' }}">
+       class="menu-item {{ active_menu_item == 'block_list' ? 'menu-item--active' }}">
       {{ icon('block') }}
       {{ 'nav.block_list'|trans }}
     </a>
   </li>
+  <li><hr></li>
+  <li>
+    <form action="{{ app.user.nightMode ? path('night_mode_off') : path('night_mode_on') }}" method="POST">
+      <input type="hidden" name="token" value="{{ csrf_token('toggle_night_mode') }}">
+      <button class="menu-item unbuttonize">
+        {% if not app.user.nightMode %}
+          {{ icon('moon-inv') }}
+          {{ 'nav.dark_mode'|trans }}
+        {%- else -%}
+          {{ icon('sun-inv') }}
+          {{ 'nav.light_mode'|trans }}
+        {%- endif -%}
+      </button>
+    </form>
+  </li>
   <li>
     <form action="{{ logout_path() }}" method="POST">
-      <button class="menu-link unbuttonize">
+      <button class="menu-item unbuttonize">
         {{ icon('logout') }}
         {{ 'nav.log_out'|trans }}
       </button>

@@ -392,7 +392,6 @@ user_settings:
 
 user_settings_form:
     locale: Idioma
-    night_mode: Modo noturno
     save: Salvar alterções
 
 wiki:

@@ -273,5 +273,4 @@ user_settings:
 
 user_settings_form:
     locale: Språk
-    night_mode: Nattmodus
     save: Lagre endringer

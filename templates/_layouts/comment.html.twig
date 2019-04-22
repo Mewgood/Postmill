@@ -146,7 +146,7 @@
     {{- block('comment_nav_delete') -}}
     {{- block('comment_nav_edit') }}
   {% elseif is_granted('moderator', comment.submission.forum)  %}
-    {% set comment_nav_classes = 'menu-link no-wrap' %}
+    {% set comment_nav_classes = 'menu-item no-wrap' %}
     <li class="dropdown">
       <button class="dropdown__toggle fg-inherit no-underline text-sm unbuttonize">
         <span class="no-underline__exempt">{{ 'nav.actions'|trans }}</span>
@@ -232,7 +232,7 @@
       <input type="hidden" name="token" value="{{ csrf_token('softdelete_comment') }}">
       <button type="submit"
               class="unbuttonize comment__soft-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
-        {{- 'menu-link' in comment_nav_classes ? icon('trash') }}
+        {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
         {{ 'comments.delete'|trans -}}
       </button>
     </form>
@@ -250,7 +250,7 @@
       <input type="hidden" name="token" value="{{ csrf_token('delete_comment') }}">
       <button type="submit"
               class="unbuttonize comment__thread-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
-        {{- 'menu-link' in comment_nav_classes ? icon('trash') }}
+        {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
         {{ delete_thread_label|trans -}}
       </button>
     </form>
@@ -266,7 +266,7 @@
         submission_id: comment.submission.id,
         comment_id: comment.id,
       }) }}" class="comment__edit-link {{ comment_nav_classes }}">
-        {{- 'menu-link' in comment_nav_classes ? icon('pencil') }}
+        {{- 'menu-item' in comment_nav_classes ? icon('pencil') }}
         {{ 'comments.edit'|trans -}}
       </a>
     </li>
@@ -278,7 +278,7 @@
   {% if is_granted('moderator', comment.submission.forum) %}
     <li>
       <a href="{{ path('forum_ban', {forum_name: comment.submission.forum.name, username: comment.user.username}) }}"
-         class="comment__ban-link menu-link no-wrap">
+         class="comment__ban-link menu-item no-wrap">
         {{- icon('user-times') }}
         {{ 'action.ban'|trans -}}
       </a>
@@ -291,7 +291,7 @@
   {% if is_granted('ROLE_ADMIN') %}
     <li>
       <a href="{{ path('ban_user', {'username': comment.user.username}) }}"
-         class="comment__ip-ban-link menu-link no-wrap">
+         class="comment__ip-ban-link menu-item no-wrap">
         {{- icon('hammer') }}
         {{ 'action.global_ban'|trans -}}
       </a>

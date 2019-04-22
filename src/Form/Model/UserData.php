@@ -56,8 +56,6 @@ class UserData implements UserInterface {
      */
     private $frontPage;
 
-    private $nightMode;
-
     private $showCustomStylesheets;
 
     /**
@@ -100,7 +98,6 @@ class UserData implements UserInterface {
         $self->email = $user->getEmail();
         $self->locale = $user->getLocale();
         $self->frontPage = $user->getFrontPage();
-        $self->nightMode = $user->isNightMode();
         $self->showCustomStylesheets = $user->isShowCustomStylesheets();
         $self->preferredTheme = $user->getPreferredTheme();
         $self->openExternalLinksInNewTab = $user->openExternalLinksInNewTab();
@@ -126,7 +123,6 @@ class UserData implements UserInterface {
         $user->setEmail($this->email);
         $user->setLocale($this->locale);
         $user->setFrontPage($this->frontPage);
-        $user->setNightMode($this->nightMode);
         $user->setShowCustomStylesheets($this->showCustomStylesheets);
         $user->setPreferredTheme($this->preferredTheme);
         $user->setOpenExternalLinksInNewTab($this->openExternalLinksInNewTab);
@@ -150,7 +146,6 @@ class UserData implements UserInterface {
             'showCustomStylesheets',
             'frontPage',
             'locale',
-            'nightMode',
             'preferredTheme',
             'openExternalLinksInNewTab',
             'autoFetchSubmissionTitles',
@@ -228,14 +223,6 @@ class UserData implements UserInterface {
 
     public function setFrontPage($frontPage) {
         $this->frontPage = $frontPage;
-    }
-
-    public function getNightMode() {
-        return $this->nightMode;
-    }
-
-    public function setNightMode($nightMode) {
-        $this->nightMode = $nightMode;
     }
 
     public function getShowCustomStylesheets() {

@@ -466,8 +466,7 @@ final class UserController extends AbstractController {
      * @IsGranted("edit_user", subject="user", statusCode=403)
      *
      * @param EntityManager $em
-     * @param Request       $request
-     * @param User          $user
+     * @param Request       $request @param User          $user
      * @param Forum         $forum
      * @param bool          $hide
      *
@@ -491,5 +490,27 @@ final class UserController extends AbstractController {
         return $this->redirectToRoute('hidden_forums', [
             'username' => $this->getUser()->getUsername(),
         ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     *
+     * @param EntityManager $em
+     * @param Request       $request
+     * @param bool          $enabled
+     *
+     * @return Response
+     */
+    public function toggleNightMode(EntityManager $em, Request $request, bool $enabled): Response {
+        $this->validateCsrf('toggle_night_mode', $request->request->get('token'));
+
+        $this->getUser()->setNightMode($enabled);
+        $em->flush();
+
+        if ($request->headers->has('Referer')) {
+            return $this->redirect($request->headers->get('Referer'));
+        }
+
+        return $this->redirectToRoute('front');
     }
 }

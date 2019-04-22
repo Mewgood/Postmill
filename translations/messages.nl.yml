@@ -253,5 +253,4 @@ user_settings:
 
 user_settings_form:
     locale: Taal
-    night_mode: Nachtmodus
     save: Sla veranderingen op

@@ -42,9 +42,6 @@ final class UserSettingsType extends AbstractType {
                 ],
                 'label' => 'label.front_page',
             ])
-            ->add('night_mode', CheckboxType::class, [
-                'required' => false,
-            ])
             ->add('openExternalLinksInNewTab', CheckboxType::class, [
                 'required' => false,
                 'label' => 'label.open_external_links_in_new_tab',

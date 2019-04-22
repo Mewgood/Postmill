@@ -394,6 +394,9 @@ nav:
     home: Home
     user: User
     search: Search
+    dark_mode: Dark mode
+    light_mode: Light mode
+    logged_in_as_user: Logged in as %user%
 
 placeholder:
     choose_one: Choose one…
@@ -551,7 +554,6 @@ user_settings:
 
 user_settings_form:
     locale: Language
-    night_mode: Night mode
     save: Save changes
 
 wiki:

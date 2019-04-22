@@ -266,7 +266,6 @@ user_settings:
 
 user_settings_form:
     locale: Kieli
-    night_mode: Yötila
     save: Tallenna muutokset
 
 wiki:

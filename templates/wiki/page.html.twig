@@ -72,9 +72,9 @@
 
     <ul class="unlistify sidebar__no-padding">
       {% if is_granted('write', page) %}
-        <li><a href="{{ path('wiki_edit', {path: page.path}) }}" class="menu-link">{{ 'wiki.edit_page'|trans }}</a></li>
+        <li><a href="{{ path('wiki_edit', {path: page.path}) }}" class="menu-item">{{ 'wiki.edit_page'|trans }}</a></li>
       {% endif %}
-      <li><a href="{{ path('wiki_history', {path: page.path}) }}" class="menu-link">{{ 'wiki.page_history'|trans }}</a></li>
+      <li><a href="{{ path('wiki_history', {path: page.path}) }}" class="menu-item">{{ 'wiki.page_history'|trans }}</a></li>
     </ul>
   </section>
 
@@ -82,8 +82,8 @@
     <h1 class="sidebar__title">{{ 'wiki.navigation'|trans }}</h1>
 
     <ul class="unlistify sidebar__no-padding">
-      <li><a href="{{ path('wiki_all') }}" class="menu-link">{{ 'wiki.all_pages'|trans }}</a></li>
-      <li><a href="{{ path('wiki_recent_changes') }}" class="menu-link">{{ 'label.recent_changes'|trans }}</a></li>
+      <li><a href="{{ path('wiki_all') }}" class="menu-item">{{ 'wiki.all_pages'|trans }}</a></li>
+      <li><a href="{{ path('wiki_recent_changes') }}" class="menu-item">{{ 'label.recent_changes'|trans }}</a></li>
     </ul>
   </section>
 {% endblock %}

@@ -215,6 +215,18 @@
       "css": "ok",
       "code": 59413,
       "src": "fontawesome"
+    },
+    {
+      "uid": "c2152732d525871cf35345955854f711",
+      "css": "moon-inv",
+      "code": 59414,
+      "src": "iconic"
+    },
+    {
+      "uid": "48050e07077b01021f7fbdbbec8f7de7",
+      "css": "sun-inv",
+      "code": 59416,
+      "src": "iconic"
     }
   ]
 }

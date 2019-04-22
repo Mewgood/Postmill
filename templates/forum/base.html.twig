@@ -66,29 +66,29 @@
     {# sorted nav items #}
     {% with { items: {} } %}
       {% set item %}
-        <li><a href="{{ path('forum_bans', {forum_name: forum.name}) }}" class="menu-link">{{ 'nav.bans'|trans }}</a></li>
+        <li><a href="{{ path('forum_bans', {forum_name: forum.name}) }}" class="menu-item">{{ 'nav.bans'|trans }}</a></li>
       {% endset %}
       {% set items = items|merge({('nav.bans'|trans): item}) %}
 
       {% set item %}
-        <li><a href="{{ path('moderation_log', {forum_name: forum.name}) }}" class="menu-link">{{ 'nav.moderation_log'|trans }}</a></li>
+        <li><a href="{{ path('moderation_log', {forum_name: forum.name}) }}" class="menu-item">{{ 'nav.moderation_log'|trans }}</a></li>
       {% endset %}
       {% set items = items|merge({('nav.moderation_log'|trans): item}) %}
 
       {% if is_granted('moderator', forum) %}
         {% set item %}
-          <li><a href="{{ path('edit_forum', {forum_name: forum.name}) }}" class="menu-link">{{ 'forum.edit'|trans }}</a></li>
+          <li><a href="{{ path('edit_forum', {forum_name: forum.name}) }}" class="menu-item">{{ 'forum.edit'|trans }}</a></li>
         {% endset %}
         {% set items = items|merge({('forum.edit'|trans): item}) %}
 
         {% set item %}
-          <li><a href="{{ path('forum_appearance', {forum_name: forum.name}) }}" class="menu-link">{{ 'nav.appearance'|trans }}</a></li>
+          <li><a href="{{ path('forum_appearance', {forum_name: forum.name}) }}" class="menu-item">{{ 'nav.appearance'|trans }}</a></li>
         {% endset %}
         {% set items = items|merge({('nav.appearance'|trans): item}) %}
 
         {% if app_webhooks_enabled() %}
           {% set item %}
-            <li><a href="{{ path('forum_webhooks', {forum_name: forum.name}) }}" class="menu-link">{{ 'nav.webhooks'|trans }}</a></li>
+            <li><a href="{{ path('forum_webhooks', {forum_name: forum.name}) }}" class="menu-item">{{ 'nav.webhooks'|trans }}</a></li>
           {% endset %}
           {% set items = items|merge({('nav.webhooks'|trans): item}) %}
         {% endif %}
@@ -96,13 +96,13 @@
 
       {% if is_granted('ROLE_ADMIN') %}
         {% set item %}
-          <li><a href="{{ path('add_moderator', {forum_name: forum.name}) }}" class="menu-link">{{ 'forum.add_moderator'|trans }}</a></li>
+          <li><a href="{{ path('add_moderator', {forum_name: forum.name}) }}" class="menu-item">{{ 'forum.add_moderator'|trans }}</a></li>
         {% endset %}
         {% set items = items|merge({('forum.add_moderator'|trans): item}) %}
 
         {% set item %}
           <li>
-            <a href="{{ path('delete_forum', {forum_name: forum.name}) }}" class="menu-link">
+            <a href="{{ path('delete_forum', {forum_name: forum.name}) }}" class="menu-item">
               {{- 'nav.delete_forum'|trans -}}
             </a>
           </li>
@@ -125,7 +125,7 @@
         {% for moderator in forum.moderators %}
           <li class="break-text">
             <a href="{{ path('user', {username: moderator.user.username}) }}"
-               class="menu-link">
+               class="menu-item">
               {{- moderator.user.username -}}
             </a>
           </li>

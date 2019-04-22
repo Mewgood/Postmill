@@ -11,7 +11,7 @@
     {% if forums|length > 0 %}
       <ul class="unlistify sidebar__no-padding">
         {% for name in forums %}
-          <li><a href="{{ path('forum', {forum_name: name}) }}" class="menu-link">{{ name }}</a></li>
+          <li><a href="{{ path('forum', {forum_name: name}) }}" class="menu-item">{{ name }}</a></li>
         {% endfor %}
       </ul>
     {% else %}

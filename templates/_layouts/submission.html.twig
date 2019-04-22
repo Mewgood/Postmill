@@ -180,7 +180,7 @@
 {% endblock submission_nav_comments %}
 
 {% block submission_nav_moderation %}
-  {% set nav_link_classes = 'menu-link no-wrap' %}
+  {% set nav_link_classes = 'menu-item no-wrap' %}
 
   {% if submission.user is same as(self) %}
     {% set nav_link_classes = 'fg-inherit text-sm' %}
@@ -214,7 +214,7 @@
     <li>
       <a href="{{ path('edit_submission', {forum_name: submission.forum.name, submission_id: submission.id}) }}"
          class="{{ nav_link_classes }}">
-        {{- 'menu-link' in nav_link_classes ? icon('pencil') }}
+        {{- 'menu-item' in nav_link_classes ? icon('pencil') }}
         {{ 'submissions.edit'|trans -}}
       </a>
     </li>
@@ -228,7 +228,7 @@
       <form action="{{ path('submission_delete_immediately', {forum_name: submission.forum.name, submission_id: submission.id}) }}" method="POST">
         <input type="hidden" name="token" value="{{ csrf_token('delete_submission') }}">
         <button class="{{ nav_link_classes }} unbuttonize js-confirm-submission-delete">
-          {{- 'menu-link' in nav_link_classes ? icon('trash') }}
+          {{- 'menu-item' in nav_link_classes ? icon('trash') }}
           {{ 'action.delete'|trans -}}
         </button>
       </form>
@@ -237,7 +237,7 @@
     <li>
       <a href="{{ path('submission_delete_with_reason', {forum_name: submission.forum.name, submission_id: submission.id}) }}"
          class="{{ nav_link_classes }}">
-        {{- 'menu-link' in nav_link_classes ? icon('trash') }}
+        {{- 'menu-item' in nav_link_classes ? icon('trash') }}
         {{ 'action.delete'|trans -}}
       </a>
     </li>
@@ -252,7 +252,7 @@
       submission_id: submission.id,
     }) }}" method="post">
       <input type="hidden" name="token" value="{{ csrf_token('pin') }}">
-      <button class="unbuttonize menu-link no-wrap">
+      <button class="unbuttonize menu-item no-wrap">
         {{- submission.sticky ? icon('pin-outline') : icon('pin') }}
         {{ submission.sticky ? 'action.unpin'|trans : 'action.pin'|trans -}}
       </button>
@@ -268,7 +268,7 @@
       submission_id: submission.id,
     }) }}" method="post">
       <input type="hidden" name="token" value="{{ csrf_token('lock') }}">
-      <button class="unbuttonize menu-link no-wrap">
+      <button class="unbuttonize menu-item no-wrap">
         {{- submission.locked ? icon('lock-open') : icon('lock') }}
         {{ submission.locked ? 'action.unlock'|trans : 'action.lock'|trans -}}
       </button>
@@ -280,7 +280,7 @@
   {% from '_macros/icon.html.twig' import icon %}
   <li>
     <a href="{{ path('forum_ban', {forum_name: submission.forum.name, username: submission.user.username}) }}"
-       class="menu-link no-wrap">
+       class="menu-item no-wrap">
       {{- icon('user-times') }}
       {{ 'action.ban'|trans -}}
     </a>
@@ -292,7 +292,7 @@
   {% if is_granted('ROLE_ADMIN') %}
     <li>
       <a href="{{ path('ban_user', {'username': submission.user.username}) }}"
-         class="menu-link no-wrap">
+         class="menu-item no-wrap">
         {{- icon('hammer') }}
         {{ 'action.global_ban'|trans -}}
       </a>

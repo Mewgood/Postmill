@@ -133,3 +133,15 @@ unhide_forum:
     defaults: { hide: false }
     path: /user/{username}/unhide_forum/{forum}
     methods: [POST]
+
+night_mode_on:
+    controller: App\Controller\UserController::toggleNightMode
+    defaults: { enabled: true }
+    methods: [POST]
+    path: /night_mode_on
+
+night_mode_off:
+    controller: App\Controller\UserController::toggleNightMode
+    defaults: { enabled: false }
+    methods: [POST]
+    path: /night_mode_off

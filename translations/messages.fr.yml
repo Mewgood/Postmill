@@ -487,7 +487,6 @@ user_settings:
 
 user_settings_form:
     locale: Langue
-    night_mode: Mode nuit
     save: Enregistrer les modifications
 
 wiki:

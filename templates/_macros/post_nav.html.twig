@@ -50,7 +50,7 @@
   {% for type in types %}
     <li>
       <a href="{{ path(attr.get('_route'), (attr.get('_route_params') ?? [])|merge({sortBy: type, t: time})) }}"
-         class="no-wrap menu-link {{ type == current ? 'menu-link--active' }}">
+         class="no-wrap menu-item {{ type == current ? 'menu-item--active' }}">
         {{- ('submissions.sort_by_'~type)|trans -}}
       </a>
     </li>
@@ -74,7 +74,7 @@
       {% for route, mode in filter_modes if (mode.condition ?? true) %}
         <li>
           <a href="{{ path(route, {sortBy: sort_by}) }}"
-             class="no-wrap menu-link {{ choice == route ? 'menu-link--active' }}">
+             class="no-wrap menu-item {{ choice == route ? 'menu-item--active' }}">
             {{- mode.label -}}
           </a>
         </li>
@@ -100,7 +100,7 @@
         {% for time in times %}
           <li>
             <a href="{{ path(attr.get('_route'), (attr.get('_route_params') ?? [])|merge({t: time})) }}"
-               class="no-wrap menu-link {{ time == current ? 'menu-link--active' }}">
+               class="no-wrap menu-item {{ time == current ? 'menu-item--active' }}">
               {{- ('submissions.time_'~time)|trans -}}
             </a>
           </li>

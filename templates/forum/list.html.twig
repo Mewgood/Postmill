@@ -41,7 +41,7 @@
           {% for mode, label in forum_sort_modes %}
             <li>
               <a href="{{ path('forum_list', { sortBy: mode }) }}"
-                 class="menu-link {{ app.request.attributes.get('sortBy') == mode ? 'menu-link--active' }}">
+                 class="menu-item {{ app.request.attributes.get('sortBy') == mode ? 'menu-item--active' }}">
                 {{- label -}}
               </a>
             </li>
