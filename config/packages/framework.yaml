@@ -1,5 +1,4 @@
 parameters:
-    env(APP_LOCALE): 'en'
     markdown_cache_time: 86400
 
 framework:

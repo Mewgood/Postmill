@@ -35,11 +35,17 @@ final class LocaleListener {
      */
     private $availableLocales;
 
+    /**
+     * @var string
+     */
+    private $defaultLocale;
+
     public function __construct(
         SessionInterface $session,
         TokenStorageInterface $tokenStorage,
         TranslatorInterface $translator,
-        array $availableLocales
+        array $availableLocales,
+        string $defaultLocale
     ) {
         if (!$translator instanceof LocaleAwareInterface) {
             throw new \InvalidArgumentException(
@@ -51,6 +57,7 @@ final class LocaleListener {
         $this->tokenStorage = $tokenStorage;
         $this->translator = $translator;
         $this->availableLocales = $availableLocales;
+        $this->defaultLocale = $defaultLocale;
     }
 
     public function onKernelRequest(GetResponseEvent $event) {
@@ -61,7 +68,13 @@ final class LocaleListener {
         }
 
         if (!isset($locale)) {
-            $locale = $request->getPreferredLanguage($this->availableLocales);
+            // Default locale must be first, or the wrong locale is used if
+            // the Accept-Language header doesn't contain an available locale.
+            $default = [$this->defaultLocale];
+
+            $locale = $request->getPreferredLanguage(
+                \array_merge($default, \array_diff($this->availableLocales, $default))
+            );
         }
 
         if (isset($locale)) {
