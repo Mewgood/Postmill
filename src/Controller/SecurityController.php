@@ -28,6 +28,7 @@ final class SecurityController extends AbstractController {
             'can_reset_password' => $mailer->canMail(),
             'error' => $helper->getLastAuthenticationError(),
             'last_username' => $helper->getLastUsername(),
+            'remember_me' => $request->getSession()->get('remember_me'),
         ]);
     }
 }

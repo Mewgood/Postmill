@@ -109,6 +109,7 @@ final class LoginAuthenticator extends AbstractGuardAuthenticator {
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception) {
         $session = $request->getSession();
         $session->set(Security::AUTHENTICATION_ERROR, $exception);
+        $session->set('remember_me', $request->request->getBoolean('_remember_me'));
 
         $username = $request->request->get('_username');
 

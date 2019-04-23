@@ -322,6 +322,7 @@ label:
     last_message: Last message
     participants: Participants
     preferred_fonts: Preferred font(s)
+    remember_me: Keep me logged in
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'
