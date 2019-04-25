@@ -18,9 +18,15 @@
     padding: var(--padding-v) var(--padding-h);
   }
 
+  &__dummy-label {
+    display: block;
+    height: 0;
+    visibility: hidden;
+  }
+
   &__subscriber-count {
     background: var(--bg);
-    padding-left: var(--padding-h);
-    padding: var(--padding-v) var(--padding-h);
+    min-width: 8ch;
+    padding: var(--padding-v) 0;
   }
 }
