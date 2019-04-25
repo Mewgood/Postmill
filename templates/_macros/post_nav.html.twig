@@ -86,7 +86,7 @@
 {% macro submission_time(sort_by) %}
   {% from _self import _tab_button %}
   {% set current = app.request.query.get('t', 'all') %}
-  {% set times = constant('App\\Repository\\SubmissionRepository::VALID_TIMES') %}
+  {% set times = constant('App\\Entity\\Submission::TIME_OPTIONS') %}
   {% if current not in times %}
     {% set current = 'all' %}
   {% endif %}

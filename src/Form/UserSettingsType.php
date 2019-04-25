@@ -2,12 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Submission;
 use App\Form\Model\UserData;
 use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\Intl;
@@ -32,16 +33,33 @@ final class UserSettingsType extends AbstractType {
                 'choices' => $this->buildLocaleChoices(),
                 'choice_translation_domain' => false,
             ])
-            ->add('front_page', ChoiceType::class, [
-                'choices' => [
-                    'label.default' => User::FRONT_DEFAULT,
-                    'label.featured' => User::FRONT_FEATURED,
-                    'label.subscribed' => User::FRONT_SUBSCRIBED,
-                    'label.all' => User::FRONT_ALL,
-                    'label.moderated' => User::FRONT_MODERATED,
-                ],
-                'label' => 'label.front_page',
-            ])
+            ->add(
+                $builder->create('frontPage', FormType::class, [
+                    'error_bubbling' => false,
+                    'label' => 'label.front_page',
+                    'inherit_data' => true
+                ])
+                ->add('filterBy', ChoiceType::class, [
+                    'choices' => [
+                        'label.featured' => Submission::FRONT_FEATURED,
+                        'label.subscribed' => Submission::FRONT_SUBSCRIBED,
+                        'label.all' => Submission::FRONT_ALL,
+                        'label.moderated' => Submission::FRONT_MODERATED,
+                    ],
+                    'error_bubbling' => true,
+                    'label' => 'label.filter_by',
+                    'property_path' => 'frontPage',
+                ])
+                ->add('sortBy', ChoiceType::class, [
+                    'choices' => [
+                        'submissions.sort_by_hot' => Submission::SORT_HOT,
+                        'submissions.sort_by_new' => Submission::SORT_NEW,
+                    ],
+                    'error_bubbling' => true,
+                    'label' => 'label.sort_by',
+                    'property_path' => 'frontPageSortMode',
+                ])
+            )
             ->add('openExternalLinksInNewTab', CheckboxType::class, [
                 'required' => false,
                 'label' => 'label.open_external_links_in_new_tab',

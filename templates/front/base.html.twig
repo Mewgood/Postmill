@@ -27,8 +27,8 @@
     {{ front_post_types('submissions') }}
 
     <ul class="unlistify nav">
-      {{ submission_sort(sort_by) }}
       {{ submission_filter(listing, sort_by) }}
+      {{ submission_sort(sort_by) }}
       {{ submission_time(sort_by) }}
     </ul>
   </nav>

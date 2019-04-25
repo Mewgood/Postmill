@@ -22,19 +22,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * })
  */
 class User implements UserInterface, EquatableInterface {
-    const FRONT_DEFAULT = 'default';
-    const FRONT_FEATURED = 'featured';
-    const FRONT_SUBSCRIBED = 'subscribed';
-    const FRONT_ALL = 'all';
-    const FRONT_MODERATED = 'moderated';
-
-    const FRONT_PAGE_CHOICES = [
-        self::FRONT_DEFAULT,
-        self::FRONT_FEATURED,
-        self::FRONT_SUBSCRIBED,
-        self::FRONT_ALL,
-        self::FRONT_MODERATED,
-    ];
 
     /**
      * @ORM\Column(type="bigint")
@@ -104,6 +91,13 @@ class User implements UserInterface, EquatableInterface {
      * @var bool
      */
     private $admin = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ForumSubscription", mappedBy="user")
+     *
+     * @var ForumSubscription[]|Collection
+     */
+    private $subscriptions;
 
     /**
      * @ORM\OneToMany(targetEntity="Moderator", mappedBy="user")
@@ -219,11 +213,18 @@ class User implements UserInterface, EquatableInterface {
     private $blocks;
 
     /**
-     * @ORM\Column(type="text", options={"default": "default"})
+     * @ORM\Column(type="text")
      *
      * @var string
      */
-    private $frontPage = self::FRONT_DEFAULT;
+    private $frontPage = Submission::FRONT_SUBSCRIBED;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @var string
+     */
+    private $frontPageSortMode = Submission::SORT_HOT;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -293,6 +294,7 @@ class User implements UserInterface, EquatableInterface {
         $this->bans = new ArrayCollection();
         $this->ipBans = new ArrayCollection();
         $this->blocks = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
         $this->moderatorTokens = new ArrayCollection();
     }
 
@@ -360,6 +362,13 @@ class User implements UserInterface, EquatableInterface {
 
     public function setAdmin(bool $admin) {
         $this->admin = $admin;
+    }
+
+    /**
+     * @return Collection|ForumSubscription[]
+     */
+    public function getSubscriptions(): Collection {
+        return $this->subscriptions;
     }
 
     /**
@@ -622,11 +631,23 @@ class User implements UserInterface, EquatableInterface {
     }
 
     public function setFrontPage(string $frontPage) {
-        if (!in_array($frontPage, self::FRONT_PAGE_CHOICES, true)) {
-            throw new \InvalidArgumentException('Unknown choice');
+        if (!\in_array($frontPage, Submission::FRONT_PAGE_OPTIONS, true)) {
+            throw new \InvalidArgumentException("Unknown choice '$frontPage'");
         }
 
         $this->frontPage = $frontPage;
+    }
+
+    public function getFrontPageSortMode(): string {
+        return $this->frontPageSortMode;
+    }
+
+    public function setFrontPageSortMode(string $sortMode) {
+        if (!\in_array($sortMode, Submission::SORT_OPTIONS, true)) {
+            throw new \InvalidArgumentException("Unknown choice '$sortMode'");
+        }
+
+        $this->frontPageSortMode = $sortMode;
     }
 
     public function openExternalLinksInNewTab(): bool {

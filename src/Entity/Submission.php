@@ -18,12 +18,50 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * })
  */
 class Submission extends Votable {
-    const DOWNVOTED_CUTOFF = -5;
-    const NETSCORE_MULTIPLIER = 1800;
-    const COMMENT_MULTIPLIER = 5000;
-    const COMMENT_DOWNVOTED_MULTIPLIER = 500;
-    const MAX_ADVANTAGE = 86400;
-    const MAX_PENALTY = 43200;
+    public const FRONT_FEATURED = 'featured';
+    public const FRONT_SUBSCRIBED = 'subscribed';
+    public const FRONT_ALL = 'all';
+    public const FRONT_MODERATED = 'moderated';
+    public const SORT_HOT = 'hot';
+    public const SORT_NEW = 'new';
+    public const SORT_TOP = 'top';
+    public const SORT_CONTROVERSIAL = 'controversial';
+    public const SORT_MOST_COMMENTED = 'most_commented';
+    public const TIME_DAY = 'day';
+    public const TIME_WEEK = 'week';
+    public const TIME_MONTH = 'month';
+    public const TIME_YEAR = 'year';
+    public const TIME_ALL = 'all';
+
+    public const FRONT_PAGE_OPTIONS = [
+        self::FRONT_FEATURED,
+        self::FRONT_SUBSCRIBED,
+        self::FRONT_ALL,
+        self::FRONT_MODERATED,
+    ];
+
+    public const SORT_OPTIONS = [
+        self::SORT_HOT,
+        self::SORT_NEW,
+        self::SORT_TOP,
+        self::SORT_CONTROVERSIAL,
+        self::SORT_MOST_COMMENTED,
+    ];
+
+    public const TIME_OPTIONS = [
+        self::TIME_DAY,
+        self::TIME_WEEK,
+        self::TIME_MONTH,
+        self::TIME_YEAR,
+        self::TIME_ALL,
+    ];
+
+    private const DOWNVOTED_CUTOFF = -5;
+    private const NETSCORE_MULTIPLIER = 1800;
+    private const COMMENT_MULTIPLIER = 5000;
+    private const COMMENT_DOWNVOTED_MULTIPLIER = 500;
+    private const MAX_ADVANTAGE = 86400;
+    private const MAX_PENALTY = 43200;
 
     /**
      * @ORM\Column(type="bigint")

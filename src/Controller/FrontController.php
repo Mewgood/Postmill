@@ -2,29 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\Submission;
 use App\Repository\ForumRepository;
 use App\Repository\SubmissionRepository;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Actions that list submissions across many forums.
- *
- * Notes:
- *
- * - Using the {@link Controller::forward()} method kills performance, so we
- *   call the action methods manually instead.
- *
- * - Security annotations aren't used, since we need to call the action methods
- *   manually.
- *
- * - The subscribed listing is special in that it will show featured forums when
- *   there are no subscriptions. This is because new users won't have any
- *   subscriptions, but 'subscribed' is still the default listing for logged-in
- *   users. To avoid showing them a blank page, we show them the featured forums
- *   instead.
  */
 final class FrontController extends AbstractController {
     /**
@@ -45,29 +32,26 @@ final class FrontController extends AbstractController {
         $this->submissions = $submissions;
     }
 
-    public function front(string $sortBy, Request $request, UserRepository $users): Response {
-        $user = $this->getUser();
+    public function front(string $sortBy = null): Response {
+        if ($this->isGranted('ROLE_USER')) {
+            /* @var \App\Entity\User $user */
+            $user = $this->getUser();
 
-        if (!$user instanceof User) {
-            $listing = User::FRONT_FEATURED;
-        } elseif ($user->getFrontPage() === 'default') {
-            $listing = User::FRONT_SUBSCRIBED;
-        } else {
             $listing = $user->getFrontPage();
+            $sortBy = $sortBy ?? $user->getFrontPageSortMode();
+
+            if (
+                $listing === Submission::FRONT_SUBSCRIBED &&
+                $user->getSubscriptions()->isEmpty()
+            ) {
+                $listing = Submission::FRONT_FEATURED;
+            }
+        } else {
+            $listing = Submission::FRONT_FEATURED;
+            $sortBy = $sortBy ?? Submission::SORT_HOT;
         }
 
-        switch ($listing) {
-        case User::FRONT_SUBSCRIBED:
-            return $this->subscribed($sortBy, $request, $users);
-        case User::FRONT_FEATURED:
-            return $this->featured($sortBy, $request, $users);
-        case User::FRONT_ALL:
-            return $this->all($sortBy, $request, $users);
-        case User::FRONT_MODERATED:
-            return $this->moderated($sortBy, $request);
-        default:
-            throw new \InvalidArgumentException('bad front page selection');
-        }
+        return $this->redirectToRoute($listing, ['sortBy' => $sortBy]);
     }
 
     public function featured(string $sortBy, Request $request, UserRepository $users): Response {
@@ -90,25 +74,24 @@ final class FrontController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("ROLE_USER")
+     */
     public function subscribed(string $sortBy, Request $request, UserRepository $users): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
         $forums = $this->forums->findSubscribedForumNames($this->getUser());
-        $hasSubscriptions = \count($forums) > 0;
 
-        if (!$hasSubscriptions) {
-            $forums = $this->forums->findFeaturedForumNames();
-            $excludedForums = $users->findHiddenForumIdsByUser($this->getUser());
+        if (\count($forums) === 0) {
+            // To avoid showing new users a blank page, we show them the
+            // featured forums instead.
+            return $this->redirectToRoute('featured', ['sortBy' => $sortBy]);
         }
 
         $submissions = $this->submissions->findSubmissions($sortBy, [
             'forums' => array_keys($forums),
-            'excluded_forums' => $excludedForums ?? [],
         ], $request);
 
         return $this->render('front/subscribed.html.twig', [
             'forums' => $forums,
-            'has_subscriptions' => $hasSubscriptions,
             'listing' => 'subscribed',
             'sort_by' => $sortBy,
             'submissions' => $submissions,
@@ -131,9 +114,10 @@ final class FrontController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("ROLE_USER")
+     */
     public function moderated(string $sortBy, Request $request): Response {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
         $forums = $this->forums->findModeratedForumNames($this->getUser());
 
         $submissions = $this->submissions->findSubmissions($sortBy, [

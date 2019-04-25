@@ -2,41 +2,21 @@
 
 {% block page_classes 'subscribed-page' %}
 
-{% block front_alerts %}
-  {% if not has_subscriptions %}
-    <div class="alert alert--notice">
-      <p>{{ 'front.no_subscriptions'|trans }}</p>
-    </div>
-  {% endif %}
-{% endblock %}
-
 {% block sidebar %}
   {{ parent() }}
 
   <section class="sidebar__section sidebar-card">
-    {% if has_subscriptions %}
-      <h1 class="sidebar__title">{{ 'front.subscribed_forums'|trans }}</h1>
-    {% else %}
-      <h1 class="sidebar__title">{{ 'front.featured_forums'|trans }}</h1>
-    {% endif %}
+    <h1 class="sidebar__title">{{ 'front.subscribed_forums'|trans }}</h1>
 
-    {% if forums|length > 0 %}
-      <ul class="unlistify nav nav--guttered nav--slim-gutters">
-        {% for name in forums %}
-          <li>
-            <a href="{{ path('forum', {forum_name: name}) }}"
-               class="button button--secondary button--small">
-              {{- name -}}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="fg-muted">
-        <small class="text-sm">
-          {{- 'front.no_forums'|trans -}}
-        </small>
-      </p>
-    {% endif %}
+    <ul class="unlistify nav nav--guttered nav--slim-gutters">
+      {% for name in forums %}
+        <li>
+          <a href="{{ path('forum', {forum_name: name}) }}"
+             class="button button--secondary button--small">
+            {{- name -}}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
   </section>
 {% endblock %}

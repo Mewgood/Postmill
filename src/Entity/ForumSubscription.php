@@ -22,7 +22,7 @@ class ForumSubscription {
 
     /**
      * @ORM\JoinColumn(name="user_id", nullable=false)
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="subscriptions")
      *
      * @var User
      */

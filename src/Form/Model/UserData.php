@@ -2,6 +2,7 @@
 
 namespace App\Form\Model;
 
+use App\Entity\Submission;
 use App\Entity\Theme;
 use App\Entity\User;
 use App\Validator\Constraints\Unique;
@@ -51,10 +52,16 @@ class UserData implements UserInterface {
     private $locale;
 
     /**
-     * @Assert\Choice(User::FRONT_PAGE_CHOICES, groups={"settings"}, strict=true)
+     * @Assert\Choice(Submission::FRONT_PAGE_OPTIONS, groups={"settings"}, strict=true)
      * @Assert\NotBlank(groups={"settings"})
      */
     private $frontPage;
+
+    /**
+     * @Assert\Choice({Submission::SORT_HOT, Submission::SORT_NEW}, groups={"settings"}, strict=true)
+     * @Assert\NotBlank(groups={"settings"})
+     */
+    private $frontPageSortMode;
 
     private $showCustomStylesheets;
 
@@ -98,6 +105,7 @@ class UserData implements UserInterface {
         $self->email = $user->getEmail();
         $self->locale = $user->getLocale();
         $self->frontPage = $user->getFrontPage();
+        $self->frontPageSortMode = $user->getFrontPageSortMode();
         $self->showCustomStylesheets = $user->isShowCustomStylesheets();
         $self->preferredTheme = $user->getPreferredTheme();
         $self->openExternalLinksInNewTab = $user->openExternalLinksInNewTab();
@@ -123,6 +131,7 @@ class UserData implements UserInterface {
         $user->setEmail($this->email);
         $user->setLocale($this->locale);
         $user->setFrontPage($this->frontPage);
+        $user->setFrontPageSortMode($this->frontPageSortMode);
         $user->setShowCustomStylesheets($this->showCustomStylesheets);
         $user->setPreferredTheme($this->preferredTheme);
         $user->setOpenExternalLinksInNewTab($this->openExternalLinksInNewTab);
@@ -145,6 +154,7 @@ class UserData implements UserInterface {
         $settings = [
             'showCustomStylesheets',
             'frontPage',
+            'frontPageSortMode',
             'locale',
             'preferredTheme',
             'openExternalLinksInNewTab',
@@ -223,6 +233,14 @@ class UserData implements UserInterface {
 
     public function setFrontPage($frontPage) {
         $this->frontPage = $frontPage;
+    }
+
+    public function getFrontPageSortMode() {
+        return $this->frontPageSortMode;
+    }
+
+    public function setFrontPageSortMode($frontPageSortMode) {
+        $this->frontPageSortMode = $frontPageSortMode;
     }
 
     public function getShowCustomStylesheets() {

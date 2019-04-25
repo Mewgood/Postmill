@@ -15,7 +15,21 @@
 
       {{ form_row(form.locale) }}
 
-      {{ form_row(form.front_page) }}
+      <div>
+        {{ form_errors(form.frontPage) }}
+
+        <div class="form-row form-row--single-line">
+          {{ form_label(form.frontPage, null, {
+            show_required_indicator: false,
+            label_attr: { for: form.frontPage.filterBy.vars.id },
+          }) }}
+
+          <span class="compound-form-widget">
+            {{ form_widget(form.frontPage.filterBy, { attr: { 'aria-label': 'label.filter_by'|trans } }) }}
+            {{ form_widget(form.frontPage.sortBy, { attr: { 'aria-label': 'label.sort_by'|trans } }) }}
+          </span>
+        </div>
+      </div>
 
       {{ form_row(form.openExternalLinksInNewTab) }}
 
@@ -55,9 +69,6 @@
       }) }}
 
       {{ form_row(form.showCustomStylesheets) }}
-
-      {# waiting to be reused #}
-      {#{{ form_row(form.show_custom_stylesheets) }}#}
     </fieldset>
 
     <div class="form__row form__button-row">
