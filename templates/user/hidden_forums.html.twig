@@ -42,7 +42,7 @@
           <td class="table__shrink">
             <form action="{{ path('unhide_forum', {username: user.username, forum: forum.id}) }}" method="POST">
               <input type="hidden" name="token" value="{{ csrf_token('hide_forum') }}">
-              <button class="button button--inline">{{ 'action.delete'|trans }}</button>
+              <button class="button button--small inline">{{ 'action.delete'|trans }}</button>
             </form>
           </td>
         </tr>

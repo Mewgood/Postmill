@@ -52,11 +52,11 @@
           {% if is_granted('moderator', forum) %}
             <td class="table__shrink">
               <a href="{{ path('forum_ban_history', {forum_name: forum.name, username: ban.user.username}) }}"
-                 class="button button--inline">
+                 class="button button--small inline">
                 {{- 'nav.ban_history'|trans -}}
               </a>
               <a href="{{ path('forum_unban', {forum_name: forum.name, username: ban.user.username}) }}"
-                 class="button button--inline">
+                 class="button button--small inline">
                 {{- 'action.unban'|trans -}}
               </a>
             </td>

@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block sidebar %}
-  <section class="sidebar__section sidebar-card sidebar__section--wiki-info">
+  <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title">{{ page.path }}</h1>
       <p>
         {{- 'wiki.last_edited'|trans({
@@ -49,7 +49,7 @@
             <li>
               <form action="{{ path(page.locked ? 'wiki_unlock' : 'wiki_lock', {path: page.path}) }}" method="post">
                 <input type="hidden" name="token" value="{{ csrf_token('wiki_lock') }}">
-                <button class="button button--inline">{{ (page.locked ? 'action.unlock' : 'action.lock')|trans }}</button>
+                <button class="button button--small">{{ (page.locked ? 'action.unlock' : 'action.lock')|trans }}</button>
               </form>
             </li>
           {% endif %}
@@ -58,7 +58,7 @@
             <li>
               <form action="{{ path('wiki_delete', { path: page.path }) }}" method="post">
                 <input type="hidden" name="token" value="{{ csrf_token('wiki_delete') }}">
-                <button class="button button--inline js-confirm-wiki-delete">{{ 'action.delete'|trans }}</button>
+                <button class="button button--small js-confirm-wiki-delete">{{ 'action.delete'|trans }}</button>
               </form>
             </li>
           {% endif %}
@@ -67,7 +67,7 @@
     {% endif %}
   </section>
 
-  <section class="sidebar__section sidebar-card sidebar__section--wiki-toolbox">
+  <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
 
     <ul class="unlistify sidebar__no-padding">
@@ -78,7 +78,7 @@
     </ul>
   </section>
 
-  <section class="sidebar__section sidebar-card sidebar__section--wiki-navigation">
+  <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title">{{ 'wiki.navigation'|trans }}</h1>
 
     <ul class="unlistify sidebar__no-padding">

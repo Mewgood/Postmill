@@ -69,7 +69,7 @@
   {% endif %}
 
   {% if toolbox_items %}
-    <section class="sidebar__section sidebar-card sidebar__section--user-toolbox">
+    <section class="sidebar__section sidebar-card">
       <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
       <ul class="unlistify sidebar__no-padding">
         {% for item in toolbox_items %}
@@ -80,7 +80,7 @@
   {% endif %}
 
   {% if is_granted('ROLE_ADMIN') %}
-    <section class="sidebar__section sidebar-card sidebar__section--user-roles">
+    <section class="sidebar__section sidebar-card">
       <h1 class="sidebar__title">{{ 'heading.user_roles'|trans }}</h1>
       <form action="{{ path(user.trusted ? 'mark_user_untrusted' : 'mark_user_trusted', {username: user.username}) }}" method="post" class="form">
         <input type="hidden" name="token" value="{{ csrf_token('mark_trusted') }}">
@@ -92,11 +92,17 @@
   {% endif %}
 
   {% if user.moderatorTokens|length > 0 %}
-    <section class="sidebar__section sidebar-card sidebar__section--user-moderator-info">
+    <section class="sidebar__section sidebar-card">
       <h1 class="sidebar__title break-text">{{ 'user.moderates'|trans({'%username%': user.username}) }}</h1>
-      <ul class="unlistify sidebar__no-padding">
+
+      <ul class="unlistify nav nav--guttered nav--slim-gutters">
         {% for token in user.moderatorTokens %}
-          <li><a href="{{ path('forum', {forum_name: token.forum.name}) }}" class="menu-item">{{ token.forum.name }}</a></li>
+          <li>
+            <a href="{{ path('forum', {forum_name: token.forum.name}) }}"
+               class="button button--secondary button--small">
+              {{- token.forum.name -}}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     </section>

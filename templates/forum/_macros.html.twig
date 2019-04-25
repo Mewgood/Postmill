@@ -2,7 +2,7 @@
   {%- set subscriber_count = subscriber_count ?? forum.subscriptions|length -%}
   {%- from '_macros/icon.html.twig' import icon -%}
   {%- from _self import subscribe_button, _subscribe_button_inner -%}
-  <button class="button {{ inline ? 'button--inline' }} subscribe-button subscribe-button--{{ subscribed ? 'un' }}subscribe"
+  <button class="button {{ inline ? 'button--small inline' }} subscribe-button subscribe-button--{{ subscribed ? 'un' }}subscribe"
           data-toggle-prototype="{{ _subscribe_button_inner(not subscribed, subscriber_count + (subscribed ? -1 : 1))|e }}">
     {{- _subscribe_button_inner(subscribed, subscriber_count) -}}
   </button>

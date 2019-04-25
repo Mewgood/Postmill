@@ -45,7 +45,7 @@
           {% if is_granted('remove', moderator) %}
             <form action="{{ path('remove_moderator', {forum_name: forum.name, moderator_id: moderator.id}) }}" method="post">
               <input type="hidden" name="token" value="{{ csrf_token('remove_moderator') }}">
-              <button class="button button--inline">{{ 'action.remove'|trans }}</button>
+              <button class="button button--small inline">{{ 'action.remove'|trans }}</button>
             </form>
           {% endif %}
         </td>

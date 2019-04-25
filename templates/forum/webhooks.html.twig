@@ -37,7 +37,7 @@
               <td><kbd>{{ webhook.url }}</kbd></td>
               <td class="table__shrink">
                 <a href="{{ path('forum_edit_webhook', {forum_name: forum.name, webhook_id: webhook.id}) }}"
-                   class="button button--inline">{{ 'action.edit'|trans }}</a>
+                   class="button button--small inline">{{ 'action.edit'|trans }}</a>
               </td>
             </tr>
           {% endfor %}

@@ -13,7 +13,7 @@
 {% block sidebar %}
   {{ parent() }}
 
-  <section class="sidebar__section sidebar-card sidebar__section--front-forums">
+  <section class="sidebar__section sidebar-card">
     {% if has_subscriptions %}
       <h1 class="sidebar__title">{{ 'front.subscribed_forums'|trans }}</h1>
     {% else %}
@@ -21,13 +21,22 @@
     {% endif %}
 
     {% if forums|length > 0 %}
-      <ul class="unlistify sidebar__no-padding">
+      <ul class="unlistify nav nav--guttered nav--slim-gutters">
         {% for name in forums %}
-          <li><a href="{{ path('forum', {forum_name: name}) }}" class="menu-item">{{ name }}</a></li>
+          <li>
+            <a href="{{ path('forum', {forum_name: name}) }}"
+               class="button button--secondary button--small">
+              {{- name -}}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     {% else %}
-      <p>{{ 'front.no_forums'|trans }}</p>
+      <p class="fg-muted">
+        <small class="text-sm">
+          {{- 'front.no_forums'|trans -}}
+        </small>
+      </p>
     {% endif %}
   </section>
 {% endblock %}
