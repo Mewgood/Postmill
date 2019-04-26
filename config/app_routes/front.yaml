@@ -1,12 +1,8 @@
 front:
     controller: App\Controller\FrontController::front
-    path: /
-    methods: [GET]
-
-front_sort_index:
-    controller: App\Controller\FrontController::front
-    methods: [GET]
+    defaults: { sortBy: ~ }
     path: /{sortBy}
+    methods: [GET]
     requirements: { sortBy: "%submission_sort_modes%" }
 
 featured:

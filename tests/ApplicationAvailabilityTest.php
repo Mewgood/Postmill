@@ -72,6 +72,12 @@ class ApplicationAvailabilityTest extends WebTestCase {
      * database.
      */
     public function publicUrlProvider() {
+        yield ['/'];
+        yield ['/hot'];
+        yield ['/new'];
+        yield ['/top'];
+        yield ['/controversial'];
+        yield ['/most_commented'];
         yield ['/all/hot'];
         yield ['/all/new'];
         yield ['/all/top'];
@@ -118,12 +124,6 @@ class ApplicationAvailabilityTest extends WebTestCase {
     }
 
     public function redirectUrlProvider() {
-        yield ['/featured', '/'];
-        yield ['/featured', '/hot'];
-        yield ['/featured/new', '/new'];
-        yield ['/featured/top', '/top'];
-        yield ['/featured/controversial', '/controversial'];
-        yield ['/featured/most_commented', '/most_commented'];
         yield ['/f/news', '/f/NeWs/hot'];
         yield ['/f/news/new', '/f/NeWs/new'];
         yield ['/f/news/top', '/f/NeWs/top'];

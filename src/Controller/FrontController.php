@@ -24,15 +24,22 @@ final class FrontController extends AbstractController {
      */
     private $submissions;
 
+    /**
+     * @var UserRepository
+     */
+    private $users;
+
     public function __construct(
         ForumRepository $forums,
-        SubmissionRepository $submissions
+        SubmissionRepository $submissions,
+        UserRepository $users
     ) {
         $this->forums = $forums;
         $this->submissions = $submissions;
+        $this->users = $users;
     }
 
-    public function front(string $sortBy = null): Response {
+    public function front(string $sortBy = null, Request $request): Response {
         if ($this->isGranted('ROLE_USER')) {
             /* @var \App\Entity\User $user */
             $user = $this->getUser();
@@ -51,14 +58,14 @@ final class FrontController extends AbstractController {
             $sortBy = $sortBy ?? Submission::SORT_HOT;
         }
 
-        return $this->redirectToRoute($listing, ['sortBy' => $sortBy]);
+        return [$this, $listing]($sortBy, $request);
     }
 
-    public function featured(string $sortBy, Request $request, UserRepository $users): Response {
+    public function featured(string $sortBy, Request $request): Response {
         $forums = $this->forums->findFeaturedForumNames();
 
         if ($this->isGranted('ROLE_USER')) {
-            $excludedForums = $users->findHiddenForumIdsByUser($this->getUser());
+            $excludedForums = $this->users->findHiddenForumIdsByUser($this->getUser());
         }
 
         $submissions = $this->submissions->findSubmissions($sortBy, [
@@ -77,7 +84,7 @@ final class FrontController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function subscribed(string $sortBy, Request $request, UserRepository $users): Response {
+    public function subscribed(string $sortBy, Request $request): Response {
         $forums = $this->forums->findSubscribedForumNames($this->getUser());
 
         if (\count($forums) === 0) {
@@ -98,9 +105,9 @@ final class FrontController extends AbstractController {
         ]);
     }
 
-    public function all(string $sortBy, Request $request, UserRepository $users): Response {
+    public function all(string $sortBy, Request $request): Response {
         if ($this->isGranted('ROLE_USER')) {
-            $excludedForums = $users->findHiddenForumIdsByUser($this->getUser());
+            $excludedForums = $this->users->findHiddenForumIdsByUser($this->getUser());
         }
 
         $submissions = $this->submissions->findSubmissions($sortBy, [
