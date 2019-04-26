@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'wiki/base.html.twig' %}
 {% from '_macros/icon.html.twig' import icon %}
 
 {% block title %}
@@ -11,6 +11,7 @@
 
 {% block site_nav_active 'places' %}
 {% block site_nav_main_menu_active 'wiki' %}
+{% block wiki_page_toolbox_active app.request.attributes.get('_route') %}
 
 {% block body %}
   <article class="wiki-article">
@@ -72,20 +73,24 @@
 
     <ul class="unlistify sidebar__no-padding">
       {% if is_granted('write', page) %}
-        <li><a href="{{ path('wiki_edit', {path: page.path}) }}" class="menu-item">{{ 'wiki.edit_page'|trans }}</a></li>
+        <li>
+          <a href="{{ path('wiki_edit', {path: page.path}) }}"
+             class="menu-item {{ block('wiki_page_toolbox_active') == 'wiki_edit' ? 'menu-item--active' }}">
+            {{ 'wiki.edit_page'|trans }}
+          </a>
+        </li>
       {% endif %}
-      <li><a href="{{ path('wiki_history', {path: page.path}) }}" class="menu-item">{{ 'wiki.page_history'|trans }}</a></li>
+
+      <li>
+        <a href="{{ path('wiki_history', {path: page.path}) }}"
+           class="menu-item {{ block('wiki_page_toolbox_active') == 'wiki_history' ? 'menu-item--active' }}">
+          {{- 'wiki.page_history'|trans -}}
+        </a>
+      </li>
     </ul>
   </section>
 
-  <section class="sidebar__section sidebar-card">
-    <h1 class="sidebar__title">{{ 'wiki.navigation'|trans }}</h1>
-
-    <ul class="unlistify sidebar__no-padding">
-      <li><a href="{{ path('wiki_all') }}" class="menu-item">{{ 'wiki.all_pages'|trans }}</a></li>
-      <li><a href="{{ path('wiki_recent_changes') }}" class="menu-item">{{ 'label.recent_changes'|trans }}</a></li>
-    </ul>
-  </section>
+  {{ parent() }}
 {% endblock %}
 
 {% block _last_edited_time %}

@@ -33,8 +33,8 @@
   --fg-green: #080;
   --fg-blue: #08f;
   --fg-grey: #988;
-  --border: #aaa;
-  --border-light: #ddd;
+  --border: #f88;
+  --border-light: #fdd;
 
   --card-bg: var(--bg-content);
   --card-shadow: 0 0 4px 4px #f00;

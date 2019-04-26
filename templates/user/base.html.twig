@@ -4,6 +4,8 @@
 
 {% block site_nav_active app.user is same as(user) ? 'user' %}
 
+{% block user_toolbox_active app.request.attributes.get('_route') %}
+
 {% block sidebar %}
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title no-margin break-text">
@@ -22,61 +24,56 @@
     {% endif %}
   </section>
 
-  {% set toolbox_items = [] %}
+  {% set toolbox_items = {
+    ('user.message'|trans): {
+      route: 'compose_message',
+      condition: is_granted('ROLE_USER') and user is not same as(app.user) and is_granted('message', user),
+    },
+    ('nav.block_user'|trans): {
+      route: 'block_user',
+      condition: is_granted('ROLE_USER') and user is not same as(app.user) and not app.user.isBlocking(user),
+    },
+    ('action.ban'|trans): {
+      route: 'ban_user',
+      condition: is_granted('ROLE_ADMIN') and user is not same as(app.user) and not user.banned,
+    },
+    ('action.unban'|trans): {
+      route: 'unban_user',
+      condition: is_granted('ROLE_ADMIN') and user is not same as(app.user) and user.banned,
+    },
+    ('nav.forum_bans'|trans): {
+      route: 'user_forum_bans',
+      condition: is_granted('ROLE_ADMIN')
+    },
+    ('nav.edit_biography'|trans): {
+      route: 'edit_biography',
+      condition: is_granted('ROLE_USER') and user is same as(app.user)
+    },
+    ('nav.hidden_forums'|trans): {
+      route: 'hidden_forums',
+      condition: is_granted('ROLE_USER') and user is same as(app.user)
+    }
+  } %}
 
-  {% if is_granted('ROLE_USER') and user is not same as(app.user) %}
-    {% if is_granted('message', user)  %}
-      {% set item %}
-        <li><a href="{{ path('compose_message', {username: user.username}) }}" class="menu-item">{{ 'user.message'|trans }}</a></li>
-      {% endset %}
-      {% set toolbox_items = toolbox_items|merge([item]) %}
+  {% set open = false %}
+  {% for label in toolbox_items|keys|sort if toolbox_items[label].condition %}
+    {% if loop.first %}
+      {% set open = true %}
+      <section class="sidebar__section sidebar-card">
+        <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
+        <ul class="unlistify sidebar__no-padding">
     {% endif %}
-
-    {% if not app.user.isBlocking(user) %}
-      {% set item %}
-        <li><a href="{{ path('block_user', {username: user.username}) }}" class="menu-item">{{ 'nav.block_user'|trans }}</a></li>
-      {% endset %}
-      {% set toolbox_items = toolbox_items|merge([item]) %}
-    {% endif %}
-
-    {% if is_granted('ROLE_ADMIN') %}
-      {% set item %}
-        {% if not user.banned %}
-          <li><a href="{{ path('ban_user', {username: user.username}) }}" class="menu-item">{{ 'action.ban'|trans }}</a></li>
-        {% else %}
-          <li><a href="{{ path('unban_user', {username: user.username}) }}" class="menu-item">{{ 'action.unban'|trans }}</a></li>
-        {% endif %}
-      {% endset %}
-      {% set toolbox_items = toolbox_items|merge([item]) %}
-
-      {% set item %}
-        <li><a href="{{ path('user_forum_bans', {username: user.username}) }}" class="menu-item">{{ 'nav.forum_bans'|trans }}</a></li>
-      {% endset %}
-      {% set toolbox_items = toolbox_items|merge([item]) %}
-    {% endif %}
-  {% endif %}
-
-  {% if user is same as(app.user) %}
-    {% set item %}
-      <li><a href="{{ path('edit_biography', {username: user.username}) }}" class="menu-item">{{ 'nav.edit_biography'|trans }}</a></li>
-    {% endset %}
-    {% set toolbox_items = toolbox_items|merge([item]) %}
-
-    {% set item %}
-      <li><a href="{{ path('hidden_forums', {username: user.username}) }}" class="menu-item">{{ 'nav.hidden_forums'|trans }}</a></li>
-    {% endset %}
-    {% set toolbox_items = toolbox_items|merge([item]) %}
-  {% endif %}
-
-  {% if toolbox_items %}
-    <section class="sidebar__section sidebar-card">
-      <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
-      <ul class="unlistify sidebar__no-padding">
-        {% for item in toolbox_items %}
-          {{ item }}
-        {% endfor %}
-      </ul>
-    </section>
+    {% set item = toolbox_items[label] %}
+    <li>
+      <a href="{{ path(item.route, { username: user.username }) }}"
+         class="menu-item {{ block('user_toolbox_active') == item.route ? 'menu-item--active' }}">
+        {{- label -}}
+      </a>
+    </li>
+  {% endfor %}
+  {% if open %}
+        </ul>
+      </section>
   {% endif %}
 
   {% if is_granted('ROLE_ADMIN') %}

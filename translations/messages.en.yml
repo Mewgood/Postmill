@@ -325,6 +325,7 @@ label:
     participants: Participants
     preferred_fonts: Preferred font(s)
     remember_me: Keep me logged in
+    body: Body
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'

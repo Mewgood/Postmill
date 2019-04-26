@@ -193,10 +193,15 @@ final class WikiController extends AbstractController {
             return $revision;
         }, ['from', 'to']);
 
+        if ($from->getPage() !== $to->getPage()) {
+            throw $this->createNotFoundException('Tried to compare two different pages');
+        }
+
         return $this->render('wiki/diff.html.twig', [
             'diff' => Differ::diff($from->getBody(), $to->getBody()),
             'from' => $from,
             'to' => $to,
+            'page' => $from->getPage(),
         ]);
     }
 

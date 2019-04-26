@@ -304,8 +304,8 @@ final class UserController extends AbstractController {
         }
 
         return $this->render('user/block.html.twig', [
-            'blockee' => $blockee,
             'form' => $form->createView(),
+            'user' => $blockee,
         ]);
     }
 

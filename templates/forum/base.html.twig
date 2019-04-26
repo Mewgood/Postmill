@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block forum_toolbox_active app.request.attributes.get('_route') %}
+
 {% block head %}
   <link rel="alternate" type="application/atom+xml" href="{{ path('forum_feed', {forum_name: forum.name}) }}" title="{{ forum.name }}">
 {% endblock %}
@@ -63,59 +65,46 @@
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
 
-    {# sorted nav items #}
-    {% with { items: {} } %}
-      {% set item %}
-        <li><a href="{{ path('forum_bans', {forum_name: forum.name}) }}" class="menu-item">{{ 'nav.bans'|trans }}</a></li>
-      {% endset %}
-      {% set items = items|merge({('nav.bans'|trans): item}) %}
+    {% set toolbox_items = {
+      ('nav.bans'|trans): {
+        route: 'forum_bans',
+      },
+      ('nav.moderation_log'|trans): {
+        route: 'moderation_log',
+      },
+      ('forum.edit'|trans): {
+        route: 'edit_forum',
+        condition: is_granted('moderator', forum),
+      },
+      ('nav.appearance'|trans): {
+        route: 'forum_appearance',
+        condition: is_granted('moderator', forum),
+      },
+      ('nav.webhooks'|trans): {
+        route: 'forum_webhooks',
+        condition: app_webhooks_enabled() and is_granted('moderator', forum),
+      },
+      ('forum.add_moderator'|trans): {
+        route: 'add_moderator',
+        condition: is_granted('ROLE_ADMIN'),
+      },
+      ('nav.delete_forum'|trans): {
+        route: 'delete_forum',
+        condition: is_granted('ROLE_ADMIN'),
+      },
+    } %}
 
-      {% set item %}
-        <li><a href="{{ path('moderation_log', {forum_name: forum.name}) }}" class="menu-item">{{ 'nav.moderation_log'|trans }}</a></li>
-      {% endset %}
-      {% set items = items|merge({('nav.moderation_log'|trans): item}) %}
-
-      {% if is_granted('moderator', forum) %}
-        {% set item %}
-          <li><a href="{{ path('edit_forum', {forum_name: forum.name}) }}" class="menu-item">{{ 'forum.edit'|trans }}</a></li>
-        {% endset %}
-        {% set items = items|merge({('forum.edit'|trans): item}) %}
-
-        {% set item %}
-          <li><a href="{{ path('forum_appearance', {forum_name: forum.name}) }}" class="menu-item">{{ 'nav.appearance'|trans }}</a></li>
-        {% endset %}
-        {% set items = items|merge({('nav.appearance'|trans): item}) %}
-
-        {% if app_webhooks_enabled() %}
-          {% set item %}
-            <li><a href="{{ path('forum_webhooks', {forum_name: forum.name}) }}" class="menu-item">{{ 'nav.webhooks'|trans }}</a></li>
-          {% endset %}
-          {% set items = items|merge({('nav.webhooks'|trans): item}) %}
-        {% endif %}
-      {% endif %}
-
-      {% if is_granted('ROLE_ADMIN') %}
-        {% set item %}
-          <li><a href="{{ path('add_moderator', {forum_name: forum.name}) }}" class="menu-item">{{ 'forum.add_moderator'|trans }}</a></li>
-        {% endset %}
-        {% set items = items|merge({('forum.add_moderator'|trans): item}) %}
-
-        {% set item %}
-          <li>
-            <a href="{{ path('delete_forum', {forum_name: forum.name}) }}" class="menu-item">
-              {{- 'nav.delete_forum'|trans -}}
-            </a>
-          </li>
-        {% endset %}
-        {% set items = items|merge({('nav.delete_forum'|trans): item}) %}
-      {% endif %}
-
-      <ul class="unlistify sidebar__no-padding">
-        {% for key in items|keys|sort %}
-          {{ items[key] }}
-        {% endfor %}
-      </ul>
-    {% endwith %}
+    <ul class="unlistify sidebar__no-padding">
+      {% for label in toolbox_items|keys|sort if toolbox_items[label].condition ?? true %}
+        {% set item = toolbox_items[label] %}
+        <li>
+          <a href="{{ path(item.route, { forum_name: forum.name }) }}"
+             class="menu-item {{ block('forum_toolbox_active') == item.route ? 'menu-item--active' }}">
+            {{- label -}}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
   </section>
 
   {% if forum.moderators|length > 0 %}
