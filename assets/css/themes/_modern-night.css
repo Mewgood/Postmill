@@ -1,9 +1,13 @@
 :root {
-  --link: var(--primary);
   --primary-fg: #fff;
   --accent: #424242;
   --accent-alt: #525252;
   --accent-fg: #fff;
+
+  --link: var(--primary);
+  --submission-link: #fff;
+  --submission-link-visited: var(--text-muted);
+  --submission-link-sticky: var(--fg-green);
 
   --bg-page: #000;
   --bg-content: #161616;
