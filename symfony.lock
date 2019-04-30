@@ -1,4 +1,7 @@
 {
+    "aws/aws-sdk-php": {
+        "version": "3.92.5"
+    },
     "composer/ca-bundle": {
         "version": "1.1.0"
     },
@@ -164,6 +167,9 @@
     "league/flysystem": {
         "version": "1.0.41"
     },
+    "league/flysystem-aws-s3-v3": {
+        "version": "1.0.22"
+    },
     "liip/imagine-bundle": {
         "version": "1.8",
         "recipe": {
@@ -175,6 +181,9 @@
     },
     "monolog/monolog": {
         "version": "1.23.0"
+    },
+    "mtdowling/jmespath.php": {
+        "version": "2.4.0"
     },
     "nelmio/security-bundle": {
         "version": "2.4",
@@ -193,9 +202,6 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
-    },
-    "oneup/flysystem-bundle": {
-        "version": "3.0.0"
     },
     "pagerfanta/pagerfanta": {
         "version": "v1.0.5"

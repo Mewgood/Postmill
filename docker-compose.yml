@@ -1,6 +1,8 @@
 version: '3'
 
 volumes:
+    minio_data:
+        driver: local
     postgres_data:
         driver: local
 
@@ -24,6 +26,7 @@ services:
             - DATABASE_URL=pgsql://postgres@db/postgres?serverVersion=11
         links:
             - db
+            - s3
         volumes:
             - ./.git:/app/.git:ro
             - ./:/app
@@ -33,3 +36,13 @@ services:
         volumes:
             - ./.git:/app/.git:ro
             - ./:/app:rw
+    s3:
+        command: server /data/minio
+        image: minio/minio
+        ports:
+            - 9000:9000
+        volumes:
+            - minio_data:/data
+        environment:
+            MINIO_ACCESS_KEY: minio
+            MINIO_SECRET_KEY: minio123

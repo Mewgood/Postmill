@@ -10,7 +10,7 @@
   <meta property="og:title" content="{{ submission.title }}">
   <meta property="og:type" content="article">
   <meta property="og:url" content="{{ url('submission', {forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify}) }}">
-  <meta property="og:image" content="{{ absolute_url(asset(submission.image ? 'submission_images/%s'|format(submission.image) : 'apple-touch-icon-precomposed.png')) }}">
+  <meta property="og:image" content="{{ submission.image ? upload_url('submission_images/'~submission.image) : absolute_url(asset('apple-touch-icon-precomposed.png')) }}">
   <meta property="og:article:published_time" content="{{ submission.timestamp|date('c') }}">
   <meta property="og:article:author" content="{{ submission.user.username }}">
 

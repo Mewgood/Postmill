@@ -26,6 +26,7 @@ services:
             $themesConfig: "%themes_config%"
             $secret: "%env(APP_SECRET)%"
             $siteName: "%env(SITE_NAME)%"
+            $uploadRoot: "%env(resolve:UPLOAD_ROOT)%"
         public: false
 
     # makes classes in src/ available to be used as services
@@ -59,7 +60,7 @@ services:
 
     App\EventListener\SubmissionImageListener:
         $client: "@eight_points_guzzle.client.submission_image_client"
-        $filesystem: "@oneup_flysystem.submission_images_filesystem"
+        $filesystem: "@postmill.submission_images"
 
     App\EventListener\WebhookListener:
         $client: "@eight_points_guzzle.client.webhook_client"

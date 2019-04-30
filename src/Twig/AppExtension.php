@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -10,6 +11,11 @@ use Twig\TwigFunction;
  * functions.
  */
 final class AppExtension extends AbstractExtension {
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
     /**
      * @var string
      */
@@ -37,20 +43,29 @@ final class AppExtension extends AbstractExtension {
 
     private $themesConfig;
 
+    /**
+     * @var string
+     */
+    private $uploadRoot;
+
     public function __construct(
+        RequestStack $requestStack,
         string $siteName,
         ?string $branch,
         ?string $version,
         bool $enableWebhooks,
         array $fontsConfig,
-        array $themesConfig
+        array $themesConfig,
+        string $uploadRoot
     ) {
+        $this->requestStack = $requestStack;
         $this->siteName = $siteName;
         $this->branch = $branch;
         $this->version = $version;
         $this->enableWebhooks = $enableWebhooks;
         $this->fontsConfig = $fontsConfig;
         $this->themesConfig = $themesConfig;
+        $this->uploadRoot = $uploadRoot;
     }
 
     public function getFunctions(): array {
@@ -91,6 +106,17 @@ final class AppExtension extends AbstractExtension {
                 $config = $this->themesConfig[\strtolower($name)];
 
                 return $config['entrypoint'][$nightMode ? 'night' : 'day'] ?? $config['entrypoint'];
+            }),
+            new TwigFunction('upload_url', function (string $path) {
+                $path = \rtrim($this->uploadRoot, '/').'/'.$path;
+
+                if (\strpos($path, '//') === false) {
+                    $request = $this->requestStack->getCurrentRequest();
+
+                    $path = $request->getSchemeAndHttpHost().$path;
+                }
+
+                return $path;
             }),
         ];
     }
