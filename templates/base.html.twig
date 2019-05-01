@@ -27,8 +27,7 @@
 
   <body class="{% block page_classes '' %}
       {{ app.user ? 'user-logged-in' : 'user-anonymous' }}
-      {{ (app.user.nightMode ?? false) ? 'night-mode' }}
-      {{ (app.user.enablePostPreviews ?? true) ? 'js-enable-post-previews' }}">
+      {{ (app.user.nightMode ?? false) ? 'night-mode' }}">
     {% block site_alerts %}
       <div class="site-alerts">
         {%- for type, notices in app.flashes -%}

@@ -78,15 +78,15 @@
 {% endblock %}
 
 {% block _preferred_fonts_help %}
-  <p>{{ 'help.preferred_fonts'|trans }}</p>
-  <p>
+  <p class="fg-muted text-sm">{{ 'help.preferred_fonts'|trans }}</p>
+  <p class="fg-muted text-sm">
     {{ 'help.preferred_fonts_served'|trans }}
     {%- for font in font_list() if font_names(font) == [font] %}
       {{- loop.index != 1 ? ', ' -}}
       <strong>{{ font|capitalize }}</strong>
     {%- endfor %}
   </p>
-  <p>
+  <p class="fg-muted text-sm">
     {{ 'help.preferred_fonts_aliases'|trans }}
     {%- for font in font_list() if font_names(font) != [font] %}
       {{- loop.index != 1 ? ', ' -}}

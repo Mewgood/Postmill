@@ -61,7 +61,9 @@ final class CommentController extends AbstractController {
             $routeParams['comment_id'] = $commentId;
         }
 
-        $form = $this->createForm(CommentType::class, null, [
+        $name = $this->getFormName($submissionId, $commentId);
+
+        $form = $this->createNamedForm($name, CommentType::class, null, [
             'action' => $this->generateUrl('comment_post', $routeParams),
             'forum' => $forumRepository->findOneByCaseInsensitiveName($forumName),
         ]);
@@ -93,9 +95,12 @@ final class CommentController extends AbstractController {
         Request $request,
         EventDispatcherInterface $dispatcher
     ) {
+        $name = $this->getFormName($submission, $comment);
         $data = new CommentData($submission);
 
-        $form = $this->createForm(CommentType::class, $data, ['forum' => $forum]);
+        $form = $this->createNamedForm($name, CommentType::class, $data, [
+            'forum' => $forum,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -289,5 +294,14 @@ final class CommentController extends AbstractController {
             'submission_id' => $comment->getSubmission()->getId(),
             'slug' => Slugger::slugify($comment->getSubmission()->getTitle()),
         ]);
+    }
+
+    private function getFormName($submission, $comment): string {
+        $submissionId = $submission instanceof Submission ? $submission->getId() : $submission;
+        $commentId = $comment instanceof Comment ? $comment->getId() : $comment;
+
+        return isset($commentId)
+            ? 'reply_to_comment_'.$commentId
+            : 'reply_to_submission_'.$submissionId;
     }
 }

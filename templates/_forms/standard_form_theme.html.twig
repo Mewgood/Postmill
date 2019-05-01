@@ -90,12 +90,12 @@
 
 {%- block form_row -%}
   {%- if help is not empty -%}
-    {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- set widget_attr = (widget_attr ?? {})|merge({ attr: { 'aria-describedby': id~"_help" } }) -%}
   {%- endif -%}
   {{- form_errors(form) -}}
   <div class="form-row form__row">
-    {{- form_label(form) -}}
-    {{- form_widget(form, widget_attr ?? {}) -}}
+    {{- form_label(form, null, label_attr ?? {}) -}}
+    {{- form_widget(form, attr|merge(widget_attr ?? {})) -}}
   </div>
   {{- form_help(form) -}}
 {%- endblock form_row -%}
@@ -109,23 +109,6 @@
     </ul>
   {%- endif -%}
 {%- endblock form_errors -%}
-
-{%- block markdown_row -%}
-  {%- set attr = attr|merge({'class': (attr.class ?? '')~' markdown-input__input'}) -%}
-  <div class="form__row form__row--markdown markdown-input">
-    {{- form_label(form) -}}
-    {{- form_errors(form) -}}
-    {{- block('textarea_widget') -}}
-    <p class="no-margin text-align-right">
-      {#- TODO: don't link to an external site -#}
-      <a href="http://commonmark.org/help/" target="_blank" class="text-sm">
-        {{- 'markdown_type.help'|trans -}}
-      </a>
-    </p>
-    <div class="markdown-input__preview-container"></div>
-  </div>
-  {{- form_help(form) -}}
-{%- endblock markdown_row -%}
 
 {# labels #}
 

@@ -33,8 +33,8 @@ class UserControllerTest extends WebTestCase {
         $client = $this->createEmmaClient();
         $crawler = $client->request('GET', '/f/cats/3');
 
-        $form = $crawler->selectButton('comment[submit]')->form([
-            'comment[comment]' => 'You will be notified about this comment.',
+        $form = $crawler->selectButton('reply_to_submission_3[submit]')->form([
+            'reply_to_submission_3[comment]' => 'You will be notified about this comment.',
         ]);
 
         $client->submit($form);
@@ -52,8 +52,8 @@ class UserControllerTest extends WebTestCase {
         $client = $this->createEmmaClient();
         $crawler = $client->request('GET', '/f/cats/3/-/comment/3/');
 
-        $form = $crawler->selectButton('comment[submit]')->form([
-            'comment[comment]' => 'You will be notified about this comment.',
+        $form = $crawler->selectButton('reply_to_comment_3[submit]')->form([
+            'reply_to_comment_3[comment]' => 'You will be notified about this comment.',
         ]);
 
         $client->submit($form);

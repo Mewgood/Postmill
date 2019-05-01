@@ -1,0 +1,44 @@
+.formatting-help {
+  &__table {
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+
+    td {
+      border: solid 1px var(--border);
+      padding: 0.125em 0.25em;
+    }
+  }
+
+  &__toggle {
+    opacity: 1;
+    position: absolute;
+    z-index: -1;
+  }
+
+  &__toggle:focus ~ &__link > .no-underline__exempt {
+    text-decoration: underline;
+  }
+
+  &__link {
+    color: var(--link);
+    cursor: pointer;
+  }
+
+  &__arrow::after {
+    border-left: 0.5ch solid transparent;
+    border-right: 0.5ch solid transparent;
+    border-top: 0.5ch solid;
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__toggle:checked ~ &__link > &__arrow::after {
+    border-bottom: 0.5ch solid;
+    border-top: none;
+  }
+
+  &__toggle:not(:checked) ~ &__table {
+    display: none;
+  }
+}

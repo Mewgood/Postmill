@@ -3,30 +3,25 @@
 import debounce from 'lodash.debounce';
 // noinspection NpmUsedModulesInstalled
 import Routing from 'fosjsrouting';
+import translator from 'bazinga-translator';
 import $ from 'jquery';
 
 function createPreview() {
+    const $input = $(this);
+
     $.ajax({
         url: Routing.generate('markdown_preview'),
         method: 'POST',
         dataType: 'html',
-        data: { markdown: $(this).val() },
+        data: { markdown: $input.val() },
     }).done(content => {
         const html = content.length > 0
-            ? `<div class="markdown-input__preview">${content}</div>`
+            ? `<h3 class="markdown-preview__title">${translator.trans('markdown_type.preview')}</h3>
+               <div class="markdown-preview__inner">${content}</div>`
             : '';
 
-        $(this)
-            .closest('.markdown-input')
-            .find('.markdown-input__preview-container')
-            .html(html);
+        $('#' + $input.attr('id') + '_preview').html(html);
     });
 }
 
-$(function () {
-    $(document).on(
-        'input',
-        '.js-enable-post-previews .markdown-input__input',
-        debounce(createPreview, 600)
-    );
-});
+$(() => $(document).on('input', '.js-markdown-preview', debounce(createPreview, 600)));
