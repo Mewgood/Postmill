@@ -3,24 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>{% block title '%s %s'|format(status_code, status_text) %}</title>
-    <style>
-      body {
-        background: #f8f8f8;
-        color: #444;
-        font-family: sans-serif;
-        margin: 2em;
-        text-align: center;
-      }
+    {% cspstyle %}
+      <style>
+        body {
+          background: #f8f8f8;
+          color: #444;
+          font-family: sans-serif;
+          margin: 2em;
+          text-align: center;
+        }
 
-      a {
-        color: #d00;
-        text-decoration: none;
-      }
+        a {
+          color: #d00;
+          text-decoration: none;
+        }
 
-      a:hover {
-        text-decoration: underline;
-      }
-    </style>
+        a:hover {
+          text-decoration: underline;
+        }
+      </style>
+    {% endcspstyle %}
   </head>
   <body>
     <header>
