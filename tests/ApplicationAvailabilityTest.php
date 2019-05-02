@@ -94,7 +94,6 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/featured/controversial.atom'];
         yield ['/featured/most_commented.atom'];
         yield ['/f/news'];
-        yield ['/f/news/'];
         yield ['/f/news/hot'];
         yield ['/f/news/new'];
         yield ['/f/news/top'];
@@ -125,6 +124,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
 
     public function redirectUrlProvider() {
         yield ['/f/news', '/f/NeWs/hot'];
+        yield ['/f/news', '/f/news/'];
         yield ['/f/news/new', '/f/NeWs/new'];
         yield ['/f/news/top', '/f/NeWs/top'];
         yield ['/f/news/controversial', '/f/NeWs/controversial'];
