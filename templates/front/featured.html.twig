@@ -1,7 +1,5 @@
 {% extends 'front/base.html.twig' %}
 
-{% block page_classes 'featured-page' %}
-
 {% block front_alerts %}
   {% if is_granted('ROLE_USER') %}
     {% if app.user.frontPage == 'subscribed' and app.user.subscriptions|length == 0 %}

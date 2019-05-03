@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block page_classes 'message-list-page' %}
-
 {% block head %}
   {{ include('_includes/meta_pagination.html.twig', {pager: threads}, with_context=false) }}
 {% endblock head %}

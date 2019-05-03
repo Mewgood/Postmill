@@ -1,9 +1,5 @@
 {% extends 'user/base.html.twig' %}
 
-{% block page_classes %}
-  compose-message-page
-{% endblock %}
-
 {% block title %}
   {{ 'compose_message.title'|trans({'%username%': user.username}) }}
 {% endblock %}

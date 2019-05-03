@@ -114,7 +114,7 @@ final class FrontController extends AbstractController {
             'excluded_forums' => $excludedForums ?? [],
         ], $request);
 
-        return $this->render('front/all.html.twig', [
+        return $this->render('front/base.html.twig', [
             'listing' => 'all',
             'sort_by' => $sortBy,
             'submissions' => $submissions,

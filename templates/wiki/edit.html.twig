@@ -1,9 +1,5 @@
 {% extends 'wiki/page.html.twig' %}
 
-{% block page_classes %}
-  wiki-edit-page
-{% endblock %}
-
 {% block title %}
   {{ 'wiki.editing_title'|trans({'%path%': page.path}) }}
 {% endblock %}

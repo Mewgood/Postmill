@@ -2,8 +2,6 @@
 {% from '_macros/post_nav.html.twig' import submission_sort, submission_time %}
 {% from 'submission/_macros.html.twig' import submission %}
 
-{% block page_classes 'multi-forum-page' %}
-
 {% block head %}
   {{ include('_includes/meta_pagination.html.twig', {pager: submissions}, with_context=false) }}
 {% endblock %}
