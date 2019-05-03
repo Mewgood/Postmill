@@ -72,12 +72,12 @@ class ForumControllerTest extends WebTestCase {
         $this->assertContains(
             \IntlDateFormatter::create(
                 'en',
-                \IntlDateFormatter::LONG,
                 \IntlDateFormatter::SHORT,
+                \IntlDateFormatter::NONE,
                 date_default_timezone_get()
             )->format(time()),
             $crawler->eq(2)->text()
         );
-        $this->assertContains('July 7, 3017 at 12:00 PM', $crawler->eq(3)->text());
+        $this->assertContains('7/7/17, 12:00 PM', $crawler->eq(3)->text());
     }
 }

@@ -50,7 +50,6 @@ comments:
     admin_ban: Banir IP
     form_load_error: Erro ao carregar o formulário. Por favor tente novamente.
     info: '%user% escreveu %timestamp%'
-    info_at_timestamp: em %timestamp%
     not_logged_in: Você precisa %login_link% ou %register_link% para comentar.
     not_logged_in_login_link_label: entrar
     not_logged_in_register_link_label: registrar
@@ -321,7 +320,6 @@ submissions:
     edit: Alterar
     info_with_forum_name: Postado por %submitter% %timestamp% em %forum%
     info_without_forum_name: Postado por %submitter% %timestamp%
-    info_at_timestamp: às %timestamp%
     sort_by_hot: Popular
     sort_by_new: Novos
     sort_by_top: No topo

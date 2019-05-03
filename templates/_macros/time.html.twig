@@ -1,0 +1,37 @@
+{% macro relative_time(datetime, options={}) -%}
+  {%- set options = {
+    date_format: 'long',
+    time_format: 'short',
+    natural: false,
+    extra_classes: '',
+  }|merge(options) -%}
+  {%- set timestamp = datetime|localizeddate(options.date_format, options.time_format) -%}
+  {%- set tip = datetime|localizeddate('long', 'long') -%}
+  {%- set classes = ('js-relative-time '~options.extra_classes)|trim -%}
+  <time datetime="{{ datetime|date('c') }}" class="{{ classes }}" title="{{ tip }}">
+    {%- if options.natural -%}
+      {{- 'time.on_timestamp'|trans({'%timestamp%': timestamp}) -}}
+    {%- else -%}
+      {{- timestamp -}}
+    {%- endif -%}
+  </time>
+{%- endmacro relative_time %}
+
+{% macro relative_time_diff(datetime, compare_to, options={}) -%}
+  {%- set options = {
+    date_format: 'long',
+    time_format: 'short',
+    natural: false,
+    extra_classes: '',
+  }|merge(options) -%}
+  {%- set timestamp = datetime|localizeddate(options.date_format, options.time_format) -%}
+  {%- set tip = datetime|localizeddate('long', 'long') -%}
+  {%- set classes = ('js-relative-time-diff '~options.extra_classes)|trim -%}
+  <time datetime="{{ datetime|date('c') }}" data-compare-to="{{ compare_to|date('c') }}" class="{{ classes }}" title="{{ tip }}">
+    {%- if options.natural -%}
+      {{- 'time.on_timestamp'|trans({'%timestamp%': timestamp}) -}}
+    {%- else -%}
+      {{- timestamp -}}
+    {%- endif -%}
+  </time>
+{%- endmacro relative_time_diff %}

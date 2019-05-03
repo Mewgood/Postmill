@@ -19,17 +19,17 @@
     {% endblock header %}
 
     {% block row %}
+      {% from '_macros/time.html.twig' import relative_time %}
+
       <td><a href="{{ path('user', {username: item.user.username}) }}">{{ item.user.username }}</a></td>
       <td class="table__shrink">
-        <time datetime="{{ item.timestamp|date('c') }}" title="{{ item.timestamp|localizeddate('long', 'short') }}" class="relative-time">
-          {{ item.timestamp|localizeddate('long', 'short') }}
-        </time>
+        {{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}
       </td>
       <td class="table__shrink">
-        {% if item.user.lastSeen is not null %}
-        <time datetime="{{ item.user.lastSeen|date('c') }}" title="{{ item.user.lastSeen|localizeddate('long', 'short') }}" class="relative-time">
-          {{ item.user.lastSeen|localizeddate('long', 'short') }}
-        </time>
+        {% if item.user.lastSeen %}
+          {{ relative_time(item.user.lastSeen, { date_format: 'short' }) }}
+        {% else %}
+          <small class="fg-muted text-sm">{{ 'label.never'|trans }}</small>
         {% endif %}
       </td>
       <td class="table__shrink">
@@ -43,4 +43,3 @@
     {% endblock row %}
   {% endembed %}
 {% endblock body %}
-

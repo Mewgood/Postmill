@@ -1,9 +1,7 @@
 {% extends 'wiki/base.html.twig' %}
 {% from '_macros/icon.html.twig' import icon %}
 
-{% block title %}
-  {{ page.latestRevision.title }}
-{% endblock %}
+{% block title page.latestRevision.title %}
 
 {% block head %}
   <link rel="canonical" href="{{ url('wiki', {path: page.path}) }}">
@@ -24,6 +22,8 @@
 {% endblock %}
 
 {% block sidebar %}
+  {% from '_macros/time.html.twig' import relative_time %}
+
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title">{{ page.path }}</h1>
       <p>
@@ -32,7 +32,7 @@
             path('user', {username: page.latestRevision.user.username})|escape,
             page.latestRevision.user.username|escape
           ),
-          '%timestamp%': block('_last_edited_time'),
+          '%timestamp%': relative_time(page.latestRevision.timestamp, { natural: true }),
         })|raw -}}
       </p>
 
@@ -91,12 +91,4 @@
   </section>
 
   {{ parent() }}
-{% endblock %}
-
-{% block _last_edited_time %}
-  {% with {time: page.latestRevision.timestamp|localizeddate('long', 'short')} %}
-    <time datetime="{{ page.latestRevision.timestamp|date('c') }}" title="{{ time }}" class="relative-time">
-      {{ 'time.on_timestamp'|trans({'%timestamp%': time}) }}
-    </time>
-  {% endwith %}
 {% endblock %}

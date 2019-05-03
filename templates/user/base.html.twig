@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% from _self import timestamp %}
-
 {% block site_nav_active app.user is same as(user) ? 'user' %}
-
 {% block user_toolbox_active app.request.attributes.get('_route') %}
 
 {% block sidebar %}
+  {% from '_macros/time.html.twig' import relative_time %}
+
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title no-margin break-text">
       <a href="{{ path('user', {username: user.username}) }}" class="user-bio__user-link">{{ user.username }}</a>
@@ -14,7 +13,7 @@
 
     <p>
       <small class="fg-muted text-md">{{ 'user.registered'|trans({
-      '%timestamp%': timestamp(user.created)
+        '%timestamp%': relative_time(user.created, { time_format: 'none', natural: true })
       })|raw }}
       </small>
     </p>
@@ -105,10 +104,3 @@
     </section>
   {% endif %}
 {% endblock %}
-
-{%- macro timestamp(timestamp) -%}
-  {%- set date = timestamp|localizeddate('long', 'short') -%}
-  <time datetime="{{ timestamp|date('c') }}" class="relative-time" title="{{ date }}">
-    {{- 'time.on_timestamp'|trans({'%timestamp%': date}) -}}
-  </time>
-{%- endmacro -%}

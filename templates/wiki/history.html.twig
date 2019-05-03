@@ -21,6 +21,8 @@
       {% endblock header %}
 
       {% block row %}
+        {% from '_macros/time.html.twig' import relative_time %}
+
         <td class="table__shrink">
           <span class="unstylable-widget">
             <input class="form-control" type="radio" name="from" value="{{ item.id }}" {{ loop.index == 2 ? 'checked' }}>
@@ -37,11 +39,7 @@
           <a href="{{ path('wiki_revision', {id: item.id}) }}">{{ item.id.hex|slice(0, 8) }}</a>
         </td>
         <td class="table__shrink">
-          {% with {date: item.timestamp|localizeddate('long', 'short')} %}
-            <time datetime="{{ item.timestamp|date('c') }}" class="relative-time" title="{{ date }}">
-              {{- date -}}
-            </time>
-          {% endwith %}
+          {{ relative_time(item.timestamp, { date_format: 'short' }) }}
         </td>
         <td><a href="{{ path('user', {username: item.user.username}) }}">{{ item.user.username }}</a></td>
       {% endblock row %}

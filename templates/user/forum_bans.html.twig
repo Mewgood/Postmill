@@ -26,25 +26,19 @@
     {% endblock header %}
 
     {% block row %}
+      {% from '_macros/time.html.twig' import relative_time %}
       {% from 'user/_macros.html.twig' import user_link %}
 
       <td class="table__shrink"><a href="{{ path('forum', {forum_name: item.forum.name}) }}">/f/{{ item.forum.name }}</a></td>
       <td class="table__shrink">{{ user_link(item.bannedBy) }}</td>
       <td class="table__shrink">
-        {% with { date: item.timestamp|localizeddate('long', 'short') } %}
-          <time datetime="{{ item.timestamp|date('c') }}" class="relative-time" title="{{ date }}">
-            {{- date -}}
-          </time>
-        {% endwith %}
+        {{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}
       </td>
       <td class="table__shrink">
         {% if item.expiryTime %}
-          {% set date = item.expiryTime|localizeddate('long', 'short') %}
-          <time datetime="{{ item.expiryTime|date('c') }}" class="relative-time" title="{{ date }}">
-            {{- date -}}
-          </time>
+          {{ relative_time(item.expiryTime, { date_format: 'short' }) }}
         {% else %}
-          <small>{{ 'label.never'|trans }}</small>
+          <small class="fg-muted text-sm">{{ 'label.never'|trans }}</small>
         {% endif %}
       </td>
       <td>{{ item.reason }}</td>

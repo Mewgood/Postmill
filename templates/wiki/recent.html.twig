@@ -20,15 +20,13 @@
     {% endblock header %}
 
     {% block row %}
+      {% from '_macros/time.html.twig' import relative_time %}
+
       <td class="table__shrink"><a href="{{ path('wiki_revision', {id: item.id}) }}">{{ item.id.hex|slice(0, 8) }}</td>
       <td><a href="{{ path('wiki', {path: item.page.path}) }}">{{ item.page.path }}</a></td>
       <td class="table__shrink"><a href="{{ path('user', {username: item.user.username}) }}">{{ item.user.username }}</a></td>
       <td class="table__shrink">
-        {% with { date: item.timestamp|localizeddate('long', 'short') } %}
-          <time datetime="{{ item.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
-            {{- date -}}
-          </time>
-        {% endwith %}
+        {{ relative_time(item.timestamp, { date_format: 'short' }) }}
       </td>
     {% endblock row %}
   {% endembed %}

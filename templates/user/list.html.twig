@@ -37,15 +37,12 @@
     {% endblock header %}
 
     {% block row %}
+      {% from '_macros/time.html.twig' import relative_time %}
       {% from 'user/_macros.html.twig' import user_link %}
       <td class="table__shrink">{{ item.id }}</td>
       <td>{{ user_link(item) }}</td>
       <td>
-        {% with { date: item.created|localizeddate('long', 'short')} %}
-          <time datetime="{{ item.created|date('c') }}" class="relative-time" title="{{ date }}">
-            {{- date -}}
-          </time>
-        {% endwith %}
+        {{ relative_time(item.created, { date_format: 'short', time_format: 'none' }) }}
       </td>
       <td>{{ item.admin ? ('label.admin'|trans) : item.trusted ? ('label.trusted'|trans) : '-' }}</td>
       <td>

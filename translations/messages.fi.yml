@@ -40,7 +40,6 @@ comments:
     admin_ban: IP-bannaa
     form_load_error: Virhe ladattaessa lomaketta. Yritä uudelleen.
     info: '%user% kirjoitti %timestamp%'
-    info_at_timestamp: aikana %timestamp%
     not_logged_in: Sinun täytyy %login_link% tai %register_link% kommentoidaksesi.
     not_logged_in_login_link_label: kirjautua
     not_logged_in_register_link_label: rekisteröityä
@@ -221,7 +220,6 @@ submissions:
     edit: Muokkaa
     info_with_forum_name: "%submitter% lisäsi %timestamp% foorumilla %forum%"
     info_without_forum_name: "%submitter% lisäsi %timestamp%"
-    info_at_timestamp: lisätty %timestamp%
     sort_by_hot: Kuumat
     sort_by_new: Uudet
     sort_by_top: Parhaat

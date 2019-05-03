@@ -1,4 +1,5 @@
 {%- block comment -%}
+  {%- from '_macros/time.html.twig' import relative_time, relative_time_diff -%}
   {%- from 'vote/_macros.html.twig' import vote -%}
   <article class="comment
                   comment--{{ level > 1 ? 'nested' : 'top-level' }}
@@ -16,14 +17,13 @@
           <span class="fg-muted text-sm">
             {{ 'comments.info'|trans({
               '%user%': block('comment_info_user'),
-              '%timestamp%': block('comment_info_timestamp'),
+              '%timestamp%': relative_time(comment.timestamp, { natural: true }),
             })|raw }}
 
             {% if comment.editedAt %}
-              <span class="comment__edited-at {{ comment.moderated ?
-                'comment__moderated' }} fg-muted text-sm">
+              <span class="comment__edited-at {{ comment.moderated ? 'comment__moderated' }} fg-muted text-sm">
                 {{ (comment.moderated ? 'comments.moderator_info' : 'comments.edit_info')|trans({
-                  '%edited_at%': block('comment_info_edited_at')
+                  '%edited_at%': relative_time_diff(comment.editedAt, comment.timestamp, { natural: true }),
                 })|raw }}
               </span>
             {% endif %}
@@ -116,25 +116,6 @@
 
   {{ user_flag(comment.userFlag) }}
 {%- endblock comment_info_user -%}
-
-{%- block comment_info_timestamp -%}
-  {%- set date = comment.timestamp|localizeddate('long', 'short') -%}
-  <time datetime="{{ comment.timestamp|date('c') }}"
-        title="{{ date }}"
-        class="comment__timestamp relative-time">
-    {{- 'comments.info_at_timestamp'|trans({'%timestamp%': date}) -}}
-  </time>
-{%- endblock comment_info_timestamp -%}
-
-{%- block comment_info_edited_at -%}
-  {%- set date = comment.editedAt|localizeddate('long', 'short') -%}
-  <time datetime="{{ comment.editedAt|date('c') }}"
-        title="{{ date }}"
-        class="comment__edit-timestamp relative-time-diff"
-        data-compare-to="{{ comment.timestamp|date('c') }}">
-    {{- 'comments.info_at_timestamp'|trans({'%timestamp%': date}) -}}
-  </time>
-{%- endblock comment_info_edited_at -%}
 
 {% block comment_nav %}
   {{ block('comment_nav_reply') }}

@@ -22,24 +22,17 @@
     {% endblock header %}
 
     {% block row %}
+      {% from '_macros/time.html.twig' import relative_time %}
       <td class="table__shrink">{{ (item.ban ? 'label.ban' : 'label.unban')|trans }}</td>
       <td>{{ item.reason }}</td>
       <td class="table__shrink">
-        {% with {date: item.timestamp|localizeddate('long', 'short')} %}
-          <time datetime="{{ item.timestamp|date('c') }}" class="relative-time" title="{{ date }}">
-            {{- date -}}
-          </time>
-        {% endwith %}
+        {{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}
       </td>
       <td class="table__shrink">
         {% if item.expiryTime %}
-          {% with {date: item.expiryTime|localizeddate('long', 'short')} %}
-            <time datetime="{{ item.expiryTime|date('c') }}" class="relative-time" title="{{ date }}">
-              {{- date -}}
-            </time>
-          {% endwith %}
+          {{ relative_time(item.expiryTime, { date_format: 'short' }) }}
         {% else %}
-          {{ 'label.never'|trans }}
+          <small class="fg-muted text-sm">{{ 'label.never'|trans }}</small>
         {% endif %}
       </td>
     {% endblock row %}

@@ -10,7 +10,7 @@
 }) %}
 
 {% block body %}
-  {% from _self import time_ago, time_since %}
+  {% from '_macros/time.html.twig' import relative_time, relative_time_diff %}
   <h1 class="page-heading">
     {{ 'title.wiki_diff'|trans({
       '%from%': '<a href="%s">%s</a>'|format(
@@ -28,21 +28,10 @@
     <thead>
     <tr>
       <th class="diff-table__header diff-table__header--from" colspan="2">
-        {% with { date: from.timestamp|localizeddate('long', 'short') } %}
-          <time datetime="{{ from.timestamp|date('c') }}" class="relative-time" title="{{ date }}">
-            {{- date -}}
-          </time>
-        {% endwith %}
+        {{ relative_time(from.timestamp) }}
       </th>
       <th class="diff-table__header diff-table__header--to" colspan="2">
-        {% with { date: to.timestamp|localizeddate('long', 'short') } %}
-          <time datetime="{{ to.timestamp|date('c') }}"
-                class="relative-time-diff"
-                data-compare-to="{{ from.timestamp|date('c') }}"
-                title="{{ date }}">
-            {{- date -}}
-          </time>
-        {% endwith %}
+        {{ relative_time_diff(to.timestamp, from.timestamp) }}
       </th>
     </tr>
     </thead>

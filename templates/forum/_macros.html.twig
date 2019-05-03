@@ -79,13 +79,13 @@
 
 {% macro _log_ban(entry) %}
   {% from 'user/_macros.html.twig' import user_link %}
-  {% from _self import _log_diff_timestamp as diff_timestamp %}
+  {% from '_macros/time.html.twig' import relative_time_diff %}
   {% if entry.ban.ban %}
     {% if entry.ban.expired %}<del>{% endif %}
     {{ 'log.ban'|trans({
       '%user%': user_link(entry.user, {flag: entry.wasAdmin ? 'admin' : 'moderator'}),
       '%banned%': user_link(entry.ban.user),
-      '%expires%': entry.ban.expiryTime ? diff_timestamp(entry.ban.expiryTime, entry.ban.timestamp) : 'label.never'|trans,
+      '%expires%': entry.ban.expiryTime ? relative_time_diff(entry.ban.expiryTime, entry.ban.timestamp) : 'label.never'|trans,
       '%reason%': entry.ban.reason|e,
     })|raw }}
     {% if entry.ban.expired %}</del>{% endif %}
@@ -97,14 +97,3 @@
     })|raw }}
   {% endif %}
 {% endmacro %}
-
-{%- macro _log_diff_timestamp(datetime, compareTo) -%}
-  {%- with {date: datetime|localizeddate('long', 'short')} -%}
-    <time datetime="{{ datetime|date('c') }}"
-          class="relative-time-diff"
-          data-compare-to="{{ compareTo|date('c') }}"
-          title="{{ date }}">
-      {{- date -}}
-    </time>
-  {%- endwith -%}
-{%- endmacro -%}

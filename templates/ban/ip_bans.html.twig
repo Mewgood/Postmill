@@ -31,20 +31,15 @@
       {% endblock header %}
 
       {% block row %}
+        {% from '_macros/time.html.twig' import relative_time %}
         <td class="table__shrink"><input type="checkbox" name="ban[]" value="{{ item.id }}" id="ban_{{ item.id }}"></td>
         <td class="table__shrink"><label for="ban_{{ item.id }}">{{ item.ip }}</label></td>
-        <td class="table__shrink">
-          <time datetime="{{ item.timestamp|date('c') }}" class="relative-time">
-            {{- item.timestamp|localizeddate('long', 'short') -}}
-          </time>
-        </td>
+        <td class="table__shrink">{{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}</td>
         <td class="table__shrink">
           {% if item.expiryDate %}
-            <time datetime="{{ item.expiryDate|date('c') }}" class="relative-time">
-              {{- item.expiryDate|localizeddate('long', 'short') -}}
-            </time>
+            {{ relative_time(item.expiryDate, { date_format: 'short', time_format: 'short' }) }}
           {% else %}
-            <small>{{ 'ban_list.expires_never'|trans }}</small>
+            <small class="fg-muted text-sm">{{ 'ban_list.expires_never'|trans }}</small>
           {% endif %}
         </td>
         <td class="table__shrink">

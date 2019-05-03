@@ -38,7 +38,6 @@ comments:
     reply: Svar
     form_load_error: En nettverksfeil oppstod. Vennligst prøv på nytt.
     info: '%user% skrev %timestamp%'
-    info_at_timestamp: '%timestamp%'
     not_logged_in: Du må %login_link% eller %register_link% for å kommentere.
     not_logged_in_login_link_label: logge inn
     not_logged_in_register_link_label: registrere deg
@@ -220,7 +219,6 @@ submissions:
     edit: Rediger
     info_with_forum_name: Sendt inn av %submitter% %timestamp% til %forum%
     info_without_forum_name: Sendt inn av %submitter% %timestamp%
-    info_at_timestamp: '%timestamp%'
     sort_by_hot: Populært
     sort_by_new: Nytt
     sort_by_top: Topp

@@ -39,7 +39,6 @@ comments:
     admin_ban: IP Sperrung
     form_load_error: Fehler beim Laden des Formulars. Bitte versuche es nochmal.
     info: '%user% schrieb %timestamp%'
-    info_at_timestamp: um %timestamp%
     not_logged_in: Du musst %login_link% oder %register_link% um Kommentare zu schreiben.
     not_logged_in_login_link_label: Einloggen
     not_logged_in_register_link_label: Registrieren
@@ -187,7 +186,6 @@ submissions:
     edit: Bearbeiten
     info_with_forum_name: Eingereicht von %submitter% %timestamp% in %forum%
     info_without_forum_name: Eingereicht von %submitter% %timestamp%
-    info_at_timestamp: vor %timestamp%
     sort_by_hot: Beliebt
     sort_by_new: Neu
     sort_by_top: Top

@@ -1,5 +1,6 @@
 {%- block submission -%}
   {%- from '_macros/icon.html.twig' import icon -%}
+  {%- from '_macros/time.html.twig' import relative_time, relative_time_diff -%}
   {%- from 'vote/_macros.html.twig' import vote -%}
   {%- set open_external = submission.url is not empty and open_external_links_in_new_tab -%}
   <article class="{{ block('submission_classes') }}">
@@ -54,23 +55,19 @@
 
           <p class="submission__info">
             <span class="text-sm fg-muted">
-              {%- if show_forum_name -%}
-                {{ 'submissions.info_with_forum_name'|trans({
-                  '%submitter%': block('submission_info_submitter'),
-                  '%timestamp%': block('submission_info_timestamp'),
-                  '%forum%': block('submission_info_forum_name'),
-                })|raw }}
-              {%- else -%}
-                {{ 'submissions.info_without_forum_name'|trans({
-                  '%submitter%': block('submission_info_submitter'),
-                  '%timestamp%': block('submission_info_timestamp'),
-                })|raw }}
-              {%- endif -%}
+              {{ (show_forum_name ? 'submissions.info_with_forum_name' : 'submissions.info_without_forum_name')|trans({
+                '%submitter%': block('submission_info_submitter'),
+                '%timestamp%': relative_time(submission.timestamp, {
+                  natural: true,
+                  extra_classes: 'submission__timestamp',
+                }),
+                '%forum%': block('submission_info_forum_name'),
+              })|raw }}
 
               {% if submission.editedAt %}
-                <span class="submission__info-edited-at {{ submission.moderated ?  'submission__info-moderated' }}">
+                <span class="submission__info-edited-at {{ submission.moderated ? 'submission__info-moderated' }}">
                   {{ (submission.moderated ? 'submissions.moderator_info' : 'submissions.edit_info')|trans({
-                    '%edited_at%': block('submission_info_edited_at')
+                    '%edited_at%': relative_time_diff(submission.editedAt, submission.timestamp, { natural: true })
                   })|raw }}
                 </span>
               {% endif %}
@@ -132,15 +129,6 @@
   {{ user_flag(submission.userFlag) }}
 {% endblock submission_info_submitter %}
 
-{% block submission_info_timestamp %}
-  {% set date = submission.timestamp|localizeddate('long', 'short') %}
-  {% filter spaceless %}
-    <time datetime="{{ submission.timestamp|date('c') }}" title="{{ date }}" class="submission__timestamp relative-time">
-      {{- 'submissions.info_at_timestamp'|trans({'%timestamp%': date}) -}}
-    </time>
-  {% endfilter %}
-{% endblock submission_info_timestamp %}
-
 {% block submission_info_forum_name %}
   {% filter spaceless %}
     <a href="{{ path('forum', {forum_name: submission.forum.name}) }}" class="submission__forum fg-inherit">
@@ -148,13 +136,6 @@
     </a>
   {% endfilter %}
 {% endblock submission_info_forum_name %}
-
-{%- block submission_info_edited_at -%}
-  {%- set date = submission.editedAt|localizeddate('long', 'short') -%}
-  <time datetime="{{ submission.editedAt|date('c') }}" title="{{ date }}" class="relative-time-diff" data-compare-to="{{ submission.timestamp|date('c') }}">
-    {{- 'submissions.info_at_timestamp'|trans({'%timestamp%': date}) -}}
-  </time>
-{%- endblock submission_info_edited_at -%}
 
 {% block submission_nav %}
   {{ block('submission_nav_comments') }}

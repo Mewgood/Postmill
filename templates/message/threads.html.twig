@@ -21,24 +21,22 @@
     {% endblock header %}
 
     {% block row %}
+      {% from '_macros/time.html.twig' import relative_time %}
       {% from 'user/_macros.html.twig' import user_link %}
-      {% from _self import _time %}
 
       <td><strong><a href="{{ path('message_thread', {id: item.id}) }}">{{ item.title }}</a></strong></td>
-      <td class="table__shrink text-align-right">{{ _time(item.messages|last.timestamp) }}</td>
-      <td class="table__shrink text-align-right">{{ (item.messages|length - 1)|localizednumber }}</td>
+      <td class="table__shrink text-align-right">
+        {{ relative_time(item.messages|last.timestamp, { date_format: 'short' }) }}
+      </td>
+      <td class="table__shrink text-align-right">
+        {{ (item.messages|length - 1)|localizednumber }}
+      </td>
       <td class="table__shrink">
         {%- for participant in item.participants if participant is not same as(app.user) -%}
           {{- loop.index != 1 ? ', ' -}}
           {{- user_link(participant) -}}
         {%- endfor -%}
       </td>
-
-      {% macro _time(datetime) %}
-        {% with {date: datetime|localizeddate('long', 'short')} %}
-          <time class="relative-time" datetime="{{ datetime|date('c') }}" title="{{ date }}">{{ date }}</time>
-        {% endwith %}
-      {% endmacro _time %}
     {% endblock row %}
 
     {% block flash_message 'flash.no_messages'|trans %}

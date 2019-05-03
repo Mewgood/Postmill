@@ -65,7 +65,6 @@ comments:
     admin_ban: IP-forbaro
     form_load_error: Eraro pri enlego de formo. Bonvolu denove provi.
     info: '%user% skribis %timestamp%'
-    info_at_timestamp: je %timestamp%
     not_logged_in: Vi devas %login_link% aŭ %register_link% por komenti.
     not_logged_in_login_link_label: saluti
     not_logged_in_register_link_label: registriĝi
@@ -445,7 +444,6 @@ submissions:
     edit: Redakti
     info_with_forum_name: Afiŝis %submitter% %timestamp% en %forum%
     info_without_forum_name: Afiŝis %submitter% %timestamp%
-    info_at_timestamp: je %timestamp%
     sort_by_hot: Furoraj
     sort_by_new: Novaj
     sort_by_top: Supraj

@@ -7,6 +7,7 @@
 {% block title 'title.global_moderation_log'|trans %}
 
 {% block body %}
+  {% from '_macros/time.html.twig' import relative_time %}
   {% from 'forum/_macros.html.twig' import log_line %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
@@ -19,11 +20,7 @@
             &mdash;
             {{ log_line(entry) }}
             &mdash;
-            {% with {date: entry.timestamp|localizeddate('long', 'short')} %}
-              <time datetime="{{ entry.timestamp|date('c') }}" class="relative-time" title="{{ date }}">
-                {{- date -}}
-              </time>
-            {% endwith %}
+            {{ relative_time(entry.timestamp) }}
           </p>
         </li>
       {% endfor %}

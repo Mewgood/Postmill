@@ -5,7 +5,7 @@ import { distanceInWords, distanceInWordsToNow, isBefore } from 'date-fns';
 import Translator from 'bazinga-translator';
 
 function makeTimesRelative(locale) {
-    $('.relative-time[datetime]').each(function () {
+    $('.js-relative-time[datetime]').each(function () {
         const isoTime = $(this).attr('datetime');
 
         $(this).text(distanceInWordsToNow(isoTime, {
@@ -14,7 +14,7 @@ function makeTimesRelative(locale) {
         }));
     });
 
-    $('.relative-time-diff[datetime][data-compare-to]').each(function () {
+    $('.js-relative-time-diff[datetime][data-compare-to]').each(function () {
         const timeA = $(this).attr('datetime');
         const timeB = $(this).data('compare-to');
 

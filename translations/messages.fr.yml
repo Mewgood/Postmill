@@ -59,7 +59,6 @@ comments:
     reply: Répondre
     form_load_error: Erreur du chargement du formulaire. Veuillez réessayer.
     info: '%user% a écrit %timestamp%'
-    info_at_timestamp: à %timestamp%
     not_logged_in: Vous devez vous %login_link% ou vous %register_link% pour commenter.
     not_logged_in_login_link_label: connecter
     not_logged_in_register_link_label: inscrire
@@ -394,7 +393,6 @@ submissions:
     edit: Modifier
     info_with_forum_name: Posté par %submitter% %timestamp% dans %forum%
     info_without_forum_name: Posté par %submitter% %timestamp%
-    info_at_timestamp: à %timestamp%
     sort_by_hot: En vogue
     sort_by_new: Nouveau
     sort_by_top: Top

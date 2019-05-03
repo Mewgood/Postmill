@@ -3,7 +3,8 @@
 {% endmacro message %}
 
 {% block message %}
-  {%- from _self import message_date, message_receivers -%}
+  {%- from _self import message_receivers -%}
+  {%- from '_macros/time.html.twig' import relative_time -%}
   {%- from 'user/_macros.html.twig' import user_link -%}
   <article class="message" id="message_{{ message.id }}">
     <h1 class="message__head unheaderize">
@@ -13,7 +14,7 @@
           '%sender%': '<strong>%s</strong>'|format(user_link(message.sender, {
             class: 'fg-inherit',
           })),
-          '%timestamp%': message_date(message)
+          '%timestamp%': relative_time(message.timestamp, { natural: true })
         })|raw }}
       </span>
     </h1>
@@ -30,14 +31,6 @@
     {% endif %}
   </article>
 {% endblock message %}
-
-{% macro message_date(message) %}
-  {% with { date: message.timestamp|localizeddate('long', 'short') } %}
-    <time datetime="{{ message.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
-      {{- 'time.on_timestamp'|trans({'%timestamp%': date}) -}}
-    </time>
-  {% endwith %}
-{% endmacro message_date %}
 
 {% macro message_receivers(message) %}
   {%- from 'user/_macros.html.twig' import user_link -%}

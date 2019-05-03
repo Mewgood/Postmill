@@ -69,7 +69,6 @@ comments:
     reply: Reply
     form_load_error: Error loading form. Please try again.
     info: '%user% wrote %timestamp%'
-    info_at_timestamp: at %timestamp%
     not_logged_in: You must %login_link% or %register_link% to comment.
     not_logged_in_login_link_label: log in
     not_logged_in_register_link_label: register
@@ -485,7 +484,6 @@ submissions:
     edit: Edit
     info_with_forum_name: Submitted by %submitter% %timestamp% in %forum%
     info_without_forum_name: Submitted by %submitter% %timestamp%
-    info_at_timestamp: at %timestamp%
     sort_by_hot: Hot
     sort_by_new: New
     sort_by_top: Top

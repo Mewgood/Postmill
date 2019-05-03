@@ -24,24 +24,16 @@
     {% endblock header %}
 
     {% block row %}
+      {% from '_macros/time.html.twig' import relative_time %}
       {% from 'user/_macros.html.twig' import user_link %}
       <td class="table__shrink">{{ user_link(item.user) }}</td>
       <td class="table__shrink">{{ user_link(item.bannedBy) }}</td>
-      <td class="table__shrink">
-        {% with { date: item.timestamp|localizeddate('long', 'short') } %}
-          <time datetime="{{ item.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
-            {{- date -}}
-          </time>
-        {% endwith %}
-      </td>
+      <td class="table__shrink">{{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}</td>
       <td class="table__shrink">
         {% if item.expiresAt %}
-          {% set date = item.expiresAt|localizeddate('long', 'short') %}
-          <time datetime="{{ item.expiresAt|date('c') }}" title="{{ date }}" class="relative-time">
-            {{- date -}}
-          </time>
+          {{ relative_time(item.expiresAt, { date_format: 'short', time_format: 'short' }) }}
         {% else %}
-          {{ 'label.never'|trans }}
+          <small class="fg-muted text-sm">{{ 'label.never'|trans }}</small>
         {% endif %}
       </td>
       <td>{{ item.reason }}</td>

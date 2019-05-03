@@ -41,7 +41,6 @@ comments:
     admin_ban: IP-verbanning
     form_load_error: Kon formulier niet laden. Probeer het nog eens.
     info: '%user% schreef %timestamp%'
-    info_at_timestamp: om %timestamp%
     not_logged_in: Je moet je %login_link% of %register_link% om te kunnen reageren.
     not_logged_in_login_link_label: inloggen
     not_logged_in_register_link_label: registeren
@@ -213,7 +212,6 @@ submissions:
     moderator_info: (%edited_at% bewerkt door een moderator)
     info_with_forum_name: Ingezonden door %submitter% %timestamp% in %forum%
     info_without_forum_name: Ingezonden door %submitter% %timestamp%
-    info_at_timestamp: om %timestamp%
     sort_by_hot: Populair
     sort_by_new: Nieuw
     sort_by_top: Top

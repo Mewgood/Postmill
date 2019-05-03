@@ -19,16 +19,13 @@
     {% endblock header %}
 
     {% block row %}
+      {% from '_macros/time.html.twig' import relative_time %}
       {% from 'user/_macros.html.twig' import user_link %}
 
       <td class="table__shrink">{{ user_link(item.blocked) }}</td>
 
       <td class="table__shrink">
-        {% with {date: item.timestamp|localizeddate('long', 'short')} %}
-          <time datetime="{{ item.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
-            {{- date -}}
-          </time>
-        {% endwith %}
+        {{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}
       </td>
 
       <td>{{ item.comment }}</td>
