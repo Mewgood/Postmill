@@ -1,42 +1,30 @@
 {% extends 'wiki/base.html.twig' %}
 
-{% block page_classes %}
-  wiki-all-page
-{% endblock %}
+{% block page_classes 'wiki-all-page' %}
 
 {% block site_nav_active 'places' %}
 {% block site_nav_main_menu_active 'wiki' %}
 
-{% block title %}
-  {{ 'wiki.all_pages'|trans }}
-{% endblock %}
+{% block title 'wiki.all_pages'|trans %}
 
 {% block head %}
   <link rel="canonical" href="{{ path('wiki_all') }}">
 
-  {% include '_includes/meta_pagination.html.twig' with {pager: pages} only %}
-{% endblock %}
+  {{ include('_includes/meta_pagination.html.twig', { pager: pages }, with_context=false) }}
+{% endblock head %}
 
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th class="table__shrink">{{ 'wiki.path'|trans }}</th>
-        <th>{{ 'wiki.page_title'|trans }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for page in pages %}
-        <tr>
-          <td class="table__shrink"><a href="{{ path('wiki', {path: page.path}) }}">{{ page.path }}</a></td>
-          <td>{{ page.latestRevision.title }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  {% embed '_layouts/table_pagination.html.twig' with { items: pages } %}
+    {% block header %}
+      <th class="table__shrink">{{ 'wiki.path'|trans }}</th>
+      <th>{{ 'wiki.page_title'|trans }}</th>
+    {% endblock header %}
 
-  {% include '_includes/pagination.html.twig' with {pager: pages} only %}
-{% endblock %}
-
+    {% block row %}
+      <td class="table__shrink"><a href="{{ path('wiki', {path: item.path}) }}">{{ item.path }}</a></td>
+      <td>{{ item.latestRevision.title }}</td>
+    {% endblock row %}
+  {% endembed %}
+{% endblock body %}

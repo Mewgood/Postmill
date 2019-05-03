@@ -7,7 +7,7 @@
 
 {% block head %}
   {{ include('_includes/meta_pagination.html.twig', {pager: users}, with_context=false) }}
-{% endblock %}
+{% endblock head %}
 
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
@@ -24,65 +24,56 @@
     {{ form_end(form) }}
   </details>
 
-  {% from 'user/_macros.html.twig' import user_link %}
-  <table class="table">
-    <thead>
-      <tr>
-        <th class="table__shrink">{{ 'label.id'|trans }}</th>
-        <th>{{ 'label.username'|trans }}</th>
-        <th>{{ 'label.registration_date'|trans }}</th>
-        <th>{{ 'label.role'|trans }}</th>
-        <th>{{ 'label.moderates'|trans }}</th>
-        <th class="table__shrink"><abbr title="{{ 'label.submissions'|trans }}">{{ 'label.submissions_short'|trans }}</abbr></th>
-        <th class="table__shrink"><abbr title="{{ 'label.comments'|trans }}">{{ 'label.comments_short'|trans }}</abbr></th>
-        <th class="table__shrink"><abbr title="{{ 'label.submission_votes'|trans }}">{{ 'label.submission_votes_short'|trans }}</abbr></th>
-        <th class="table__shrink"><abbr title="{{ 'label.comment_votes'|trans }}">{{ 'label.comment_votes_short'|trans }}</abbr></th>
-      </tr>
-    </thead>
+  {% embed '_layouts/table_pagination.html.twig' with { items: users } %}
+    {% block header %}
+      <th class="table__shrink">{{ 'label.id'|trans }}</th>
+      <th>{{ 'label.username'|trans }}</th>
+      <th>{{ 'label.registration_date'|trans }}</th>
+      <th>{{ 'label.role'|trans }}</th>
+      <th>{{ 'label.moderates'|trans }}</th>
+      <th class="table__shrink"><abbr title="{{ 'label.submissions'|trans }}">{{ 'label.submissions_short'|trans }}</abbr></th>
+      <th class="table__shrink"><abbr title="{{ 'label.comments'|trans }}">{{ 'label.comments_short'|trans }}</abbr></th>
+      <th class="table__shrink"><abbr title="{{ 'label.submission_votes'|trans }}">{{ 'label.submission_votes_short'|trans }}</abbr></th>
+      <th class="table__shrink"><abbr title="{{ 'label.comment_votes'|trans }}">{{ 'label.comment_votes_short'|trans }}</abbr></th>
+    {% endblock header %}
 
-    <tbody>
-      {% for user in users %}
-        <tr>
-          <td class="table__shrink">{{ user.id }}</td>
-          <td>{{ user_link(user) }}</td>
-          <td>
-            {% with { date: user.created|localizeddate('long', 'short')} %}
-              <time datetime="{{ user.created|date('c') }}" class="relative-time" title="{{ date }}">
-                {{- date -}}
-              </time>
-            {% endwith %}
-          </td>
-          <td>{{ user.admin ? ('label.admin'|trans) : user.trusted ? ('label.trusted'|trans) : '-' }}</td>
-          <td>
-            {% with { count: user.moderatorTokens|length } %}
-              {{ count > 0 ? 'label.forums_count'|trans({'%count%': count}) : '-' }}
-            {% endwith %}
-          </td>
-          <td class="table__shrink">
-            {% with { count: user.submissions|length } %}
-              {{ count > 0 ? count|localizednumber : '-' }}
-            {% endwith %}
-          </td>
-          <td class="table__shrink">
-            {% with { count: user.comments|length } %}
-              {{ count > 0 ? count|localizednumber : '-' }}
-            {% endwith %}
-          </td>
-          <td class="table__shrink">
-            {% with { count: user.submissionVotes|length } %}
-              {{ count > 0 ? count|localizednumber : '-' }}
-            {% endwith %}
-          </td>
-          <td class="table__shrink">
-            {% with { count: user.commentVotes|length } %}
-              {{ count > 0 ? count|localizednumber : '-' }}
-            {% endwith %}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  {{ include('_includes/pagination.html.twig', {pager: users}, with_context=false) }}
-{% endblock %}
-
+    {% block row %}
+      {% from 'user/_macros.html.twig' import user_link %}
+      <td class="table__shrink">{{ item.id }}</td>
+      <td>{{ user_link(item) }}</td>
+      <td>
+        {% with { date: item.created|localizeddate('long', 'short')} %}
+          <time datetime="{{ item.created|date('c') }}" class="relative-time" title="{{ date }}">
+            {{- date -}}
+          </time>
+        {% endwith %}
+      </td>
+      <td>{{ item.admin ? ('label.admin'|trans) : item.trusted ? ('label.trusted'|trans) : '-' }}</td>
+      <td>
+        {% with { count: item.moderatorTokens|length } %}
+          {{ count > 0 ? 'label.forums_count'|trans({'%count%': count}) : '-' }}
+        {% endwith %}
+      </td>
+      <td class="table__shrink">
+        {% with { count: item.submissions|length } %}
+          {{ count > 0 ? count|localizednumber : '-' }}
+        {% endwith %}
+      </td>
+      <td class="table__shrink">
+        {% with { count: item.comments|length } %}
+          {{ count > 0 ? count|localizednumber : '-' }}
+        {% endwith %}
+      </td>
+      <td class="table__shrink">
+        {% with { count: item.submissionVotes|length } %}
+          {{ count > 0 ? count|localizednumber : '-' }}
+        {% endwith %}
+      </td>
+      <td class="table__shrink">
+        {% with { count: item.commentVotes|length } %}
+          {{ count > 0 ? count|localizednumber : '-' }}
+        {% endwith %}
+      </td>
+    {% endblock row %}
+  {% endembed %}
+{% endblock body %}

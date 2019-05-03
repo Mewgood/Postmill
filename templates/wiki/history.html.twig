@@ -1,12 +1,10 @@
 {% extends 'wiki/page.html.twig' %}
 
-{% block title %}
-  {{ 'wiki.history_title'|trans({'%path%': page.path}) }}
-{% endblock %}
+{% block title 'wiki.history_title'|trans({'%path%': page.path}) %}
 
 {% block head %}
-  {% include '_includes/meta_pagination.html.twig' with {pager: revisions} only %}
-{% endblock %}
+  {{ include('_includes/meta_pagination.html.twig', {pager: revisions}, with_context=false) }}
+{% endblock head %}
 
 {% block body %}
   <h1 class="page-heading">{{ 'wiki.history_title'|trans({
@@ -14,46 +12,45 @@
   })|raw }}</h1>
 
   <form action="{{ path('wiki_diff') }}">
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="table__shrink" colspan="2">{{ 'label.compare'|trans }}</th>
-          <th class="table__shrink">{{ 'wiki.id_label'|trans }}</th>
-          <th class="table__shrink">{{ 'wiki.revision_time'|trans }}</th>
-          <th>{{ 'wiki.user'|trans }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for revision in revisions %}
-          <tr>
-            <td class="table__shrink"><input type="radio"
-                       name="from"
-                       value="{{ revision.id }}"
-                       {{ loop.index == 2 ? 'checked' }}></td>
-            <td class="table__shrink"><input type="radio"
-                       name="to"
-                       value="{{ revision.id }}"
-                       {{ loop.index == 1 ? 'checked' }}></td>
-            <td class="table__shrink">
-              <a href="{{ path('wiki_revision', {id: revision.id}) }}">{{ revision.id.hex|slice(0, 8) }}</a>
-            </td>
-            <td class="table__shrink">
-              {% with {date: revision.timestamp|localizeddate('long', 'short')} %}
-                <time datetime="{{ revision.timestamp|date('c') }}" class="relative-time" title="{{ date }}">
-                  {{- date -}}
-                </time>
-              {% endwith %}
-            </td>
-            <td><a href="{{ path('user', {username: revision.user.username}) }}">{{ revision.user.username }}</a></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    {% embed '_layouts/table_pagination.html.twig' with { items: revisions } %}
+      {% block header %}
+        <th class="table__shrink" colspan="2">{{ 'label.compare'|trans }}</th>
+        <th class="table__shrink">{{ 'wiki.id_label'|trans }}</th>
+        <th class="table__shrink">{{ 'wiki.revision_time'|trans }}</th>
+        <th>{{ 'wiki.user'|trans }}</th>
+      {% endblock header %}
 
-    <div class="form__row form__button-row">
-      <button class="button">{{ 'action.compare'|trans }}</button>
-    </div>
+      {% block row %}
+        <td class="table__shrink">
+          <span class="unstylable-widget">
+            <input class="form-control" type="radio" name="from" value="{{ item.id }}" {{ loop.index == 2 ? 'checked' }}>
+            <span class="unstylable-widget__circle" aria-hidden="true"></span>
+          </span>
+        </td>
+        <td class="table__shrink">
+          <span class="unstylable-widget">
+            <input class="form-control" type="radio" name="to" value="{{ item.id }}" {{ loop.index == 1 ? 'checked' }}>
+            <span class="unstylable-widget__circle" aria-hidden="true"></span>
+          </span>
+        </td>
+        <td class="table__shrink">
+          <a href="{{ path('wiki_revision', {id: item.id}) }}">{{ item.id.hex|slice(0, 8) }}</a>
+        </td>
+        <td class="table__shrink">
+          {% with {date: item.timestamp|localizeddate('long', 'short')} %}
+            <time datetime="{{ item.timestamp|date('c') }}" class="relative-time" title="{{ date }}">
+              {{- date -}}
+            </time>
+          {% endwith %}
+        </td>
+        <td><a href="{{ path('user', {username: item.user.username}) }}">{{ item.user.username }}</a></td>
+      {% endblock row %}
+
+      {% block footer %}
+        <div class="form__row form__button-row no-margin">
+          <button class="button">{{ 'action.compare'|trans }}</button>
+        </div>
+      {% endblock footer %}
+    {% endembed %}
   </form>
-
-  {% include '_includes/pagination.html.twig' with {pager: revisions} only %}
-{% endblock %}
+{% endblock body %}

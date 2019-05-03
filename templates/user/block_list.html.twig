@@ -4,8 +4,6 @@
 {% block page_classes 'user-block-list-page' %}
 {% block title 'title.block_list'|trans %}
 
-{% from 'user/_macros.html.twig' import user_link %}
-
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
@@ -13,35 +11,35 @@
     <p>{{ 'help.block_users'|trans }}</p>
   </div>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th class="table__shrink">{{ 'label.username'|trans }}</th>
-        <th class="table__shrink">{{ 'label.blocked'|trans }}</th>
-        <th>{{ 'label.comment'|trans }}</th>
-        <th class="table__shrink"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for block in blocks %}
-        <tr>
-          <td class="table__shrink">{{ user_link(block.blocked) }}</td>
-          <td class="table__shrink">
-            {% with {date: block.timestamp|localizeddate('long', 'short')} %}
-            <time datetime="{{ block.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
-              {{- date -}}
-            </time>
-            {% endwith %}
-          </td>
-          <td>{{ block.comment }}</td>
-          <td class="table__shrink">
-            <form action="{{ path('unblock_user', {id: block.id}) }}" method="post">
-              <input type="hidden" name="token" value="{{ csrf_token('unblock') }}">
-              <button class="button button--small inline">{{ 'action.unblock'|trans }}</button>
-            </form>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+  {% embed '_layouts/table_pagination.html.twig' with { items: blocks } %}
+    {% block header %}
+      <th class="table__shrink">{{ 'label.username'|trans }}</th>
+      <th class="table__shrink">{{ 'label.blocked'|trans }}</th>
+      <th>{{ 'label.comment'|trans }}</th>
+      <th class="table__shrink"></th>
+    {% endblock header %}
+
+    {% block row %}
+      {% from 'user/_macros.html.twig' import user_link %}
+
+      <td class="table__shrink">{{ user_link(item.blocked) }}</td>
+
+      <td class="table__shrink">
+        {% with {date: item.timestamp|localizeddate('long', 'short')} %}
+          <time datetime="{{ item.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
+            {{- date -}}
+          </time>
+        {% endwith %}
+      </td>
+
+      <td>{{ item.comment }}</td>
+
+      <td class="table__shrink">
+        <form action="{{ path('unblock_user', {id: item.id}) }}" method="post">
+          <input type="hidden" name="token" value="{{ csrf_token('unblock') }}">
+          <button class="button button--small inline">{{ 'action.unblock'|trans }}</button>
+        </form>
+      </td>
+    {% endblock row %}
+  {% endembed %}
+{% endblock body %}

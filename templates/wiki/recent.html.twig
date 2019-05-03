@@ -6,38 +6,31 @@
 {% block title 'label.recent_changes'|trans %}
 
 {% block head %}
-  {{ include('_includes/meta_pagination.html.twig', {pager: revisions}, with_context=false) }}
-{% endblock %}
+  {{ include('_includes/meta_pagination.html.twig', { pager: revisions }, with_context=false) }}
+{% endblock head %}
 
 {% block body %}
   <h1 class="page-heading">{{ 'label.recent_changes'|trans }}</h1>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th class="table__shrink">{{ 'label.id'|trans }}</th>
-        <th>{{ 'label.title'|trans }}</th>
-        <th class="table__shrink">{{ 'label.author'|trans }}</th>
-        <th class="table__shrink">{{ 'label.date'|trans }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for revision in revisions %}
-        <tr>
-          <td class="table__shrink"><a href="{{ path('wiki_revision', {id: revision.id}) }}">{{ revision.id.hex|slice(0, 8) }}</td>
-          <td><a href="{{ path('wiki', {path: revision.page.path}) }}">{{ revision.page.path }}</a></td>
-          <td class="table__shrink"><a href="{{ path('user', {username: revision.user.username}) }}">{{ revision.user.username }}</a></td>
-          <td class="table__shrink">
-            {% with { date: revision.timestamp|localizeddate('long', 'short') } %}
-              <time datetime="{{ revision.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
-                {{- date -}}
-              </time>
-            {% endwith %}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  {% embed '_layouts/table_pagination.html.twig' with { items: revisions } %}
+    {% block header %}
+      <th class="table__shrink">{{ 'label.id'|trans }}</th>
+      <th>{{ 'label.title'|trans }}</th>
+      <th class="table__shrink">{{ 'label.author'|trans }}</th>
+      <th class="table__shrink">{{ 'label.date'|trans }}</th>
+    {% endblock header %}
 
-  {{ include('_includes/pagination.html.twig', {pager: revisions}, with_context=false) }}
-{% endblock %}
+    {% block row %}
+      <td class="table__shrink"><a href="{{ path('wiki_revision', {id: item.id}) }}">{{ item.id.hex|slice(0, 8) }}</td>
+      <td><a href="{{ path('wiki', {path: item.page.path}) }}">{{ item.page.path }}</a></td>
+      <td class="table__shrink"><a href="{{ path('user', {username: item.user.username}) }}">{{ item.user.username }}</a></td>
+      <td class="table__shrink">
+        {% with { date: item.timestamp|localizeddate('long', 'short') } %}
+          <time datetime="{{ item.timestamp|date('c') }}" title="{{ date }}" class="relative-time">
+            {{- date -}}
+          </time>
+        {% endwith %}
+      </td>
+    {% endblock row %}
+  {% endembed %}
+{% endblock body %}
