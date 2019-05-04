@@ -12,6 +12,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
+ * Manage locale and timezone for a request, based on user's setting.
+ *
  * @see https://symfony.com/doc/current/session/locale_sticky_session.html
  */
 final class LocaleListener {
@@ -61,10 +63,15 @@ final class LocaleListener {
     }
 
     public function onKernelRequest(GetResponseEvent $event) {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
         $request = $event->getRequest();
 
         if ($request->hasPreviousSession()) {
             $locale = $this->session->get('_locale');
+            $timezone = $this->session->get('_tz');
         }
 
         if (!isset($locale)) {
@@ -77,9 +84,15 @@ final class LocaleListener {
             );
         }
 
+        if (!isset($timezone)) {
+            $timezone = \ini_get('date.timezone') ?: 'UTC';
+        }
+
         if (isset($locale)) {
             $request->setLocale($locale);
         }
+
+        \date_default_timezone_set($timezone);
     }
 
     public function onInteractiveLogin(InteractiveLoginEvent $event) {
@@ -87,15 +100,17 @@ final class LocaleListener {
 
         if ($user instanceof User) {
             $locale = $user->getLocale();
-
             $this->session->set('_locale', $locale);
-
             $event->getRequest()->setLocale($locale);
 
             // Because security.interactive_login runs after kernel.request,
             // where the translator gets its locale, we must manually set the
             // locale on the translator. There is no way around this.
             $this->translator->setLocale($locale);
+
+            $timezone = $user->getTimezone();
+            $this->session->set('_tz', $timezone->getName());
+            \date_default_timezone_set($timezone->getName());
         }
     }
 
@@ -107,6 +122,7 @@ final class LocaleListener {
 
             if ($token && $token->getUser() === $user) {
                 $this->session->set('_locale', $user->getLocale());
+                $this->session->set('_tz', $user->getTimezone()->getName());
             }
         }
     }

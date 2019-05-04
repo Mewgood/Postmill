@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,6 +33,10 @@ final class UserSettingsType extends AbstractType {
             ->add('locale', ChoiceType::class, [
                 'choices' => $this->buildLocaleChoices(),
                 'choice_translation_domain' => false,
+            ])
+            ->add('timezone', TimezoneType::class, [
+                'input' => 'datetimezone',
+                'label' => 'label.timezone',
             ])
             ->add(
                 $builder->create('frontPage', FormType::class, [

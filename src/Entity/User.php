@@ -169,6 +169,13 @@ class User implements UserInterface, EquatableInterface {
     private $locale = 'en';
 
     /**
+     * @ORM\Column(type="text")
+     *
+     * @var string
+     */
+    private $timezone;
+
+    /**
      * @ORM\OneToMany(targetEntity="Notification", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist"})
      *
      * @var Notification[]|Collection|Selectable
@@ -296,6 +303,7 @@ class User implements UserInterface, EquatableInterface {
         $this->blocks = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
         $this->moderatorTokens = new ArrayCollection();
+        $this->timezone = \date_default_timezone_get();
     }
 
     public function getId(): ?int {
@@ -524,6 +532,14 @@ class User implements UserInterface, EquatableInterface {
 
     public function setLocale(string $locale) {
         $this->locale = $locale;
+    }
+
+    public function getTimezone(): \DateTimeZone {
+        return new \DateTimeZone($this->timezone);
+    }
+
+    public function setTimezone(\DateTimeZone $timezone) {
+        $this->timezone = $timezone->getName();
     }
 
     /**

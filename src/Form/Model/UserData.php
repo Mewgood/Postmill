@@ -52,6 +52,11 @@ class UserData implements UserInterface {
     private $locale;
 
     /**
+     * @var \DateTimeZone
+     */
+    private $timezone;
+
+    /**
      * @Assert\Choice(Submission::FRONT_PAGE_OPTIONS, groups={"settings"}, strict=true)
      * @Assert\NotBlank(groups={"settings"})
      */
@@ -104,6 +109,7 @@ class UserData implements UserInterface {
         $self->username = $user->getUsername();
         $self->email = $user->getEmail();
         $self->locale = $user->getLocale();
+        $self->timezone = $user->getTimezone();
         $self->frontPage = $user->getFrontPage();
         $self->frontPageSortMode = $user->getFrontPageSortMode();
         $self->showCustomStylesheets = $user->isShowCustomStylesheets();
@@ -130,6 +136,7 @@ class UserData implements UserInterface {
 
         $user->setEmail($this->email);
         $user->setLocale($this->locale);
+        $user->setTimezone($this->timezone);
         $user->setFrontPage($this->frontPage);
         $user->setFrontPageSortMode($this->frontPageSortMode);
         $user->setShowCustomStylesheets($this->showCustomStylesheets);
@@ -156,6 +163,7 @@ class UserData implements UserInterface {
             'frontPage',
             'frontPageSortMode',
             'locale',
+            'timezone',
             'preferredTheme',
             'openExternalLinksInNewTab',
             'autoFetchSubmissionTitles',
@@ -225,6 +233,14 @@ class UserData implements UserInterface {
 
     public function setLocale($locale) {
         $this->locale = $locale;
+    }
+
+    public function getTimezone(): \DateTimeZone {
+        return $this->timezone;
+    }
+
+    public function setTimezone(\DateTimeZone $timezone): void {
+        $this->timezone = $timezone;
     }
 
     public function getFrontPage() {
