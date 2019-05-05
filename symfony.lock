@@ -2,6 +2,9 @@
     "aws/aws-sdk-php": {
         "version": "3.92.5"
     },
+    "clue/stream-filter": {
+        "version": "v1.4.1"
+    },
     "composer/ca-bundle": {
         "version": "1.1.0"
     },
@@ -131,6 +134,12 @@
             "ref": "9d60c231a92e69c68b89897813ec4931d0697b1f"
         }
     },
+    "friendsofsymfony/http-cache": {
+        "version": "2.6.0"
+    },
+    "friendsofsymfony/http-cache-bundle": {
+        "version": "2.6.1"
+    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.0",
         "recipe": {
@@ -211,6 +220,27 @@
     },
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
+    },
+    "php-http/client-common": {
+        "version": "1.9.1"
+    },
+    "php-http/discovery": {
+        "version": "1.6.1"
+    },
+    "php-http/guzzle6-adapter": {
+        "version": "v1.1.1"
+    },
+    "php-http/httplug": {
+        "version": "v1.1.0"
+    },
+    "php-http/message": {
+        "version": "1.7.2"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "v1.0.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"

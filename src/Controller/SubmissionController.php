@@ -14,6 +14,7 @@ use App\Form\Model\SubmissionData;
 use App\Form\SubmissionType;
 use App\Utils\Slugger;
 use Doctrine\ORM\EntityManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,6 +30,8 @@ use Symfony\Component\HttpFoundation\Response;
 final class SubmissionController extends AbstractController {
     /**
      * Show a submission's comment page.
+     *
+     * @Cache(smaxage="10 seconds")
      *
      * @param Forum      $forum
      * @param Submission $submission

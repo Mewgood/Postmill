@@ -3,16 +3,25 @@
 namespace App;
 
 use App\DependencyInjection\Compiler\VersionPass;
+use FOS\HttpCache\SymfonyCache\HttpCacheAware;
+use FOS\HttpCache\SymfonyCache\HttpCacheProvider;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
-class Kernel extends BaseKernel {
+class Kernel extends BaseKernel implements HttpCacheProvider {
+    use HttpCacheAware;
     use MicroKernelTrait;
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
+    public function __construct(...$args) {
+        parent::__construct(...$args);
+
+        $this->setHttpCache(new CacheKernel($this));
+    }
 
     public function getCacheDir() {
         return $this->getProjectDir().'/var/cache/'.$this->environment;

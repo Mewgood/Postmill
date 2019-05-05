@@ -6,12 +6,15 @@ use App\Entity\Submission;
 use App\Repository\ForumRepository;
 use App\Repository\SubmissionRepository;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Actions that list submissions across many forums.
+ *
+ * @Cache(smaxage="10 seconds")
  */
 final class FrontController extends AbstractController {
     /**

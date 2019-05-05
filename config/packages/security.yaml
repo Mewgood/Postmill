@@ -26,6 +26,7 @@ security:
             logout:
                 csrf_parameter: token
                 csrf_token_generator: security.csrf.token_manager
+                delete_cookies: [PHPSESSID]
                 path: log_out
 
             remember_me:

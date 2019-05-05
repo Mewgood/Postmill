@@ -28,16 +28,18 @@
   <body class="{{ app.user ? 'user-logged-in' : 'user-anonymous' }} {{ (app.user.nightMode ?? false) ? 'night-mode' }}">
     {% block site_alerts %}
       <div class="site-alerts">
-        {%- for type, notices in app.flashes -%}
-          {%- for notice in notices -%}
-            <div class="alert alert--{{ type }} site-alerts__alert" role="alert">
-              <p class="no-margin site-alerts__text">{{ notice|trans }}</p>
-              <button class="site-alerts__dismiss unbuttonize fg-inherit no-underline"
-                      aria-label="{{ 'action.dismiss'|trans }}"
-                      type="button">&times;</button>
-            </div>
+        {%- if app.request.previousSession -%}
+          {%- for type, notices in app.flashes -%}
+            {%- for notice in notices -%}
+              <div class="alert alert--{{ type }} site-alerts__alert" role="alert">
+                <p class="no-margin site-alerts__text">{{ notice|trans }}</p>
+                <button class="site-alerts__dismiss unbuttonize fg-inherit no-underline"
+                        aria-label="{{ 'action.dismiss'|trans }}"
+                        type="button">&times;</button>
+              </div>
+            {%- endfor -%}
           {%- endfor -%}
-        {%- endfor -%}
+        {%- endif -%}
       </div>
     {% endblock site_alerts %}
 
