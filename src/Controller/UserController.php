@@ -13,8 +13,10 @@ use App\Form\UserBlockType;
 use App\Form\UserFilterType;
 use App\Form\UserSettingsType;
 use App\Form\UserType;
+use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
 use App\Repository\NotificationRepository;
+use App\Repository\SubmissionRepository;
 use App\Repository\UserRepository;
 use App\Security\AuthenticationHelper;
 use Doctrine\ORM\EntityManager;
@@ -29,11 +31,27 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class UserController extends AbstractController {
     /**
+     * @var SubmissionRepository
+     */
+    private $submissions;
+
+    /**
+     * @var CommentRepository
+     */
+    private $comments;
+
+    /**
      * @var string
      */
     private $defaultLocale;
 
-    public function __construct(string $defaultLocale) {
+    public function __construct(
+        SubmissionRepository $submissions,
+        CommentRepository $comments,
+        string $defaultLocale
+    ) {
+        $this->submissions = $submissions;
+        $this->comments = $comments;
         $this->defaultLocale = $defaultLocale;
     }
 
@@ -72,8 +90,12 @@ final class UserController extends AbstractController {
      * @return Response
      */
     public function submissions(User $user, int $page) {
+        $submissions = $user->getPaginatedSubmissions($page);
+
+        $this->submissions->hydrate(...$submissions);
+
         return $this->render('user/submissions.html.twig', [
-            'submissions' => $user->getPaginatedSubmissions($page),
+            'submissions' => $submissions,
             'user' => $user,
         ]);
     }
@@ -85,8 +107,12 @@ final class UserController extends AbstractController {
      * @return Response
      */
     public function comments(User $user, int $page) {
+        $comments = $user->getPaginatedComments($page);
+
+        $this->comments->hydrate(...$comments);
+
         return $this->render('user/comments.html.twig', [
-            'comments' => $user->getPaginatedComments($page),
+            'comments' => $comments,
             'user' => $user,
         ]);
     }

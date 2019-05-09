@@ -30,7 +30,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 final class CommentController extends AbstractController {
     public function list(CommentRepository $repository, int $page) {
-        // TODO: link this somewhere
         return $this->render('comment/list.html.twig', [
             'comments' => $repository->findRecentPaginated($page),
         ]);

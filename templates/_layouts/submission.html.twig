@@ -147,14 +147,14 @@
     {% filter spaceless %}
       <a href="{{ path('submission', {forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify}) }}"
          class="text-sm">
-        <strong>{{ 'submissions.comments'|trans({'%count%': submission.comments|length}) }}</strong>
+        <strong>{{ 'submissions.comments'|trans({ '%count%': submission.commentCount }) }}</strong>
       </a>
     {% endfilter %}
 
     {%- if not show_body -%}
       <span class="js-display-new-comments submission__new-comments text-sm fg-green"
             data-submission-id="{{ submission.id }}"
-            data-comment-count="{{ submission.comments|length }}">
+            data-comment-count="{{ submission.commentCount }}">
       </span>
     {%- endif -%}
   </li>

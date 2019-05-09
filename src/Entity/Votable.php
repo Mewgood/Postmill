@@ -101,6 +101,6 @@ abstract class Votable {
      * multiple entities.
      */
     private function hydrateVoteCollection(): void {
-        $this->getVotes()->getValues();
+        $this->getVotes()->get(-1);
     }
 }

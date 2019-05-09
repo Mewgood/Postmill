@@ -10,10 +10,21 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommentRepository extends ServiceEntityRepository {
-    public function __construct(ManagerRegistry $registry) {
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    public function __construct(
+        ManagerRegistry $registry,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
         parent::__construct($registry, Comment::class);
+
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -56,7 +67,7 @@ class CommentRepository extends ServiceEntityRepository {
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($page);
 
-        $this->hydrateComments(\iterator_to_array($pager));
+        $this->hydrate(...$pager);
 
         return $pager;
     }
@@ -80,58 +91,46 @@ class CommentRepository extends ServiceEntityRepository {
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($page);
 
-        $this->hydrateComments(\iterator_to_array($pager));
+        $this->hydrate(...$pager);
 
         return $pager;
     }
 
-    private function hydrateComments(array $comments): void {
-        // hydrate parent and parent's author
+    public function hydrate(Comment ...$comments): void {
         $this->createQueryBuilder('c')
             ->select('PARTIAL c.{id}')
-            ->addSelect('p')
-            ->addSelect('pu')
-            ->leftJoin('c.parent', 'p')
-            ->leftJoin('p.user', 'pu')
-            ->where('c IN (?1)')
-            ->setParameter(1, $comments)
-            ->getQuery()
-            ->execute();
-
-        // hydrate comment author/submission/submission author/forum
-        $this->createQueryBuilder('c')
-            ->select('PARTIAL c.{id}')
-            ->addSelect('cu')
+            ->addSelect('u')
             ->addSelect('s')
+            ->addSelect('sf')
             ->addSelect('su')
-            ->addSelect('f')
-            ->join('c.user', 'cu')
+            ->join('c.user', 'u')
             ->join('c.submission', 's')
+            ->join('s.forum', 'sf')
             ->join('s.user', 'su')
-            ->join('s.forum', 'f')
             ->where('c IN (?1)')
             ->setParameter(1, $comments)
             ->getQuery()
             ->execute();
 
-        // hydrate votes
         $this->createQueryBuilder('c')
             ->select('PARTIAL c.{id}')
-            ->addSelect('cv')
-            ->leftJoin('c.votes', 'cv')
+            ->addSelect('cc')
+            ->leftJoin('c.children', 'cc')
             ->where('c IN (?1)')
             ->setParameter(1, $comments)
             ->getQuery()
             ->execute();
 
-        // hydrate children (for count only)
-        $this->createQueryBuilder('c')
-            ->select('PARTIAL c.{id}')
-            ->addSelect('PARTIAL r.{id}')
-            ->leftJoin('c.children', 'r')
-            ->where('c IN (?1)')
-            ->setParameter(1, $comments)
-            ->getQuery()
-            ->execute();
+        // for fast retrieval of user vote
+        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+            $this->createQueryBuilder('c')
+                ->select('PARTIAL c.{id}')
+                ->addSelect('cv')
+                ->leftJoin('c.votes', 'cv')
+                ->where('c IN (?1)')
+                ->setParameter(1, $comments)
+                ->getQuery()
+                ->execute();
+        }
     }
 }

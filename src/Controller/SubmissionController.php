@@ -12,6 +12,7 @@ use App\Events;
 use App\Form\DeleteReasonType;
 use App\Form\Model\SubmissionData;
 use App\Form\SubmissionType;
+use App\Repository\CommentRepository;
 use App\Utils\Slugger;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -29,6 +30,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class SubmissionController extends AbstractController {
     /**
+     * @var CommentRepository
+     */
+    private $comments;
+
+    public function __construct(CommentRepository $comments) {
+        $this->comments = $comments;
+    }
+
+    /**
      * Show a submission's comment page.
      *
      * @Cache(smaxage="10 seconds")
@@ -39,6 +49,8 @@ final class SubmissionController extends AbstractController {
      * @return Response
      */
     public function submission(Forum $forum, Submission $submission) {
+        $this->comments->hydrate(...$submission->getComments());
+
         return $this->render('submission/submission.html.twig', [
             'forum' => $forum,
             'submission' => $submission,
@@ -65,6 +77,8 @@ final class SubmissionController extends AbstractController {
         Submission $submission,
         Comment $comment
     ) {
+        $this->comments->hydrate(...$submission->getComments());
+
         return $this->render('submission/comment.html.twig', [
             'comment' => $comment,
             'forum' => $forum,

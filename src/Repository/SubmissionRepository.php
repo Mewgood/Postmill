@@ -10,20 +10,26 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SubmissionRepository extends ServiceEntityRepository {
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
     /**
      * `$sortBy` -> ordered column name mapping.
      *
      * @var array[]
      */
     public const SORT_COLUMN_MAP = [
-        Submission::SORT_ACTIVE => ['last_active', 'id'],
-        Submission::SORT_HOT => ['ranking', 'id'],
-        Submission::SORT_NEW => ['id'],
-        Submission::SORT_TOP => ['net_score', 'id'],
-        Submission::SORT_CONTROVERSIAL => ['downvotes', 'id'],
-        Submission::SORT_MOST_COMMENTED => ['comment_count', 'id'],
+        Submission::SORT_ACTIVE => ['last_active' => 'DESC', 'id' => 'DESC'],
+        Submission::SORT_HOT => ['ranking' => 'DESC', 'id' => 'DESC'],
+        Submission::SORT_NEW => ['id' => 'DESC'],
+        Submission::SORT_TOP => ['net_score' => 'DESC', 'id' => 'DESC'],
+        Submission::SORT_CONTROVERSIAL => ['net_score' => 'ASC', 'id' => 'ASC'],
+        Submission::SORT_MOST_COMMENTED => ['comment_count' => 'DESC', 'id' => 'DESC'],
     ];
 
     public const SORT_COLUMN_TYPES = [
@@ -31,36 +37,18 @@ class SubmissionRepository extends ServiceEntityRepository {
         'ranking' => 'bigint',
         'id' => 'bigint',
         'net_score' => 'integer',
-        'downvotes' => 'integer',
         'comment_count' => 'integer',
     ];
 
     private const MAX_PER_PAGE = 25;
 
-    private const NET_SCORE_JOIN = '('.
-            'SELECT submission_id, '.
-                'COUNT(*) FILTER (WHERE upvote = TRUE) - '.
-                    'COUNT(*) FILTER (WHERE upvote = FALSE) AS net_score '.
-            'FROM submission_votes '.
-            'GROUP BY submission_id'.
-        ')';
-
-    // TODO: implement actually useful controversy metric
-    private const CONTROVERSIAL_JOIN = '('.
-            'SELECT submission_id, COUNT(*) AS downvotes '.
-            'FROM submission_votes '.
-            'WHERE upvote = FALSE '.
-            'GROUP BY submission_id'.
-        ')';
-
-    private const COMMENT_COUNT_JOIN = '('.
-            'SELECT submission_id, COUNT(*) AS comment_count '.
-            'FROM comments '.
-            'GROUP BY submission_id'.
-        ')';
-
-    public function __construct(ManagerRegistry $registry) {
+    public function __construct(
+        ManagerRegistry $registry,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
         parent::__construct($registry, Submission::class);
+
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -102,21 +90,7 @@ class SubmissionRepository extends ServiceEntityRepository {
             ->from('submissions', 's')
             ->setMaxResults($maxPerPage + 1);
 
-        switch ($sortBy) {
-        case Submission::SORT_ACTIVE:
-        case Submission::SORT_HOT:
-        case Submission::SORT_NEW:
-            break;
-        case Submission::SORT_TOP:
-            $qb->join('s', self::NET_SCORE_JOIN, 'ns', 's.id = ns.submission_id');
-            break;
-        case Submission::SORT_CONTROVERSIAL:
-            $qb->join('s', self::CONTROVERSIAL_JOIN, 'cn', 's.id = cn.submission_id');
-            break;
-        case Submission::SORT_MOST_COMMENTED:
-            $qb->join('s', self::COMMENT_COUNT_JOIN, 'cc', 's.id = cc.submission_id');
-            break;
-        default:
+        if (!\in_array($sortBy, Submission::SORT_OPTIONS, true)) {
             throw new \InvalidArgumentException("Sort mode '$sortBy' not implemented");
         }
 
@@ -165,17 +139,17 @@ class SubmissionRepository extends ServiceEntityRepository {
             }
         }
 
-        foreach (self::SORT_COLUMN_MAP[$sortBy] as $column) {
-            $qb->addOrderBy($column, 'DESC');
+        foreach (self::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
+            $qb->addOrderBy($column, $order);
         }
 
         if ($pager) {
             $qb->andWhere(sprintf('(%s) <= (:next_%s)',
-                implode(', ', self::SORT_COLUMN_MAP[$sortBy]),
-                implode(', :next_', self::SORT_COLUMN_MAP[$sortBy])
+                implode(', ', \array_keys(self::SORT_COLUMN_MAP[$sortBy])),
+                implode(', :next_', \array_keys(self::SORT_COLUMN_MAP[$sortBy]))
             ));
 
-            foreach (self::SORT_COLUMN_MAP[$sortBy] as $column) {
+            foreach (self::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
                 $qb->setParameter('next_'.$column, $pager[$column]);
             }
         }
@@ -193,7 +167,7 @@ class SubmissionRepository extends ServiceEntityRepository {
 
         $submissions = new SubmissionPager($results, $maxPerPage, $sortBy);
 
-        $this->hydrateAssociations($submissions);
+        $this->hydrate(...$submissions);
 
         return $submissions;
     }
@@ -232,11 +206,7 @@ class SubmissionRepository extends ServiceEntityRepository {
         }
     }
 
-    private function hydrateAssociations(iterable $submissions): void {
-        if ($submissions instanceof \Traversable) {
-            $submissions = iterator_to_array($submissions);
-        }
-
+    public function hydrate(Submission ...$submissions): void {
         $this->_em->createQueryBuilder()
             ->select('PARTIAL s.{id}')
             ->addSelect('u')
@@ -249,24 +219,17 @@ class SubmissionRepository extends ServiceEntityRepository {
             ->getQuery()
             ->getResult();
 
-        $this->_em->createQueryBuilder()
-            ->select('PARTIAL s.{id}')
-            ->addSelect('sv')
-            ->from(Submission::class, 's')
-            ->leftJoin('s.votes', 'sv')
-            ->where('s IN (?1)')
-            ->setParameter(1, $submissions)
-            ->getQuery()
-            ->getResult();
-
-        $this->_em->createQueryBuilder()
-            ->select('PARTIAL s.{id}')
-            ->addSelect('PARTIAL c.{id}')
-            ->from(Submission::class, 's')
-            ->leftJoin('s.comments', 'c')
-            ->where('s IN (?1)')
-            ->setParameter(1, $submissions)
-            ->getQuery()
-            ->getResult();
+        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+            // hydrate submission votes for fast checking of user choice
+            $this->_em->createQueryBuilder()
+                ->select('PARTIAL s.{id}')
+                ->addSelect('sv')
+                ->from(Submission::class, 's')
+                ->leftJoin('s.votes', 'sv')
+                ->where('s IN (?1)')
+                ->setParameter(1, $submissions)
+                ->getQuery()
+                ->getResult();
+        }
     }
 }

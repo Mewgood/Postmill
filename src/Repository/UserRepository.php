@@ -144,6 +144,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
 
         $combined = \array_merge($submissions, $comments);
 
+        $this->_em->getRepository(Submission::class)->hydrate(...$submissions);
+        $this->_em->getRepository(Comment::class)->hydrate(...$comments);
+
         \usort($combined, function ($a, $b) {
             return $b->getTimestamp() <=> $a->getTimestamp();
         });

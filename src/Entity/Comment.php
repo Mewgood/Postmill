@@ -144,6 +144,15 @@ class Comment extends Votable {
     private $mentions;
 
     /**
+     * @ORM\Column(type="integer")
+     *
+     * @Groups({"comment:read"})
+     *
+     * @var int
+     */
+    private $netScore;
+
+    /**
      * @ORM\Column(type="tsvector", nullable=true)
      */
     private $searchDoc;
@@ -157,11 +166,6 @@ class Comment extends Votable {
      * @Groups({"comment:read"})
      */
     protected $downvotes;
-
-    /**
-     * @Groups({"comment:read"})
-     */
-    protected $netScore;
 
     public function __construct(
         string $body,
@@ -312,6 +316,8 @@ class Comment extends Votable {
         }
 
         parent::vote($user, $ip, $choice);
+
+        $this->updateNetScore();
     }
 
     public function isSoftDeleted(): bool {
@@ -324,6 +330,9 @@ class Comment extends Votable {
     public function softDelete() {
         $this->softDeleted = true;
         $this->body = '';
+        $this->submission->updateCommentCount();
+        $this->submission->updateRanking();
+        $this->submission->updateLastActive();
     }
 
     public function getIp(): ?string {
@@ -382,5 +391,13 @@ class Comment extends Votable {
         }
 
         $receiver->sendNotification(new CommentNotification($receiver, $this));
+    }
+
+    public function getNetScore(): int {
+        return $this->netScore;
+    }
+
+    private function updateNetScore(): void {
+        $this->netScore = parent::getNetScore();
     }
 }

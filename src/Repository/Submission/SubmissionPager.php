@@ -24,7 +24,7 @@ class SubmissionPager implements \IteratorAggregate {
 
         $params = [];
 
-        foreach (SubmissionRepository::SORT_COLUMN_MAP[$sortBy] as $column) {
+        foreach (SubmissionRepository::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
             $value = $request->query->get('next_'.$column);
             $type = SubmissionRepository::SORT_COLUMN_TYPES[$column];
 
@@ -56,7 +56,7 @@ class SubmissionPager implements \IteratorAggregate {
 
         foreach ($submissions as $submission) {
             if (++$count > $maxPerPage) {
-                foreach (SubmissionRepository::SORT_COLUMN_MAP[$sortBy] as $column) {
+                foreach (SubmissionRepository::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
                     $accessor = $this->columnNameToAccessor($column);
                     $value = $submission->{$accessor}();
 

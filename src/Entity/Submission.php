@@ -14,7 +14,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
  * @ORM\Table(name="submissions", indexes={
+ *     @ORM\Index(name="submissions_timestamp_idx", columns={"timestamp"}),
  *     @ORM\Index(name="submissions_ranking_id_idx", columns={"ranking", "id"}),
+ *     @ORM\Index(name="submissions_last_active_id_idx", columns={"last_active", "id"}),
+ *     @ORM\Index(name="submissions_comment_count_id_idx", columns={"comment_count", "id"}),
+ *     @ORM\Index(name="submissions_net_score_id_idx", columns={"net_score", "id"}),
  *     @ORM\Index(name="submissions_search_idx", columns={"search_doc"}),
  * })
  */
@@ -112,6 +116,15 @@ class Submission extends Votable {
      * @var Comment[]|Collection|Selectable
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @Groups({"submission:read"})
+     *
+     * @var int
+     */
+    private $commentCount = 0;
 
     /**
      * @ORM\Column(type="datetimetz")
@@ -231,6 +244,14 @@ class Submission extends Votable {
     private $locked = false;
 
     /**
+     * @ORM\Column(type="integer")
+     * @Groups({"submission:read"})
+     *
+     * @var int
+     */
+    private $netScore = 0;
+
+    /**
      * @ORM\Column(type="tsvector", nullable=true)
      *
      * @var string
@@ -246,11 +267,6 @@ class Submission extends Votable {
      * @Groups({"submission:read"})
      */
     protected $downvotes;
-
-    /**
-     * @Groups({"submission:read"})
-     */
-    protected $netScore;
 
     public function __construct(
         string $title,
@@ -323,15 +339,6 @@ class Submission extends Votable {
     }
 
     /**
-     * @Groups({"submission:read"})
-     *
-     * @return int
-     */
-    public function getCommentCount(): int {
-        return \count($this->comments);
-    }
-
-    /**
      * Get top-level comments, ordered by descending net score.
      *
      * @return Comment[]
@@ -356,6 +363,7 @@ class Submission extends Votable {
             }
         }
 
+        $this->updateCommentCount();
         $this->updateRanking();
         $this->updateLastActive();
     }
@@ -365,11 +373,25 @@ class Submission extends Votable {
         $this->comments->get(-1);
 
         foreach ($comments as $comment) {
-            $this->comments->removeElement($comment);
+            if ($this->comments->contains($comment)) {
+                $this->comments->removeElement($comment);
+            }
         }
 
+        $this->updateCommentCount();
         $this->updateRanking();
         $this->updateLastActive();
+    }
+
+    public function getCommentCount(): int {
+        return $this->commentCount;
+    }
+
+    public function updateCommentCount(): void {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('softDeleted', false));
+
+        $this->commentCount = \count($this->comments->matching($criteria));
     }
 
     public function getTimestamp(): \DateTime {
@@ -427,6 +449,7 @@ class Submission extends Votable {
 
         parent::vote($user, $ip, $choice);
 
+        $this->updateNetScore();
         $this->updateRanking();
     }
 
@@ -477,18 +500,13 @@ class Submission extends Votable {
     }
 
     public function updateRanking() {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('softDeleted', false));
-
-        $commentCount = \count($this->comments->matching($criteria));
-
         $netScore = $this->getNetScore();
         $netScoreAdvantage = $netScore * self::NETSCORE_MULTIPLIER;
 
         if ($netScore > self::DOWNVOTED_CUTOFF) {
-            $commentAdvantage = $commentCount * self::COMMENT_MULTIPLIER;
+            $commentAdvantage = $this->getCommentCount() * self::COMMENT_MULTIPLIER;
         } else {
-            $commentAdvantage = $commentCount * self::COMMENT_DOWNVOTED_MULTIPLIER;
+            $commentAdvantage = $this->getCommentCount() * self::COMMENT_DOWNVOTED_MULTIPLIER;
         }
 
         $advantage = max(min($netScoreAdvantage + $commentAdvantage, self::MAX_ADVANTAGE), -self::MAX_PENALTY);
@@ -540,5 +558,13 @@ class Submission extends Votable {
 
     public function setLocked(bool $locked) {
         $this->locked = $locked;
+    }
+
+    public function getNetScore(): int {
+        return $this->netScore;
+    }
+
+    private function updateNetScore(): void {
+        $this->netScore = parent::getNetScore();
     }
 }
