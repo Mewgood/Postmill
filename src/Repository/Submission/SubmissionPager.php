@@ -33,7 +33,7 @@ class SubmissionPager implements \IteratorAggregate {
                 return [];
             }
 
-            $params[$column] = $value;
+            $params[$column] = self::transformValue($type, $value);
         }
 
         // complete pager params
@@ -59,6 +59,11 @@ class SubmissionPager implements \IteratorAggregate {
                 foreach (SubmissionRepository::SORT_COLUMN_MAP[$sortBy] as $column) {
                     $accessor = $this->columnNameToAccessor($column);
                     $value = $submission->{$accessor}();
+
+                    if ($value instanceof \DateTimeInterface) {
+                        // ugly hack
+                        $value = $value->format('c');
+                    }
 
                     $this->nextPageParams['next_'.$column] = $value;
                 }
@@ -89,12 +94,22 @@ class SubmissionPager implements \IteratorAggregate {
         return $this->nextPageParams;
     }
 
+    public function isEmpty(): bool {
+        return empty($this->submissions);
+    }
+
     private function columnNameToAccessor(string $columnName): string {
         return 'get'.str_replace('_', '', ucwords($columnName, '_'));
     }
 
     private static function valueIsOfType(string $type, string $value): bool {
         switch ($type) {
+        case 'datetimetz':
+            try {
+                return (bool) new \DateTime($value);
+            } catch (\Exception $e) {
+                return false;
+            }
         case 'integer':
             return ctype_digit($value) && \is_int(+$value) &&
                 $value >= -0x80000000 && $value <= 0x7fffffff;
@@ -107,7 +122,15 @@ class SubmissionPager implements \IteratorAggregate {
         }
     }
 
-    public function isEmpty(): bool {
-        return empty($this->submissions);
+    private static function transformValue(string $type, string $value) {
+        switch ($type) {
+        case 'datetimetz':
+            return new \DateTime($value);
+        case 'integer':
+        case 'bigint':
+            return +$value;
+        default:
+            throw new \InvalidArgumentException("Unexpected type '$type'");
+        }
     }
 }

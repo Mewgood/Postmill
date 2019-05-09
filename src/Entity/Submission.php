@@ -6,6 +6,7 @@ use App\Entity\Exception\BannedFromForumException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -22,6 +23,7 @@ class Submission extends Votable {
     public const FRONT_SUBSCRIBED = 'subscribed';
     public const FRONT_ALL = 'all';
     public const FRONT_MODERATED = 'moderated';
+    public const SORT_ACTIVE = 'active';
     public const SORT_HOT = 'hot';
     public const SORT_NEW = 'new';
     public const SORT_TOP = 'top';
@@ -41,6 +43,7 @@ class Submission extends Votable {
     ];
 
     public const SORT_OPTIONS = [
+        self::SORT_ACTIVE,
         self::SORT_HOT,
         self::SORT_NEW,
         self::SORT_TOP,
@@ -104,8 +107,9 @@ class Submission extends Votable {
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="submission",
      *     fetch="EXTRA_LAZY", cascade={"remove"})
+     * @ORM\OrderBy({"timestamp": "ASC"})
      *
-     * @var Comment[]|Collection
+     * @var Comment[]|Collection|Selectable
      */
     private $comments;
 
@@ -117,6 +121,15 @@ class Submission extends Votable {
      * @var \DateTime
      */
     private $timestamp;
+
+    /**
+     * @ORM\Column(type="datetimetz")
+     *
+     * @Groups({"submission:read"})
+     *
+     * @var \DateTime
+     */
+    private $lastActive;
 
     /**
      * @ORM\JoinColumn(nullable=false)
@@ -269,8 +282,9 @@ class Submission extends Votable {
         $this->timestamp = $timestamp ?: new \DateTime('@'.time());
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
-        $this->vote($user, $ip, Votable::VOTE_UP);
         $this->mentions = new ArrayCollection();
+        $this->vote($user, $ip, Votable::VOTE_UP);
+        $this->updateLastActive();
     }
 
     public function getId(): ?int {
@@ -335,16 +349,50 @@ class Submission extends Votable {
         return $comments;
     }
 
-    public function addComment(Comment $comment) {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
+    public function addComment(Comment ...$comments) {
+        foreach ($comments as $comment) {
+            if (!$this->comments->contains($comment)) {
+                $this->comments->add($comment);
+            }
         }
 
         $this->updateRanking();
+        $this->updateLastActive();
+    }
+
+    public function removeComment(Comment ...$comments) {
+        // hydrate the collection
+        $this->comments->get(-1);
+
+        foreach ($comments as $comment) {
+            $this->comments->removeElement($comment);
+        }
+
+        $this->updateRanking();
+        $this->updateLastActive();
     }
 
     public function getTimestamp(): \DateTime {
         return $this->timestamp;
+    }
+
+    public function getLastActive(): \DateTime {
+        return $this->lastActive;
+    }
+
+    public function updateLastActive(): void {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('softDeleted', false))
+            ->orderBy(['timestamp' => 'DESC'])
+            ->setMaxResults(1);
+
+        $lastComment = $this->comments->matching($criteria)->first();
+
+        if ($lastComment) {
+            $this->lastActive = clone $lastComment->getTimestamp();
+        } else {
+            $this->lastActive = clone $this->getTimestamp();
+        }
     }
 
     public function getForum(): Forum {
@@ -429,13 +477,18 @@ class Submission extends Votable {
     }
 
     public function updateRanking() {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('softDeleted', false));
+
+        $commentCount = \count($this->comments->matching($criteria));
+
         $netScore = $this->getNetScore();
         $netScoreAdvantage = $netScore * self::NETSCORE_MULTIPLIER;
 
         if ($netScore > self::DOWNVOTED_CUTOFF) {
-            $commentAdvantage = count($this->comments) * self::COMMENT_MULTIPLIER;
+            $commentAdvantage = $commentCount * self::COMMENT_MULTIPLIER;
         } else {
-            $commentAdvantage = count($this->comments) * self::COMMENT_DOWNVOTED_MULTIPLIER;
+            $commentAdvantage = $commentCount * self::COMMENT_DOWNVOTED_MULTIPLIER;
         }
 
         $advantage = max(min($netScoreAdvantage + $commentAdvantage, self::MAX_ADVANTAGE), -self::MAX_PENALTY);

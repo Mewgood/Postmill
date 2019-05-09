@@ -59,6 +59,7 @@ final class UserSettingsType extends AbstractType {
                     'choices' => [
                         'submissions.sort_by_hot' => Submission::SORT_HOT,
                         'submissions.sort_by_new' => Submission::SORT_NEW,
+                        'submissions.sort_by_active' => Submission::SORT_ACTIVE,
                     ],
                     'error_bubbling' => true,
                     'label' => 'label.sort_by',

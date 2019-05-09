@@ -18,6 +18,7 @@ class SubmissionRepository extends ServiceEntityRepository {
      * @var array[]
      */
     public const SORT_COLUMN_MAP = [
+        Submission::SORT_ACTIVE => ['last_active', 'id'],
         Submission::SORT_HOT => ['ranking', 'id'],
         Submission::SORT_NEW => ['id'],
         Submission::SORT_TOP => ['net_score', 'id'],
@@ -26,6 +27,7 @@ class SubmissionRepository extends ServiceEntityRepository {
     ];
 
     public const SORT_COLUMN_TYPES = [
+        'last_active' => 'datetimetz',
         'ranking' => 'bigint',
         'id' => 'bigint',
         'net_score' => 'integer',
@@ -101,6 +103,7 @@ class SubmissionRepository extends ServiceEntityRepository {
             ->setMaxResults($maxPerPage + 1);
 
         switch ($sortBy) {
+        case Submission::SORT_ACTIVE:
         case Submission::SORT_HOT:
         case Submission::SORT_NEW:
             break;

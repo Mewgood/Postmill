@@ -201,6 +201,7 @@ class Comment extends Votable {
         $this->notify();
         $this->notifications = new ArrayCollection();
         $this->mentions = new ArrayCollection();
+        $submission->addComment($this);
     }
 
     public function getId(): ?int {
@@ -315,10 +316,6 @@ class Comment extends Votable {
 
     public function isSoftDeleted(): bool {
         return $this->softDeleted;
-    }
-
-    public function setSoftDeleted(bool $softDeleted) {
-        $this->softDeleted = $softDeleted;
     }
 
     /**

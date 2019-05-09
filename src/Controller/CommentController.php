@@ -211,7 +211,7 @@ final class CommentController extends AbstractController {
         $this->validateCsrf('delete_comment', $request->request->get('token'));
 
         if ($this->isGranted('delete_thread', $comment)) {
-            $em->refresh($comment);
+            $submission->removeComment($comment);
             $em->remove($comment);
         } elseif ($this->isGranted('softdelete', $comment)) {
             $comment->softDelete();

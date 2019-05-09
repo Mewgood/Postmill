@@ -9,7 +9,7 @@ parameters:
     fonts_config: "%env(json:file:resolve:APP_FONTS)%"
     themes_config: "%env(json:file:resolve:APP_THEMES)%"
     ratelimit_ip_whitelist: "%env(csv:RATELIMIT_WHITELIST)%"
-    submission_sort_modes: hot|new|top|controversial|most_commented
+    submission_sort_modes: active|hot|new|top|controversial|most_commented
     user_forum_creation_interval: 1 day
     number_regex: '[1-9][0-9]{0,17}'
     uuid_regex: '[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}'

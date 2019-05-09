@@ -485,6 +485,7 @@ submissions:
     edit: Edit
     info_with_forum_name: Submitted by %submitter% %timestamp% in %forum%
     info_without_forum_name: Submitted by %submitter% %timestamp%
+    sort_by_active: Active
     sort_by_hot: Hot
     sort_by_new: New
     sort_by_top: Top

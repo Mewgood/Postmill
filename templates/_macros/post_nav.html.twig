@@ -39,7 +39,7 @@
     {{ _tab_button(current_label, 'label.sort_by_mode', '%mode%', 'sort') }}
 
     <ul class="dropdown__menu dropdown-card unlistify">
-      {{ _submission_sort_items(current, ['hot', 'new'], null) }}
+      {{ _submission_sort_items(current, ['hot', 'new', 'active'], null) }}
       {{ _submission_sort_items(current, ['top', 'controversial', 'most_commented'], 'day') }}
     </ul>
   </li>
@@ -90,7 +90,7 @@
   {% if current not in times %}
     {% set current = 'all' %}
   {% endif %}
-  {% if app.request.query.has('t') or sort_by not in ['hot', 'new'] %}
+  {% if app.request.query.has('t') or sort_by not in ['active', 'hot', 'new'] %}
     {% set attr = app.request.attributes %}
     {% set current_label = 'submissions.time_%s'|format(current)|trans %}
     <li class="dropdown">

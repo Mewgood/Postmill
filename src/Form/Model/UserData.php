@@ -63,7 +63,7 @@ class UserData implements UserInterface {
     private $frontPage;
 
     /**
-     * @Assert\Choice({Submission::SORT_HOT, Submission::SORT_NEW}, groups={"settings"}, strict=true)
+     * @Assert\Choice({Submission::SORT_ACTIVE, Submission::SORT_HOT, Submission::SORT_NEW}, groups={"settings"}, strict=true)
      * @Assert\NotBlank(groups={"settings"})
      */
     private $frontPageSortMode;
