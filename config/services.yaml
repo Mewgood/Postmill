@@ -86,6 +86,10 @@ services:
     App\Security\Voter\TokenVoter:
         $forumCreationInterval: "%user_forum_creation_interval%"
 
+    App\Twig\AppExtension:
+        $branch: "%env(APP_BRANCH)%"
+        $version: "%env(APP_VERSION)%"
+
     App\Utils\IpRateLimitFactory:
         $cache: "@cache.ratelimit"
         $ipWhitelist: "%ratelimit_ip_whitelist%"

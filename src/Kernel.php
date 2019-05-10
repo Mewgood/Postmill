@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\DependencyInjection\Compiler\VersionPass;
 use FOS\HttpCache\SymfonyCache\HttpCacheAware;
 use FOS\HttpCache\SymfonyCache\HttpCacheProvider;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -61,9 +60,5 @@ class Kernel extends BaseKernel implements HttpCacheProvider {
             $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
-    }
-
-    protected function build(ContainerBuilder $container) {
-        $container->addCompilerPass(new VersionPass());
     }
 }
