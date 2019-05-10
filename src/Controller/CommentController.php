@@ -14,7 +14,7 @@ use App\Form\Model\CommentData;
 use App\Repository\CommentRepository;
 use App\Repository\ForumRepository;
 use App\Utils\Slugger;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,28 +29,48 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @Entity("comment", expr="repository.findOneBySubmissionAndIdOr404(submission, comment_id)")
  */
 final class CommentController extends AbstractController {
-    public function list(CommentRepository $repository, int $page) {
+    /**
+     * @var CommentRepository
+     */
+    private $comments;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var ForumRepository
+     */
+    private $forums;
+
+    public function __construct(
+        CommentRepository $comments,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        ForumRepository $forums
+    ) {
+        $this->comments = $comments;
+        $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->forums = $forums;
+    }
+
+    public function list(int $page) {
         return $this->render('comment/list.html.twig', [
-            'comments' => $repository->findRecentPaginated($page),
+            'comments' => $this->comments->findRecentPaginated($page),
         ]);
     }
 
     /**
      * Render the comment form only (no layout).
-     *
-     * @param ForumRepository $forumRepository
-     * @param string          $forumName
-     * @param int             $submissionId
-     * @param int|null        $commentId
-     *
-     * @return Response
      */
-    public function commentForm(
-        ForumRepository $forumRepository,
-        $forumName,
-        $submissionId,
-        $commentId = null
-    ) {
+    public function commentForm($forumName, $submissionId, $commentId = null): Response {
         $routeParams = [
             'forum_name' => $forumName,
             'submission_id' => $submissionId,
@@ -64,7 +84,7 @@ final class CommentController extends AbstractController {
 
         $form = $this->createNamedForm($name, CommentType::class, null, [
             'action' => $this->generateUrl('comment_post', $routeParams),
-            'forum' => $forumRepository->findOneByCaseInsensitiveName($forumName),
+            'forum' => $this->forums->findOneByCaseInsensitiveName($forumName),
         ]);
 
         return $this->render('comment/form_fragment.html.twig', [
@@ -76,24 +96,8 @@ final class CommentController extends AbstractController {
      * Submit a comment. This is intended for users without JS enabled.
      *
      * @IsGranted("ROLE_USER")
-     *
-     * @param EntityManager            $em
-     * @param Forum                    $forum
-     * @param Submission               $submission
-     * @param Comment|null             $comment
-     * @param Request                  $request
-     * @param EventDispatcherInterface $dispatcher
-     *
-     * @return Response
      */
-    public function comment(
-        EntityManager $em,
-        Forum $forum,
-        Submission $submission,
-        ?Comment $comment,
-        Request $request,
-        EventDispatcherInterface $dispatcher
-    ) {
+    public function comment(Forum $forum, Submission $submission, ?Comment $comment, Request $request) {
         $name = $this->getFormName($submission, $comment);
         $data = new CommentData($submission);
 
@@ -105,10 +109,10 @@ final class CommentController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $reply = $data->toComment($this->getUser(), $comment, $request->getClientIp());
 
-            $em->persist($reply);
-            $em->flush();
+            $this->entityManager->persist($reply);
+            $this->entityManager->flush();
 
-            $dispatcher->dispatch(Events::NEW_COMMENT, new GenericEvent($reply));
+            $this->eventDispatcher->dispatch(Events::NEW_COMMENT, new GenericEvent($reply));
 
             return $this->redirectToRoute('comment', [
                 'forum_name' => $forum->getName(),
@@ -138,24 +142,8 @@ final class CommentController extends AbstractController {
      *
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit", subject="comment", statusCode=403)
-     *
-     * @param EntityManager            $em
-     * @param Forum                    $forum
-     * @param Submission               $submission
-     * @param Comment                  $comment
-     * @param Request                  $request
-     * @param EventDispatcherInterface $dispatcher
-     *
-     * @return Response
      */
-    public function editComment(
-        EntityManager $em,
-        Forum $forum,
-        Submission $submission,
-        Comment $comment,
-        Request $request,
-        EventDispatcherInterface $dispatcher
-    ) {
+    public function editComment(Forum $forum, Submission $submission, Comment $comment, Request $request) {
         $data = CommentData::createFromComment($comment);
 
         $form = $this->createForm(CommentType::class, $data, ['forum' => $forum]);
@@ -165,10 +153,10 @@ final class CommentController extends AbstractController {
             $before = clone $comment;
             $data->updateComment($comment, $this->getUser());
 
-            $em->flush();
+            $this->entityManager->flush();
 
             $event = new EntityModifiedEvent($before, $comment);
-            $dispatcher->dispatch(Events::EDIT_COMMENT, $event);
+            $this->eventDispatcher->dispatch(Events::EDIT_COMMENT, $event);
 
             return $this->redirectToRoute('comment', [
                 'forum_name' => $forum->getName(),
@@ -187,42 +175,22 @@ final class CommentController extends AbstractController {
     }
 
     /**
-     * Delete a comment.
+     * Delete a comment thread.
      *
      * @IsGranted("ROLE_USER")
-     * @IsGranted("delete", subject="comment", statusCode=403)
-     *
-     * @param EntityManager $em
-     * @param Submission    $submission
-     * @param Forum         $forum
-     * @param Comment       $comment
-     * @param Request       $request
-     *
-     * @return Response
+     * @IsGranted("delete_thread", subject="comment", statusCode=403)
      */
-    public function deleteComment(
-        EntityManager $em,
-        Submission $submission,
-        Forum $forum,
-        Comment $comment,
-        Request $request
-    ) {
+    public function deleteComment(Submission $submission, Forum $forum, Comment $comment, Request $request): Response {
         $this->validateCsrf('delete_comment', $request->request->get('token'));
 
-        if ($this->isGranted('delete_thread', $comment)) {
-            $submission->removeComment($comment);
-            $em->remove($comment);
-        } elseif ($this->isGranted('softdelete', $comment)) {
-            $comment->softDelete();
-        } else {
-            throw new \RuntimeException("This shouldn't happen");
-        }
+        $submission->removeComment($comment);
+        $this->entityManager->remove($comment);
 
         $this->logDeletion($forum, $comment);
 
         $commentId = $comment->getId(); // not available on entity after flush()
 
-        $em->flush();
+        $this->entityManager->flush();
 
         if ($request->headers->has('Referer')) {
             $commentUrl = $this->generateUrl('comment', [
@@ -247,29 +215,15 @@ final class CommentController extends AbstractController {
      *
      * @IsGranted("ROLE_USER")
      * @IsGranted("softdelete", subject="comment", statusCode=403)
-     *
-     * @param EntityManager $em
-     * @param Forum         $forum
-     * @param Submission    $submission
-     * @param Comment       $comment
-     * @param Request       $request
-     *
-     * @return Response
      */
-    public function softDeleteComment(
-        EntityManager $em,
-        Forum $forum,
-        /* @noinspection PhpUnusedParameterInspection */ Submission $submission,
-        Comment $comment,
-        Request $request
-    ) {
+    public function softDeleteComment(Forum $forum, Submission $submission, Comment $comment, Request $request): Response {
         $this->validateCsrf('softdelete_comment', $request->request->get('token'));
 
         $comment->softDelete();
 
         $this->logDeletion($forum, $comment);
 
-        $em->flush();
+        $this->entityManager->flush();
 
         return $this->redirectAfterAction($comment, $request);
     }

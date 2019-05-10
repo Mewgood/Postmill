@@ -321,15 +321,16 @@ class Comment extends Votable {
     }
 
     public function isSoftDeleted(): bool {
-        return $this->softDeleted;
+        return $this->softDeleted && $this->body === '';
     }
 
     /**
      * Delete a comment without deleting its replies.
      */
-    public function softDelete() {
+    public function softDelete(): void {
         $this->softDeleted = true;
         $this->body = '';
+        $this->userFlag = 0;
         $this->submission->updateCommentCount();
         $this->submission->updateRanking();
         $this->submission->updateLastActive();

@@ -26,7 +26,7 @@ comment_form:
     path: /comment_form/{forumName}/{submissionId}/{commentId}
     requirements: { submissionId: \d+, commentId: \d+ }
 
-delete_comment:
+delete_comment_thread:
     controller: App\Controller\CommentController::deleteComment
     defaults: { slug: '-' }
     path: /f/{forum_name}/{submission_id}/{slug}/comment/{comment_id}/delete

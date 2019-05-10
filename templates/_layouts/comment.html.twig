@@ -106,7 +106,7 @@
     {%- endif -%}
   {% endfilter %}
 
-  {% if comment.user is same as(comment.submission.user) %}
+  {% if not comment.softDeleted and comment.user is same as(comment.submission.user) %}
     <small class="comment__op-text text-sm user-flag"
            title="{{ 'item.op'|trans }}"
            aria-label="{{ 'item.op'|trans }}">
@@ -124,10 +124,16 @@
 
   {% if comment.user is same as(self) %}
     {% set comment_nav_classes = 'fg-inherit text-sm' %}
-    {{- block('comment_nav_delete') -}}
+    {% if comment.children|length == 0 %}
+      {{ block('comment_nav_delete_thread') }}
+    {% endif %}
+    {{- block('comment_nav_softdelete') -}}
     {{- block('comment_nav_edit') }}
-  {% elseif is_granted('moderator', comment.submission.forum)  %}
-    {% set comment_nav_classes = 'menu-item no-wrap' %}
+  {% endif %}
+
+  {% set menu_actions = block('comment_nav_menu_actions')|trim %}
+
+  {% if menu_actions is not empty %}
     <li class="dropdown">
       <button class="dropdown__toggle fg-inherit no-underline text-sm unbuttonize">
         <span class="no-underline__exempt">{{ 'nav.actions'|trans }}</span>
@@ -135,17 +141,24 @@
       </button>
 
       <ul class="dropdown__menu dropdown-card unlistify no-margin">
-        {% if comment.user is not same as(self) %}
-          {{ block('comment_nav_delete') }}
-          {{ block('comment_nav_edit') }}
-        {% endif %}
-
-        {{ block('comment_nav_ban') }}
-        {{ block('comment_nav_ip_ban') }}
+        {{ menu_actions|raw }}
       </ul>
     </li>
   {% endif %}
 {% endblock comment_nav %}
+
+{% block comment_nav_menu_actions %}
+  {% set comment_nav_classes = 'menu-item no-wrap' %}
+  {% if comment.user is not same as(self) %}
+    {{ block('comment_nav_softdelete') }}
+    {{ block('comment_nav_delete_thread') }}
+    {{ block('comment_nav_edit') }}
+    {{ block('comment_nav_ban') }}
+    {{ block('comment_nav_ip_ban') }}
+  {% elseif comment.children|length > 0 %}
+    {{ block('comment_nav_delete_thread') }}
+  {% endif %}
+{% endblock %}
 
 {%- block comment_nav_reply -%}
   <li>
@@ -189,53 +202,44 @@
   {%- endfilter -%}
 {%- endblock comment_nav_parent -%}
 
-{# Forms are used here because we need to support JS-less browsing and because
- # GET requests should never mutate the state of the application. #}
-{%- block comment_nav_delete -%}
-  {%- if comment.children|length > 0 and is_granted('delete_thread', comment) -%}
-    {%- set delete_thread_label = 'comments.delete_thread' -%}
-    {{- block('comment_nav_delete_thread') -}}
-    {{- block('comment_nav_delete_softdelete') -}}
-  {%- elseif is_granted('delete', comment) -%}
-    {%- set delete_thread_label = 'comments.delete' -%}
-    {{- block('comment_nav_delete_thread') -}}
-  {%- endif -%}
-{%- endblock comment_nav_delete -%}
-
-{% block comment_nav_delete_softdelete %}
+{% block comment_nav_softdelete %}
   {% from '_macros/icon.html.twig' import icon %}
-  <li>
-    <form action="{{ path('softdelete_comment', {
-      forum_name: comment.submission.forum.name,
-      submission_id: comment.submission.id,
-      comment_id: comment.id,
-    }) }}" method="POST">
-      <input type="hidden" name="token" value="{{ csrf_token('softdelete_comment') }}">
-      <button type="submit"
-              class="unbuttonize comment__soft-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
-        {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
-        {{ 'comments.delete'|trans -}}
-      </button>
-    </form>
-  </li>
-{% endblock comment_nav_delete_softdelete %}
-
-{%- block comment_nav_delete_thread -%}
-  {% from '_macros/icon.html.twig' import icon %}
-  <li>
-    <form action="{{ path('delete_comment', {
+  {% if is_granted('softdelete', comment) %}
+    <li>
+      <form action="{{ path('softdelete_comment', {
         forum_name: comment.submission.forum.name,
         submission_id: comment.submission.id,
         comment_id: comment.id,
-    }) }}" method="POST">
-      <input type="hidden" name="token" value="{{ csrf_token('delete_comment') }}">
-      <button type="submit"
-              class="unbuttonize comment__thread-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
-        {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
-        {{ delete_thread_label|trans -}}
-      </button>
-    </form>
-  </li>
+      }) }}" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('softdelete_comment') }}">
+        <button type="submit"
+                class="unbuttonize comment__soft-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
+          {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
+          {{ 'comments.delete'|trans -}}
+        </button>
+      </form>
+    </li>
+  {% endif %}
+{% endblock comment_nav_softdelete %}
+
+{%- block comment_nav_delete_thread -%}
+  {% from '_macros/icon.html.twig' import icon %}
+  {% if is_granted('delete_thread', comment) %}
+    <li>
+      <form action="{{ path('delete_comment_thread', {
+          forum_name: comment.submission.forum.name,
+          submission_id: comment.submission.id,
+          comment_id: comment.id,
+      }) }}" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('delete_comment') }}">
+        <button type="submit"
+                class="unbuttonize comment__thread-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
+          {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
+          {{ comment.children|length > 0 ? 'comments.delete_thread'|trans : 'comments.delete'|trans -}}
+        </button>
+      </form>
+    </li>
+  {% endif %}
 {%- endblock comment_nav_delete_thread -%}
 
 {%- block comment_nav_edit -%}
