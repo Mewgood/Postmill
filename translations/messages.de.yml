@@ -28,7 +28,6 @@ banned:
     message: Du wurdest gesperrt!
 
 comments:
-    author_deleted: '[gelöscht]'
     comments: Kommentare
     delete: Löschen
     delete_thread: Löschen mit Antworten
@@ -142,6 +141,9 @@ nav:
     forums: Foren
     next: Nächste
     previous: Vorherige
+
+placeholder:
+    deleted: '[gelöscht]'
 
 request_password_reset:
     title: Anfrage zum Zurücksetzen des Passworts

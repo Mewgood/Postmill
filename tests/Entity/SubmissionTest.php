@@ -16,7 +16,9 @@ class SubmissionTest extends TestCase {
      * @dataProvider constructorArgsProvider
      */
     public function testConstructor($title, $url, $body, $forum, $user, $ip, $sticky, $userFlag) {
-        $submission = new Submission($title, $url, $body, $forum, $user, $ip, $sticky, $userFlag);
+        $submission = new Submission($title, $url, $body, $forum, $user, $ip);
+        $submission->setSticky($sticky);
+        $submission->setUserFlag($userFlag);
 
         $this->assertSame($title, $submission->getTitle());
         $this->assertSame($url, $submission->getUrl());

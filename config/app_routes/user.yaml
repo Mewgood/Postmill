@@ -12,9 +12,8 @@ user_shortcut:
 user_submissions:
     controller: App\Controller\UserController::submissions
     defaults: { page: 1 }
-    path: /user/{username}/submissions/{page}
+    path: /user/{username}/submissions
     methods: [GET]
-    requirements: { page: \d+ }
 
 user_comments:
     controller: App\Controller\UserController::comments

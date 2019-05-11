@@ -88,6 +88,8 @@ class SubmissionRepository extends ServiceEntityRepository {
         $qb = $this->_em->getConnection()->createQueryBuilder()
             ->select($rsm->generateSelectClause())
             ->from('submissions', 's')
+            ->where('s.visibility IN (:visibility)')
+            ->setParameter('visibility', Submission::VISIBILITY_VISIBLE)
             ->setMaxResults($maxPerPage + 1);
 
         if (!\in_array($sortBy, Submission::SORT_OPTIONS, true)) {

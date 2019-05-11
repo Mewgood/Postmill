@@ -28,7 +28,6 @@ banned:
     message: Du har blitt utestengt!
 
 comments:
-    author_deleted: '[slettet]'
     comments: Kommentarer
     delete: Slett
     delete_thread: Slett med svar
@@ -170,6 +169,9 @@ nav:
     messages: Meldinger
     next: Neste
     previous: Forrige
+
+placeholder:
+    deleted: '[slettet]'
 
 request_password_reset:
     title: Be om nullstilling av passord

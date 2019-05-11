@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Exception\BannedFromForumException;
+use App\Entity\Exception\SubmissionLockedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -20,9 +21,13 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     @ORM\Index(name="submissions_comment_count_id_idx", columns={"comment_count", "id"}),
  *     @ORM\Index(name="submissions_net_score_id_idx", columns={"net_score", "id"}),
  *     @ORM\Index(name="submissions_search_idx", columns={"search_doc"}),
+ *     @ORM\Index(name="submissions_visibility_idx", columns={"visibility"}),
  * })
  */
 class Submission extends Votable {
+    public const VISIBILITY_VISIBLE = 'visible';
+    public const VISIBILITY_DELETED = 'deleted';
+
     public const FRONT_FEATURED = 'featured';
     public const FRONT_SUBSCRIBED = 'subscribed';
     public const FRONT_ALL = 'all';
@@ -77,7 +82,7 @@ class Submission extends Votable {
      *
      * @Groups({"submission:read", "abbreviated_relations"})
      *
-     * @var int
+     * @var int|null
      */
     private $id;
 
@@ -145,6 +150,15 @@ class Submission extends Votable {
     private $lastActive;
 
     /**
+     * @ORM\Column(type="text")
+     *
+     * @Groups({"submission:read"})
+     *
+     * @var string
+     */
+    private $visibility = self::VISIBILITY_VISIBLE;
+
+    /**
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="Forum", inversedBy="submissions")
      *
@@ -173,7 +187,7 @@ class Submission extends Votable {
     private $votes;
 
     /**
-     * @ORM\OneToMany(targetEntity="SubmissionMention", mappedBy="submission", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="SubmissionMention", mappedBy="submission", cascade={"remove"}, orphanRemoval=true)
      *
      * @var SubmissionMention[]|Collection
      */
@@ -182,7 +196,7 @@ class Submission extends Votable {
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @var string
+     * @var string|null
      */
     private $image;
 
@@ -232,7 +246,7 @@ class Submission extends Votable {
      *
      * @var int
      */
-    private $userFlag;
+    private $userFlag = UserFlags::FLAG_NONE;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -275,8 +289,6 @@ class Submission extends Votable {
         Forum $forum,
         User $user,
         ?string $ip,
-        bool $sticky = false,
-        int $userFlag = UserFlags::FLAG_NONE,
         \DateTime $timestamp = null
     ) {
         if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
@@ -293,9 +305,7 @@ class Submission extends Votable {
         $this->forum = $forum;
         $this->user = $user;
         $this->ip = $user->isTrustedOrAdmin() ? null : $ip;
-        $this->sticky = $sticky;
-        $this->setUserFlag($userFlag);
-        $this->timestamp = $timestamp ?: new \DateTime('@'.time());
+        $this->timestamp = $timestamp ?? new \DateTime('@'.time());
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->mentions = new ArrayCollection();
@@ -311,7 +321,7 @@ class Submission extends Votable {
         return $this->title;
     }
 
-    public function setTitle(string $title) {
+    public function setTitle(string $title): void {
         $this->title = $title;
     }
 
@@ -319,7 +329,7 @@ class Submission extends Votable {
         return $this->url;
     }
 
-    public function setUrl(?string $url) {
+    public function setUrl(?string $url): void {
         $this->url = $url;
     }
 
@@ -327,7 +337,7 @@ class Submission extends Votable {
         return $this->body;
     }
 
-    public function setBody(?string $body) {
+    public function setBody(?string $body): void {
         $this->body = $body;
     }
 
@@ -356,7 +366,7 @@ class Submission extends Votable {
         return $comments;
     }
 
-    public function addComment(Comment ...$comments) {
+    public function addComment(Comment ...$comments): void {
         foreach ($comments as $comment) {
             if (!$this->comments->contains($comment)) {
                 $this->comments->add($comment);
@@ -368,7 +378,7 @@ class Submission extends Votable {
         $this->updateLastActive();
     }
 
-    public function removeComment(Comment ...$comments) {
+    public function removeComment(Comment ...$comments): void {
         // hydrate the collection
         $this->comments->get(-1);
 
@@ -417,6 +427,21 @@ class Submission extends Votable {
         }
     }
 
+    public function getVisibility(): string {
+        return $this->visibility;
+    }
+
+    public function softDelete(): void {
+        $this->visibility = self::VISIBILITY_DELETED;
+        $this->title = '';
+        $this->url = null;
+        $this->body = null;
+        $this->image = null;
+        $this->sticky = false;
+        $this->userFlag = 0;
+        $this->mentions->clear();
+    }
+
     public function getForum(): Forum {
         return $this->forum;
     }
@@ -426,23 +451,21 @@ class Submission extends Votable {
     }
 
     /**
-     * {@inheritdoc}
+     * @return Collection|SubmissionVote[]
      */
     public function getVotes(): Collection {
         return $this->votes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createVote(User $user, ?string $ip, int $choice): Vote {
         return new SubmissionVote($user, $ip, $choice, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function vote(User $user, ?string $ip, int $choice): void {
+        if ($this->visibility === self::VISIBILITY_DELETED) {
+            throw new SubmissionLockedException();
+        }
+
         if ($this->forum->userIsBanned($user)) {
             throw new BannedFromForumException();
         }
@@ -453,7 +476,7 @@ class Submission extends Votable {
         $this->updateRanking();
     }
 
-    public function addMention(User $mentioned) {
+    public function addMention(User $mentioned): void {
         if ($mentioned === $this->getUser()) {
             // don't notify yourself
             return;
@@ -476,7 +499,7 @@ class Submission extends Votable {
         return $this->image;
     }
 
-    public function setImage(?string $image) {
+    public function setImage(?string $image): void {
         $this->image = $image;
     }
 
@@ -488,18 +511,15 @@ class Submission extends Votable {
         return $this->sticky;
     }
 
-    public function setSticky(bool $sticky) {
+    public function setSticky(bool $sticky): void {
         $this->sticky = $sticky;
     }
 
-    /**
-     * @return int
-     */
     public function getRanking(): int {
         return $this->ranking;
     }
 
-    public function updateRanking() {
+    public function updateRanking(): void {
         $netScore = $this->getNetScore();
         $netScoreAdvantage = $netScore * self::NETSCORE_MULTIPLIER;
 
@@ -518,7 +538,7 @@ class Submission extends Votable {
         return $this->editedAt;
     }
 
-    public function setEditedAt(?\DateTime $editedAt) {
+    public function setEditedAt(?\DateTime $editedAt): void {
         $this->editedAt = $editedAt;
     }
 
@@ -526,7 +546,7 @@ class Submission extends Votable {
         return $this->moderated;
     }
 
-    public function setModerated(bool $moderated) {
+    public function setModerated(bool $moderated): void {
         $this->moderated = $moderated;
     }
 
@@ -537,14 +557,12 @@ class Submission extends Votable {
     /**
      * @Groups({"submission:read"})
      * @SerializedName("userFlag")
-     *
-     * @return string|null
      */
     public function getReadableUserFlag(): ?string {
         return UserFlags::toReadable($this->userFlag);
     }
 
-    public function setUserFlag(int $userFlag) {
+    public function setUserFlag(int $userFlag): void {
         if (!in_array($userFlag, UserFlags::FLAGS, true)) {
             throw new \InvalidArgumentException('Bad flag');
         }
@@ -556,7 +574,7 @@ class Submission extends Votable {
         return $this->locked;
     }
 
-    public function setLocked(bool $locked) {
+    public function setLocked(bool $locked): void {
         $this->locked = $locked;
     }
 

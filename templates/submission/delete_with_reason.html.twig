@@ -1,6 +1,6 @@
 {% extends 'submission/base.html.twig' %}
 
-{% block title 'title.delete_submission'|trans %}
+{% block title purge ? 'title.purge_submission'|trans : 'title.delete_submission'|trans %}
 
 {% block body %}
   {% from 'submission/_macros.html.twig' import submission %}
@@ -12,8 +12,14 @@
   {{ form_start(form) }}
     {{ form_row(form.reason) }}
 
+    {% if purge %}
+      <div class="form__row alert alert--error">
+        <p>{{ 'flash.purge_submission_warning'|trans }}</p>
+      </div>
+    {% endif %}
+
     <div class="form__button-row">
-      <button class="button">{{ 'action.delete'|trans }}</button>
+      <button class="button">{{ purge ? 'action.purge'|trans : 'action.delete'|trans }}</button>
     </div>
   {{ form_end(form) }}
 {% endblock %}

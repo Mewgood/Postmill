@@ -31,8 +31,6 @@ class LoadExampleSubmissions extends AbstractFixture implements DependentFixture
                 $forum,
                 $user,
                 $data['ip'],
-                false,
-                UserFlags::FLAG_NONE,
                 $data['timestamp']
             );
 

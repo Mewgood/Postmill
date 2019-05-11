@@ -18,7 +18,7 @@ submission_shortcut:
 
 comment:
     controller: App\Controller\SubmissionController::commentPermalink
-    defaults: { slug: '-' }
+    defaults: { slug: - }
     path: /f/{forum_name}/{submission_id}/{slug}/comment/{comment_id}
     requirements: { submission_id: "%number_regex%", comment_id: "%number_regex%" }
 
@@ -31,49 +31,56 @@ comment_legacy_redirect:
 
 edit_submission:
     controller: App\Controller\SubmissionController::editSubmission
-    defaults: { slug: '-' }
+    defaults: { slug: - }
     path: /f/{forum_name}/{submission_id}/{slug}/edit
     methods: [GET, POST]
     requirements: { submission_id: "%number_regex%" }
 
-submission_delete_immediately:
-    controller: App\Controller\SubmissionController::deleteImmediately
-    defaults: { slug: '-' }
+submission_delete_own:
+    controller: App\Controller\SubmissionController::deleteOwn
+    defaults: { slug: - }
     path: /f/{forum_name}/{submission_id}/{slug}/delete
     methods: [POST]
     requirements: { submission_id: "%number_regex%" }
 
-submission_delete_with_reason:
-    controller: App\Controller\SubmissionController::deleteWithReason
-    defaults: { slug: '-' }
-    path: /f/{forum_name}/{submission_id}/{slug}/delete_with_reason
+submission_mod_delete:
+    controller: App\Controller\SubmissionController::modDelete
+    defaults: { slug: -, purge: false }
+    path: /f/{forum_name}/{submission_id}/{slug}/mod_delete
+    methods: [GET, POST]
+    requirements: { submission_id: "%number_regex%" }
+
+submission_purge:
+    controller: App\Controller\SubmissionController::modDelete
+    defaults: { slug: -, purge: true }
+    path: /f/{forum_name}/{submission_id}/{slug}/purge
     methods: [GET, POST]
     requirements: { submission_id: "%number_regex%" }
 
 lock:
     controller: App\Controller\SubmissionController::lock
-    defaults: { lock: true, slug: '-' }
+    defaults: { lock: true, slug: - }
     path: /f/{forum_name}/{submission_id}/{slug}/lock
     methods: [POST]
     requirements: { submission_id: "%number_regex%" }
 
 unlock:
     controller: App\Controller\SubmissionController::lock
-    defaults: { lock: false, slug: '-' }
+    defaults: { lock: false, slug: - }
     path: /f/{forum_name}/{submission_id}/{slug}/unlock
     methods: [POST]
     requirements: { submission_id: "%number_regex%" }
 
 pin:
     controller: App\Controller\SubmissionController::pin
-    defaults: { pin: true, slug: '-' }
+    defaults: { pin: true, slug: - }
     path: /f/{forum_name}/{submission_id}/{slug}/pin
     methods: [POST]
     requirements: { submission_id: "%number_regex%" }
 
 unpin:
     controller: App\Controller\SubmissionController::pin
-    defaults: { pin: false, slug: '-' }
+    defaults: { pin: false, slug: - }
     path: /f/{forum_name}/{submission_id}/{slug}/unpin
     methods: [POST]
     requirements: { submission_id: "%number_regex%" }

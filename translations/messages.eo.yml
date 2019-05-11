@@ -54,7 +54,6 @@ banned:
     message: Vi estas forbarita!
 
 comments:
-    author_deleted: '[forigis]'
     comments: Komentoj
     delete: Forigi
     delete_thread: Forigi kun respondoj
@@ -389,6 +388,7 @@ nav:
 
 placeholder:
     default: (defaŭlto)
+    deleted: '[forigis]'
     choose_one: Elekti unu…
     repeat: (ripeti)
 

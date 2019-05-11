@@ -425,20 +425,6 @@ class User implements UserInterface, EquatableInterface {
         return $this->submissions;
     }
 
-    /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
-     * @return Pagerfanta|Comment[]
-     */
-    public function getPaginatedSubmissions(int $page, int $maxPerPage = 25): Pagerfanta {
-        $submissions = new Pagerfanta(new DoctrineCollectionAdapter($this->submissions));
-        $submissions->setMaxPerPage($maxPerPage);
-        $submissions->setCurrentPage($page);
-
-        return $submissions;
-    }
-
     public function getSubmissionVotes(): Collection {
         return $this->submissionVotes;
     }

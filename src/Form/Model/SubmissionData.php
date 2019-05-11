@@ -68,17 +68,11 @@ class SubmissionData {
         return $self;
     }
 
-    public function toSubmission(User $user, $ip): Submission {
-        return new Submission(
-            $this->title,
-            $this->url,
-            $this->body,
-            $this->forum,
-            $user,
-            $ip,
-            false,
-            $this->userFlag
-        );
+    public function toSubmission(User $user, ?string $ip): Submission {
+        $submission = new Submission($this->title, $this->url, $this->body, $this->forum, $user, $ip);
+        $submission->setUserFlag($this->userFlag);
+
+        return $submission;
     }
 
     public function updateSubmission(Submission $submission, User $editingUser) {

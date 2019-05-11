@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Forum;
+use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
 use App\Form\Model\UserBlockData;
@@ -83,16 +84,10 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    /**
-     * @param User $user
-     * @param int  $page
-     *
-     * @return Response
-     */
-    public function submissions(User $user, int $page) {
-        $submissions = $user->getPaginatedSubmissions($page);
-
-        $this->submissions->hydrate(...$submissions);
+    public function submissions(User $user, Request $request): Response {
+        $submissions = $this->submissions->findSubmissions(Submission::SORT_NEW, [
+            'users' => [$user],
+        ], $request);
 
         return $this->render('user/submissions.html.twig', [
             'submissions' => $submissions,

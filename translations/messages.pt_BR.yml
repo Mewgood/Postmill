@@ -39,7 +39,6 @@ banned:
     message: Você foi banido!
 
 comments:
-    author_deleted: '[removido]'
     comments: Comentários
     delete: Apagar
     delete_thread: Apagar com as respostas
@@ -266,6 +265,7 @@ nav:
 
 placeholder:
     default: (padrão)
+    deleted: '[removido]'
     choose_one: Escolha um…
 
 prompt:

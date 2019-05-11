@@ -28,7 +28,6 @@ banned:
     message: Je bent verbannen!
 
 comments:
-    author_deleted: '[verwijderd]'
     comments: Reacties
     delete: Verwijder
     delete_thread: Verwijder inclusief reacties
@@ -161,6 +160,9 @@ nav:
     forums: Fora
     next: Volgende
     previous: Vorige
+
+placeholder:
+    deleted: '[verwijderd]'
 
 request_password_reset:
     title: Vraag link aan om wachtwoord opnieuw in te stellen

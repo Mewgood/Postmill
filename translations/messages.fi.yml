@@ -29,7 +29,6 @@ banned:
     message: Olet saanut porttikiellon.
 
 comments:
-    author_deleted: '[poistettu]'
     comments: Kommentit
     delete: Poista
     delete_thread: Poista vastausten kanssa
@@ -174,6 +173,9 @@ nav:
     wiki: Wiki
     next: Seuraava
     previous: Edellinen
+
+placeholder:
+    deleted: '[poistettu]'
 
 request_password_reset:
     title: Pyydä linkki salasanan nollaukseen

@@ -41,7 +41,6 @@ banned:
     message: Έχετε απαγορευτεί!
 
 comments:
-    author_deleted: '[διαγράφηκε]'
     comments: Σχόλια
     delete: Διαγραφή
     delete_thread: Διαγραφή με απαντήσεις
@@ -277,6 +276,7 @@ nav:
 
 placeholder:
     default: (Προκαθορισμένο)
+    deleted: '[διαγράφηκε]'
     choose_one: Διάλεξε ένα…
 
 prompt:

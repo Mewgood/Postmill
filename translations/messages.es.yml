@@ -49,7 +49,6 @@ banned:
     message: ¡Has sido vetada!
 
 comments:
-    author_deleted: '[Eliminado]'
     comments: Comentarios
     delete: Borrar
     delete_thread: Borrar con respuestas
@@ -336,6 +335,7 @@ nav:
 
 placeholder:
     default: (predeterminado)
+    deleted: '[Eliminado]'
     choose_one: Elige uno…
 
 prompt:

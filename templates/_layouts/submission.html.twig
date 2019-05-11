@@ -25,6 +25,8 @@
 
               {%- if raw_title is not null -%}
                 {{ raw_title|raw }}
+              {%- elseif submission.visibility == constant('App\\Entity\\Submission::VISIBILITY_DELETED') -%}
+                <del>{{ 'placeholder.deleted'|trans }}</del>
               {%- else -%}
                 {{ submission.title }}
               {%- endif -%}
@@ -105,7 +107,7 @@
   {%- if submission.url -%}
     {{- submission.url -}}
   {%- else -%}
-    {{- path('submission', {forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify}) -}}
+    {{- path('submission', { forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify }) -}}
   {%- endif -%}
 {%- endblock submission_url -%}
 
@@ -117,39 +119,49 @@
   {{ submission.sticky ? 'submission--sticky' }}
   {{ submission.locked ? 'submission--locked' }}
   {{ submission.image and show_thumbnails ? 'submission--has-image' }}
+  submission--visibility-{{ submission.visibility }}
 {% endblock submission_classes %}
 
 {% block submission_info_submitter %}
   {% from 'user/_macros.html.twig' import user_flag %}
-  {% filter spaceless %}
-    <a href="{{ path('user', { username: submission.user.username }) }}" class="submission__submitter fg-inherit">
-      <strong>{{ submission.user.username }}</strong>
-    </a>
-  {% endfilter %}
-  {{ user_flag(submission.userFlag) }}
+  {% if submission.visibility != constant('App\\Entity\\Submission::VISIBILITY_DELETED') %}
+    {% apply spaceless %}
+      <a href="{{ path('user', { username: submission.user.username }) }}" class="submission__submitter fg-inherit">
+        <strong>{{ submission.user.username }}</strong>
+      </a>
+    {% endapply %}
+    {{ user_flag(submission.userFlag) }}
+  {% else %}
+    {{ 'placeholder.deleted'|trans }}
+  {% endif %}
 {% endblock submission_info_submitter %}
 
 {% block submission_info_forum_name %}
-  {% filter spaceless %}
-    <a href="{{ path('forum', {forum_name: submission.forum.name}) }}" class="submission__forum fg-inherit">
+  {% apply spaceless %}
+    <a href="{{ path('forum', { forum_name: submission.forum.name }) }}" class="submission__forum fg-inherit">
       <strong>{{ submission.forum.name }}</strong>
     </a>
-  {% endfilter %}
+  {% endapply %}
 {% endblock submission_info_forum_name %}
 
 {% block submission_nav %}
+  {% set nav_link_classes = 'fg-inherit text-sm' %}
   {{ block('submission_nav_comments') }}
-  {{ block('submission_nav_moderation') }}
+  {% if submission.user is same as(self) %}
+    {{ block('submission_nav_edit') }}
+  {% endif %}
+  {{ block('submission_nav_delete_own') }}
+  {{ block('submission_nav_actions') }}
 {% endblock submission_nav %}
 
 {% block submission_nav_comments %}
   <li>
-    {% filter spaceless %}
-      <a href="{{ path('submission', {forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify}) }}"
+    {% apply spaceless %}
+      <a href="{{ path('submission', { forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify }) }}"
          class="text-sm">
         <strong>{{ 'submissions.comments'|trans({ '%count%': submission.commentCount }) }}</strong>
       </a>
-    {% endfilter %}
+    {% endapply %}
 
     {%- if not show_body -%}
       <span class="js-display-new-comments submission__new-comments text-sm fg-green"
@@ -160,34 +172,33 @@
   </li>
 {% endblock submission_nav_comments %}
 
-{% block submission_nav_moderation %}
+{% block submission_nav_actions %}
   {% set nav_link_classes = 'menu-item no-wrap' %}
 
-  {% if submission.user is same as(self) %}
-    {% set nav_link_classes = 'fg-inherit text-sm' %}
-    {{ block('submission_nav_edit') }}
-    {{ block('submission_nav_delete') }}
-  {% endif %}
+  {% set actions %}
+    {% if submission.user is not same as(self) %}
+      {{ block('submission_nav_edit') }}
+    {% endif %}
+    {{ block('submission_nav_mod_delete') }}
+    {{ block('submission_nav_purge') }}
+    {{ block('submission_nav_pin') }}
+    {{ block('submission_nav_lock') }}
+    {{ block('submission_nav_ban') }}
+    {{ block('submission_nav_global_ban') }}
+  {% endset %}
 
-  {% if is_granted('moderator', submission.forum) %}
+  {% if actions|trim is not empty %}
     <li class="dropdown">
       <button class="dropdown__toggle fg-inherit text-sm unbuttonize no-underline" type="button">
         <span class="no-underline__exempt">{{ 'nav.actions'|trans }}</span>
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
       <ul class="dropdown-card dropdown__menu unlistify">
-        {% if submission.user is not same as(self) %}
-          {{ block('submission_nav_edit') }}
-          {{ block('submission_nav_delete') }}
-        {% endif %}
-        {{ block('submission_nav_pin') }}
-        {{ block('submission_nav_lock') }}
-        {{ block('submission_nav_ban') }}
-        {{ block('submission_nav_global_ban') }}
+        {{ actions }}
       </ul>
     </li>
   {% endif %}
-{% endblock submission_nav_moderation %}
+{% endblock submission_nav_actions %}
 
 {% block submission_nav_edit %}
   {% from '_macros/icon.html.twig' import icon %}
@@ -202,11 +213,11 @@
   {% endif %}
 {% endblock submission_nav_edit %}
 
-{% block submission_nav_delete %}
+{% block submission_nav_delete_own %}
   {% from '_macros/icon.html.twig' import icon %}
-  {% if is_granted('delete_immediately', submission) %}
+  {% if is_granted('delete_own', submission) %}
     <li>
-      <form action="{{ path('submission_delete_immediately', {forum_name: submission.forum.name, submission_id: submission.id}) }}" method="POST">
+      <form action="{{ path('submission_delete_own', { forum_name: submission.forum.name, submission_id: submission.id }) }}" method="POST">
         <input type="hidden" name="token" value="{{ csrf_token('delete_submission') }}">
         <button class="{{ nav_link_classes }} unbuttonize js-confirm-submission-delete">
           {{- 'menu-item' in nav_link_classes ? icon('trash') }}
@@ -214,65 +225,89 @@
         </button>
       </form>
     </li>
-  {% elseif is_granted('delete_with_reason', submission) %}
+  {% endif %}
+{% endblock submission_nav_delete_own %}
+
+{% block submission_nav_mod_delete %}
+  {% from '_macros/icon.html.twig' import icon %}
+  {% if is_granted('mod_delete', submission) %}
     <li>
-      <a href="{{ path('submission_delete_with_reason', {forum_name: submission.forum.name, submission_id: submission.id}) }}"
+      <a href="{{ path('submission_mod_delete', { forum_name: submission.forum.name, submission_id: submission.id }) }}"
          class="{{ nav_link_classes }}">
         {{- 'menu-item' in nav_link_classes ? icon('trash') }}
-        {{ 'action.delete'|trans -}}
+        {{ mod_delete_label ?? 'action.delete'|trans -}}
       </a>
     </li>
   {% endif %}
-{% endblock submission_nav_delete %}
+{% endblock submission_nav_mod_delete %}
+
+{% block submission_nav_purge %}
+  {% from '_macros/icon.html.twig' import icon %}
+  {% if is_granted('purge', submission) %}
+    <li>
+      <a href="{{ path('submission_purge', { forum_name: submission.forum.name, submission_id: submission.id }) }}"
+         class="unbuttonize menu-item no-wrap">
+        {{- icon('cancel') }}
+        {{ 'action.purge'|trans -}}
+      </a>
+    </li>
+  {% endif %}
+{% endblock submission_nav_purge %}
 
 {% block submission_nav_pin %}
   {% from '_macros/icon.html.twig' import icon %}
-  <li>
-    <form action="{{ path(submission.sticky ? 'unpin' : 'pin', {
-      forum_name: submission.forum.name,
-      submission_id: submission.id,
-    }) }}" method="post">
-      <input type="hidden" name="token" value="{{ csrf_token('pin') }}">
-      <button class="unbuttonize menu-item no-wrap">
-        {{- submission.sticky ? icon('pin-outline') : icon('pin') }}
-        {{ submission.sticky ? 'action.unpin'|trans : 'action.pin'|trans -}}
-      </button>
-    </form>
-  </li>
+  {% if is_granted('pin', submission) %}
+    <li>
+      <form action="{{ path(submission.sticky ? 'unpin' : 'pin', {
+        forum_name: submission.forum.name,
+        submission_id: submission.id,
+      }) }}" method="post">
+        <input type="hidden" name="token" value="{{ csrf_token('pin') }}">
+        <button class="unbuttonize menu-item no-wrap">
+          {{- submission.sticky ? icon('pin-outline') : icon('pin') }}
+          {{ submission.sticky ? 'action.unpin'|trans : 'action.pin'|trans -}}
+        </button>
+      </form>
+    </li>
+  {% endif %}
 {% endblock submission_nav_pin %}
 
 {% block submission_nav_lock %}
   {% from '_macros/icon.html.twig' import icon %}
-  <li>
-    <form action="{{ path(submission.locked ? 'unlock' : 'lock', {
-      forum_name: submission.forum.name,
-      submission_id: submission.id,
-    }) }}" method="post">
-      <input type="hidden" name="token" value="{{ csrf_token('lock') }}">
-      <button class="unbuttonize menu-item no-wrap">
-        {{- submission.locked ? icon('lock-open') : icon('lock') }}
-        {{ submission.locked ? 'action.unlock'|trans : 'action.lock'|trans -}}
-      </button>
-    </form>
-  </li>
+  {% if is_granted('lock', submission) %}
+    <li>
+      <form action="{{ path(submission.locked ? 'unlock' : 'lock', {
+        forum_name: submission.forum.name,
+        submission_id: submission.id,
+      }) }}" method="post">
+        <input type="hidden" name="token" value="{{ csrf_token('lock') }}">
+        <button class="unbuttonize menu-item no-wrap">
+          {{- submission.locked ? icon('lock-open') : icon('lock') }}
+          {{ submission.locked ? 'action.unlock'|trans : 'action.lock'|trans -}}
+        </button>
+      </form>
+    </li>
+  {% endif %}
 {% endblock submission_nav_lock %}
 
 {% block submission_nav_ban %}
   {% from '_macros/icon.html.twig' import icon %}
-  <li>
-    <a href="{{ path('forum_ban', {forum_name: submission.forum.name, username: submission.user.username}) }}"
-       class="menu-item no-wrap">
-      {{- icon('user-times') }}
-      {{ 'action.ban'|trans -}}
-    </a>
-  </li>
+  {% if is_granted('moderator', submission.forum) %}
+    <li>
+      <a href="{{ path('forum_ban', { forum_name: submission.forum.name, username: submission.user.username }) }}"
+         class="menu-item no-wrap">
+        {{- icon('user-times') }}
+        {{ 'action.ban'|trans -}}
+      </a>
+    </li>
+  {% endif %}
 {% endblock submission_nav_ban %}
 
 {% block submission_nav_global_ban %}
   {% from '_macros/icon.html.twig' import icon %}
   {% if is_granted('ROLE_ADMIN') %}
     <li>
-      <a href="{{ path('ban_user', {'username': submission.user.username}) }}"
+      <a href="{{ path('ban_user', { username: submission.user.username }) }}"
          class="menu-item no-wrap">
         {{- icon('hammer') }}
         {{ 'action.global_ban'|trans -}}

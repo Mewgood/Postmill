@@ -36,6 +36,7 @@ action:
     dismiss: Dismiss
     pin: Pin
     unpin: Unpin
+    purge: Purge
 
 add_moderator:
     title: Add moderator to %forum%
@@ -59,7 +60,6 @@ banned:
     message: You are banned!
 
 comments:
-    author_deleted: '[deleted]'
     comments: Comments
     delete: Delete
     delete_thread: Delete with replies
@@ -139,6 +139,7 @@ flash:
     you_must_reauthenticate: You must reauthenticate to access this page.
     submission_pinned: The submission was pinned.
     submission_unpinned: The submission was unpinned.
+    purge_submission_warning: The submission and all its comments will be irreversably deleted.
 
 forum:
     moderators: Moderators
@@ -429,6 +430,7 @@ nav:
 placeholder:
     choose_one: Choose one…
     default: (default)
+    deleted: '[deleted]'
     repeat: (repeat)
 
 prompt:
@@ -534,6 +536,7 @@ title:
     unban_user: Unbanning %user%
     global_moderation_log: Global moderation log
     delete_submission: Delete submission
+    purge_submission: Purge submission
     list_of_users: 'List of users, page #%page%'
     user_forum_bans: "%user%'s forum bans"
     manage_forum_categories: Manage forum categories
