@@ -3,7 +3,9 @@
 {% block title 'flash.no_password_resets'|trans %}
 
 {% block body %}
-  <div class="alert alert--notice">
-    <p>{{ 'flash.no_password_resets'|trans }}</p>
-  </div>
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_type 'error' %}
+    {% block alert_classes 'no-margin' %}
+    {% block alert_paragraph 'flash.no_password_resets'|trans %}
+  {% endembed %}
 {% endblock %}
