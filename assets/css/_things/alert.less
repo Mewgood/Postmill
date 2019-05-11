@@ -1,21 +1,16 @@
 .alert {
+  align-items: center;
+  display: flex;
   margin-bottom: 1rem;
-  overflow: auto;
-  padding: 1rem 1rem 0;
+  padding: 0.5rem 1rem;
+  transform: translate(0); // disable margin weirdness
 
-  &--notice {
-    background: var(--bg-blue);
+  &__icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
   }
 
-  &--success {
-    background: var(--bg-green);
-  }
-
-  &--warn {
-    background: var(--bg-orange);
-  }
-
-  &--error {
-    background: var(--bg-red);
+  &__text {
+    margin-bottom: -1rem;
   }
 }

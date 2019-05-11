@@ -6,9 +6,10 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  <div class="alert alert--notice">
-    <p>{{ 'help.block_users'|trans }}</p>
-  </div>
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_type 'info' %}
+    {% block alert_paragraph 'help.block_users'|trans %}
+  {% endembed %}
 
   {% embed '_layouts/table_pagination.html.twig' with { items: blocks } %}
     {% block header %}

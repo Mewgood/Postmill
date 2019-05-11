@@ -10,9 +10,12 @@
     })|raw }}
   </h1>
 
-  <div class="alert alert--notice">
-    <p>{{ 'help.block_users'|trans }}</p>
-  </div>
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_type 'info' %}
+    {% block alert_text %}
+      <p>{{ 'help.block_users'|trans }}</p>
+    {% endblock alert_text %}
+  {% endembed %}
 
   {{ form(form) }}
 {% endblock %}

@@ -19,6 +19,7 @@
   --bg-content: transparent;
   --bg-red: #fdd;
   --bg-orange: #fed;
+  --bg-yellow: #ffffd0;
   --bg-green: #dfd;
   --bg-blue: #def;
   --bg-grey: #efefef;
@@ -29,6 +30,7 @@
   --fg-broken: #222;
   --fg-red: #f00;
   --fg-orange: #f80;
+  --fg-yellow: #808000;
   --fg-green: #080;
   --fg-blue: #08f;
   --fg-grey: #888;

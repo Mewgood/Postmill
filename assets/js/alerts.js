@@ -2,7 +2,7 @@
 
 import $ from 'jquery';
 
-$(document).on('click', '.site-alerts__alert', function  () {
+$(document).on('click', '.site-alerts__alert', function () {
     const $alert = $(this);
 
     $alert

@@ -147,7 +147,7 @@ final class SubmissionController extends AbstractController {
 
             $this->entityManager->flush();
 
-            $this->addFlash('notice', 'flash.submission_edited');
+            $this->addFlash('success', 'flash.submission_edited');
 
             $event = new EntityModifiedEvent($before, $submission);
             $this->eventDispatcher->dispatch(Events::EDIT_SUBMISSION, $event);
@@ -189,7 +189,7 @@ final class SubmissionController extends AbstractController {
 
             $this->entityManager->flush();
 
-            $this->addFlash('notice', 'flash.submission_deleted');
+            $this->addFlash('success', 'flash.submission_deleted');
 
             return $this->redirectToRoute('forum', [
                 'forum_name' => $forum->getName(),
@@ -219,7 +219,7 @@ final class SubmissionController extends AbstractController {
 
         $this->entityManager->flush();
 
-        $this->addFlash('notice', 'flash.submission_deleted');
+        $this->addFlash('success', 'flash.submission_deleted');
 
         if ($request->headers->has('Referer')) {
             return $this->redirect($request->headers->get('Referer'));
@@ -269,9 +269,9 @@ final class SubmissionController extends AbstractController {
         $this->entityManager->flush();
 
         if ($pin) {
-            $this->addFlash('notice', 'flash.submission_pinned');
+            $this->addFlash('success', 'flash.submission_pinned');
         } else {
-            $this->addFlash('notice', 'flash.submission_unpinned');
+            $this->addFlash('success', 'flash.submission_unpinned');
         }
 
         if ($request->headers->has('Referer')) {

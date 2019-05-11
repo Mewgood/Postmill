@@ -2,9 +2,9 @@
 
 {% block body %}
   {% if forums is empty %}
-    <div class="alert alert--notice">
-      <p>{{ 'flash.no_moderated_forums'|trans }}</p>
-    </div>
+    {% embed '_layouts/alert.html.twig' %}
+      {% block alert_paragraph 'flash.no_moderated_forums'|trans %}
+    {% endembed %}
   {% endif %}
 
   {{ parent() }}

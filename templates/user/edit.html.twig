@@ -9,14 +9,11 @@
   <h1 class="page-heading break-text">{{ block('title') }}</h1>
 
   {% if app.user != user %}
-    <div class="alert alert--warn">
-      <p>
-        <span class="fg-orange">{{ icon('attention') }}</span>
-        {{ 'flash.editing_credentials_of_other_user'|trans }}
-      </p>
-    </div>
+    {% embed '_layouts/alert.html.twig' %}
+      {% block alert_type 'warn' %}
+      {% block alert_paragraph 'flash.editing_credentials_of_other_user'|trans %}
+    {% endembed %}
   {% endif %}
 
-  {% include 'user/_form.html.twig' %}
+  {{ include('user/_form.html.twig', { form: form }, with_context=false) }}
 {% endblock %}
-

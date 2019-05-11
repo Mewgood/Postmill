@@ -16,9 +16,10 @@
 
 {% macro comment_form(submission, parent) %}
   {% if submission.locked and not is_granted('ROLE_ADMIN') %}
-    <div class="alert alert--notice submission-locked-notice">
-      <p>{{ 'flash.submission_is_locked'|trans }}</p>
-    </div>
+    {% embed '_layouts/alert.html.twig' %}
+      {% block alert_classes 'submission-locked-notice' %}
+      {% block alert_paragraph 'flash.submission_is_locked'|trans %}
+    {% endembed %}
   {% elseif is_granted('ROLE_USER') %}
     {{ render(controller('App\\Controller\\CommentController::commentForm', {
       forumName: submission.forum.name,
@@ -26,8 +27,8 @@
       commentId: parent.id ?? null
     })) }}
   {% else %}
-    <div class="alert alert--notice">
-      <p>{{ 'comments.not_logged_in'|trans({
+    {% embed '_layouts/alert.html.twig' %}
+      {% block alert_paragraph 'comments.not_logged_in'|trans({
         '%login_link%': '<a href="%s">%s</a>'|format(
           path('login'),
           'comments.not_logged_in_login_link_label'|trans
@@ -36,7 +37,7 @@
           path('registration'),
           'comments.not_logged_in_register_link_label'|trans
         ),
-      })|raw }}</p>
-    </div>
+      })|raw %}
+    {% endembed %}
   {% endif %}
 {% endmacro comment_form %}

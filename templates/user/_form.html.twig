@@ -10,9 +10,9 @@
       {{ form_label(form.verification) }}
       {{ form_errors(form.verification) }}
       {% if not app.request.hasPreviousSession %}
-        <div class="alert alert--notice">
-          <p>{{ 'flash.no_cookies_verification'|trans }}</p>
-        </div>
+        {% embed '_layouts/alert.html.twig' %}
+          {% block alert_paragraph 'flash.no_cookies_verification'|trans %}
+        {% endembed %}
       {% endif %}
       {{ form_widget(form.verification) }}
     </div>

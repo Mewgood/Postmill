@@ -8,14 +8,15 @@
 
   {{ submission(submission) }}
 
-  <div class="alert alert--notice single-comment-alert">
-    <p>
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_classes 'single-comment-alert' %}
+    {% block alert_paragraph %}
       {{ 'comments.viewing_thread'|trans }}
       <a href="{{ path('submission', {forum_name: forum.name, submission_id: submission.id, slug: submission.title|slugify}) }}">
         {{- 'comments.thread_return'|trans -}}
       </a>
-    </p>
-  </div>
+    {% endblock alert_paragraph %}
+  {% endembed %}
 
   {{ comment(comment, {recurse: true, show_form: true}) }}
 {% endblock %}

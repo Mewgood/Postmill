@@ -11,10 +11,13 @@
 {% block body %}
   <h1 class="page-heading">{{ 'title.hidden_forums'|trans }}</h1>
 
-  <div class="alert alert--notice">
-    <p>{{ 'help.hidden_forums'|trans }}</p>
-    <p>{{ 'help.hidden_forums_no_comment_hiding'|trans }}</p>
-  </div>
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_type 'info' %}
+    {% block alert_text %}
+      <p>{{ 'help.hidden_forums'|trans }}</p>
+      <p>{{ 'help.hidden_forums_no_comment_hiding'|trans }}</p>
+    {% endblock alert_text %}
+  {% endembed %}
 
   {% embed '_layouts/table_pagination.html.twig' with { items: forums } %}
     {% block header %}

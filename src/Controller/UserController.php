@@ -197,6 +197,8 @@ final class UserController extends AbstractController {
 
             $em->flush();
 
+            $this->addFlash('success', 'flash.user_settings_updated');
+
             return $this->redirectToRoute('edit_user', [
                 'username' => $user->getUsername(),
             ]);

@@ -31,12 +31,18 @@
         {%- if app.request.previousSession -%}
           {%- for type, notices in app.flashes -%}
             {%- for notice in notices -%}
-              <div class="alert alert--{{ type }} site-alerts__alert" role="alert">
-                <p class="no-margin site-alerts__text">{{ notice|trans }}</p>
-                <button class="site-alerts__dismiss unbuttonize fg-inherit no-underline"
-                        aria-label="{{ 'action.dismiss'|trans }}"
-                        type="button">&times;</button>
-              </div>
+              {% embed '_layouts/alert.html.twig' with { notice: notice, type: type } only %}
+                {% block alert_classes 'site-alerts__alert' %}
+                {% block alert_type type %}
+                {% block alert_text %}
+                  <p>
+                    {{- notice|trans ~}}
+                    <button class="site-alerts__dismiss unbuttonize"
+                            aria-label="{{ 'action.dismiss'|trans }}"></button>
+                  </p>
+                {% endblock alert_text %}
+                {% block alert_attributes 'role="alert"' %}
+              {% endembed %}
             {%- endfor -%}
           {%- endfor -%}
         {%- endif -%}

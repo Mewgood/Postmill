@@ -12,9 +12,10 @@
     is_granted('IS_AUTHENTICATED_REMEMBERED') and
     not is_granted('IS_AUTHENTICATED_FULLY')
   %}
-    <div class="alert alert--notice" role="alert">
-      <p>{{ 'flash.you_must_reauthenticate'|trans }}</p>
-    </div>
+    {% embed '_layouts/alert.html.twig' %}
+      {% block alert_attributes 'role="alert"' %}
+      {% block alert_paragraph 'flash.you_must_reauthenticate'|trans %}
+    {% endembed %}
   {% endif %}
 
   <form action="{{ path('login_check') }}" method="POST" class="form form--login">

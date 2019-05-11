@@ -7,8 +7,13 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  <p>{{ 'request_password_reset.no_confirmation_notice'|trans }}</p>
-  <p>{{ 'request_password_reset.multiple_accounts_notice'|trans }}</p>
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_paragraph 'request_password_reset.no_confirmation_notice'|trans %}
+  {% endembed %}
+
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_paragraph 'request_password_reset.multiple_accounts_notice'|trans %}
+  {% endembed %}
 
   {{ form(form) }}
 {% endblock %}
