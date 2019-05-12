@@ -55,7 +55,7 @@ class ModifyUserCommand extends Command {
             ->setDescription('Change some attributes of a user account')
             ->addArgument('username', InputArgument::REQUIRED, 'Username of account to modify, or ID with --find-by-id')
             ->addOption('username', 'u', InputOption::VALUE_REQUIRED, 'Change user\'s username')
-            ->addOption('password', 'p', InputOption::VALUE_OPTIONAL, 'Change user\'s password')
+            ->addOption('password', 'p', InputOption::VALUE_OPTIONAL, 'Change user\'s password', true)
             ->addOption('email', null, InputOption::VALUE_REQUIRED, 'Change user\'s email (set to empty string to remove)')
             ->addOption('admin', 'a', InputOption::VALUE_NONE, 'Give the user admin status')
             ->addOption('no-admin', null, InputOption::VALUE_NONE, 'Remove the user\'s admin status')
