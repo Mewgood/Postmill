@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
+ * @method Forum[]    findByNormalizedName(string|string[] $normalizedName)
  * @method Forum|null findOneByNormalizedName(string $normalizedName)
  */
 final class ForumRepository extends ServiceEntityRepository {

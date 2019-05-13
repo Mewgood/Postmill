@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Submission;
 use App\Repository\ForumRepository;
-use App\Repository\SubmissionRepository;
-use App\Repository\UserRepository;
+use App\SubmissionFinder\Criteria;
+use App\SubmissionFinder\SubmissionFinder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -23,26 +22,19 @@ final class FrontController extends AbstractController {
     private $forums;
 
     /**
-     * @var SubmissionRepository
+     * @var SubmissionFinder
      */
-    private $submissions;
-
-    /**
-     * @var UserRepository
-     */
-    private $users;
+    private $submissionFinder;
 
     public function __construct(
         ForumRepository $forums,
-        SubmissionRepository $submissions,
-        UserRepository $users
+        SubmissionFinder $submissionFinder
     ) {
         $this->forums = $forums;
-        $this->submissions = $submissions;
-        $this->users = $users;
+        $this->submissionFinder = $submissionFinder;
     }
 
-    public function front(string $sortBy = null, Request $request): Response {
+    public function front(string $sortBy = null): Response {
         if ($this->isGranted('ROLE_USER')) {
             /* @var \App\Entity\User $user */
             $user = $this->getUser();
@@ -61,23 +53,18 @@ final class FrontController extends AbstractController {
             $sortBy = $sortBy ?? Submission::SORT_HOT;
         }
 
-        return [$this, $listing]($sortBy, $request);
+        return [$this, $listing]($sortBy);
     }
 
-    public function featured(string $sortBy, Request $request): Response {
-        $forums = $this->forums->findFeaturedForumNames();
+    public function featured(string $sortBy): Response {
+        $criteria = (new Criteria($sortBy, $this->getUser()))
+            ->showFeatured()
+            ->excludeHiddenForums();
 
-        if ($this->isGranted('ROLE_USER')) {
-            $excludedForums = $this->users->findHiddenForumIdsByUser($this->getUser());
-        }
-
-        $submissions = $this->submissions->findSubmissions($sortBy, [
-            'excluded_forums' => $excludedForums ?? [],
-            'forums' => array_keys($this->forums->findFeaturedForumNames()),
-        ], $request);
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('front/featured.html.twig', [
-            'forums' => $forums,
+            'forums' => $this->forums->findFeaturedForumNames(),
             'listing' => 'featured',
             'submissions' => $submissions,
             'sort_by' => $sortBy,
@@ -87,35 +74,31 @@ final class FrontController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function subscribed(string $sortBy, Request $request): Response {
-        $forums = $this->forums->findSubscribedForumNames($this->getUser());
-
-        if (\count($forums) === 0) {
+    public function subscribed(string $sortBy): Response {
+        if (\count($this->getUser()->getSubscriptions()) === 0) {
             // To avoid showing new users a blank page, we show them the
             // featured forums instead.
             return $this->redirectToRoute('featured', ['sortBy' => $sortBy]);
         }
 
-        $submissions = $this->submissions->findSubmissions($sortBy, [
-            'forums' => array_keys($forums),
-        ], $request);
+        $criteria = (new Criteria($sortBy, $this->getUser()))
+            ->showSubscribed();
+
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('front/subscribed.html.twig', [
-            'forums' => $forums,
+            'forums' => $this->forums->findSubscribedForumNames($this->getUser()),
             'listing' => 'subscribed',
             'sort_by' => $sortBy,
             'submissions' => $submissions,
         ]);
     }
 
-    public function all(string $sortBy, Request $request): Response {
-        if ($this->isGranted('ROLE_USER')) {
-            $excludedForums = $this->users->findHiddenForumIdsByUser($this->getUser());
-        }
+    public function all(string $sortBy): Response {
+        $criteria = (new Criteria($sortBy, $this->getUser()))
+            ->excludeHiddenForums();
 
-        $submissions = $this->submissions->findSubmissions($sortBy, [
-            'excluded_forums' => $excludedForums ?? [],
-        ], $request);
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('front/base.html.twig', [
             'listing' => 'all',
@@ -127,30 +110,27 @@ final class FrontController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function moderated(string $sortBy, Request $request): Response {
-        $forums = $this->forums->findModeratedForumNames($this->getUser());
+    public function moderated(string $sortBy): Response {
+        $criteria = (new Criteria($sortBy, $this->getUser()))
+            ->showModerated();
 
-        $submissions = $this->submissions->findSubmissions($sortBy, [
-            'forums' => array_keys($forums),
-        ], $request);
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('front/moderated.html.twig', [
-            'forums' => $forums,
+            'forums' => $this->forums->findModeratedForumNames($this->getUser()),
             'listing' => 'moderated',
             'sort_by' => $sortBy,
             'submissions' => $submissions,
         ]);
     }
 
-    public function featuredFeed(string $sortBy, Request $request): Response {
-        $forums = $this->forums->findFeaturedForumNames();
+    public function featuredFeed(string $sortBy): Response {
+        $criteria = (new Criteria($sortBy))
+            ->showFeatured();
 
-        $submissions = $this->submissions->findSubmissions($sortBy, [
-            'forums' => array_keys($forums),
-        ], $request);
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('front/featured.xml.twig', [
-            'forums' => $forums,
             'submissions' => $submissions,
         ]);
     }

@@ -17,7 +17,8 @@ use App\Form\UserType;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
 use App\Repository\NotificationRepository;
-use App\Repository\SubmissionRepository;
+use App\SubmissionFinder\Criteria;
+use App\SubmissionFinder\SubmissionFinder;
 use App\Repository\UserRepository;
 use App\Security\AuthenticationHelper;
 use Doctrine\ORM\EntityManager;
@@ -32,9 +33,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class UserController extends AbstractController {
     /**
-     * @var SubmissionRepository
+     * @var SubmissionFinder
      */
-    private $submissions;
+    private $submissionFinder;
 
     /**
      * @var CommentRepository
@@ -47,11 +48,11 @@ final class UserController extends AbstractController {
     private $defaultLocale;
 
     public function __construct(
-        SubmissionRepository $submissions,
+        SubmissionFinder $submissionFinder,
         CommentRepository $comments,
         string $defaultLocale
     ) {
-        $this->submissions = $submissions;
+        $this->submissionFinder = $submissionFinder;
         $this->comments = $comments;
         $this->defaultLocale = $defaultLocale;
     }
@@ -84,10 +85,11 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    public function submissions(User $user, Request $request): Response {
-        $submissions = $this->submissions->findSubmissions(Submission::SORT_NEW, [
-            'users' => [$user],
-        ], $request);
+    public function submissions(User $user): Response {
+        $criteria = (new Criteria(Submission::SORT_NEW))
+            ->showUsers($user);
+
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('user/submissions.html.twig', [
             'submissions' => $submissions,

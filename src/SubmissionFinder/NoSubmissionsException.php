@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Submission;
+namespace App\SubmissionFinder;
 
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 

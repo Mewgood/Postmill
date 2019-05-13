@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Repository\Submission;
+namespace App\SubmissionFinder;
 
 use App\Entity\Submission;
-use App\Repository\SubmissionRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class SubmissionPager implements \IteratorAggregate {
+class Pager implements \IteratorAggregate {
     /**
      * @var string[]
      */
@@ -18,15 +17,15 @@ class SubmissionPager implements \IteratorAggregate {
     private $submissions = [];
 
     public static function getParamsFromRequest(string $sortBy, Request $request): array {
-        if (!isset(SubmissionRepository::SORT_COLUMN_MAP[$sortBy])) {
+        if (!isset(SubmissionFinder::SORT_COLUMN_MAP[$sortBy])) {
             throw new \InvalidArgumentException("Invalid sort mode '$sortBy'");
         }
 
         $params = [];
 
-        foreach (SubmissionRepository::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
+        foreach (SubmissionFinder::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
             $value = $request->query->get('next_'.$column);
-            $type = SubmissionRepository::SORT_COLUMN_TYPES[$column];
+            $type = SubmissionFinder::SORT_COLUMN_TYPES[$column];
 
             if (!\is_string($value) || !self::valueIsOfType($type, $value)) {
                 // missing columns - no pagination
@@ -48,7 +47,7 @@ class SubmissionPager implements \IteratorAggregate {
      * @param string                $sortBy      property to use for pagination
      */
     public function __construct(iterable $submissions, int $maxPerPage, string $sortBy) {
-        if (!isset(SubmissionRepository::SORT_COLUMN_MAP[$sortBy])) {
+        if (!isset(SubmissionFinder::SORT_COLUMN_MAP[$sortBy])) {
             throw new \InvalidArgumentException("Invalid sort mode '$sortBy'");
         }
 
@@ -56,7 +55,7 @@ class SubmissionPager implements \IteratorAggregate {
 
         foreach ($submissions as $submission) {
             if (++$count > $maxPerPage) {
-                foreach (SubmissionRepository::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
+                foreach (SubmissionFinder::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
                     $accessor = $this->columnNameToAccessor($column);
                     $value = $submission->{$accessor}();
 

@@ -7,25 +7,40 @@ use App\Form\ForumCategoryType;
 use App\Form\Model\ForumCategoryData;
 use App\Repository\ForumCategoryRepository;
 use App\Repository\ForumRepository;
-use App\Repository\SubmissionRepository;
+use App\SubmissionFinder\Criteria;
+use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ForumCategoryController extends AbstractController {
-    public function category(
-        ForumCategory $category,
-        string $sortBy,
-        ForumRepository $fr,
-        SubmissionRepository $sr,
-        Request $request
-    ): Response {
-        $forums = $fr->findForumsInCategory($category);
+    /**
+     * @var ForumRepository
+     */
+    private $forums;
 
-        $submissions = $sr->findSubmissions($sortBy, [
-            'forums' => array_keys($forums),
-        ], $request);
+    /**
+     * @var SubmissionFinder
+     */
+    private $submissionFinder;
+
+    public function __construct(
+        ForumRepository $forums,
+        SubmissionFinder $submissionFinder
+    ) {
+        $this->forums = $forums;
+        $this->submissionFinder = $submissionFinder;
+    }
+
+    public function category(ForumCategory $category, string $sortBy): Response {
+        $forums = $this->forums->findForumsInCategory($category);
+
+        $criteria = (new Criteria($sortBy, $this->getUser()))
+            ->showForums(...$category->getForums())
+            ->excludeHiddenForums();
+
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('forum_category/category.html.twig', [
             'category' => $category,

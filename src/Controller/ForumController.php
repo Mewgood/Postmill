@@ -22,7 +22,8 @@ use App\Repository\ForumCategoryRepository;
 use App\Repository\ForumLogEntryRepository;
 use App\Repository\ForumRepository;
 use App\Repository\ForumWebhookRepository;
-use App\Repository\SubmissionRepository;
+use App\SubmissionFinder\Criteria;
+use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManager;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -36,17 +37,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class ForumController extends AbstractController {
     /**
-     * @var SubmissionRepository
+     * @var SubmissionFinder
      */
-    private $submissions;
+    private $submissionFinder;
 
     /**
      * @var bool
      */
     private $enableWebhooks;
 
-    public function __construct(SubmissionRepository $submissions, bool $enableWebhooks) {
-        $this->submissions = $submissions;
+    public function __construct(SubmissionFinder $submissionFinder, bool $enableWebhooks) {
+        $this->submissionFinder = $submissionFinder;
         $this->enableWebhooks = $enableWebhooks;
     }
 
@@ -59,10 +60,11 @@ final class ForumController extends AbstractController {
      * @return Response
      */
     public function front(Forum $forum, string $sortBy, Request $request): Response {
-        $submissions = $this->submissions->findSubmissions($sortBy, [
-            'forums' => [$forum->getId()],
-            'stickies' => true,
-        ], $request);
+        $criteria = (new Criteria($sortBy))
+            ->showForums($forum)
+            ->stickiesFirst();
+
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('forum/forum.html.twig', [
             'forum' => $forum,
@@ -71,18 +73,19 @@ final class ForumController extends AbstractController {
         ]);
     }
 
-    public function multi(ForumRepository $fr, string $names, string $sortBy, Request $request) {
+    public function multi(ForumRepository $fr, string $names, string $sortBy): Response {
         $names = preg_split('/[^\w]+/', $names, -1, PREG_SPLIT_NO_EMPTY);
         $names = array_map(Forum::class.'::normalizeName', $names);
-        $names = $fr->findForumNames($names);
+        $forums = $fr->findByNormalizedName($names);
 
-        if (!$names) {
+        if (!$forums) {
             throw $this->createNotFoundException('no such forums');
         }
 
-        $submissions = $this->submissions->findSubmissions($sortBy, [
-            'forums' => array_keys($names),
-        ], $request);
+        $criteria = (new Criteria($sortBy))
+            ->showForums(...$forums);
+
+        $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('forum/multi.html.twig', [
             'forums' => $names,
@@ -158,19 +161,14 @@ final class ForumController extends AbstractController {
         ]);
     }
 
-    /**
-     * @param Forum   $forum
-     * @param string  $sortBy
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function feed(Forum $forum, string $sortBy, Request $request) {
+    public function feed(Forum $forum, string $sortBy): Response {
+        $criteria = (new Criteria($sortBy, $this->getUser()))
+            ->showForums($forum)
+            ->excludeHiddenForums();
+
         return $this->render('forum/feed.xml.twig', [
             'forum' => $forum,
-            'submissions' => $this->submissions->findSubmissions($sortBy, [
-                'forums' => [$forum->getId()],
-            ], $request),
+            'submissions' => $this->submissionFinder->find($criteria),
         ]);
     }
 
