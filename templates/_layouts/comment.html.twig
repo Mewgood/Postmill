@@ -4,33 +4,48 @@
   <article class="comment
                   comment--{{ level > 1 ? 'nested' : 'top-level' }}
                   {{ show_context ? 'comment--with-context' }}
-                  {{ comment.softDeleted ? 'comment--soft-deleted' }}"
+                  {{ comment.softDeleted ? 'comment--soft-deleted' }}
+                  hideable"
            id="comment_{{ comment.id }}"
            data-level="{{ level }}">
+    <input type="checkbox" class="hideable__checkbox" id="comment_toggle_{{ comment.id }}">
+
     {% if show_context %}
       {{- block('comment_context') -}}
     {% endif %}
 
     <div class="comment__row">
       <div class="comment__main">
-        <h1 class="comment__info break-text unheaderize">
-          <span class="fg-muted text-sm">
-            {{ 'comments.info'|trans({
-              '%user%': block('comment_info_user'),
-              '%timestamp%': relative_time(comment.timestamp, { natural: true }),
-            })|raw }}
+        <header class="comment__header">
+          <h1 class="comment__info break-text no-margin unheaderize">
+            <span class="fg-muted text-sm">
+              {{ 'comments.info'|trans({
+                '%user%': block('comment_info_user'),
+                '%timestamp%': relative_time(comment.timestamp, { natural: true }),
+              })|raw }}
 
-            {% if comment.editedAt %}
-              <span class="comment__edited-at {{ comment.moderated ? 'comment__moderated' }} fg-muted text-sm">
-                {{ (comment.moderated ? 'comments.moderator_info' : 'comments.edit_info')|trans({
-                  '%edited_at%': relative_time_diff(comment.editedAt, comment.timestamp, { natural: true }),
-                })|raw }}
-              </span>
-            {% endif %}
+              {% if comment.editedAt %}
+                <span class="comment__edited-at {{ comment.moderated ? 'comment__moderated' }} fg-muted text-sm">
+                  {{ (comment.moderated ? 'comments.moderator_info' : 'comments.edit_info')|trans({
+                    '%edited_at%': relative_time_diff(comment.editedAt, comment.timestamp, { natural: true }),
+                  })|raw }}
+                </span>
+              {% endif %}
+            </span>
+          </h1>
+
+          <span>
+            <label class="hideable__toggle comment__hide-toggle fg-grey text-sm no-wrap"
+                   for="comment_toggle_{{ comment.id }}">
+              <span class="hideable__indicator"
+                    role="presentation"
+                    data-hide-text="{{ 'action.hide'|trans }}"
+                    data-unhide-text="{{ 'action.unhide'|trans }}"></span>
+            </label>
           </span>
-        </h1>
+        </header>
 
-        <div class="comment__body break-text">
+        <div class="comment__body break-text hideable__hide">
           {%- if raw_body is not null -%}
             {{ raw_body|raw }}
           {%- elseif comment.body is not null -%}
@@ -38,7 +53,7 @@
           {%- endif -%}
         </div>
 
-        <nav class="comment__nav">
+        <nav class="comment__nav hideable__hide">
           <ul class="fg-muted nav nav--guttered no-margin unlistify">
             {{- block('comment_nav') -}}
           </ul>
@@ -50,13 +65,13 @@
         {% endif %}
       </div>
 
-      <div class="comment__vote">
+      <div class="comment__vote hideable__hide">
         {{ vote(comment, 'comment_vote') }}
       </div>
     </div>
 
     {% if recurse and comment.children|length > 0 %}
-      <div class="comment__replies">
+      <div class="comment__replies hideable__hide">
         {%- for reply in comment.children -%}
           {%- with { comment: reply, level: level + 1, show_form: false } -%}
             {{- block('comment') -}}

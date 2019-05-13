@@ -1,0 +1,35 @@
+// js-free method for hiding things
+.hideable {
+  &__checkbox {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+  }
+
+  &__checkbox:checked ~ &__hide,
+  &__checkbox:checked ~ * &__hide {
+    display: none;
+  }
+
+  &__toggle {
+    color: var(--link);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__checkbox:focus ~ &__toggle {
+    text-decoration: underline;
+  }
+
+  &__indicator::after {
+    content: attr(data-hide-text) '\20\2212';
+  }
+
+  &__checkbox:checked ~ &__indicator::after,
+  &__checkbox:checked ~ * &__indicator::after {
+    content: attr(data-unhide-text) ' +';
+  }
+}

@@ -2,23 +2,23 @@
   {{ form_row(form, {
     attr: { class: (app.user.enablePostPreviews ?? false) ? 'js-markdown-preview' },
     help: block('_markdown_help'),
-    help_attr: { class: 'formatting-help' },
+    help_attr: { class: 'hideable' },
     raw_help: true
   }) }}
   <div class="markdown-preview" id="{{ form.vars.id }}_preview"></div>
 {%- endblock markdown_row %}
 
 {% block _markdown_help %}
-  <input type="checkbox" class="formatting-help__toggle" id="{{ id~'_markdown_help' }}">
+  <input type="checkbox" class="hideable__checkbox" id="{{ id~'_markdown_help' }}" checked>
   <span class="fg-muted text-sm">{{ 'help.markdown_allowed'|trans }}</span>
 
-  <label class="formatting-help__link no-underline text-sm" for="{{ id~'_markdown_help' }}">
+  <label class="hideable__toggle no-underline text-sm" for="{{ id~'_markdown_help' }}">
     <span class="no-underline__exempt">{{- 'markdown_type.help'|trans }}</span>
-    <span class="formatting-help__arrow" role="presentation"></span>
+    <span class="hideable__indicator" role="presentation"></span>
   </label>
 
   {% filter spaceless %}
-    <table class="formatting-help__table">
+    <table class="formatting-help hideable__hide">
       <tbody>
         <tr>
           <td>

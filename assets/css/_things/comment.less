@@ -1,24 +1,5 @@
-/*
- * <article class="comment">
- *   <div class="comment__context">optional context thing</p>
- *
- *   <div class="comment__row">
- *     <div class="comment__main">
- *       <h1 class="comment__info">...</h1>
- *       <div class="comment__body">...</div>
- *       <nav class="comment__nav">...</nav>
- *     </div>
+@import '../_variables';
 
- *     <div class="comment__vote">...</div>
- *   </div>
- *
- *   <!-- exists only with replies -->
- *   <div class="comment__replies">
- *     <article class="comment">...</article>
- *     <article class="comment">...</article>
- *   </div>
- * </article>
- */
 .comment {
   @border-thin: 1px;
   @border-thick: 3px;
@@ -40,11 +21,10 @@
     border-left-width: @border-thick;
     display: flex;
     flex-direction: row-reverse;
-    padding-top: 0.5rem;
   }
 
   &__vote {
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 0;
   }
 
   &__main {
@@ -63,9 +43,16 @@
     }
   }
 
-  &__info {
-    font-weight: normal;
-    margin-bottom: 0.5rem;
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    width: 100%;
+  }
+
+  &__hide-toggle {
+    padding: 0.5rem;
   }
 
   &__body {
@@ -82,5 +69,21 @@
     border-bottom: none;
     margin-bottom: 0;
   }
-}
 
+  .hideable__checkbox:checked ~ &__row &__header {
+    background-image: repeating-linear-gradient(-45deg,
+      var(--bg-grey),
+      var(--bg-grey) 0.5rem,
+      transparent 0.5rem,
+      transparent 1rem
+    );
+  }
+
+  .hideable__checkbox:checked ~ &__row &__info {
+    padding-left: @vote-width;
+  }
+
+  .hideable__checkbox:focus ~ &__row &__hide-toggle {
+    text-decoration: underline;
+  }
+}
