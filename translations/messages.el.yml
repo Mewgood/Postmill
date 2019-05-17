@@ -350,7 +350,6 @@ title:
     editing_submission: Επεξεργασία υποβολής %title%
     log_in: Σύνδεση
     sign_up: Εγγραφείτε
-    submissions_in_featured_forums: Υποβολές σε επιλεγμένα φόρουμ
     bans_in_forum: Λίστα απαγορεύσεων στο %forum%
     showing_ban_history_for_user_in_forum: Εμφάνιση του ιστορικού απαγόρευσης για %user% στο %forum%
     banning_user_from_forum: Απαγόρευση %user% από %forum%

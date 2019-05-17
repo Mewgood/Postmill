@@ -15,5 +15,8 @@ indent_size = 2
 [*.xml.twig]
 indent_size = 2
 
+[*.atom.twig]
+indent_size = 2
+
 [*.{less,css}]
 indent_size = 2

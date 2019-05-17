@@ -416,7 +416,6 @@ title:
     log_in: Ingresar
     messages: Mensajes
     sign_up: Registrarse
-    submissions_in_featured_forums: Publicaciones en foros destacados
     bans_in_forum: Vetos en %forum%
     showing_ban_history_for_user_in_forum: Mostrando el historial de vetos de %user% en %forum%
     banning_user_from_forum: Vetando %user% de %forum%

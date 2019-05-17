@@ -1,4 +1,6 @@
-{% extends 'front/base.html.twig' %}
+{% extends 'front/_base.html.twig' %}
+
+{% block listing 'subscribed' %}
 
 {% block sidebar %}
   {{ parent() }}
@@ -17,4 +19,4 @@
       {% endfor %}
     </ul>
   </section>
-{% endblock %}
+{% endblock sidebar %}

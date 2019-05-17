@@ -1,4 +1,6 @@
-{% extends 'front/base.html.twig' %}
+{% extends 'front/_base.html.twig' %}
+
+{% block listing 'moderated' %}
 
 {% block body %}
   {% if forums is empty %}
@@ -8,7 +10,7 @@
   {% endif %}
 
   {{ parent() }}
-{% endblock %}
+{% endblock body %}
 
 {% block sidebar %}
   {{ parent() }}
@@ -29,4 +31,4 @@
       </ul>
     </section>
   {%- endif -%}
-{% endblock %}
+{% endblock sidebar %}

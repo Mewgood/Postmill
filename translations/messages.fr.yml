@@ -422,7 +422,6 @@ title:
     editing_submission: Modification du post %title%
     log_in: Connexion
     sign_up: Inscription
-    submissions_in_featured_forums: Posts dans les forums mis en avant
     bans_in_forum: Bans dans %forum%
     showing_ban_history_for_user_in_forum: Affichage de l'historique des bans de %user% dans %forum%
     banning_user_from_forum: Bannir %user% de %forum%

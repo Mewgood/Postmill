@@ -53,20 +53,15 @@ final class ForumController extends AbstractController {
 
     /**
      * Show the front page of a given forum.
-     *
-     * @param Forum  $forum
-     * @param string $sortBy
-     *
-     * @return Response
      */
-    public function front(Forum $forum, string $sortBy, Request $request): Response {
+    public function front(Forum $forum, string $sortBy, string $_format): Response {
         $criteria = (new Criteria($sortBy))
             ->showForums($forum)
             ->stickiesFirst();
 
         $submissions = $this->submissionFinder->find($criteria);
 
-        return $this->render('forum/forum.html.twig', [
+        return $this->render("forum/forum.$_format.twig", [
             'forum' => $forum,
             'sort_by' => $sortBy,
             'submissions' => $submissions,
@@ -158,17 +153,6 @@ final class ForumController extends AbstractController {
         return $this->render('forum/edit.html.twig', [
             'form' => $form->createView(),
             'forum' => $forum,
-        ]);
-    }
-
-    public function feed(Forum $forum, string $sortBy): Response {
-        $criteria = (new Criteria($sortBy, $this->getUser()))
-            ->showForums($forum)
-            ->excludeHiddenForums();
-
-        return $this->render('forum/feed.xml.twig', [
-            'forum' => $forum,
-            'submissions' => $this->submissionFinder->find($criteria),
         ]);
     }
 

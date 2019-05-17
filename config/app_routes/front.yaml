@@ -7,10 +7,10 @@ front:
 
 featured:
     controller: App\Controller\FrontController::featured
-    defaults: { sortBy: hot }
-    path: /featured/{sortBy}
+    defaults: { sortBy: hot, _format: html }
+    path: /featured/{sortBy}.{_format}
     methods: [GET]
-    requirements: { sortBy: "%submission_sort_modes%" }
+    requirements: { sortBy: "%submission_sort_modes%", _format: html|atom }
 
 subscribed:
     controller: App\Controller\FrontController::subscribed
@@ -21,10 +21,10 @@ subscribed:
 
 all:
     controller: App\Controller\FrontController::all
-    defaults: { sortBy: hot }
-    path: /all/{sortBy}
+    defaults: { sortBy: hot, _format: html }
+    path: /all/{sortBy}.{_format}
     methods: [GET]
-    requirements: { sortBy: "%submission_sort_modes%" }
+    requirements: { sortBy: "%submission_sort_modes%", _format: html|atom }
 
 moderated:
     controller: App\Controller\FrontController::moderated
@@ -32,17 +32,3 @@ moderated:
     path: /moderated/{sortBy}
     methods: [GET]
     requirements: { sortBy: "%submission_sort_modes%" }
-
-featured_feed:
-    controller: App\Controller\FrontController::featuredFeed
-    defaults: { sortBy: hot, _format: xml }
-    path: /featured/{sortBy}.atom
-    methods: [GET]
-    requirements: { sortBy: "%submission_sort_modes%" }
-
-featured_feed_legacy_redirect:
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
-    defaults: { route: featured_feed, ignoreAttributes: true }
-    methods: [GET]
-    path: /featured/{sortBy}/{_page}.atom
-    requirements: { sortBy: "%submission_sort_modes%", page: \d+ }

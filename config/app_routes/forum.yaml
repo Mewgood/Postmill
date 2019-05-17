@@ -8,23 +8,10 @@ multi:
 
 forum:
     controller: App\Controller\ForumController::front
-    defaults: { sortBy: hot }
-    path: /f/{forum_name}/{sortBy}
+    defaults: { sortBy: hot, _format: html }
+    path: /f/{forum_name}/{sortBy}.{_format}
     methods: [GET]
-    requirements: { sortBy: "%submission_sort_modes%" }
-
-forum_feed:
-    controller: App\Controller\ForumController::feed
-    defaults: { sortBy: hot, _format: xml }
-    path: /f/{forum_name}/{sortBy}.atom
-    methods: [GET]
-    requirements: { sortBy: "%submission_sort_modes%" }
-
-forum_feed_legacy_redirect:
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
-    defaults: { route: forum_feed, ignoreAttributes: [page] }
-    path: /f/{forum_name}/{sortBy}/{page}.atom
-    requirements: { page: \d+ }
+    requirements: { sortBy: "%submission_sort_modes%", _format: html|atom }
 
 edit_forum:
     controller: App\Controller\ForumController::editForum

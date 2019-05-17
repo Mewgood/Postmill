@@ -1,4 +1,6 @@
-{% extends 'front/base.html.twig' %}
+{% extends 'front/_base.html.twig' %}
+
+{% block listing 'featured' %}
 
 {% block front_alerts %}
   {% if is_granted('ROLE_USER') %}
@@ -8,7 +10,7 @@
       {% endembed %}
     {% endif %}
   {% endif %}
-{% endblock %}
+{% endblock front_alerts %}
 
 {% block sidebar %}
   {{ parent() }}
@@ -35,4 +37,4 @@
       </p>
     {% endif %}
   </section>
-{% endblock %}
+{% endblock sidebar %}

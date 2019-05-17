@@ -181,13 +181,15 @@ forum_moderators:
     last_seen: Last seen
 
 front:
-    subscribed_forums: Subscribed forums
     no_subscriptions: You are not subscribed to any forum. Showing featured forums instead.
-    featured_forums: Featured forums
     no_forums: There are no featured forums to display.
     all: All
+    all_forums: All forums
     featured: Featured
+    featured_forums: Featured forums
     subscribed: Subscribed
+    subscribed_forums: Subscribed forums
+    moderated_forums: Moderated forums
 
 heading:
     user_roles: User roles
@@ -518,7 +520,6 @@ title:
     editing_submission: Editing submission %title%
     log_in: Log in
     sign_up: Sign up
-    submissions_in_featured_forums: Submissions in featured forums
     bans_in_forum: Bans in %forum%
     showing_ban_history_for_user_in_forum: Showing ban history for %user% in %forum%
     banning_user_from_forum: Banning %user% from %forum%

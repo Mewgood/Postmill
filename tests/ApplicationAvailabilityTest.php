@@ -75,14 +75,22 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/'];
         yield ['/hot'];
         yield ['/new'];
+        yield ['/active'];
         yield ['/top'];
         yield ['/controversial'];
         yield ['/most_commented'];
         yield ['/all/hot'];
         yield ['/all/new'];
+        yield ['/all/active'];
         yield ['/all/top'];
         yield ['/all/controversial'];
         yield ['/all/most_commented'];
+        yield ['/all/hot.atom'];
+        yield ['/all/new.atom'];
+        yield ['/all/active.atom'];
+        yield ['/all/top.atom'];
+        yield ['/all/controversial.atom'];
+        yield ['/all/most_commented.atom'];
         yield ['/featured/hot'];
         yield ['/featured/new'];
         yield ['/featured/top'];
@@ -90,17 +98,20 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/featured/most_commented'];
         yield ['/featured/hot.atom'];
         yield ['/featured/new.atom'];
+        yield ['/featured/active.atom'];
         yield ['/featured/top.atom'];
         yield ['/featured/controversial.atom'];
         yield ['/featured/most_commented.atom'];
         yield ['/f/news'];
         yield ['/f/news/hot'];
         yield ['/f/news/new'];
+        yield ['/f/news/active'];
         yield ['/f/news/top'];
         yield ['/f/news/controversial'];
         yield ['/f/news/most_commented'];
         yield ['/f/news/hot.atom'];
         yield ['/f/news/new.atom'];
+        yield ['/f/news/active.atom'];
         yield ['/f/news/top.atom'];
         yield ['/f/news/controversial.atom'];
         yield ['/f/news/most_commented.atom'];
@@ -130,8 +141,6 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/f/news/controversial', '/f/NeWs/controversial'];
         yield ['/f/news/most_commented', '/f/NeWs/most_commented'];
         yield ['/f/news/1/-/comment/1', '/f/NeWs/1/comment/1'];
-        yield ['/f/news/hot.atom', '/f/news/hot/1.atom'];
-        yield ['/f/news/new.atom', '/f/news/new/1.atom'];
     }
 
     /**
@@ -140,11 +149,13 @@ class ApplicationAvailabilityTest extends WebTestCase {
     public function authUrlProvider() {
         yield ['/subscribed/hot'];
         yield ['/subscribed/new'];
+        yield ['/subscribed/active'];
         yield ['/subscribed/top'];
         yield ['/subscribed/controversial'];
         yield ['/subscribed/most_commented'];
         yield ['/moderated/hot'];
         yield ['/moderated/new'];
+        yield ['/moderated/active'];
         yield ['/moderated/top'];
         yield ['/moderated/controversial'];
         yield ['/moderated/most_commented'];

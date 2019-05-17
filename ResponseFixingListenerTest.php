@@ -2,7 +2,7 @@
 
 namespace App\Tests\EventListener;
 
-use App\EventListener\AjaxListener;
+use App\EventListener\ResponseFixingListener;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +13,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @covers \App\EventListener\AjaxListener
+ * @covers \App\EventListener\ResponseFixingListener
  */
-class AjaxListenerTest extends KernelTestCase {
+class ResponseFixingListenerTest extends KernelTestCase {
     /**
      * @var Serializer
      */
@@ -30,7 +30,7 @@ class AjaxListenerTest extends KernelTestCase {
         static::bootKernel();
 
         $this->serializer = self::$kernel->getContainer()->get('serializer');
-        $this->listener = new AjaxListener($this->serializer);
+        $this->listener = new ResponseFixingListener($this->serializer);
     }
 
     public function testDoesNotSetResponseOnNotXhrRequests(): void {

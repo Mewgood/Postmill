@@ -47,9 +47,6 @@ services:
     App\Command\ActivateMaintenanceMode:
         $includeFilePath: "%kernel.project_dir%/var/maintenance.php"
 
-    App\EventListener\AjaxListener:
-        $serializer: "@serializer"
-
     App\EventListener\LocaleListener:
         arguments:
             $availableLocales: "%env(csv:AVAILABLE_LOCALES)%"
