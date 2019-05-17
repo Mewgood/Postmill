@@ -63,13 +63,19 @@
           </a>
 
           {% if forum.featured %}
-            <span title="{{ 'help.forum_is_featured'|trans }}"
-                  aria-label="{{ 'help.forum_is_featured'|trans }}">&#x2b50;</span>
+            <span class="fg-orange"
+                  title="{{ 'help.forum_is_featured'|trans }}"
+                  aria-label="{{ 'help.forum_is_featured'|trans }}">
+              {{- icon('star') -}}
+            </span>
           {% endif %}
 
           {% if is_granted('ROLE_USER') and app.user.hidingForum(forum) %}
-            <span title="{{ 'help.forum_is_hidden'|trans }}"
-                  aria-label="{{ 'help.forum_is_hidden'|trans }}">&#x274c;</span>
+            <span class="fg-red"
+                  title="{{ 'help.forum_is_hidden'|trans }}"
+                  aria-label="{{ 'help.forum_is_hidden'|trans }}">
+              {{- icon('cancel') -}}
+            </span>
           {% endif %}
         </h2>
 

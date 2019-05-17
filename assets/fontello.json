@@ -239,6 +239,12 @@
       "css": "cancel-circled",
       "code": 59418,
       "src": "fontawesome"
+    },
+    {
+      "uid": "474656633f79ea2f1dad59ff63f6bf07",
+      "css": "star",
+      "code": 59419,
+      "src": "fontawesome"
     }
   ]
 }
