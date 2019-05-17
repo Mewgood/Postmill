@@ -55,7 +55,7 @@
   } %}
 
   {% set open = false %}
-  {% for label in toolbox_items|keys|sort if toolbox_items[label].condition %}
+  {% for label in toolbox_items|keys|sort|filter(label => toolbox_items[label].condition) %}
     {% if loop.first %}
       {% set open = true %}
       <section class="sidebar__section sidebar-card">

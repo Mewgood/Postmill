@@ -82,14 +82,14 @@
   <p class="fg-muted text-sm">{{ 'help.preferred_fonts'|trans }}</p>
   <p class="fg-muted text-sm">
     {{ 'help.preferred_fonts_served'|trans }}
-    {%- for font in font_list() if font_names(font) == [font] %}
+    {%- for font in font_list()|filter(font => font_names(font) == [font]) %}
       {{- loop.index != 1 ? ', ' -}}
       <strong>{{ font|capitalize }}</strong>
     {%- endfor %}
   </p>
   <p class="fg-muted text-sm">
     {{ 'help.preferred_fonts_aliases'|trans }}
-    {%- for font in font_list() if font_names(font) != [font] %}
+    {%- for font in font_list()|filter(font => font_names(font) != [font]) %}
       {{- loop.index != 1 ? ', ' -}}
       <strong><abbr title="{{ font_names(font)|join(', ') }}">{{ font|capitalize }}</abbr></strong>
     {%- endfor %}

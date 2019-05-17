@@ -17,4 +17,8 @@ final class TsvectorType extends Type {
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform): string {
         return sprintf('to_tsvector(%s)', $sqlExpr);
     }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool {
+        return true;
+    }
 }

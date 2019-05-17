@@ -96,7 +96,7 @@
     } %}
 
     <ul class="unlistify sidebar__no-padding">
-      {% for label in toolbox_items|keys|sort if toolbox_items[label].condition ?? true %}
+      {% for label in toolbox_items|keys|sort|filter(label => toolbox_items[label].condition ?? true) %}
         {% set item = toolbox_items[label] %}
         <li>
           <a href="{{ path(item.route, { forum_name: forum.name }) }}"

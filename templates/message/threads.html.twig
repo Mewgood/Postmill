@@ -32,7 +32,7 @@
         {{ (item.messages|length - 1)|localizednumber }}
       </td>
       <td class="table__shrink">
-        {%- for participant in item.participants if participant is not same as(app.user) -%}
+        {%- for participant in item.participants|filter(participant => participant is not same as(app.user)) -%}
           {{- loop.index != 1 ? ', ' -}}
           {{- user_link(participant) -}}
         {%- endfor -%}

@@ -6,7 +6,7 @@
   {%- endif -%}
   {%- do app.request.attributes.set('icons_are_linked', true) -%}
 
-  {%- filter spaceless -%}
+  {%- apply spaceless -%}
     <span class="icon {{ alt_text ? 'icon--with-alt-text' }} {{ extra_classes }}">
       {%- if alt_text is not empty -%}
         {#- Attempt to display an empty SVG. If this fails, the alt text will
@@ -24,5 +24,5 @@
       {%- endif -%}
       <svg width="16" height="16"><use xlink:href="{{ icon_asset }}#{{ name }}"/></svg>
     </span>
-  {%- endfilter -%}
+  {%- endapply -%}
 {% endmacro icon %}

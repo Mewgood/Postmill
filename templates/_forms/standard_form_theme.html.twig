@@ -158,7 +158,7 @@
 {%- endblock button_widget -%}
 
 {%- block captcha_widget -%}
-  {%- filter spaceless -%}
+  {%- apply spaceless -%}
     <div>
       {%- if not reload -%}
         <img src="{{ captcha_code }}" alt="" title="captcha" width="{{ captcha_width }}" height="{{ captcha_height }}">
@@ -179,7 +179,7 @@
       {%- endif -%}
     </div>
     {{- form_widget(form) -}}
-  {%- endfilter -%}
+  {%- endapply -%}
 {%- endblock captcha_widget -%}
 
 {% block datetime_widget %}

@@ -111,7 +111,7 @@
 {%- block comment_info_user -%}
   {%- from 'user/_macros.html.twig' import user_flag -%}
 
-  {% filter spaceless %}
+  {% apply spaceless %}
     {%- if not comment.softDeleted -%}
       <a href="{{ path('user', { username: comment.user.username }) }}" class="fg-inherit">
         <strong>{{ comment.user.username }}</strong>
@@ -119,7 +119,7 @@
     {%- else -%}
       {{- 'placeholder.deleted'|trans -}}
     {%- endif -%}
-  {% endfilter %}
+  {% endapply %}
 
   {% if not comment.softDeleted and comment.user is same as(comment.submission.user) %}
     <small class="comment__op-text text-sm user-flag"
@@ -194,7 +194,7 @@
 {%- endblock comment_nav_reply -%}
 
 {%- block comment_nav_permalink -%}
-  {%- filter spaceless -%}
+  {%- apply spaceless -%}
     <li>
       <a href="{{ path('comment', {
         forum_name: comment.submission.forum.name,
@@ -202,11 +202,11 @@
         comment_id: comment.id
       }) }}" class="comment__permalink fg-inherit text-sm">{{ 'comments.permalink'|trans }}</a>
     </li>
-  {%- endfilter -%}
+  {%- endapply -%}
 {%- endblock comment_nav_permalink -%}
 
 {%- block comment_nav_parent -%}
-  {%- filter spaceless -%}
+  {%- apply spaceless -%}
     {%- if comment.parent -%}
       <li>
         <a href="{{ path('comment', {
@@ -216,7 +216,7 @@
         }) }}" class="comment__parent-link fg-inherit text-sm">{{ 'comments.parent'|trans }}</a>
       </li>
     {%- endif -%}
-  {%- endfilter -%}
+  {%- endapply -%}
 {%- endblock comment_nav_parent -%}
 
 {% block comment_nav_softdelete %}

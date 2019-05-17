@@ -34,7 +34,7 @@
 
 {% macro message_receivers(message) %}
   {%- from 'user/_macros.html.twig' import user_link -%}
-  {%- for receiver in message.thread.participants if receiver is not same as(message.sender) -%}
+  {%- for receiver in message.thread.participants|filter(receiver => receiver is not same as(message.sender)) -%}
     {{ loop.index != 1 ? ', ' }}
     <strong>{{ user_link(receiver, { class: 'fg-inherit' }) }}</strong>
   {%- endfor -%}

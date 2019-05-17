@@ -17,8 +17,8 @@
     <span class="hideable__indicator" role="presentation"></span>
   </label>
 
-  {% filter spaceless %}
-    <table class="formatting-help hideable__hide">
+  {% apply spaceless %}
+    <table class="formatting-help__table hideable__hide">
       <tbody>
         <tr>
           <td>
@@ -174,5 +174,5 @@
         </tr>
       </tbody>
     </table>
-  {% endfilter %}
+  {% endapply %}
 {% endblock _markdown_help %}

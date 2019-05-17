@@ -7,23 +7,14 @@ use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Types\Type;
 
 class InetType extends Type {
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) {
         return 'INET';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName() {
         return 'inet';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform) {
         if (!$platform instanceof PostgreSqlPlatform) {
             throw new \InvalidArgumentException('Platform must be PostgreSQL');
@@ -56,5 +47,9 @@ class InetType extends Type {
         }
 
         return $ip;
+    }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool {
+        return true;
     }
 }
