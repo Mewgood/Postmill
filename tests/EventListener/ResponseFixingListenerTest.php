@@ -37,7 +37,7 @@ class ResponseFixingListenerTest extends KernelTestCase {
         $request = new Request();
         $event = $this->createEvent($request, new AccessDeniedException());
 
-        $this->listener->onKernelException($event);
+        $this->listener->fixXhrExceptions($event);
 
         $this->assertNull($event->getResponse());
     }
@@ -48,7 +48,7 @@ class ResponseFixingListenerTest extends KernelTestCase {
     public function test403sOnExceptionWithSerializedBody(Request $request, \Exception $e): void {
         $event = $this->createEvent($request, $e);
 
-        $this->listener->onKernelException($event);
+        $this->listener->fixXhrExceptions($event);
 
         $this->assertInstanceOf(Response::class, $event->getResponse());
         $this->assertEquals(403, $event->getResponse()->getStatusCode());
@@ -67,7 +67,7 @@ class ResponseFixingListenerTest extends KernelTestCase {
     public function test403sOnExceptionWithPlainBody(Request $request, \Exception $e): void {
         $event = $this->createEvent($request, $e);
 
-        $this->listener->onKernelException($event);
+        $this->listener->fixXhrExceptions($event);
 
         $this->assertInstanceOf(Response::class, $event->getResponse());
         $this->assertEquals(403, $event->getResponse()->getStatusCode());
