@@ -90,6 +90,8 @@ class UserData implements UserInterface {
 
     private $showThumbnails;
 
+    private $allowPrivateMessages;
+
     private $notifyOnReply;
 
     private $notifyOnMentions;
@@ -119,6 +121,7 @@ class UserData implements UserInterface {
         $self->autoFetchSubmissionTitles = $user->autoFetchSubmissionTitles();
         $self->enablePostPreviews = $user->enablePostPreviews();
         $self->showThumbnails = $user->showThumbnails();
+        $self->allowPrivateMessages = $user->allowPrivateMessages();
         $self->notifyOnReply = $user->getNotifyOnReply();
         $self->notifyOnMentions = $user->getNotifyOnMentions();
         $self->preferredFonts = $user->getPreferredFonts();
@@ -146,6 +149,7 @@ class UserData implements UserInterface {
         $user->setAutoFetchSubmissionTitles($this->autoFetchSubmissionTitles);
         $user->setEnablePostPreviews($this->enablePostPreviews);
         $user->setShowThumbnails($this->showThumbnails);
+        $user->setAllowPrivateMessages($this->allowPrivateMessages);
         $user->setNotifyOnReply($this->notifyOnReply);
         $user->setNotifyOnMentions($this->notifyOnMentions);
         $user->setPreferredFonts($this->preferredFonts);
@@ -169,6 +173,7 @@ class UserData implements UserInterface {
             'autoFetchSubmissionTitles',
             'enablePostPreviews',
             'showThumbnails',
+            'allowPrivateMessages',
             'notifyOnReply',
             'notifyOnMentions',
             'preferredFonts',
@@ -313,6 +318,14 @@ class UserData implements UserInterface {
 
     public function setShowThumbnails($showThumbnails): void {
         $this->showThumbnails = $showThumbnails;
+    }
+
+    public function allowPrivateMessages(): ?bool {
+        return $this->allowPrivateMessages;
+    }
+
+    public function setAllowPrivateMessages(bool $allowPrivateMessages): void {
+        $this->allowPrivateMessages = $allowPrivateMessages;
     }
 
     public function getNotifyOnReply(): ?bool {

@@ -46,12 +46,4 @@ class MessageTest extends TestCase {
         $this->assertTrue($thread->userIsParticipant($this->receiver));
         $this->assertTrue($thread->userIsParticipant($this->sender));
     }
-
-    public function testThrowsExceptionWhenStartingThreadWithBlockedUser() {
-        $this->receiver->addBlock(new UserBlock($this->receiver, $this->sender, 'c'));
-
-        $this->expectException(\DomainException::class);
-
-        new MessageThread($this->sender, $this->receiver);
-    }
 }

@@ -203,6 +203,7 @@ heading:
     search: Search
     search_results: '{0} No results for %query%|{1} 1 result for %query%:|]1,Inf[ %count% results for %query%:'
     notifications: Notifications
+    privacy: Privacy
 
 help:
     delete_forum_warning: All content on this forum will be irreversibly deleted!
@@ -223,6 +224,7 @@ help:
     preferred_fonts_served: 'Server-provided fonts (available everywhere): '
     preferred_fonts_aliases: 'Aliased font names: '
     markdown_allowed: Markdown allowed.
+    allow_private_messages: If disabled, only admins, co-moderators, and moderators of forums you've recently participated in will be able to send you private messages.
 
 inbox:
     message_reply_head: 'Re: %title%'
@@ -330,6 +332,7 @@ label:
     remember_me: Keep me logged in
     body: Body
     timezone: Time zone
+    allow_private_messages: Allow private messages
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'

@@ -269,6 +269,13 @@ class User implements UserInterface, EquatableInterface {
     private $showThumbnails = true;
 
     /**
+     * @ORM\Column(type="boolean")
+     *
+     * @var bool
+     */
+    private $allowPrivateMessages = true;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": true})
      *
      * @var bool
@@ -620,14 +627,6 @@ class User implements UserInterface, EquatableInterface {
         return count($this->blocks->matching($criteria)) > 0;
     }
 
-    public function canBeMessagedBy($user): bool {
-        if (!$user instanceof self) {
-            return false;
-        }
-
-        return $user->isAdmin() || !$this->isBlocking($user);
-    }
-
     public function getFrontPage(): string {
         return $this->frontPage;
     }
@@ -690,6 +689,14 @@ class User implements UserInterface, EquatableInterface {
 
     public function setShowThumbnails(bool $showThumbnails): void {
         $this->showThumbnails = $showThumbnails;
+    }
+
+    public function allowPrivateMessages(): bool {
+        return $this->allowPrivateMessages;
+    }
+
+    public function setAllowPrivateMessages(bool $allowPrivateMessages): void {
+        $this->allowPrivateMessages = $allowPrivateMessages;
     }
 
     public function getNotifyOnReply(): bool {

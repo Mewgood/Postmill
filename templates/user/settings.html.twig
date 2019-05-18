@@ -54,6 +54,12 @@
     </fieldset>
 
     <fieldset class="fieldset">
+      <legend>{{ 'heading.privacy'|trans }}</legend>
+
+      {{ form_row(form.allowPrivateMessages) }}
+    </fieldset>
+
+    <fieldset class="fieldset">
       <legend>{{ 'label.appearance'|trans }}</legend>
 
       {{ form_row(form.preferredTheme) }}

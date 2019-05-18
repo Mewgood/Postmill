@@ -25,9 +25,6 @@ final class UserSettingsType extends AbstractType {
         $this->availableLocales = $availableLocales;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('locale', ChoiceType::class, [
@@ -92,6 +89,11 @@ final class UserSettingsType extends AbstractType {
                 'label' => 'label.notify_on_mentions',
                 'required' => false,
             ])
+            ->add('allowPrivateMessages', CheckboxType::class, [
+                'help' => 'help.allow_private_messages',
+                'label' => 'label.allow_private_messages',
+                'required' => false,
+            ])
             ->add('preferredFonts', TextType::class, [
                 'required' => false,
             ])
@@ -105,9 +107,6 @@ final class UserSettingsType extends AbstractType {
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'data_class' => UserData::class,

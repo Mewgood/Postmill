@@ -8,25 +8,6 @@ use App\Entity\UserBlock;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase {
-    public function testUsersCannotMessageUsersWhoBlockThem() {
-        $sender = new User('u', 'p');
-
-        $receiver = new User('u', 'p');
-        $receiver->addBlock(new UserBlock($receiver, $sender, ''));
-
-        $this->assertFalse($receiver->canBeMessagedBy($sender));
-    }
-
-    public function testAdminsCanMessageUsersWhoBlockThem() {
-        $sender = new User('u', 'p');
-        $sender->setAdmin(true);
-
-        $receiver = new User('u', 'p');
-        $receiver->addBlock(new UserBlock($receiver, $sender, ''));
-
-        $this->assertTrue($sender->canBeMessagedBy($receiver));
-    }
-
     /**
      * @dataProvider unnormalizedUserProvider
      *

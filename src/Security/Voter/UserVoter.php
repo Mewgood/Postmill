@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\User;
+use App\Repository\ModeratorRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -16,45 +17,38 @@ final class UserVoter extends Voter {
     private $decisionManager;
 
     /**
-     * @param AccessDecisionManagerInterface $decisionManager
+     * @var ModeratorRepository
      */
-    public function __construct(AccessDecisionManagerInterface $decisionManager) {
+    private $moderators;
+
+    public function __construct(
+        AccessDecisionManagerInterface $decisionManager,
+        ModeratorRepository $moderators
+    ) {
         $this->decisionManager = $decisionManager;
+        $this->moderators = $moderators;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supports($attribute, $subject) {
-        return in_array($attribute, self::ATTRIBUTES) && $subject instanceof User;
+    protected function supports($attribute, $subject): bool {
+        return $subject instanceof User && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool {
         if (!$subject instanceof User) {
             throw new \InvalidArgumentException('$subject must be '.User::class);
         }
 
         switch ($attribute) {
         case 'edit_user':
-            // TODO: move to user entity
             return $this->canEditUser($subject, $token);
         case 'message':
-            return $subject->canBeMessagedBy($token->getUser());
+            return $this->canMessage($subject, $token);
         default:
-            throw new \InvalidArgumentException('Unknown attribute '.$attribute);
+            throw new \InvalidArgumentException("Unknown attribute '$attribute'");
         }
     }
 
-    /**
-     * @param User           $user
-     * @param TokenInterface $token
-     *
-     * @return bool
-     */
-    private function canEditUser(User $user, TokenInterface $token) {
+    private function canEditUser(User $user, TokenInterface $token): bool {
         if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
             return true;
         }
@@ -64,5 +58,30 @@ final class UserVoter extends Voter {
         }
 
         return $user === $token->getUser();
+    }
+
+    private function canMessage(User $receiver, TokenInterface $token): bool {
+        if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
+            return true;
+        }
+
+        $sender = $token->getUser();
+
+        if (!$sender instanceof User) {
+            return false;
+        }
+
+        if ($receiver->isBlocking($sender)) {
+            return false;
+        }
+
+        if (
+            !$receiver->allowPrivateMessages() &&
+            !$this->moderators->userRulesOverSubject($sender, $receiver)
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }

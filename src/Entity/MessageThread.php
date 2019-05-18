@@ -40,15 +40,7 @@ class MessageThread {
      */
     private $messages;
 
-    public function __construct(User $sender, User ...$participants) {
-        foreach ($participants as $participant) {
-            if (!$participant->canBeMessagedBy($sender)) {
-                throw new \DomainException('Sender cannot message one of the participants');
-            }
-        }
-
-        $participants[] = $sender;
-
+    public function __construct(User ...$participants) {
         $this->participants = new ArrayCollection($participants);
         $this->messages = new ArrayCollection();
     }
