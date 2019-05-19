@@ -56,6 +56,15 @@ class MessageThread {
         return $this->participants;
     }
 
+    /**
+     * @return User[]
+     */
+    public function getOtherParticipants(User $self): array {
+       return $this->participants->filter(function (User $user) use ($self) {
+            return $user !== $self;
+       })->getValues();
+    }
+
     public function userIsParticipant($user): bool {
         return $this->participants->contains($user);
     }

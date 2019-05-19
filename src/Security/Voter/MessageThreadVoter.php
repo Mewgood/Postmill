@@ -3,22 +3,27 @@
 namespace App\Security\Voter;
 
 use App\Entity\MessageThread;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class MessageThreadVoter extends Voter {
     const ATTRIBUTES = ['access', 'reply'];
 
     /**
-     * {@inheritdoc}
+     * @var AccessDecisionManagerInterface
      */
+    private $decisionManager;
+
+    public function __construct(AccessDecisionManagerInterface $decisionManager) {
+        $this->decisionManager = $decisionManager;
+    }
+
     protected function supports($attribute, $subject) {
         return $subject instanceof MessageThread && in_array($attribute, self::ATTRIBUTES);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
         if (!$subject instanceof MessageThread) {
             throw new \InvalidArgumentException('$subject must be '.MessageThread::class);
@@ -26,10 +31,38 @@ final class MessageThreadVoter extends Voter {
 
         switch ($attribute) {
         case 'access':
-        case 'reply':
             return $subject->userIsParticipant($token->getUser());
+        case 'reply':
+            return $this->canReply($subject, $token);
         default:
-            throw new \LogicException('Unknown attribute '.$attribute);
+            throw new \InvalidArgumentException("Unknown attribute '$attribute'");
         }
+    }
+
+    private function canReply(MessageThread $thread, TokenInterface $token): bool {
+        $user = $token->getUser();
+
+        if (!$user instanceof User) {
+            return false;
+        }
+
+        if (!$thread->userIsParticipant($user)) {
+            return false;
+        }
+
+        if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
+            return true;
+        }
+
+        $otherParticipants = $thread->getOtherParticipants($user);
+
+        if (\count($otherParticipants) === 1 && (
+            $otherParticipants[0]->isBlocking($user) ||
+            $user->isBlocking($otherParticipants[0])
+        )) {
+            return false;
+        }
+
+        return true;
     }
 }
