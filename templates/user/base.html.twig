@@ -23,6 +23,42 @@
     {% endif %}
   </section>
 
+  {% set active_ban = user.activeBan %}
+
+  {% if is_granted('ROLE_ADMIN') and active_ban %}
+    <section class="sidebar__section sidebar-card bg-red">
+      <h1 class="sidebar__title">{{ 'heading.this_user_is_banned'|trans }}</h1>
+
+      <dl class="table-list">
+        <dt>{{ 'label.reason'|trans }}</dt>
+        <dd>{{ active_ban.reason }}</dd>
+
+        <dt>{{ 'label.banned_by'|trans }}</dt>
+        <dd>
+          <a href="{{ path('user', { username: active_ban.bannedBy.username }) }}">
+            {{- active_ban.bannedBy.username -}}
+          </a>
+        </dd>
+
+        <dt>{{ 'label.expires'|trans }}</dt>
+        <dd>
+          {%- if active_ban.expiresAt -%}
+            {{ relative_time(active_ban.expiresAt) }}
+          {%- else -%}
+            <small class="fg-muted text-md">{{ 'label.never'|trans }}</small>
+          {%- endif -%}
+        </dd>
+      </dl>
+
+      <p>
+        <a href="{{ path('unban_user', { username: user.username }) }}"
+           class="button">
+          {{- 'action.unban'|trans -}}
+        </a>
+      </p>
+    </section>
+  {% endif %}
+
   {% set toolbox_items = {
     ('user.message'|trans): {
       route: 'compose_message',
@@ -34,11 +70,7 @@
     },
     ('action.ban'|trans): {
       route: 'ban_user',
-      condition: is_granted('ROLE_ADMIN') and user is not same as(app.user) and not user.banned,
-    },
-    ('action.unban'|trans): {
-      route: 'unban_user',
-      condition: is_granted('ROLE_ADMIN') and user is not same as(app.user) and user.banned,
+      condition: is_granted('ROLE_ADMIN') and user is not same as(app.user) and not active_ban,
     },
     ('nav.forum_bans'|trans): {
       route: 'user_forum_bans',

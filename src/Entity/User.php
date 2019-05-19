@@ -22,7 +22,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * })
  */
 class User implements UserInterface, EquatableInterface {
-
     /**
      * @ORM\Column(type="bigint")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -138,6 +137,7 @@ class User implements UserInterface, EquatableInterface {
 
     /**
      * @ORM\OneToMany(targetEntity="UserBan", mappedBy="user")
+     * @ORM\OrderBy({"timestamp": "ASC"})
      *
      * @var UserBan[]|Collection|Selectable
      */
@@ -468,21 +468,24 @@ class User implements UserInterface, EquatableInterface {
         return $this->bans;
     }
 
-    public function addBan(UserBan $ban) {
-        if (!$this->bans->contains($ban)) {
-            $this->bans->add($ban);
+    public function getActiveBan(): ?UserBan {
+        $ban = $this->bans->last();
+
+        if (!$ban instanceof UserBan || !$ban->isBan() || $ban->isExpired()) {
+            return null;
         }
+
+        return $ban;
     }
 
     public function isBanned(): bool {
-        $criteria = Criteria::create()
-            ->orderBy(['timestamp' => 'DESC'])
-            ->setMaxResults(1);
+        return (bool) $this->getActiveBan();
+    }
 
-        /* @var UserBan $ban */
-        $ban = $this->bans->matching($criteria)->first() ?: null;
-
-        return $ban && $ban->isBan() && !$ban->isExpired();
+    public function addBan(UserBan $ban) {
+        if (!$this->bans->contains($ban)) {
+            $this->bans[] = $ban;
+        }
     }
 
     /**
