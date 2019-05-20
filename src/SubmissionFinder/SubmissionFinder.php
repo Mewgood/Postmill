@@ -3,48 +3,38 @@
 namespace App\SubmissionFinder;
 
 use App\Entity\Submission;
-use App\Entity\User;
+use App\Form\Model\SubmissionPage;
+use App\Form\SubmissionPageType;
 use App\Repository\SubmissionRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * Submission finder that does things:
- *
- * - keyset pagination
- * -
- */
 final class SubmissionFinder {
-    /**
-     * `$sortBy` -> ordered column name mapping.
-     *
-     * @var array[]
-     */
-    public const SORT_COLUMN_MAP = [
-        Submission::SORT_ACTIVE => ['last_active' => 'DESC', 'id' => 'DESC'],
-        Submission::SORT_HOT => ['ranking' => 'DESC', 'id' => 'DESC'],
-        Submission::SORT_NEW => ['id' => 'DESC'],
-        Submission::SORT_TOP => ['net_score' => 'DESC', 'id' => 'DESC'],
-        Submission::SORT_CONTROVERSIAL => ['net_score' => 'ASC', 'id' => 'ASC'],
-        Submission::SORT_MOST_COMMENTED => ['comment_count' => 'DESC', 'id' => 'DESC'],
-    ];
-
-    public const SORT_COLUMN_TYPES = [
-        'last_active' => 'datetimetz',
-        'ranking' => 'bigint',
-        'id' => 'bigint',
-        'net_score' => 'integer',
-        'comment_count' => 'integer',
+    private const SORT_CLAUSE_FORMATS = [
+        'DESC' => '(%s) <= (:next_%s)',
+        'ASC' => '(%s) >= (:next_%s)',
     ];
 
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var NormalizerInterface
+     */
+    private $normalizer;
 
     /**
      * @var RequestStack
@@ -58,10 +48,14 @@ final class SubmissionFinder {
 
     public function __construct(
         EntityManagerInterface $entityManager,
+        FormFactoryInterface $formFactory,
+        NormalizerInterface $normalizer,
         RequestStack $requestStack,
         SubmissionRepository $repository
     ) {
         $this->entityManager = $entityManager;
+        $this->formFactory = $formFactory;
+        $this->normalizer = $normalizer;
         $this->requestStack = $requestStack;
         $this->repository = $repository;
     }
@@ -72,12 +66,6 @@ final class SubmissionFinder {
      * @throws NoSubmissionsException if there are no submissions
      */
     public function find(Criteria $criteria): Pager {
-        $request = $this->requestStack->getCurrentRequest();
-
-        if (!$request) {
-            $request = new Request();
-        }
-
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata(Submission::class, 's');
 
@@ -88,22 +76,12 @@ final class SubmissionFinder {
             ->setParameter('visibility', Submission::VISIBILITY_VISIBLE)
             ->setMaxResults($criteria->getMaxPerPage() + 1);
 
+        $page = $this->getPage($criteria);
+
         $this->addTimeClause($qb);
-
-        $pager = Pager::getParamsFromRequest($criteria->getSortBy(), $request);
-
-        if ($criteria->getStickiesFirst()) {
-            $this->addStickyClause($qb, $pager);
-        }
-
-        foreach (self::SORT_COLUMN_MAP[$criteria->getSortBy()] as $column => $order) {
-            $qb->addOrderBy('s.'.$column, $order);
-        }
-
-        if ($pager) {
-            $this->paginate($qb, $pager, $criteria->getSortBy());
-        }
-
+        $this->addStickyClause($qb, $criteria, $page);
+        $this->order($qb, $criteria);
+        $this->paginate($qb, $criteria, $page);
         $this->filter($qb, $criteria);
 
         $results = $this->entityManager
@@ -111,41 +89,41 @@ final class SubmissionFinder {
             ->setParameters($qb->getParameters())
             ->execute();
 
-        if ($pager && \count($results) === 0) {
+        if ($page && \count($results) === 0) {
             throw new NoSubmissionsException();
         }
 
         $this->repository->hydrate(...$results);
 
-        return new Pager($results, $criteria->getMaxPerPage(), $criteria->getSortBy());
+        return $this->createPager($results, $criteria);
     }
 
-    private function paginate(QueryBuilder $qb, array $pager, string $sortBy): void {
-        $qb->andWhere(sprintf('(%s) <= (:next_%s)',
-            implode(', ', \array_keys(self::SORT_COLUMN_MAP[$sortBy])),
-            implode(', :next_', \array_keys(self::SORT_COLUMN_MAP[$sortBy]))
-        ));
+    private function getPage(Criteria $criteria): ?SubmissionPage {
+        $request = $this->requestStack->getCurrentRequest();
 
-        foreach (self::SORT_COLUMN_MAP[$sortBy] as $column => $order) {
-            $qb->setParameter('next_'.$column, $pager[$column]);
+        if (!$request || !$request->query->has('next')) {
+            return null;
         }
-    }
 
-    private function addStickyClause(QueryBuilder $qb, array $pager): void {
-        if (empty($pager)) {
-            // Order by stickies on page 1.
-            $qb->addOrderBy('s.sticky', 'DESC');
-        } else {
-            // Exclude all stickies from page 2 and onward, since they're all
-            // assumed to be on page 1. Will miss all stickies that are meant to
-            // be on the next page. The solution is to not be a doofus and
-            // sticky more than the max number posts per page.
-            $qb->andWhere($qb->expr()->eq('s.sticky', 'false'));
+        $form = $this->formFactory->createNamed('next', SubmissionPageType::class, null, [
+            'sort_by' => $criteria->getSortBy(),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $form->getData();
         }
+
+        return null;
     }
 
     private function addTimeClause(QueryBuilder $qb): void {
-        $request = $this->requestStack->getCurrentRequest() ?? new Request();
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$request) {
+            return;
+        }
 
         $time = $request->query->get('t', Submission::TIME_ALL);
 
@@ -172,6 +150,59 @@ final class SubmissionFinder {
                 // 404 on bad query parameter
                 throw new NoSubmissionsException();
             }
+        }
+    }
+
+    private function addStickyClause(QueryBuilder $qb, Criteria $criteria, ?SubmissionPage $page): void {
+        if (!$criteria->getStickiesFirst()) {
+            return;
+        }
+
+        if (!$page) {
+            // Order by stickies on page 1.
+            $qb->addOrderBy('s.sticky', 'DESC');
+        } else {
+            // Exclude all stickies from page 2 and onward, since they're all
+            // assumed to be on page 1. Will miss all stickies that are meant to
+            // be on the next page. The solution is to not be a doofus and
+            // sticky more than the max number posts per page.
+            $qb->andWhere($qb->expr()->eq('s.sticky', 'false'));
+        }
+    }
+
+    private function order(QueryBuilder $qb, Criteria $criteria): void {
+        $metadata = $this->entityManager->getClassMetadata(Submission::class);
+        $sortBy = $criteria->getSortBy();
+
+        foreach (Submission::SORT_FIELD_MAP[$sortBy] as $field) {
+            $column = $metadata->getColumnName($field);
+            $order = Submission::SORT_ORDER[$sortBy];
+
+            $qb->addOrderBy("s.$column", $order);
+        }
+    }
+
+    private function paginate(QueryBuilder $qb, Criteria $criteria, ?SubmissionPage $page): void {
+        if (!$page) {
+            return;
+        }
+
+        $metadata = $this->entityManager->getClassMetadata(Submission::class);
+        $sortBy = $criteria->getSortBy();
+
+        foreach (Submission::SORT_FIELD_MAP[$sortBy] as $field) {
+            $columns[$field] = $metadata->getColumnName($field);
+        }
+
+        $format = self::SORT_CLAUSE_FORMATS[Submission::SORT_ORDER[$sortBy]];
+
+        $qb->andWhere(\sprintf($format,
+            \implode(', ', $columns),
+            \implode(', :next_', $columns)
+        ));
+
+        foreach ($columns as $field => $column) {
+            $qb->setParameter('next_'.$column, $page->{$field});
         }
     }
 
@@ -213,5 +244,19 @@ final class SubmissionFinder {
             $qb->andWhere('s.forum_id NOT IN (SELECT forum_id FROM hidden_forums WHERE user_id = :user)');
             $qb->setParameter('user', $criteria->getUser());
         }
+    }
+
+    private function createPager(array $results, Criteria $criteria): Pager {
+        $pagerEntity = $results[$criteria->getMaxPerPage()] ?? null;
+
+        if ($pagerEntity) {
+            $params['next'] = $this->normalizer->normalize($pagerEntity, null, [
+                'groups' => ['pager:all', 'pager:'.$criteria->getSortBy()],
+            ]);
+
+            \array_pop($results);
+        }
+
+        return new Pager($results, $params ?? []);
     }
 }

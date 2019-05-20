@@ -51,6 +51,24 @@ class Submission extends Votable {
         self::FRONT_MODERATED,
     ];
 
+    public const SORT_FIELD_MAP = [
+        self::SORT_HOT => ['ranking', 'id'],
+        self::SORT_NEW => ['id'],
+        self::SORT_ACTIVE => ['lastActive', 'id'],
+        self::SORT_TOP => ['netScore', 'id'],
+        self::SORT_CONTROVERSIAL => ['netScore', 'id'],
+        self::SORT_MOST_COMMENTED => ['commentCount', 'id'],
+    ];
+
+    public const SORT_ORDER = [
+        self::SORT_HOT => 'DESC',
+        self::SORT_NEW => 'DESC',
+        self::SORT_ACTIVE => 'DESC',
+        self::SORT_TOP => 'DESC',
+        self::SORT_CONTROVERSIAL => 'ASC',
+        self::SORT_MOST_COMMENTED => 'DESC',
+    ];
+
     public const SORT_OPTIONS = [
         self::SORT_ACTIVE,
         self::SORT_HOT,
@@ -80,7 +98,7 @@ class Submission extends Votable {
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id()
      *
-     * @Groups({"submission:read", "abbreviated_relations"})
+     * @Groups({"submission:read", "abbreviated_relations", "pager:all"})
      *
      * @var int|null
      */
@@ -125,7 +143,7 @@ class Submission extends Votable {
     /**
      * @ORM\Column(type="integer")
      *
-     * @Groups({"submission:read"})
+     * @Groups({"submission:read", "pager:most_commented"})
      *
      * @var int
      */
@@ -143,7 +161,7 @@ class Submission extends Votable {
     /**
      * @ORM\Column(type="datetimetz")
      *
-     * @Groups({"submission:read"})
+     * @Groups({"submission:read", "pager:active"})
      *
      * @var \DateTime
      */
@@ -218,6 +236,7 @@ class Submission extends Votable {
 
     /**
      * @ORM\Column(type="bigint")
+     * @Groups({"pager:hot"})
      *
      * @var int
      */
@@ -259,7 +278,7 @@ class Submission extends Votable {
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"submission:read"})
+     * @Groups({"submission:read", "pager:top", "pager:controversial"})
      *
      * @var int
      */
