@@ -30,6 +30,7 @@ action:
     dismiss: Forgesi
     pin: Kejli
     unpin: Malkejli
+    purge: Viŝi
 
 add_moderator:
     title: Aldoni kontrolanton al %forum%
@@ -134,6 +135,7 @@ flash:
     you_must_reauthenticate: Vi devas reensaluti por aliri al ĉi tiu paĝo.
     submission_pinned: La afiŝo estis kejlita.
     submission_unpinned: La afiŝo estis malkejlita.
+    purge_submission_warning: La afiŝo kaj ĉiuj siaj komentoj estos daŭre forigitaj.
 
 forum:
     moderators: Kontrolantoj
@@ -180,8 +182,10 @@ front:
     featured_forums: Elstarigitaj diskutejoj
     no_forums: Estas neniuj elstarigitaj diskutejoj montreblaj.
     all: Ĉiuj
+    all_forums: Ĉiuj diskutejoj
     featured: Elstarigitaj
     subscribed: Abonataj
+    moderated_forums: Kontrolitaj diskutejoj
 
 heading:
     user_roles: Uzantaj roloj
@@ -195,6 +199,8 @@ heading:
     search: Serĉi
     search_results: '{0} Sen resultoj por %query%|{1} 1 resulto por %query%:|]1,Inf[ %count% resultoj por %query%:'
     notifications: Sciigoj
+    privacy: Privateco
+    this_user_is_banned: Ĉi tiu uzanto estas forbarita!
 
 help:
     delete_forum_warning: Ĉiu enhavo en ĉi tiu diskutejo senrevene estos forigita
@@ -214,6 +220,8 @@ help:
     preferred_fonts: 'Diskoma listo de la tiparoj, kiuj vi preferas. Ĉi tiuj povas esti tiparoj el via sistemo aŭ el la listo de servilo-disponigitaj tiparoj malsupre..'
     preferred_fonts_served: 'Servilo-disponigitaj tiparoj (disponebla ĉie): '
     preferred_fonts_aliases: 'Alinomitaj nombroj de tiparoj: '
+    markdown_allowed: Markdown permesita.
+    allow_private_messages: Se malebligita, nur administrantoj, kunkontrolantoj kaj kontrolantoj de diskutejoj, in kiuj vi antaŭ ne longe partoprenis povos sendi al vi privatajn mesaĝojn.
 
 inbox:
     message_reply_head: 'Re: %title%'
@@ -228,6 +236,7 @@ label:
     author: Aŭtoro
     password: Pasvorto
     confirm: Konfirmu
+    suggested_theme: Sugestita estoso
     save_settings: Konservi agordojn
     source_code: Fontkodo
     sidebar: Flankpanelo
@@ -311,12 +320,17 @@ label:
     search_query: Serĉmendo
     notify_on_reply: Sciigi por respondoj
     notify_on_mentions: Sciigi por mencioj
+    sort_by: Klasi laŭ
     sort_by_mode: 'Klasi laŭ: %mode%'
+    filter_by: Filtri laŭ
     filter_on_mode: 'Filtri laŭ: %mode%'
     from_time: 'De: %time%'
     last_message: Lasta mesaĝo
     participants: Partoprenantoj
     preferred_fonts: Preferata(j) tiparo(j)
+    remember_me: Teni min ensalutitan
+    timezone: Horzono
+    allow_private_messages: Permesi privatajn mesaĝojn
 
 log:
     comment_deletion: '%user% forigis komenton de %author% en "%submission%"'
@@ -334,7 +348,30 @@ login_form:
     reset_password: Ĉu restarigi pasvorton?
 
 markdown_type:
+    preview: Antaŭrigardo
     help: Sintaksa referenco
+    paragraph: Paragrafo
+    another_paragraph: Alia paragrafo
+    line: linio
+    break: salto
+    emphasis: Emfazo
+    strong_emphasis: Forta emfazo
+    strikethrough: Trastreko
+    heading_1: Titolo 1
+    heading_2: Titolo 2
+    heading_3: Titolo 3
+    heading_4: Titolo 4
+    heading_5: Titolo 5
+    heading_6: Titolo 6
+    list_item: Listero
+    link: Ligilo
+    forum: diskutejo
+    user: uzanto
+    wiki_page: wiki_paĝo
+    blockquote: Blokcitaĵo
+    horizontal_rule: Horizonta streko
+    inline_code: enteksta kodo
+    code_block: Koda bloko
 
 message_form:
     title: Titolo
@@ -385,6 +422,13 @@ nav:
     notifications: Sciigoj
     notifications_count: 'Sciigoj (%count%)'
     actions: Agoj
+    places: Lokoj
+    home: Hejmo
+    user: Uzanto
+    search: Serĉi
+    dark_mode: Malhela reĝimo
+    light_mode: Hela reĝimo
+    logged_in_as_user: Ensalutita kiel %user%
 
 placeholder:
     default: (defaŭlto)
