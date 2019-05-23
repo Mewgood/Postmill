@@ -31,8 +31,14 @@
       {% endblock header %}
 
       {% block row %}
+        {% from '_macros/icon.html.twig' import icon %}
         {% from '_macros/time.html.twig' import relative_time %}
-        <td class="table__shrink"><input type="checkbox" name="ban[]" value="{{ item.id }}" id="ban_{{ item.id }}"></td>
+        <td class="table__shrink">
+          <span class="unstylable-widget">
+            <input type="checkbox" name="ban[]" value="{{ item.id }}" id="ban_{{ item.id }}" class="form-control">
+            {{- icon('ok', 'X', 'icon--no-align unstylable-widget__check') }}
+          </span>
+        </td>
         <td class="table__shrink"><label for="ban_{{ item.id }}">{{ item.ip }}</label></td>
         <td class="table__shrink">{{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}</td>
         <td class="table__shrink">
