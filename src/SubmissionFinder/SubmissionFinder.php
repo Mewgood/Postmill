@@ -251,13 +251,15 @@ final class SubmissionFinder {
         $pagerEntity = $results[$criteria->getMaxPerPage()] ?? null;
 
         if ($pagerEntity) {
-            $params['next'] = $this->normalizer->normalize($pagerEntity, null, [
-                'groups' => ['pager:all', 'pager:'.$criteria->getSortBy()],
-            ]);
+            $nextPageParams = $this->normalizer->normalize(
+                SubmissionPage::createFromSubmission($pagerEntity),
+                null,
+                ['groups' => [$criteria->getSortBy()]]
+            );
 
             \array_pop($results);
         }
 
-        return new Pager($results, $params ?? []);
+        return new Pager($results, $nextPageParams ?? []);
     }
 }

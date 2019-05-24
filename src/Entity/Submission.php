@@ -98,7 +98,7 @@ class Submission extends Votable {
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id()
      *
-     * @Groups({"submission:read", "abbreviated_relations", "pager:all"})
+     * @Groups({"submission:read", "abbreviated_relations"})
      *
      * @var int|null
      */
@@ -143,7 +143,7 @@ class Submission extends Votable {
     /**
      * @ORM\Column(type="integer")
      *
-     * @Groups({"submission:read", "pager:most_commented"})
+     * @Groups({"submission:read"})
      *
      * @var int
      */
@@ -161,7 +161,7 @@ class Submission extends Votable {
     /**
      * @ORM\Column(type="datetimetz")
      *
-     * @Groups({"submission:read", "pager:active"})
+     * @Groups({"submission:read"})
      *
      * @var \DateTime
      */
@@ -236,7 +236,6 @@ class Submission extends Votable {
 
     /**
      * @ORM\Column(type="bigint")
-     * @Groups({"pager:hot"})
      *
      * @var int
      */
@@ -278,7 +277,7 @@ class Submission extends Votable {
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"submission:read", "pager:top", "pager:controversial"})
+     * @Groups({"submission:read"})
      *
      * @var int
      */

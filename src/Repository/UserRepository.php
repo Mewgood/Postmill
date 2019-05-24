@@ -184,22 +184,23 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             return $b->getTimestamp() <=> $a->getTimestamp();
         });
 
+        $pagerEntity = $combined[25] ?? null;
+
+        if ($pagerEntity) {
+            $nextPageParams = $this->normalizer->normalize(
+                UserContributionsPage::createFromContribution($pagerEntity)
+            );
+
+            \array_pop($combined);
+        }
+
         $contributions = \array_map(function ($element) {
             $type = $element instanceof Submission ? 'submission' : 'comment';
 
             return ['type' => $type, $type => $element];
-        }, \array_slice($combined, 0, 25));
+        }, $combined);
 
-        $pagerEntity = $combined[25] ?? null;
-
-        if ($pagerEntity) {
-            $nextPage = UserContributionsPage::createFromContribution($pagerEntity);
-            $nextPageParams['next'] = $this->normalizer->normalize($nextPage);
-        } else {
-            $nextPageParams = [];
-        }
-
-        return new Pager($contributions, $nextPageParams);
+        return new Pager($contributions, $nextPageParams ?? []);
     }
 
     /**

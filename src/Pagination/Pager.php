@@ -11,11 +11,11 @@ class Pager implements \IteratorAggregate {
     /**
      * @var array
      */
-    private $nextParams;
+    private $params;
 
-    public function __construct(array $entries, array $nextParams) {
+    public function __construct(array $entries, array $nextPageParams = []) {
         $this->entries = $entries;
-        $this->nextParams = $nextParams;
+        $this->params['next'] = $nextPageParams;
     }
 
     public function getIterator(): \Iterator {
@@ -23,7 +23,7 @@ class Pager implements \IteratorAggregate {
     }
 
     public function hasNextPage(): bool {
-        return !empty($this->nextParams);
+        return !empty($this->params['next']);
     }
 
     /**
@@ -34,7 +34,7 @@ class Pager implements \IteratorAggregate {
             throw new \BadMethodCallException('There is no next page');
         }
 
-        return $this->nextParams;
+        return ['next' => $this->params['next']];
     }
 
     public function isEmpty(): bool {
