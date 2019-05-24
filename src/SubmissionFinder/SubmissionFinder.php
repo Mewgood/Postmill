@@ -5,6 +5,7 @@ namespace App\SubmissionFinder;
 use App\Entity\Submission;
 use App\Form\Model\SubmissionPage;
 use App\Form\SubmissionPageType;
+use App\Pagination\Pager;
 use App\Repository\SubmissionRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Type;

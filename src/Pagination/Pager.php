@@ -1,24 +1,25 @@
 <?php
 
-namespace App\SubmissionFinder;
-
-use App\Entity\Submission;
+namespace App\Pagination;
 
 class Pager implements \IteratorAggregate {
     /**
-     * @var Submission[]
+     * @var array
      */
-    private $submissions = [];
+    private $entries;
 
-    private $nextParams = [];
+    /**
+     * @var array
+     */
+    private $nextParams;
 
-    public function __construct(array $submissions, array $nextParams) {
-        $this->submissions = $submissions;
+    public function __construct(array $entries, array $nextParams) {
+        $this->entries = $entries;
         $this->nextParams = $nextParams;
     }
 
-    public function getIterator() {
-        return new \ArrayIterator($this->submissions);
+    public function getIterator(): \Iterator {
+        return new \ArrayIterator($this->entries);
     }
 
     public function hasNextPage(): bool {
@@ -37,6 +38,6 @@ class Pager implements \IteratorAggregate {
     }
 
     public function isEmpty(): bool {
-        return empty($this->submissions);
+        return empty($this->entries);
     }
 }

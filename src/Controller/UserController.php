@@ -73,7 +73,7 @@ final class UserController extends AbstractController {
             $nextTimestamp = new \DateTime('@'.$nextUnixTime);
         }
 
-        $contributions = $users->findContributions($user, $nextTimestamp ?? null);
+        $contributions = $users->findContributions($user);
 
         if ($nextUnixTime && !\count($contributions)) {
             throw $this->createNotFoundException('No such page');
@@ -97,13 +97,7 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    /**
-     * @param User $user
-     * @param int  $page
-     *
-     * @return Response
-     */
-    public function comments(User $user, int $page) {
+    public function comments(User $user, int $page): Response {
         $comments = $user->getPaginatedComments($page);
 
         $this->comments->hydrate(...$comments);

@@ -5,17 +5,21 @@ namespace App\Repository;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Form\Model\UserContributionsPage;
+use App\Form\UserContributionsPageType;
+use App\Pagination\Pager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\DBAL\Types\Type;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @method User|null findOneByUsername(string|string[] $username)
@@ -24,24 +28,38 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UserRepository extends ServiceEntityRepository implements UserLoaderInterface {
     /**
-     * @var UrlGeneratorInterface
+     * @var FormFactoryInterface
      */
-    private $urlGenerator;
+    private $formFactory;
+
+    /**
+     * @var NormalizerInterface
+     */
+    private $normalizer;
 
     /**
      * @var RequestStack
      */
     private $requestStack;
 
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
     public function __construct(
         ManagerRegistry $registry,
-        UrlGeneratorInterface $urlGenerator,
-        RequestStack $requestStack
+        FormFactoryInterface $formFactory,
+        NormalizerInterface $normalizer,
+        RequestStack $requestStack,
+        UrlGeneratorInterface $urlGenerator
     ) {
         parent::__construct($registry, User::class);
 
-        $this->urlGenerator = $urlGenerator;
+        $this->formFactory = $formFactory;
+        $this->normalizer = $normalizer;
         $this->requestStack = $requestStack;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -107,42 +125,55 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * at the same second, and if they were to appear on separate pages. This is
      * an edge case, so we don't really care.
      *
-     * @param User           $user
-     * @param \DateTime|null $nextTimestamp
+     * @param User $user
      *
-     * @return object
+     * @return Pager
      */
-    public function findContributions(User $user, ?\DateTime $nextTimestamp) {
-        if (!$nextTimestamp) {
-            $nextTimestamp = new \DateTime('@'.time());
+    public function findContributions(User $user): Pager {
+        $page = null;
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request) {
+            $form = $this->formFactory->createNamed('next', UserContributionsPageType::class);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $page = $form->getData();
+            }
         }
 
-        $submissions = $this->_em->createQueryBuilder()
+        $qb = $this->_em->createQueryBuilder()
             ->select('s')
             ->from(Submission::class, 's')
-            ->where('s.user = ?1')
-            ->andWhere('s.timestamp <= ?2')
-            ->andWhere('s.visibility = ?3')
-            ->setParameter(1, $user)
-            ->setParameter(2, $nextTimestamp, Type::DATETIMETZ)
-            ->setParameter(3, Submission::VISIBILITY_VISIBLE)
+            ->where('s.user = :user')
+            ->andWhere('s.visibility = :visibility')
+            ->setParameter('user', $user)
+            ->setParameter('visibility', Submission::VISIBILITY_VISIBLE)
             ->orderBy('s.timestamp', 'DESC')
-            ->setMaxResults(26)
-            ->getQuery()
-            ->execute();
+            ->setMaxResults(26);
 
-        $comments = $this->_em->createQueryBuilder()
+        if ($page) {
+            $qb->andWhere('s.timestamp <= :next_timestamp');
+            $qb->setParameter('next_timestamp', $page->timestamp);
+        }
+
+        $submissions = $qb->getQuery()->execute();
+
+        $qb = $this->_em->createQueryBuilder()
             ->select('c')
             ->from(Comment::class, 'c')
             ->where('c.softDeleted = FALSE')
-            ->andWhere('c.user = ?1')
-            ->andWhere('c.timestamp <= ?2')
-            ->setParameter(1, $user)
-            ->setParameter(2, $nextTimestamp, Type::DATETIMETZ)
+            ->andWhere('c.user = :user')
+            ->setParameter('user', $user)
             ->orderBy('c.timestamp', 'DESC')
-            ->setMaxResults(26)
-            ->getQuery()
-            ->execute();
+            ->setMaxResults(26);
+
+        if ($page) {
+            $qb->setParameter('next_timestamp', $page->timestamp);
+            $qb->andWhere('c.timestamp <= :next_timestamp');
+        }
+
+        $comments = $qb->getQuery()->execute();
 
         $combined = \array_merge($submissions, $comments);
 
@@ -159,34 +190,16 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             return ['type' => $type, $type => $element];
         }, \array_slice($combined, 0, 25));
 
-        // 26th element of $combined determines if there is a 'next' button
-        return new class($contributions, $combined[25] ?? null) implements \IteratorAggregate, \Countable {
-            private $contributions;
-            private $pagerEntity;
+        $pagerEntity = $combined[25] ?? null;
 
-            public function __construct(array $contributions, $pagerEntity) {
-                $this->contributions = $contributions;
-                $this->pagerEntity = $pagerEntity;
-            }
+        if ($pagerEntity) {
+            $nextPage = UserContributionsPage::createFromContribution($pagerEntity);
+            $nextPageParams['next'] = $this->normalizer->normalize($nextPage);
+        } else {
+            $nextPageParams = [];
+        }
 
-            public function hasNextPage(): bool {
-                return isset($this->pagerEntity);
-            }
-
-            public function getNextPageParams() {
-                $unixTime = $this->pagerEntity->getTimestamp()->getTimestamp();
-
-                return ['next_timestamp' => $unixTime];
-            }
-
-            public function count(): int {
-                return \count($this->contributions);
-            }
-
-            public function getIterator() {
-                return new \ArrayIterator($this->contributions);
-            }
-        };
+        return new Pager($contributions, $nextPageParams);
     }
 
     /**
