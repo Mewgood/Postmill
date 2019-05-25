@@ -191,7 +191,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
                 UserContributionsPage::createFromContribution($pagerEntity)
             );
 
-            \array_pop($combined);
+            $combined = \array_slice($combined, 0, 25);
         }
 
         $contributions = \array_map(function ($element) {
