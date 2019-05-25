@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UserContributionsPage {
     /**
      * @Assert\NotBlank()
-     * @Assert\DateTime(format=\DateTimeInterface::RFC3339)
+     * @Assert\DateTime(format=\DateTime::RFC3339)
      */
     public $timestamp;
 
