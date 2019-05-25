@@ -30,4 +30,9 @@
   &--failed &__net-score {
     color: var(--fg-red);
   }
+
+  // put minus sign off-centre for aesthetics' sake
+  &[data-score^="-"] &__net-score {
+    padding-right: 1ch;
+  }
 }
