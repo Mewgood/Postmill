@@ -27,8 +27,8 @@ class SubmissionPage implements PageInterface {
     ];
 
     /**
-     * @Assert\NotBlank(groups={"all"})
-     * @Assert\Range(min=1, groups={"all"})
+     * @Assert\NotBlank(groups={"hot", "new", "active", "top", "controversial", "most_commented"})
+     * @Assert\Range(min=1, groups={"hot", "new", "active", "top", "controversial", "most_commented"})
      *
      * @Groups({"hot", "new", "active", "top", "controversial", "most_commented"})
      */
