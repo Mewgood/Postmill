@@ -7,10 +7,30 @@ namespace App\Pagination;
  * setting.
  */
 interface PageInterface {
+    public const SORT_ASC = 'ASC';
+    public const SORT_DESC = 'DESC';
+
     /**
      * Get the fields of the entity/DTO used for pagination.
      *
+     * @param string $group
+     *
      * @return string[]
      */
-    public function getPaginationFields(): array;
+    public function getPaginationFields(string $group): array;
+
+    /**
+     * @param string $group
+     *
+     * @return string One of `SORT_*` constants.
+     */
+    public function getSortOrder(string $group): string;
+
+    /**
+     * Use the `(max_per_page + n)`th entity used for pagination to populate the
+     * page object's fields.
+     *
+     * @param object|mixed $entity
+     */
+    public function populateFromPagerEntity($entity): void;
 }

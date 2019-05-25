@@ -108,7 +108,7 @@ final class SubmissionFinder {
 
         $page = new SubmissionPage();
         $form = $this->formFactory->createNamed('next', PageType::class, $page, [
-            'validation_groups' => [$criteria->getSortBy()],
+            'group' => $criteria->getSortBy(),
         ]);
         $form->handleRequest($request);
 
@@ -171,9 +171,9 @@ final class SubmissionFinder {
         $metadata = $this->entityManager->getClassMetadata(Submission::class);
         $sortBy = $criteria->getSortBy();
 
-        foreach (Submission::SORT_FIELD_MAP[$sortBy] as $field) {
+        foreach (SubmissionPage::SORT_FIELD_MAP[$sortBy] as $field) {
             $column = $metadata->getColumnName($field);
-            $order = Submission::SORT_ORDER[$sortBy];
+            $order = SubmissionPage::SORT_ORDER[$sortBy];
 
             $qb->addOrderBy("s.$column", $order);
         }
@@ -187,11 +187,11 @@ final class SubmissionFinder {
         $metadata = $this->entityManager->getClassMetadata(Submission::class);
         $sortBy = $criteria->getSortBy();
 
-        foreach (Submission::SORT_FIELD_MAP[$sortBy] as $field) {
+        foreach (SubmissionPage::SORT_FIELD_MAP[$sortBy] as $field) {
             $columns[$field] = $metadata->getColumnName($field);
         }
 
-        $format = self::SORT_CLAUSE_FORMATS[Submission::SORT_ORDER[$sortBy]];
+        $format = self::SORT_CLAUSE_FORMATS[SubmissionPage::SORT_ORDER[$sortBy]];
 
         $qb->andWhere(\sprintf($format,
             \implode(', ', $columns),
@@ -247,11 +247,12 @@ final class SubmissionFinder {
         $pagerEntity = $results[$criteria->getMaxPerPage()] ?? null;
 
         if ($pagerEntity) {
-            $nextPageParams = $this->normalizer->normalize(
-                SubmissionPage::createFromSubmission($pagerEntity),
-                null,
-                ['groups' => [$criteria->getSortBy()]]
-            );
+            $page = new SubmissionPage();
+            $page->populateFromPagerEntity($pagerEntity);
+
+            $nextPageParams = $this->normalizer->normalize($page, null, [
+                'groups' => [$criteria->getSortBy()]
+            ]);
 
             \array_pop($results);
         }

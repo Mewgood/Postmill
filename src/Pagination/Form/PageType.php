@@ -6,6 +6,7 @@ use App\Pagination\PageInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class PageType extends AbstractType {
@@ -13,7 +14,7 @@ final class PageType extends AbstractType {
         /** @var PageInterface $data */
         $data = $builder->getData();
 
-        foreach ($data->getPaginationFields() as $field) {
+        foreach ($data->getPaginationFields($options['group']) as $field) {
             $builder->add($field, HiddenType::class);
         }
     }
@@ -23,8 +24,14 @@ final class PageType extends AbstractType {
             'allow_extra_fields' => true,
             'csrf_protection' => false,
             'data_class' => PageInterface::class,
+            'group' => null,
             'method' => 'GET',
-            'validation_groups' => [],
+            'validation_groups' => function (FormInterface $form) {
+                return [$form->getConfig()->getOption('group')];
+            },
         ]);
+
+        $resolver->setAllowedTypes('group', ['string']);
+        $resolver->setRequired('group');
     }
 }

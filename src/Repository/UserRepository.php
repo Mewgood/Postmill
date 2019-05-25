@@ -5,9 +5,11 @@ namespace App\Repository;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Pagination\Adapter\DoctrineUnionAdapter;
 use App\Pagination\DTO\UserContributionsPage;
 use App\Pagination\Form\PageType;
 use App\Pagination\Pager;
+use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -28,14 +30,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class UserRepository extends ServiceEntityRepository implements UserLoaderInterface {
     /**
-     * @var FormFactoryInterface
+     * @var Paginator
      */
-    private $formFactory;
-
-    /**
-     * @var NormalizerInterface
-     */
-    private $normalizer;
+    private $paginator;
 
     /**
      * @var RequestStack
@@ -49,15 +46,12 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
 
     public function __construct(
         ManagerRegistry $registry,
-        FormFactoryInterface $formFactory,
-        NormalizerInterface $normalizer,
+        Paginator $paginator,
         RequestStack $requestStack,
         UrlGeneratorInterface $urlGenerator
     ) {
         parent::__construct($registry, User::class);
-
-        $this->formFactory = $formFactory;
-        $this->normalizer = $normalizer;
+        $this->paginator = $paginator;
         $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
     }
@@ -130,81 +124,29 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * @return Pager
      */
     public function findContributions(User $user): Pager {
-        $page = null;
-        $request = $this->requestStack->getCurrentRequest();
-
-        if ($request) {
-            $page = new UserContributionsPage();
-
-            $form = $this->formFactory->createNamed('next', PageType::class, $page);
-            $form->handleRequest($request);
-
-            if (!$form->isSubmitted() || !$form->isValid()) {
-                $page = null;
-            }
-        }
-
-        $qb = $this->_em->createQueryBuilder()
+        $submissionsQuery = $this->_em->createQueryBuilder()
             ->select('s')
             ->from(Submission::class, 's')
             ->where('s.user = :user')
             ->andWhere('s.visibility = :visibility')
             ->setParameter('user', $user)
-            ->setParameter('visibility', Submission::VISIBILITY_VISIBLE)
-            ->orderBy('s.timestamp', 'DESC')
-            ->setMaxResults(26);
+            ->setParameter('visibility', Submission::VISIBILITY_VISIBLE);
 
-        if ($page) {
-            $qb->andWhere('s.timestamp <= :next_timestamp');
-            $qb->setParameter('next_timestamp', $page->timestamp);
-        }
-
-        $submissions = $qb->getQuery()->execute();
-
-        $qb = $this->_em->createQueryBuilder()
+        $commentsQuery = $this->_em->createQueryBuilder()
             ->select('c')
             ->from(Comment::class, 'c')
             ->where('c.softDeleted = FALSE')
             ->andWhere('c.user = :user')
-            ->setParameter('user', $user)
-            ->orderBy('c.timestamp', 'DESC')
-            ->setMaxResults(26);
+            ->setParameter('user', $user);
 
-        if ($page) {
-            $qb->setParameter('next_timestamp', $page->timestamp);
-            $qb->andWhere('c.timestamp <= :next_timestamp');
-        }
+        $adapter = new DoctrineUnionAdapter($submissionsQuery, $commentsQuery);
+        $pageClass = UserContributionsPage::class;
 
-        $comments = $qb->getQuery()->execute();
+        $pager = $this->paginator->paginate($adapter, 25, $pageClass);
 
-        $combined = \array_merge($submissions, $comments);
+        $this->hydrateContributions($pager);
 
-        $this->_em->getRepository(Submission::class)->hydrate(...$submissions);
-        $this->_em->getRepository(Comment::class)->hydrate(...$comments);
-
-        \usort($combined, function ($a, $b) {
-            return $b->getTimestamp() <=> $a->getTimestamp();
-        });
-
-        $pagerEntity = $combined[25] ?? null;
-
-        if ($pagerEntity) {
-            $nextPageParams = $this->normalizer->normalize(
-                UserContributionsPage::createFromContribution($pagerEntity),
-                null,
-                ['groups' => ['pager']]
-            );
-
-            $combined = \array_slice($combined, 0, 25);
-        }
-
-        $contributions = \array_map(function ($element) {
-            $type = $element instanceof Submission ? 'submission' : 'comment';
-
-            return ['type' => $type, $type => $element];
-        }, $combined);
-
-        return new Pager($contributions, $nextPageParams ?? []);
+        return $pager;
     }
 
     /**
@@ -252,5 +194,20 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $sth->execute();
 
         return $sth->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    private function hydrateContributions(iterable $contributions): void {
+        $submissions = $comments = [];
+
+        foreach ($contributions as $entity) {
+            if ($entity instanceof Submission) {
+                $submissions[] = $entity;
+            } elseif ($entity instanceof Comment) {
+                $comments[] = $entity;
+            }
+        }
+
+        $this->_em->getRepository(Submission::class)->hydrate(...$submissions);
+        $this->_em->getRepository(Comment::class)->hydrate(...$comments);
     }
 }

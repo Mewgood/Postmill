@@ -7,17 +7,17 @@
 {% block site_nav_user_menu_active 'profile' %}
 
 {% block head %}
-  {{ include('_includes/meta_pagination.html.twig', {pager: contributions}, with_context=false) }}
+  {{ include('_includes/meta_pagination.html.twig', { pager: contributions }, with_context=false) }}
 {% endblock %}
 
 {% block body %}
-  {{ include('user/_nav.html.twig', {current: 'user', user: user}, with_context=false) }}
+  {{ include('user/_nav.html.twig', { current: 'user', user: user }, with_context=false) }}
 
   {% for contribution in contributions %}
-    {% if contribution.type == 'submission' %}
-      {{ submission(contribution.submission) }}
-    {% elseif contribution.type == 'comment' %}
-      {{ comment(contribution.comment, {show_context: true}) }}
+    {% if contribution.title is defined %}
+      {{ submission(contribution) }}
+    {% else %}
+      {{ comment(contribution, { show_context: true }) }}
     {% endif %}
   {% else %}
     <p class="no-entries">
@@ -25,5 +25,5 @@
     </p>
   {% endfor %}
 
-  {{ include('_includes/pagination.html.twig', {pager: contributions}, with_context=false) }}
-{% endblock %}
+  {{ include('_includes/pagination.html.twig', { pager: contributions }, with_context=false) }}
+{% endblock body %}

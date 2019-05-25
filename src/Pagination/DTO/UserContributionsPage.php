@@ -17,7 +17,7 @@ class UserContributionsPage implements PageInterface {
      */
     public $timestamp;
 
-    public static function createFromContribution($entity): self {
+    public function populateFromPagerEntity($entity): void {
         if (!$entity instanceof Comment && !$entity instanceof Submission) {
             throw new \InvalidArgumentException(\sprintf(
                 '$entity must be instance of %s or %s',
@@ -26,13 +26,14 @@ class UserContributionsPage implements PageInterface {
             ));
         }
 
-        $self = new self();
-        $self->timestamp = $entity->getTimestamp();
-
-        return $self;
+        $this->timestamp = $entity->getTimestamp();
     }
 
-    public function getPaginationFields(): array {
+    public function getPaginationFields(string $group): array {
         return ['timestamp'];
+    }
+
+    public function getSortOrder(string $group): string {
+        return PageInterface::SORT_DESC;
     }
 }

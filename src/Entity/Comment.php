@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ORM\Table(name="comments", indexes={
+ *     @ORM\Index(name="comments_timestamp_idx", columns={"timestamp"}),
  *     @ORM\Index(name="comments_search_idx", columns={"search_doc"})
  * })
  */

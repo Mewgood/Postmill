@@ -51,24 +51,6 @@ class Submission extends Votable {
         self::FRONT_MODERATED,
     ];
 
-    public const SORT_FIELD_MAP = [
-        self::SORT_HOT => ['ranking', 'id'],
-        self::SORT_NEW => ['id'],
-        self::SORT_ACTIVE => ['lastActive', 'id'],
-        self::SORT_TOP => ['netScore', 'id'],
-        self::SORT_CONTROVERSIAL => ['netScore', 'id'],
-        self::SORT_MOST_COMMENTED => ['commentCount', 'id'],
-    ];
-
-    public const SORT_ORDER = [
-        self::SORT_HOT => 'DESC',
-        self::SORT_NEW => 'DESC',
-        self::SORT_ACTIVE => 'DESC',
-        self::SORT_TOP => 'DESC',
-        self::SORT_CONTROVERSIAL => 'ASC',
-        self::SORT_MOST_COMMENTED => 'DESC',
-    ];
-
     public const SORT_OPTIONS = [
         self::SORT_ACTIVE,
         self::SORT_HOT,
