@@ -3,8 +3,8 @@
 namespace App\SubmissionFinder;
 
 use App\Entity\Submission;
-use App\Form\Model\SubmissionPage;
-use App\Form\SubmissionPageType;
+use App\Pagination\DTO\SubmissionPage;
+use App\Pagination\Form\PageType;
 use App\Pagination\Pager;
 use App\Repository\SubmissionRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -106,17 +106,13 @@ final class SubmissionFinder {
             return null;
         }
 
-        $form = $this->formFactory->createNamed('next', SubmissionPageType::class, null, [
-            'sort_by' => $criteria->getSortBy(),
+        $page = new SubmissionPage();
+        $form = $this->formFactory->createNamed('next', PageType::class, $page, [
+            'validation_groups' => [$criteria->getSortBy()],
         ]);
-
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            return $form->getData();
-        }
-
-        return null;
+        return $form->isSubmitted() && $form->isValid() ? $page : null;
     }
 
     private function addTimeClause(QueryBuilder $qb): void {

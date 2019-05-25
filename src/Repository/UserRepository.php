@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Form\Model\UserContributionsPage;
-use App\Form\UserContributionsPageType;
+use App\Pagination\DTO\UserContributionsPage;
+use App\Pagination\Form\PageType;
 use App\Pagination\Pager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
@@ -134,11 +134,13 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $request = $this->requestStack->getCurrentRequest();
 
         if ($request) {
-            $form = $this->formFactory->createNamed('next', UserContributionsPageType::class);
+            $page = new UserContributionsPage();
+
+            $form = $this->formFactory->createNamed('next', PageType::class, $page);
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $page = $form->getData();
+            if (!$form->isSubmitted() || !$form->isValid()) {
+                $page = null;
             }
         }
 
@@ -188,7 +190,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
 
         if ($pagerEntity) {
             $nextPageParams = $this->normalizer->normalize(
-                UserContributionsPage::createFromContribution($pagerEntity)
+                UserContributionsPage::createFromContribution($pagerEntity),
+                null,
+                ['groups' => ['pager']]
             );
 
             $combined = \array_slice($combined, 0, 25);

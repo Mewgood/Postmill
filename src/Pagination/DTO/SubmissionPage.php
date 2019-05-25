@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Form\Model;
+namespace App\Pagination\DTO;
 
 use App\Entity\Submission;
+use App\Pagination\PageInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SubmissionPage {
+class SubmissionPage implements PageInterface {
     /**
      * @Assert\NotBlank(groups={"all"})
      * @Assert\Range(min=1, groups={"all"})
@@ -55,5 +56,9 @@ class SubmissionPage {
         $self->commentCount = $submission->getCommentCount();
 
         return $self;
+    }
+
+    public function getPaginationFields(): array {
+        return ['id', 'ranking', 'lastActive', 'netScore', 'commentCount'];
     }
 }
