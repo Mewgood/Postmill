@@ -1,7 +1,4 @@
 security:
-    access_decision_manager:
-        strategy: unanimous
-
     encoders:
         App\Entity\User:         bcrypt
         App\Form\Model\UserData: bcrypt
