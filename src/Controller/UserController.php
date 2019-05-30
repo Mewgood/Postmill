@@ -21,7 +21,7 @@ use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
 use App\Repository\UserRepository;
 use App\Security\AuthenticationHelper;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -138,7 +138,7 @@ final class UserController extends AbstractController {
 
     public function registration(
         Request $request,
-        EntityManager $em,
+        ObjectManager $em,
         AuthenticationHelper $authenticationHelper
     ) {
         if ($this->isGranted('ROLE_USER')) {
@@ -176,13 +176,13 @@ final class UserController extends AbstractController {
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      *
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param User          $user
      * @param Request       $request
      *
      * @return Response
      */
-    public function editUser(EntityManager $em, User $user, Request $request) {
+    public function editUser(ObjectManager $em, User $user, Request $request) {
         $data = UserData::fromUser($user);
 
         $form = $this->createForm(UserType::class, $data);
@@ -210,13 +210,13 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      *
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param User          $user
      * @param Request       $request
      *
      * @return Response
      */
-    public function userSettings(EntityManager $em, User $user, Request $request) {
+    public function userSettings(ObjectManager $em, User $user, Request $request) {
         $data = UserData::fromUser($user);
 
         $form = $this->createForm(UserSettingsType::class, $data);
@@ -242,13 +242,13 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      *
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param User          $user
      * @param Request       $request
      *
      * @return Response
      */
-    public function editBiography(EntityManager $em, User $user, Request $request) {
+    public function editBiography(ObjectManager $em, User $user, Request $request) {
         $data = UserData::fromUser($user);
 
         $form = $this->createForm(UserBiographyType::class, $data);
@@ -292,11 +292,11 @@ final class UserController extends AbstractController {
      *
      * @param User          $blockee
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function block(User $blockee, Request $request, EntityManager $em) {
+    public function block(User $blockee, Request $request, ObjectManager $em) {
         /* @var User $blocker */
         $blocker = $this->getUser();
 
@@ -333,12 +333,12 @@ final class UserController extends AbstractController {
      * @Security("user === block.getBlocker()", statusCode=403)
      *
      * @param UserBlock     $block
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param Request       $request
      *
      * @return Response
      */
-    public function unblock(UserBlock $block, EntityManager $em, Request $request) {
+    public function unblock(UserBlock $block, ObjectManager $em, Request $request) {
         $this->validateCsrf('unblock', $request->request->get('token'));
 
         $em->remove($block);
@@ -372,12 +372,12 @@ final class UserController extends AbstractController {
      *
      * @param Request                $request
      * @param NotificationRepository $nr
-     * @param EntityManager          $em
+     * @param ObjectManager          $em
      * @param string                 $_format
      *
      * @return Response
      */
-    public function clearNotifications(Request $request, NotificationRepository $nr, EntityManager $em, string $_format) {
+    public function clearNotifications(Request $request, NotificationRepository $nr, ObjectManager $em, string $_format) {
         $this->validateCsrf('clear_notifications', $request->request->get('token'));
 
         $user = $this->getUser();
@@ -400,12 +400,12 @@ final class UserController extends AbstractController {
      *
      * @param Request                $request
      * @param NotificationRepository $nr
-     * @param EntityManager          $em
+     * @param ObjectManager          $em
      * @param string                 $_format
      *
      * @return Response
      */
-    public function clearNotification(Request $request, NotificationRepository $nr, EntityManager $em, string $_format) {
+    public function clearNotification(Request $request, NotificationRepository $nr, ObjectManager $em, string $_format) {
         $this->validateCsrf('clear_notification', $request->request->get('token'));
 
         $user = $this->getUser();
@@ -429,12 +429,12 @@ final class UserController extends AbstractController {
      *
      * @param Request       $request
      * @param User          $user
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param bool          $trusted
      *
      * @return Response
      */
-    public function markAsTrusted(Request $request, User $user, EntityManager $em, bool $trusted) {
+    public function markAsTrusted(Request $request, User $user, ObjectManager $em, bool $trusted) {
         $this->validateCsrf('mark_trusted', $request->request->get('token'));
 
         $user->setTrusted($trusted);
@@ -484,14 +484,14 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      *
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param Request       $request @param User          $user
      * @param Forum         $forum
      * @param bool          $hide
      *
      * @return Response
      */
-    public function hideForum(EntityManager $em, Request $request, User $user, Forum $forum, bool $hide) {
+    public function hideForum(ObjectManager $em, Request $request, User $user, Forum $forum, bool $hide) {
         $this->validateCsrf('hide_forum', $request->request->get('token'));
 
         if ($hide) {
@@ -514,13 +514,13 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      *
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param Request       $request
      * @param bool          $enabled
      *
      * @return Response
      */
-    public function toggleNightMode(EntityManager $em, Request $request, bool $enabled): Response {
+    public function toggleNightMode(ObjectManager $em, Request $request, bool $enabled): Response {
         $this->validateCsrf('toggle_night_mode', $request->request->get('token'));
 
         $this->getUser()->setNightMode($enabled);

@@ -24,7 +24,7 @@ use App\Repository\ForumRepository;
 use App\Repository\ForumWebhookRepository;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -96,11 +96,11 @@ final class ForumController extends AbstractController {
      * @IsGranted("create_forum", statusCode=403)
      *
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function createForum(Request $request, EntityManager $em) {
+    public function createForum(Request $request, ObjectManager $em) {
         $data = new ForumData();
 
         $form = $this->createForm(ForumType::class, $data);
@@ -128,11 +128,11 @@ final class ForumController extends AbstractController {
      *
      * @param Request       $request
      * @param Forum         $forum
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function editForum(Request $request, Forum $forum, EntityManager $em) {
+    public function editForum(Request $request, Forum $forum, ObjectManager $em) {
         $data = ForumData::createFromForum($forum);
 
         $form = $this->createForm(ForumType::class, $data);
@@ -162,11 +162,11 @@ final class ForumController extends AbstractController {
      *
      * @param Request       $request
      * @param Forum         $forum
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function delete(Request $request, Forum $forum, EntityManager $em) {
+    public function delete(Request $request, Forum $forum, ObjectManager $em) {
         $form = $this->createForm(PasswordConfirmType::class);
         $form->handleRequest($request);
 
@@ -196,14 +196,14 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      *
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param Forum         $forum
      * @param bool          $subscribe
      * @param string        $_format
      *
      * @return Response
      */
-    public function subscribe(Request $request, EntityManager $em, Forum $forum, bool $subscribe, string $_format) {
+    public function subscribe(Request $request, ObjectManager $em, Forum $forum, bool $subscribe, string $_format) {
         $this->validateCsrf('subscribe', $request->request->get('token'));
 
         if ($subscribe) {
@@ -274,13 +274,13 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
      *
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param Forum         $forum
      * @param Request       $request
      *
      * @return Response
      */
-    public function addModerator(EntityManager $em, Forum $forum, Request $request) {
+    public function addModerator(ObjectManager $em, Forum $forum, Request $request) {
         $data = new ModeratorData($forum);
         $form = $this->createForm(ModeratorType::class, $data);
         $form->handleRequest($request);
@@ -307,14 +307,14 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("remove", subject="moderator", statusCode=403)
      *
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param Forum         $forum
      * @param Request       $request
      * @param Moderator     $moderator
      *
      * @return Response
      */
-    public function removeModerator(EntityManager $em, Forum $forum, Request $request, Moderator $moderator) {
+    public function removeModerator(ObjectManager $em, Forum $forum, Request $request, Moderator $moderator) {
         $this->validateCsrf('remove_moderator', $request->request->get('token'));
 
         $em->remove($moderator);
@@ -348,11 +348,11 @@ final class ForumController extends AbstractController {
      *
      * @param Forum         $forum
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function appearance(Forum $forum, Request $request, EntityManager $em) {
+    public function appearance(Forum $forum, Request $request, ObjectManager $em) {
         $data = ForumData::createFromForum($forum);
 
         $form = $this->createForm(ForumAppearanceType::class, $data);
@@ -430,11 +430,11 @@ final class ForumController extends AbstractController {
      *
      * @param Forum         $forum
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function addWebhook(Forum $forum, Request $request, EntityManager $em) {
+    public function addWebhook(Forum $forum, Request $request, ObjectManager $em) {
         if (!$this->enableWebhooks) {
             throw $this->createNotFoundException('Webhooks are not enabled');
         }
@@ -471,11 +471,11 @@ final class ForumController extends AbstractController {
      * @param Forum         $forum
      * @param ForumWebhook  $webhook
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function editWebhook(Forum $forum, ForumWebhook $webhook, Request $request, EntityManager $em) {
+    public function editWebhook(Forum $forum, ForumWebhook $webhook, Request $request, ObjectManager $em) {
         if (!$this->enableWebhooks) {
             throw $this->createNotFoundException('Webhooks are not enabled');
         }
@@ -510,11 +510,11 @@ final class ForumController extends AbstractController {
      * @param Forum                  $forum
      * @param Request                $request
      * @param ForumWebhookRepository $repository
-     * @param EntityManager          $em
+     * @param ObjectManager          $em
      *
      * @return Response
      */
-    public function removeWebhook(Forum $forum, Request $request, ForumWebhookRepository $repository, EntityManager $em) {
+    public function removeWebhook(Forum $forum, Request $request, ForumWebhookRepository $repository, ObjectManager $em) {
         if (!$this->enableWebhooks) {
             throw $this->createNotFoundException('Webhooks are not enabled');
         }
@@ -546,11 +546,11 @@ final class ForumController extends AbstractController {
      * @param Forum         $forum
      * @param User          $user
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function ban(Forum $forum, User $user, Request $request, EntityManager $em) {
+    public function ban(Forum $forum, User $user, Request $request, ObjectManager $em) {
         $data = new ForumBanData();
 
         $form = $this->createForm(ForumBanType::class, $data, ['intent' => 'ban']);
@@ -582,11 +582,11 @@ final class ForumController extends AbstractController {
      * @param Forum         $forum
      * @param User          $user
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function unban(Forum $forum, User $user, Request $request, EntityManager $em) {
+    public function unban(Forum $forum, User $user, Request $request, ObjectManager $em) {
         $data = new ForumBanData();
 
         $form = $this->createForm(ForumBanType::class, $data, ['intent' => 'unban']);

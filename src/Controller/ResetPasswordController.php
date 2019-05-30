@@ -8,7 +8,7 @@ use App\Form\RequestPasswordResetType;
 use App\Form\UserType;
 use App\Mailer\ResetPasswordMailer;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +51,7 @@ final class ResetPasswordController extends AbstractController {
      * @ParamConverter("expires", options={"format": "U"}, converter="datetime")
      *
      * @param Request             $request
-     * @param EntityManager       $em
+     * @param ObjectManager       $em
      * @param User                $user
      * @param ResetPasswordMailer $mailer
      * @param \DateTime           $expires
@@ -60,7 +60,7 @@ final class ResetPasswordController extends AbstractController {
      * @return Response
      */
     public function reset(
-        Request $request, EntityManager $em, User $user,
+        Request $request, ObjectManager $em, User $user,
         ResetPasswordMailer $mailer, \DateTime $expires, string $checksum
     ) {
         if (!$mailer->validateChecksum($checksum, $user, $expires)) {

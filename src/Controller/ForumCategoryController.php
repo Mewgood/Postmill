@@ -9,7 +9,7 @@ use App\Repository\ForumCategoryRepository;
 use App\Repository\ForumRepository;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,11 +55,11 @@ class ForumCategoryController extends AbstractController {
      * @IsGranted("ROLE_ADMIN", statusCode=403)
      *
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function create(Request $request, EntityManager $em): Response {
+    public function create(Request $request, ObjectManager $em): Response {
         $data = new ForumCategoryData();
 
         $form = $this->createForm(ForumCategoryType::class, $data);
@@ -85,11 +85,11 @@ class ForumCategoryController extends AbstractController {
      *
      * @param ForumCategory $category
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function edit(ForumCategory $category, Request $request, EntityManager $em): Response {
+    public function edit(ForumCategory $category, Request $request, ObjectManager $em): Response {
         $data = new ForumCategoryData($category);
 
         $form = $this->createForm(ForumCategoryType::class, $data);

@@ -11,7 +11,7 @@ use App\Form\UnbanUserType;
 use App\Repository\IpBanRepository;
 use App\Repository\UserBanRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function banUser(User $user, UserRepository $repository, EntityManager $em, Request $request) {
+    public function banUser(User $user, UserRepository $repository, ObjectManager $em, Request $request) {
         $data = new UserBanData($repository->findIpsUsedByUser($user));
 
         $form = $this->createForm(BanUserType::class, $data);
@@ -54,7 +54,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function unbanUser(User $user, EntityManager $em, Request $request) {
+    public function unbanUser(User $user, ObjectManager $em, Request $request) {
         $data = new UserBanData();
 
         $form = $this->createForm(UnbanUserType::class, $data);
@@ -90,7 +90,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function banIp(Request $request, EntityManager $em) {
+    public function banIp(Request $request, ObjectManager $em) {
         $data = new IpBanData();
 
         $form = $this->createForm(IpBanType::class, $data);
@@ -112,7 +112,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function unbanIps(Request $request, IpBanRepository $repository, EntityManager $em) {
+    public function unbanIps(Request $request, IpBanRepository $repository, ObjectManager $em) {
         $this->validateCsrf('unban_ips', $request->request->get('token'));
 
         $ids = array_filter((array) $request->request->get('ban'), function ($id) {

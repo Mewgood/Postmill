@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Form\MessageType;
 use App\Form\Model\MessageData;
 use App\Repository\MessageThreadRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,12 +39,12 @@ final class MessageController extends AbstractController {
      * @Entity("receiver", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
      *
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param User          $receiver
      *
      * @return Response
      */
-    public function compose(Request $request, EntityManager $em, User $receiver) {
+    public function compose(Request $request, ObjectManager $em, User $receiver) {
         $data = new MessageData();
 
         $form = $this->createForm(MessageType::class, $data);
@@ -98,12 +98,12 @@ final class MessageController extends AbstractController {
      * @IsGranted("reply", subject="thread", statusCode=403)
      *
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param MessageThread $thread
      *
      * @return Response
      */
-    public function reply(Request $request, EntityManager $em, MessageThread $thread) {
+    public function reply(Request $request, ObjectManager $em, MessageThread $thread) {
         $data = new MessageData();
 
         $form = $this->createForm(MessageType::class, $data);
@@ -130,12 +130,12 @@ final class MessageController extends AbstractController {
      * @IsGranted("delete", subject="message", statusCode=403)
      *
      * @param Request       $request
-     * @param EntityManager $em
+     * @param ObjectManager $em
      * @param Message       $message
      *
      * @return Response
      */
-    public function delete(Request $request, EntityManager $em, Message $message) {
+    public function delete(Request $request, ObjectManager $em, Message $message) {
         $this->validateCsrf('delete_message', $request->request->get('token'));
 
         $em->refresh($message);

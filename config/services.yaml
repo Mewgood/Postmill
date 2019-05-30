@@ -98,8 +98,3 @@ services:
 
     App\Validator\Constraints\RateLimitValidator:
         $ipWhitelist: "%ratelimit_ip_whitelist%"
-
-    ## Misc
-
-    Doctrine\ORM\EntityManager: "@doctrine.orm.entity_manager"
-    Doctrine\ORM\EntityManagerInterface: "@doctrine.orm.default_entity_manager"

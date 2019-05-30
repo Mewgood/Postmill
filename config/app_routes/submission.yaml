@@ -92,7 +92,7 @@ submit:
     methods: [GET, POST]
 
 submission_vote:
-    controller: App\Controller\VoteController::vote
+    controller: App\Controller\VoteController
     defaults: { _format: html, entityClass: App\Entity\Submission }
     path: /sv/{id}.{_format}
     methods: [POST]

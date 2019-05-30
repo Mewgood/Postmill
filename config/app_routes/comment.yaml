@@ -48,7 +48,7 @@ comment_list:
     requirements: { page: \d+ }
 
 comment_vote:
-    controller: App\Controller\VoteController::vote
+    controller: App\Controller\VoteController
     defaults: { _format: html, entityClass: App\Entity\Comment }
     path: /cv/{id}.{_format}
     methods: [POST]

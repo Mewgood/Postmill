@@ -9,7 +9,7 @@ use App\Form\WikiType;
 use App\Repository\WikiPageRepository;
 use App\Repository\WikiRevisionRepository;
 use App\Utils\Differ;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -46,14 +46,14 @@ final class WikiController extends AbstractController {
      *
      * @param Request       $request
      * @param string        $path
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      *
      * @todo handle conflicts
      * @todo do something if the page already exists
      */
-    public function create(Request $request, string $path, EntityManager $em) {
+    public function create(Request $request, string $path, ObjectManager $em) {
         $data = new WikiData();
 
         $form = $this->createForm(WikiType::class, $data);
@@ -81,11 +81,11 @@ final class WikiController extends AbstractController {
      *
      * @param Request       $request
      * @param WikiPage      $page
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function delete(Request $request, WikiPage $page, EntityManager $em) {
+    public function delete(Request $request, WikiPage $page, ObjectManager $em) {
         $this->validateCsrf('wiki_delete', $request->request->get('token'));
 
         $em->remove($page);
@@ -105,13 +105,13 @@ final class WikiController extends AbstractController {
      *
      * @param Request       $request
      * @param WikiPage      $page
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      *
      * @todo handle conflicts
      */
-    public function edit(Request $request, WikiPage $page, EntityManager $em) {
+    public function edit(Request $request, WikiPage $page, ObjectManager $em) {
         $data = WikiData::createFromPage($page);
         $form = $this->createForm(WikiType::class, $data);
         $form->handleRequest($request);
@@ -139,11 +139,11 @@ final class WikiController extends AbstractController {
      * @param Request       $request
      * @param WikiPage      $page
      * @param bool          $lock
-     * @param EntityManager $em
+     * @param ObjectManager $em
      *
      * @return Response
      */
-    public function lock(Request $request, WikiPage $page, bool $lock, EntityManager $em) {
+    public function lock(Request $request, WikiPage $page, bool $lock, ObjectManager $em) {
         $this->validateCsrf('wiki_lock', $request->request->get('token'));
 
         $page->setLocked($lock);
