@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "530a91f5d751378748675213a553ceb9",
+    "content-hash": "d8ea3635690d81bff4b27fe3c611c5ad",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2499,20 +2499,20 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "dev-master",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "2fb4a1e6ba4e75749c7d404711ef455abdb70927"
+                "reference": "1acae6ac066e431c3c55c4d39971827a02cbe4d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/2fb4a1e6ba4e75749c7d404711ef455abdb70927",
-                "reference": "2fb4a1e6ba4e75749c7d404711ef455abdb70927",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/1acae6ac066e431c3c55c4d39971827a02cbe4d5",
+                "reference": "1acae6ac066e431c3c55c4d39971827a02cbe4d5",
                 "shasum": ""
             },
             "require": {
-                "imagine/imagine": "^0.7.1|^1.1",
+                "imagine/imagine": "^0.7.1,<0.8",
                 "php": "^7.1",
                 "symfony/asset": "^3.4|^4.0",
                 "symfony/filesystem": "^3.4|^4.0",
@@ -2537,7 +2537,7 @@
                 "symfony/console": "^3.4|^4.0",
                 "symfony/dependency-injection": "^3.4|^4.0",
                 "symfony/form": "^3.4|^4.0",
-                "symfony/phpunit-bridge": "^4.2.4",
+                "symfony/phpunit-bridge": "^3.4|^4.0",
                 "symfony/validator": "^3.4|^4.0",
                 "symfony/yaml": "^3.4|^4.0",
                 "twig/twig": "^1.12|^2.0"
@@ -2595,7 +2595,7 @@
                 "symfony",
                 "transformation"
             ],
-            "time": "2019-05-20T06:56:34+00:00"
+            "time": "2018-07-10T12:53:54+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -9606,9 +9606,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "liip/imagine-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

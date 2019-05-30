@@ -28,7 +28,7 @@
         "gregwar/captcha-bundle": "^2.0.4",
         "league/commonmark": "^0.18.1",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "liip/imagine-bundle": "dev-master",
+        "liip/imagine-bundle": "^2.1.0",
         "nelmio/security-bundle": "^2.7",
         "php-http/guzzle6-adapter": "^1.0",
         "ramsey/uuid": "^3.7",
