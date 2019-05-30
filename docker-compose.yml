@@ -23,6 +23,7 @@ services:
     php:
         build: docker/php
         environment:
+            - COMPOSER_MEMORY_LIMIT=-1
             - DATABASE_URL=pgsql://postgres@db/postgres?serverVersion=11
         links:
             - db

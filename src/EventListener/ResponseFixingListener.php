@@ -4,8 +4,8 @@ namespace App\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -33,7 +33,7 @@ final class ResponseFixingListener implements EventSubscriberInterface {
     /**
      * Add UTF-8 character set to XML and JSON responses that don't have this.
      */
-    public function fixResponseCharset(FilterResponseEvent $event): void {
+    public function fixResponseCharset(ResponseEvent $event): void {
         if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
             return;
         }
@@ -65,7 +65,7 @@ final class ResponseFixingListener implements EventSubscriberInterface {
      *
      * @see \Symfony\Component\Security\Http\Firewall\ExceptionListener
      */
-    public function fixXhrExceptions(GetResponseForExceptionEvent $event): void {
+    public function fixXhrExceptions(ExceptionEvent $event): void {
         $e = $event->getException();
 
         if (!$e instanceof AuthenticationException && !$e instanceof AccessDeniedException) {

@@ -1,7 +1,7 @@
 security:
     encoders:
-        App\Entity\User:         bcrypt
-        App\Form\Model\UserData: bcrypt
+        App\Entity\User:         native
+        App\Form\Model\UserData: native
 
     providers:
         user_provider:

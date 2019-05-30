@@ -17,11 +17,11 @@ use App\Utils\Slugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Entity("forum", expr="repository.findOneOrRedirectToCanonical(forum_name, 'forum_name')")
@@ -112,7 +112,8 @@ final class CommentController extends AbstractController {
             $this->entityManager->persist($reply);
             $this->entityManager->flush();
 
-            $this->eventDispatcher->dispatch(Events::NEW_COMMENT, new GenericEvent($reply));
+            $event = new GenericEvent($reply);
+            $this->eventDispatcher->dispatch(Events::NEW_COMMENT, $event);
 
             return $this->redirectToRoute('comment', [
                 'forum_name' => $forum->getName(),
@@ -156,7 +157,7 @@ final class CommentController extends AbstractController {
             $this->entityManager->flush();
 
             $event = new EntityModifiedEvent($before, $comment);
-            $this->eventDispatcher->dispatch(Events::EDIT_COMMENT, $event);
+            $this->eventDispatcher->dispatch($event, Events::EDIT_COMMENT);
 
             return $this->redirectToRoute('comment', [
                 'forum_name' => $forum->getName(),

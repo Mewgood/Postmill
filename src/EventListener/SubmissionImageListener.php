@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -101,9 +101,9 @@ final class SubmissionImageListener implements EventSubscriberInterface {
     /**
      * Loop through the queue at the end of the request and download the images.
      *
-     * @param PostResponseEvent $event
+     * @param TerminateEvent $event
      */
-    public function onKernelTerminate(PostResponseEvent $event) {
+    public function onKernelTerminate(TerminateEvent $event) {
         $queue = $event->getRequest()->attributes->get(self::QUEUE_KEY, []);
 
         if (!$queue) {

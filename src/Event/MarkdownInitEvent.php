@@ -3,7 +3,7 @@
 namespace App\Event;
 
 use League\CommonMark\Extension\Extension;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class MarkdownInitEvent extends Event {
     /**

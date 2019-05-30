@@ -2,9 +2,9 @@ FROM composer:1.8 AS composer
 FROM php:7.3-fpm-alpine
 
 RUN set -ex && \
-    apk --no-cache add autoconf build-base postgresql-libs postgresql-dev icu \
-        icu-dev freetype freetype-dev libjpeg-turbo libjpeg-turbo-dev libpng \
-        libpng-dev libwebp libwebp-dev libzip libzip-dev bzip2-dev && \
+    apk --no-cache add autoconf build-base postgresql-libs postgresql-dev git \
+        icu icu-dev freetype freetype-dev libjpeg-turbo libjpeg-turbo-dev \
+        libpng libpng-dev libwebp libwebp-dev libzip libzip-dev bzip2-dev && \
     docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \

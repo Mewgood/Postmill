@@ -19,10 +19,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Entity("forum", expr="repository.findOneOrRedirectToCanonical(forum_name, 'forum_name')")
@@ -116,7 +116,8 @@ final class SubmissionController extends AbstractController {
             $this->entityManager->persist($submission);
             $this->entityManager->flush();
 
-            $this->eventDispatcher->dispatch(Events::NEW_SUBMISSION, new GenericEvent($submission));
+            $event = new GenericEvent($submission);
+            $this->eventDispatcher->dispatch($event, Events::NEW_SUBMISSION);
 
             return $this->redirectToRoute('submission', [
                 'forum_name' => $submission->getForum()->getName(),
@@ -150,7 +151,7 @@ final class SubmissionController extends AbstractController {
             $this->addFlash('success', 'flash.submission_edited');
 
             $event = new EntityModifiedEvent($before, $submission);
-            $this->eventDispatcher->dispatch(Events::EDIT_SUBMISSION, $event);
+            $this->eventDispatcher->dispatch($event, Events::EDIT_SUBMISSION);
 
             return $this->redirectToRoute('submission', [
                 'forum_name' => $forum->getName(),

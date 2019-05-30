@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -64,7 +64,7 @@ final class WebhookListener implements EventSubscriberInterface {
         $this->logger = $logger ?: new NullLogger();
     }
 
-    public function onKernelTerminate(PostResponseEvent $event): void {
+    public function onKernelTerminate(TerminateEvent $event): void {
         if (
             !$this->enableWebhooks ||
             $event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST ||

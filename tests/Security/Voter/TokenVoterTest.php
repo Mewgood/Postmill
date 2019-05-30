@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Role\Role;
 
 /**
  * @group time-sensitive
@@ -20,9 +19,7 @@ class TokenVoterTest extends TestCase {
     protected function setUp() {
         $this->accessDecisionManager = new class() implements AccessDecisionManagerInterface {
             public function decide(TokenInterface $token, array $attributes, $object = null) {
-                return !array_diff($attributes, array_map(function (Role $role) {
-                    return $role->getRole();
-                }, $token->getRoles()));
+                return !array_diff($attributes, $token->getRoleNames());
             }
         };
     }
@@ -49,10 +46,6 @@ class TokenVoterTest extends TestCase {
     }
 
     private function getToken($roles, $createdAt) {
-        for ($i = count($roles); $i--;) {
-            $roles[$i] = new Role($roles[$i]);
-        }
-
         $user = $this->createMock(User::class);
 
         $user->method('getCreated')
@@ -61,7 +54,7 @@ class TokenVoterTest extends TestCase {
         /* @var TokenInterface|MockObject $token */
         $token = $this->createMock(TokenInterface::class);
 
-        $token->method('getRoles')->willReturn($roles);
+        $token->method('getRoleNames')->willReturn($roles);
         $token->method('getUser')->willReturn($user);
 
         return $token;

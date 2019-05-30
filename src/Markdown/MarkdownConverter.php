@@ -8,7 +8,7 @@ use App\Events;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Service for converting user-inputted Markdown (Markdown) to HTML.
@@ -35,7 +35,7 @@ class MarkdownConverter {
     public function convertToHtml(string $markdown, array $context = []): string {
         $event = new MarkdownInitEvent($context);
 
-        $this->dispatcher->dispatch(Events::MARKDOWN_INIT, $event);
+        $this->dispatcher->dispatch($event, Events::MARKDOWN_INIT);
 
         $commonMarkEnvironment = new Environment();
 
@@ -60,7 +60,7 @@ class MarkdownConverter {
     public function convertToHtmlCached(string $markdown, array $context = []): string {
         $event = new MarkdownCacheEvent($context);
 
-        $this->dispatcher->dispatch(Events::MARKDOWN_CACHE, $event);
+        $this->dispatcher->dispatch($event, Events::MARKDOWN_CACHE);
 
         $key = sprintf(
             'cached_markdown.%s.%s',
