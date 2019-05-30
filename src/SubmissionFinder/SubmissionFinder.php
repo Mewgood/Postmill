@@ -3,9 +3,10 @@
 namespace App\SubmissionFinder;
 
 use App\Entity\Submission;
+use App\Pagination\Adapter\ArrayAdapter;
 use App\Pagination\DTO\SubmissionPage;
-use App\Pagination\Form\PageType;
 use App\Pagination\Pager;
+use App\Pagination\Paginator;
 use App\Repository\SubmissionRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Type;
@@ -28,14 +29,9 @@ final class SubmissionFinder {
     private $entityManager;
 
     /**
-     * @var FormFactoryInterface
+     * @var Paginator
      */
-    private $formFactory;
-
-    /**
-     * @var NormalizerInterface
-     */
-    private $normalizer;
+    private $paginator;
 
     /**
      * @var RequestStack
@@ -49,14 +45,12 @@ final class SubmissionFinder {
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        FormFactoryInterface $formFactory,
-        NormalizerInterface $normalizer,
+        Paginator $paginator,
         RequestStack $requestStack,
         SubmissionRepository $repository
     ) {
         $this->entityManager = $entityManager;
-        $this->formFactory = $formFactory;
-        $this->normalizer = $normalizer;
+        $this->paginator = $paginator;
         $this->requestStack = $requestStack;
         $this->repository = $repository;
     }
@@ -96,23 +90,19 @@ final class SubmissionFinder {
 
         $this->repository->hydrate(...$results);
 
-        return $this->createPager($results, $criteria);
+        return $this->paginator->paginate(
+            new ArrayAdapter($results),
+            $criteria->getMaxPerPage(),
+            SubmissionPage::class,
+            $criteria->getSortBy()
+        );
     }
 
     private function getPage(Criteria $criteria): ?SubmissionPage {
-        $request = $this->requestStack->getCurrentRequest();
+        /** @var SubmissionPage|null $page */
+        $page = $this->paginator->getPage(SubmissionPage::class, $criteria->getSortBy());
 
-        if (!$request || !$request->query->has('next')) {
-            return null;
-        }
-
-        $page = new SubmissionPage();
-        $form = $this->formFactory->createNamed('next', PageType::class, $page, [
-            'group' => $criteria->getSortBy(),
-        ]);
-        $form->handleRequest($request);
-
-        return $form->isSubmitted() && $form->isValid() ? $page : null;
+        return $page;
     }
 
     private function addTimeClause(QueryBuilder $qb): void {
@@ -241,22 +231,5 @@ final class SubmissionFinder {
             $qb->andWhere('s.forum_id NOT IN (SELECT forum_id FROM hidden_forums WHERE user_id = :user)');
             $qb->setParameter('user', $criteria->getUser());
         }
-    }
-
-    private function createPager(array $results, Criteria $criteria): Pager {
-        $pagerEntity = $results[$criteria->getMaxPerPage()] ?? null;
-
-        if ($pagerEntity) {
-            $page = new SubmissionPage();
-            $page->populateFromPagerEntity($pagerEntity);
-
-            $nextPageParams = $this->normalizer->normalize($page, null, [
-                'groups' => [$criteria->getSortBy()]
-            ]);
-
-            \array_pop($results);
-        }
-
-        return new Pager($results, $nextPageParams ?? []);
     }
 }

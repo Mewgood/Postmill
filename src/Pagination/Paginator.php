@@ -3,19 +3,14 @@
 namespace App\Pagination;
 
 use App\Pagination\Adapter\AdapterInterface;
-use App\Pagination\Form\PageType;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class Paginator {
     /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @var NormalizerInterface
+     * @var NormalizerInterface|DenormalizerInterface
      */
     private $normalizer;
 
@@ -24,14 +19,26 @@ final class Paginator {
      */
     private $requestStack;
 
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
     public function __construct(
-        FormFactoryInterface $formFactory,
         NormalizerInterface $normalizer,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        ValidatorInterface $validator
     ) {
+        if (!$normalizer instanceof DenormalizerInterface) {
+            throw new \InvalidArgumentException(
+                '$normalizer must implement '.
+                DenormalizerInterface::class
+            );
+        }
+
         $this->normalizer = $normalizer;
-        $this->formFactory = $formFactory;
         $this->requestStack = $requestStack;
+        $this->validator = $validator;
     }
 
     public function paginate(
@@ -48,7 +55,9 @@ final class Paginator {
         if ($pagerEntity) {
             $page->populateFromPagerEntity($pagerEntity);
 
-            $nextPageParams = $this->normalizer->normalize($page, null, [$group]);
+            $nextPageParams = $this->normalizer->normalize($page, null, [
+                'groups' => [$group],
+            ]);
         }
 
         return new Pager($result->getEntries(), $nextPageParams ?? []);
@@ -63,17 +72,18 @@ final class Paginator {
      * @return PageInterface|null
      */
     public function getPage(string $pageDataClass, string $group): ?PageInterface {
-        $page = new $pageDataClass();
         $request = $this->requestStack->getCurrentRequest();
 
-        if ($request) {
-            $form = $this->formFactory->createNamed('next', PageType::class, $page, [
-                'group' => $group,
+        if ($request && $request->query->has('next')) {
+            $groups = (array) $group;
+            $next = $request->query->get('next');
+
+            /** @var PageInterface $page */
+            $page = $this->normalizer->denormalize($next, $pageDataClass, null, [
+                'groups' => $groups,
             ]);
 
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
+            if (\count($this->validator->validate($page, null, $groups)) === 0) {
                 return $page;
             }
         }

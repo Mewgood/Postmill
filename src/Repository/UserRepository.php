@@ -7,7 +7,6 @@ use App\Entity\Submission;
 use App\Entity\User;
 use App\Pagination\Adapter\DoctrineUnionAdapter;
 use App\Pagination\DTO\UserContributionsPage;
-use App\Pagination\Form\PageType;
 use App\Pagination\Pager;
 use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
