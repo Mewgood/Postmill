@@ -16,11 +16,11 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -159,8 +159,9 @@ final class SubmissionImageListener implements EventSubscriberInterface {
                 return null;
             }
 
-            $mimeType = MimeTypeGuesser::getInstance()->guess($tempFile);
-            $ext = ExtensionGuesser::getInstance()->guess($mimeType);
+            $mimeTypes = new MimeTypes();
+            $mimeType = $mimeTypes->guessMimeType($tempFile);
+            $ext = $mimeTypes->getExtensions($mimeType)[0];
 
             $filename = sprintf('%s.%s', hash_file('sha256', $tempFile), $ext);
 
