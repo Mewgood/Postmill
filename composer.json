@@ -45,6 +45,7 @@
         "symfony/flex": "^1.0",
         "symfony/form": "^4.0",
         "symfony/framework-bundle": "^4.0",
+        "symfony/messenger": "^4.0",
         "symfony/monolog-bundle": "^3.0",
         "symfony/orm-pack": "^1.0",
         "symfony/polyfill-intl-grapheme": "^1.4",

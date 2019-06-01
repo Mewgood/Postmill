@@ -19,5 +19,5 @@ eight_points_guzzle:
             options:
                 timeout: 10
                 headers:
-                    User-Agent: "Postmill/0.6 (https://postmill.xyz/)"
+                    User-Agent: "Postmill/%env(APP_VERSION)% (https://postmill.xyz/)"
                     Accept: image/png, image/jpeg, image/gif

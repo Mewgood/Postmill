@@ -12,6 +12,7 @@ use App\Events;
 use App\Form\DeleteReasonType;
 use App\Form\Model\SubmissionData;
 use App\Form\SubmissionType;
+use App\Message\NewSubmission;
 use App\Repository\CommentRepository;
 use App\Utils\Slugger;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -45,13 +47,22 @@ final class SubmissionController extends AbstractController {
      */
     private $eventDispatcher;
 
+    /**
+     * @var MessageBusInterface
+     */
+    private $messageBus;
+
     public function __construct(
         CommentRepository $comments,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        MessageBusInterface $messageBus
     ) {
         $this->comments = $comments;
         $this->entityManager = $entityManager;
+        $this->messageBus = $messageBus;
+
+        // TODO: let message bus take over submission events
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -116,8 +127,8 @@ final class SubmissionController extends AbstractController {
             $this->entityManager->persist($submission);
             $this->entityManager->flush();
 
-            $event = new GenericEvent($submission);
-            $this->eventDispatcher->dispatch($event, Events::NEW_SUBMISSION);
+            $this->eventDispatcher->dispatch(new GenericEvent($submission), Events::NEW_SUBMISSION);
+            $this->messageBus->dispatch(new NewSubmission($submission));
 
             return $this->redirectToRoute('submission', [
                 'forum_name' => $submission->getForum()->getName(),
