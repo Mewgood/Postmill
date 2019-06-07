@@ -1,26 +1,66 @@
 FROM composer:1.8 AS composer
 FROM php:7.3-fpm-alpine
 
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY php.ini /usr/local/etc/php/conf.d/php.ini
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HOME /tmp
+
 RUN set -ex && \
-    apk --no-cache add autoconf build-base postgresql-libs postgresql-dev git \
-        icu icu-dev freetype freetype-dev libjpeg-turbo libjpeg-turbo-dev \
-        libpng libpng-dev libwebp libwebp-dev libzip libzip-dev bzip2-dev && \
+    NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
+    apk --no-cache add \
+        autoconf \
+        build-base \
+        bzip2-dev \
+        git \
+        icu \
+        icu-dev \
+        freetype \
+        freetype-dev \
+        libjpeg-turbo \
+        libjpeg-turbo-dev \
+        libpng \
+        libpng-dev \
+        libwebp \
+        libwebp-dev \
+        libzip \
+        libzip-dev \
+        postgresql-dev \
+        postgresql-libs && \
     docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ \
         --with-webp-dir=/usr/include && \
-    NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
-    docker-php-ext-install -j${NPROC} pdo_pgsql intl gd zip bz2 opcache && \
-    pecl install apcu && \
-    docker-php-ext-enable apcu && \
-    apk del --no-cache autoconf build-base postgresql-dev icu-dev freetype-dev \
-        libjpeg-turbo-dev libpng-dev libwebp-dev libzip-dev bzip2-dev
+    docker-php-ext-install -j${NPROC} \
+        bcmath \
+        bz2 \
+        intl \
+        gd \
+        opcache \
+        pdo_pgsql \
+        zip && \
+    pecl install \
+        apcu \
+        xdebug && \
+    docker-php-ext-enable \
+        apcu \
+        xdebug && \
+    apk --no-cache del \
+        autoconf \
+        build-base \
+        bzip2-dev \
+        icu-dev \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libwebp-dev \
+        libzip-dev \
+        postgresql-dev && \
+    sh -c 'umask 000 && composer global require symfony/flex'
 
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
-
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV COMPOSER_HOME /tmp
+ENV COMPOSER_MEMORY_LIMIT -1
 
 WORKDIR /app
