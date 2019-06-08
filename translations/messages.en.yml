@@ -435,6 +435,8 @@ nav:
     dark_mode: Dark mode
     light_mode: Light mode
     logged_in_as_user: Logged in as %user%
+    jump_to_main_content: Jump to main content
+    jump_to_sidebar: Jump to sidebar
 
 placeholder:
     choose_one: Choose one…
