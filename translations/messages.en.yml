@@ -38,6 +38,7 @@ action:
     unpin: Unpin
     purge: Purge
     subscribe_via_rss: Subscribe via RSS
+    delete_account: Delete account
 
 add_moderator:
     title: Add moderator to %forum%
@@ -95,6 +96,14 @@ content:
 create_forum:
     create_new_forum: Create new forum
 
+delete_account:
+    lead: Deleting an account does the following:
+    submissions: Removes its submissions.
+    comments: Removes its comments.
+    messages: Removes its sent messages.
+    votes: Retracts every vote on submissions and comments.
+    metadata: Makes one unable to log in, scrambles the username, resets preferences, and removes other data associated with the account.
+
 edit_forum:
     title: Editing %forum%
 
@@ -141,6 +150,9 @@ flash:
     submission_pinned: The submission was pinned.
     submission_unpinned: The submission was unpinned.
     purge_submission_warning: The submission and all its comments will be irreversably deleted.
+    delete_account_warning: Once you delete your account, you will never, ever be able to get it back!
+    delete_someone_elses_account_warning: You are deleting someone else's account! Once you do this, they will never, ever be able to get their account back.
+    account_deletion_in_progress: The account is being deleted.
 
 forum:
     moderators: Moderators
@@ -207,6 +219,8 @@ heading:
     notifications: Notifications
     privacy: Privacy
     this_user_is_banned: This user is banned!
+    credentials: Credentials
+    delete_account: Delete account
 
 help:
     delete_forum_warning: All content on this forum will be irreversibly deleted!
@@ -337,6 +351,8 @@ label:
     timezone: Time zone
     allow_private_messages: Allow private messages
     creation_date: Creation date
+    confirm_username: Confirm username
+    delete_account_confirmation: I understand there's no way of retrieving this account once it's gone.
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'
@@ -437,6 +453,7 @@ nav:
     logged_in_as_user: Logged in as %user%
     jump_to_main_content: Jump to main content
     jump_to_sidebar: Jump to sidebar
+    delete_this_account: Delete this account
 
 placeholder:
     choose_one: Choose one…
@@ -560,6 +577,7 @@ title:
     search_forum: Search this forum
     hidden_forums: Hidden forums
     notifications: Notifications
+    delete_account: Delete account
 
 user:
     submissions: Submissions

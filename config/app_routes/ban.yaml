@@ -9,11 +9,13 @@ ban_user:
     controller: App\Controller\BanController::banUser
     methods: [GET, POST]
     path: /bans/ban_user/{username}
+    requirements: { username: "%username_regex%" }
 
 unban_user:
     controller: App\Controller\BanController::unbanUser
     methods: [GET, POST]
     path: /bans/unban_user/{username}
+    requirements: { username: "%username_regex%" }
 
 ip_bans:
     controller: App\Controller\BanController::ipBans

@@ -57,6 +57,7 @@ final class MessageThreadVoter extends Voter {
         $otherParticipants = $thread->getOtherParticipants($user);
 
         if (\count($otherParticipants) === 1 && (
+            $otherParticipants[0]->isAccountDeleted() ||
             $otherParticipants[0]->isBlocking($user) ||
             $user->isBlocking($otherParticipants[0])
         )) {

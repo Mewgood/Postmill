@@ -47,17 +47,19 @@ forum_ban_history:
     defaults: { page: 1 }
     path: /f/{forum_name}/bans/history/{username}/{page}
     methods: [GET]
-    requirements: { page: \d+ }
+    requirements: { page: \d+, username: "%username_regex%" }
 
 forum_ban:
     controller: App\Controller\ForumController::ban
     path: /f/{forum_name}/ban/{username}
     methods: [GET, POST]
+    requirements: { username: "%username_regex%" }
 
 forum_unban:
     controller: App\Controller\ForumController::unban
     path: /f/{forum_name}/unban/{username}
     methods: [GET, POST]
+    requirements: { username: "%username_regex%" }
 
 forum_moderators:
     controller: App\Controller\ForumController::moderators

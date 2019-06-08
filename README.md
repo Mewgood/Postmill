@@ -9,6 +9,7 @@ by an alien logo are purely coincidental.
 
 * PHP >= 7.1 with the curl, gd, iconv, intl, json, mbstring, PDO_PGSQL and xml
   extensions.
+    * (optional) The amqp extension is required to use RabbitMQ.
 * PostgreSQL >= 9.4
 * [Composer](https://getcomposer.org/)
 

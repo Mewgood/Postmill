@@ -330,6 +330,10 @@ class User implements UserInterface, EquatableInterface {
         return $this->normalizedUsername;
     }
 
+    public function isAccountDeleted(): bool {
+        return isset($this->id) && $this->username === "!deleted{$this->id}";
+    }
+
     public function getPassword(): string {
         return $this->password;
     }

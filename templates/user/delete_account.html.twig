@@ -1,0 +1,32 @@
+{% extends 'user/base.html.twig' %}
+
+{% block title 'title.delete_account'|trans %}
+
+{% block body %}
+  <h1 class="page-heading">{{ block('title') }}</h1>
+
+  <p>{{ 'delete_account.lead'|trans }}</p>
+
+  <ul>
+    <li>{{ 'delete_account.submissions'|trans }}</li>
+    <li>{{ 'delete_account.comments'|trans }}</li>
+    <li>{{ 'delete_account.messages'|trans }}</li>
+    <li>{{ 'delete_account.votes'|trans }}</li>
+    <li>{{ 'delete_account.metadata'|trans }}</li>
+  </ul>
+
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_type 'warn' %}
+    {% block alert_paragraph app.user is same as(user)
+      ? 'flash.delete_account_warning'|trans
+      : '<strong class="text-xl">%s</strong>'|format('flash.delete_someone_elses_account_warning'|trans|e)|raw %}
+  {% endembed %}
+
+  {{ form_start(form) }}
+    {{ form_rest(form) }}
+
+    <div class="form__row form__button-row">
+      <button type="submit" class="button">{{ 'action.delete_account'|trans }}</button>
+    </div>
+  {{ form_end(form) }}
+{% endblock body %}

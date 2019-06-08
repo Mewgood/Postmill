@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
  * @ORM\Table(name="messages")
  */
 class Message {
@@ -103,8 +103,12 @@ class Message {
 
     private function notify() {
         foreach ($this->thread->getParticipants() as $user) {
-            if ($user === $this->sender || $user->isBlocking($this->sender)) {
-                // don't notify self or users blocking you
+            if (
+                $user === $this->sender ||
+                $user->isAccountDeleted() ||
+                $user->isBlocking($this->sender)
+            ) {
+                // don't notify self, deleted accounts, or users blocking you
                 continue;
             }
 

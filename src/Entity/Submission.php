@@ -462,12 +462,14 @@ class Submission extends Votable {
     }
 
     public function vote(User $user, ?string $ip, int $choice): void {
-        if ($this->visibility === self::VISIBILITY_DELETED) {
-            throw new SubmissionLockedException();
-        }
+        if ($choice !== self::VOTE_RETRACT) {
+            if ($this->visibility === self::VISIBILITY_DELETED) {
+                throw new SubmissionLockedException();
+            }
 
-        if ($this->forum->userIsBanned($user)) {
-            throw new BannedFromForumException();
+            if ($this->forum->userIsBanned($user)) {
+                throw new BannedFromForumException();
+            }
         }
 
         parent::vote($user, $ip, $choice);
@@ -479,6 +481,10 @@ class Submission extends Votable {
     public function addMention(User $mentioned): void {
         if ($mentioned === $this->getUser()) {
             // don't notify yourself
+            return;
+        }
+
+        if ($mentioned->isAccountDeleted()) {
             return;
         }
 

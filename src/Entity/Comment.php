@@ -271,6 +271,10 @@ class Comment extends Votable {
         return \count($this->children);
     }
 
+    public function removeReply(self $reply): void {
+        $this->children->removeElement($reply);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -281,6 +285,10 @@ class Comment extends Votable {
     public function addMention(User $mentioned) {
         if ($mentioned === $this->getUser()) {
             // don't notify yourself
+            return;
+        }
+
+        if ($mentioned->isAccountDeleted()) {
             return;
         }
 
@@ -312,8 +320,10 @@ class Comment extends Votable {
      * {@inheritdoc}
      */
     public function vote(User $user, ?string $ip, int $choice): void {
-        if ($this->submission->getForum()->userIsBanned($user)) {
-            throw new BannedFromForumException();
+        if ($choice !== self::VOTE_RETRACT) {
+            if ($this->submission->getForum()->userIsBanned($user)) {
+                throw new BannedFromForumException();
+            }
         }
 
         parent::vote($user, $ip, $choice);
@@ -384,6 +394,7 @@ class Comment extends Votable {
 
         if (
             $this->user === $receiver ||
+            $receiver->isAccountDeleted() ||
             !$receiver->getNotifyOnReply() ||
             $receiver->isBlocking($this->user)
         ) {

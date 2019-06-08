@@ -4,4 +4,5 @@ framework:
             default: "%env(MESSENGER_TRANSPORT_DSN)%"
 
         routing:
+            App\Message\DeleteUser: default
             App\Message\NewSubmission: default

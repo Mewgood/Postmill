@@ -15,14 +15,14 @@ compose_message:
     controller: App\Controller\MessageController::compose
     path: /user/{username}/compose_message
     methods: [GET, POST]
-    requirements: { username: \w+ }
+    requirements: { username: "%username_regex%" }
 
 compose_message_legacy_redirect:
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
     defaults: { route: compose_message }
     path: /compose_message/{username}
     methods: [GET]
-    requirements: { username: \w+ }
+    requirements: { username: "%username_regex%" }
 
 reply_to_message:
     controller: App\Controller\MessageController::reply

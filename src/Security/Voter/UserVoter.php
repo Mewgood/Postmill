@@ -61,6 +61,10 @@ final class UserVoter extends Voter {
     }
 
     private function canMessage(User $receiver, TokenInterface $token): bool {
+        if ($receiver->isAccountDeleted()) {
+            return false;
+        }
+
         if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
             return true;
         }

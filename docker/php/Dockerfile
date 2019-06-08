@@ -27,7 +27,9 @@ RUN set -ex && \
         libzip \
         libzip-dev \
         postgresql-dev \
-        postgresql-libs && \
+        postgresql-libs \
+        rabbitmq-c \
+	rabbitmq-c-dev && \
     docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \
@@ -35,7 +37,6 @@ RUN set -ex && \
         --with-jpeg-dir=/usr/include/ \
         --with-webp-dir=/usr/include && \
     docker-php-ext-install -j${NPROC} \
-        bcmath \
         bz2 \
         intl \
         gd \
@@ -43,9 +44,11 @@ RUN set -ex && \
         pdo_pgsql \
         zip && \
     pecl install \
+        amqp \
         apcu \
         xdebug && \
     docker-php-ext-enable \
+        amqp \
         apcu \
         xdebug && \
     apk --no-cache del \
@@ -58,7 +61,8 @@ RUN set -ex && \
         libpng-dev \
         libwebp-dev \
         libzip-dev \
-        postgresql-dev && \
+        postgresql-dev \
+        rabbitmq-c-dev && \
     sh -c 'umask 000 && composer global require symfony/flex'
 
 ENV COMPOSER_MEMORY_LIMIT -1

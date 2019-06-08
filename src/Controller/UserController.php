@@ -6,6 +6,7 @@ use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
+use App\Form\DeleteAccountType;
 use App\Form\Model\UserBlockData;
 use App\Form\Model\UserData;
 use App\Form\Model\UserFilterData;
@@ -14,6 +15,7 @@ use App\Form\UserBlockType;
 use App\Form\UserFilterType;
 use App\Form\UserSettingsType;
 use App\Form\UserType;
+use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
 use App\Repository\NotificationRepository;
@@ -201,6 +203,30 @@ final class UserController extends AbstractController {
         }
 
         return $this->render('user/edit.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("edit_user", subject="user", statusCode=403)
+     */
+    public function deleteAccount(User $user, Request $request): Response {
+        $form = $this->createForm(DeleteAccountType::class, null, [
+            'username' => $user->getUsername(),
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->dispatchMessage(new DeleteUser($user));
+            $this->addFlash('notice', 'flash.account_deletion_in_progress');
+
+            return $this->redirectToRoute('front');
+        }
+
+        return $this->render('user/delete_account.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
         ]);

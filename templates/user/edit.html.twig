@@ -15,5 +15,20 @@
     {% endembed %}
   {% endif %}
 
-  {{ include('user/_form.html.twig', { form: form }, with_context=false) }}
+  <fieldset class="fieldset">
+    <legend>{{ 'heading.credentials'|trans }}</legend>
+
+    {{ include('user/_form.html.twig', { form: form }, with_context=false) }}
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend>{{ 'heading.delete_account'|trans }}</legend>
+
+    <p class="no-margin">
+      <a href="{{ path('delete_account', { username: user.username }) }}"
+         class="button button--secondary">
+        {{- 'nav.delete_this_account'|trans -}}
+      </a>
+    </p>
+  </fieldset>
 {% endblock %}
