@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% use '_layouts/forum_card.html.twig' %}
 {% from '_macros/icon.html.twig' import icon %}
 {% from 'forum/_list_macros.html.twig' import create_forum, forum_list_tabs %}
 
@@ -17,6 +18,7 @@
   'by_title': 'forum_list.title'|trans,
   'by_submissions': 'forum_list.submission_count'|trans,
   'by_subscribers': 'forum_list.subscribers'|trans,
+  'by_creation_date': 'label.creation_date'|trans,
 } %}
 
 {% block body %}
@@ -39,7 +41,7 @@
           {% for mode, label in forum_sort_modes %}
             <li>
               <a href="{{ path('forum_list', { sortBy: mode }) }}"
-                 class="menu-item {{ app.request.attributes.get('sortBy') == mode ? 'menu-item--active' }}">
+                 class="menu-item {{ sortBy == mode ? 'menu-item--active' }} no-wrap">
                 {{- label -}}
               </a>
             </li>
@@ -52,62 +54,7 @@
   {{ create_forum() }}
 
   {% for forum in forums %}
-    <article class="forum-card">
-      <div class="forum-card__main-column">
-        <h2 class="forum-card__heading break-text">
-          <a href="{{ path('forum', {forum_name: forum.name}) }}">
-            <span class="forum-card__name">/f/{{ forum.name }}</span>
-            &mdash;
-            <span class="forum-card__title n">{{ forum.title }}</span>
-            {#- remove spacing -#}
-          </a>
-
-          {% if forum.featured %}
-            <span class="fg-orange"
-                  title="{{ 'help.forum_is_featured'|trans }}"
-                  aria-label="{{ 'help.forum_is_featured'|trans }}">
-              {{- icon('star') -}}
-            </span>
-          {% endif %}
-
-          {% if is_granted('ROLE_USER') and app.user.hidingForum(forum) %}
-            <span class="fg-red"
-                  title="{{ 'help.forum_is_hidden'|trans }}"
-                  aria-label="{{ 'help.forum_is_hidden'|trans }}">
-              {{- icon('cancel') -}}
-            </span>
-          {% endif %}
-        </h2>
-
-        <p class="forum-card__description no-margin break-text">
-          {{- forum.description -}}
-        </p>
-      </div>
-
-      <div class="forum-card__subscribe-column">
-        {% if is_granted('ROLE_USER') %}
-          {% from 'forum/_macros.html.twig' import subscribe_button %}
-          {% set subscribed = forum.subscribed(app.user) %}
-          <form action="{{ path(subscribed ? 'unsubscribe' : 'subscribe', {forum_name: forum.name}) }}"
-                method="POST"
-                class="subscribe-form"
-                data-forum="{{ forum.name }}">
-            <input type="hidden" name="token" value="{{ csrf_token('subscribe') }}">
-            {{ subscribe_button(forum, subscribed, true) }}
-          </form>
-        {% else %}
-          <p class="no-margin">{{ 'forum.subscriber_count'|trans({
-            '%count%': forum.subscriptions|length,
-            '%formatted_count%': forum.subscriptions|length|localizednumber,
-          }) }}</p>
-        {% endif %}
-
-        <p class="no-margin fg-muted text-sm">{{ 'forum.submission_count'|trans({
-          '%count%': forum.submissions|length,
-          '%formatted_count%': forum.submissions|length|localizednumber,
-        }) }}</p>
-      </div>
-    </article>
+    {{ block('forum_card') }}
   {% endfor %}
 
   {{ include('_includes/pagination.html.twig', {pager: forums}, with_context=false) }}

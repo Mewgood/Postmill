@@ -44,31 +44,35 @@ final class ForumRepository extends ServiceEntityRepository {
     /**
      * @param int    $page
      * @param string $sortBy one of 'name', 'title', 'submissions',
-     *                       'subscribers', optionally with 'by_' prefix
+     *                       'subscribers', or 'creation_date', optionally with
+     *                       'by_' prefix
      *
      * @return Pagerfanta|Forum[]
      */
-    public function findForumsByPage(int $page, string $sortBy) {
-        if (!preg_match('/^(?:by_)?(name|title|submissions|subscribers)$/', $sortBy, $matches)) {
-            throw new \InvalidArgumentException('invalid sort type');
-        }
-
+    public function findForumsByPage(int $page, string $sortBy): Pagerfanta {
         $qb = $this->createQueryBuilder('f');
 
-        switch ($matches[1]) {
-        case 'subscribers':
-            $qb->addSelect('COUNT(s) AS HIDDEN subscribers')
-                ->leftJoin('f.subscriptions', 's')
-                ->orderBy('subscribers', 'DESC');
+        switch (\preg_replace('/^by_/', '', $sortBy)) {
+        case 'name':
+            break;
+        case 'title':
+            $qb->orderBy('LOWER(f.title)', 'ASC');
             break;
         case 'submissions':
             $qb->addSelect('COUNT(s) AS HIDDEN submissions')
                 ->leftJoin('f.submissions', 's')
                 ->orderBy('submissions', 'DESC');
             break;
-        case 'title':
-            $qb->orderBy('LOWER(f.title)', 'ASC');
+        case 'subscribers':
+            $qb->addSelect('COUNT(s) AS HIDDEN subscribers')
+                ->leftJoin('f.subscriptions', 's')
+                ->orderBy('subscribers', 'DESC');
             break;
+        case 'creation_date':
+            $qb->orderBy('f.created', 'DESC');
+            break;
+        default:
+            throw new \InvalidArgumentException("invalid sort type '$sortBy'");
         }
 
         $qb->addOrderBy('f.normalizedName', 'ASC')->groupBy('f.id');

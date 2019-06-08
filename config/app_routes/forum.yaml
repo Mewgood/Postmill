@@ -117,7 +117,7 @@ forum_list:
     defaults: { page: 1, sortBy: by_submissions }
     path: /forums/{sortBy}/{page}
     methods: [GET]
-    requirements: { forums: \d+, sortBy: by_name|by_title|by_subscribers|by_submissions }
+    requirements: { forums: \d+, sortBy: by_(name|title|subscribers|submissions|creation_date) }
 
 forum_webhooks:
     controller: App\Controller\ForumController::webhooks

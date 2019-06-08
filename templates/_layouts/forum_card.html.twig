@@ -1,0 +1,61 @@
+{% block forum_card %}
+  {% from '_macros/icon.html.twig' import icon %}
+  <article class="forum-card">
+    <div class="forum-card__main-column">
+      <h2 class="forum-card__heading break-text">
+        <a href="{{ path('forum', {forum_name: forum.name}) }}" class="forum-card__name">
+          {{- '/f/'~forum.name -}}
+        </a>
+        {% if forum.featured %}
+          <span class="fg-orange"
+                title="{{ 'help.forum_is_featured'|trans }}"
+                aria-label="{{ 'help.forum_is_featured'|trans }}">
+            {{- icon('star') -}}
+          </span>
+        {% endif %}
+
+        {% if is_granted('ROLE_USER') and app.user.hidingForum(forum) %}
+          <span class="fg-red"
+                title="{{ 'help.forum_is_hidden'|trans }}"
+                aria-label="{{ 'help.forum_is_hidden'|trans }}">
+            {{- icon('cancel') -}}
+          </span>
+        {% endif %}
+        &mdash;
+        <span class="forum-card__title">{{ forum.title }}</span>
+      </h2>
+
+      <p class="forum-card__description no-margin break-text">
+        {{- forum.description -}}
+      </p>
+    </div>
+
+    <div class="forum-card__subscribe-column">
+      {% if is_granted('ROLE_USER') %}
+        {% from 'forum/_macros.html.twig' import subscribe_button %}
+        {% set subscribed = forum.subscribed(app.user) %}
+        <form action="{{ path(subscribed ? 'unsubscribe' : 'subscribe', {forum_name: forum.name}) }}"
+              method="POST"
+              class="subscribe-form"
+              data-forum="{{ forum.name }}">
+          <input type="hidden" name="token" value="{{ csrf_token('subscribe') }}">
+          {{ subscribe_button(forum, subscribed, true) }}
+        </form>
+      {% else %}
+        {% set subscriber_count = forum.subscriptions|length %}
+        <p class="no-margin">{{ 'forum.subscriber_count'|trans({
+          '%count%': subscriber_count,
+          '%formatted_count%': subscriber_count|localizednumber,
+        }) }}</p>
+      {% endif %}
+
+      <p class="no-margin fg-muted">
+        {% set submission_count = forum.submissions|length %}
+        {{ 'forum.submission_count'|trans({
+          '%count%': submission_count,
+          '%formatted_count%': submission_count|localizednumber,
+        }) -}}
+      </p>
+    </div>
+  </article>
+{% endblock forum_card %}

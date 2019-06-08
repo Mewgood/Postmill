@@ -334,6 +334,7 @@ label:
     body: Body
     timezone: Time zone
     allow_private_messages: Allow private messages
+    creation_date: Creation date
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'
