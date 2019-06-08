@@ -245,6 +245,12 @@
       "css": "star",
       "code": 59419,
       "src": "fontawesome"
+    },
+    {
+      "uid": "de5f0a564ccf8816325330e292e11533",
+      "css": "rss-squared",
+      "code": 61763,
+      "src": "fontawesome"
     }
   ]
 }

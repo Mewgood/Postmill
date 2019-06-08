@@ -27,7 +27,7 @@
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title">{{ 'heading.multi_forum_view'|trans }}</h1>
 
-    <ul class="unlistify sidebar__no-padding">
+    <ul class="no-margin unlistify sidebar__no-padding">
       {% for forum in forums %}
         <li><a href="{{ path('forum', {forum_name: forum}) }}" class="menu-item">{{ forum }}</a></li>
       {% endfor %}

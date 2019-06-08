@@ -71,7 +71,7 @@
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
 
-    <ul class="unlistify sidebar__no-padding">
+    <ul class="no-margin unlistify sidebar__no-padding">
       {% if is_granted('write', page) %}
         <li>
           <a href="{{ path('wiki_edit', {path: page.path}) }}"

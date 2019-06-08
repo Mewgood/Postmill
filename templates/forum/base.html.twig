@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+{% from '_macros/icon.html.twig' import icon %}
+{% from '_macros/time.html.twig' import relative_time %}
 
 {% block forum_toolbox_active app.request.attributes.get('_route') %}
 
@@ -41,7 +43,27 @@
       <div class="forum-sidebar-content break-text">
         {{- forum.sidebar|cached_markdown({ context: 'forum_sidebar', forum: forum })|raw -}}
       </div>
+
+      <hr>
     {% endif %}
+
+    <ul class="text-sm unlistify">
+      <li class="fg-muted">
+        {{- 'forum.created_on'|trans({
+          '%timestamp%': relative_time(forum.created, { time_format: 'none' }),
+        })|raw -}}
+      </li>
+
+      <li>
+        <a href="{{ path('forum', { forum_name: forum.name, _format: 'atom', sortBy: 'new' }) }}"
+           rel="alternate"
+           type="application/atom+xml"
+           class="no-underline">
+          {{- icon('rss-squared', '', 'fg-orange') }}
+          <span class="no-underline__exempt">{{ 'action.subscribe_via_rss'|trans -}}</span>
+        </a>
+      </li>
+    </ul>
   </section>
 
   {% if is_granted('ROLE_USER') %}
@@ -95,7 +117,7 @@
       },
     } %}
 
-    <ul class="unlistify sidebar__no-padding">
+    <ul class="no-margin unlistify sidebar__no-padding">
       {% for label in toolbox_items|keys|sort|filter(label => toolbox_items[label].condition ?? true) %}
         {% set item = toolbox_items[label] %}
         <li>

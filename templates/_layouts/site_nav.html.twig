@@ -33,7 +33,7 @@
       {{- icon('menu', 'nav.places'|trans, 'icon--no-align') -}}
     </button>
 
-    <ul class="site-nav__menu site-nav__main-menu unlistify dropdown__menu">
+    <ul class="site-nav__menu site-nav__main-menu no-margin unlistify dropdown__menu">
       {{ block('site_nav_main_menu_items') }}
     </ul>
   </div>
@@ -62,7 +62,7 @@
         <span class="no-underline__exempt">{{ 'label.admin'|trans }}</span>
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
-      <ul class="dropdown-card dropdown__menu no-wrap unlistify">
+      <ul class="dropdown-card dropdown__menu no-wrap no-margin unlistify">
         {{ block('site_nav_main_menu_admin_items') }}
       </ul>
     </li>
@@ -104,7 +104,7 @@
       {{- icon('search', 'nav.search'|trans, 'icon--no-align') -}}
     </button>
 
-    <div class="site-nav__search-row dropdown__menu">
+    <div class="site-nav__search-row dropdown__menu no-margin">
       <label class="site-nav__search-label" for="site-nav-search" aria-hidden="true">
         {{ icon('search', '', 'icon--no-align') }}
       </label>
@@ -119,7 +119,7 @@
 {% endblock site_nav_search %}
 
 {% block site_nav_user_menu %}
-  <ul class="site-nav__menu site-nav__user-menu unlistify">
+  <ul class="site-nav__menu site-nav__user-menu no-margin unlistify">
     {% if not is_granted('ROLE_USER') %}
       {{ block('site_nav_user_menu_logged_out') }}
     {% else %}
@@ -177,7 +177,7 @@
       <span class="dropdown__arrow no-mobile" aria-hidden="true"></span>
     </button>
 
-    <ul class="dropdown-card dropdown__menu unlistify no-wrap">
+    <ul class="dropdown-card dropdown__menu no-margin unlistify no-wrap">
       {{ block('site_nav_user_menu_dropdown_items') }}
     </ul>
   </li>

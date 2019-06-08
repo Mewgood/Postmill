@@ -37,6 +37,7 @@ action:
     pin: Pin
     unpin: Unpin
     purge: Purge
+    subscribe_via_rss: Subscribe via RSS
 
 add_moderator:
     title: Add moderator to %forum%
@@ -150,6 +151,7 @@ forum:
     subscriber_count: '{0} No subscribers|{1} %formatted_count% subscriber|[1,Inf[ %formatted_count% subscribers'
     submission_count: '{0} No submissions|{1} %formatted_count% submission|[1,Inf[ %formatted_count% submissions'
     add_moderator: Add moderator
+    created_on: 'Created %timestamp%'
 
 forum_form:
     name: Name
