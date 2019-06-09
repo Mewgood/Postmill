@@ -103,10 +103,6 @@
         route: 'forum_appearance',
         condition: is_granted('moderator', forum),
       },
-      ('nav.webhooks'|trans): {
-        route: 'forum_webhooks',
-        condition: app_webhooks_enabled() and is_granted('moderator', forum),
-      },
       ('forum.add_moderator'|trans): {
         route: 'add_moderator',
         condition: is_granted('ROLE_ADMIN'),

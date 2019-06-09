@@ -141,8 +141,6 @@ flash:
     page_unlocked: The page was unlocked.
     no_cookies_verification: Does the image not load correctly? Please make sure you aren't blocking cookies and try again.
     no_password_resets: Password resets have been disabled by the administrator.
-    webhook_added: The webhook was added successfully.
-    webhook_edited: The webhook was edited successfully.
     wiki_page_deleted: The wiki page has been deleted.
     editing_credentials_of_other_user: You are editing the credentials of another user. This can prevent them from logging in.
     notifications_cleared: Your notifications have been cleared.
@@ -320,13 +318,6 @@ label:
     posting: Posting
     auto_fetch_submission_titles: Auto-fetch submission titles
     compare: Compare
-    url: URL
-    secret_token: Secret token
-    event: Event
-    event.new_submission: New submission
-    event.edit_submission: Edit submission
-    event.new_comment: New comment
-    event.edit_comment: Edit comment
     forums_in_this_category: Forums in this category
     description: Description
     show_post_previews: Show post previews
@@ -437,8 +428,6 @@ nav:
     forum_bans: Forum bans
     forum_categories: Forum categories
     new_category: New category
-    webhooks: Webhooks
-    add_webhook: Add webhook
     hidden_forums: Hidden forums
     recent_comments: Recent comments
     notifications: Notifications
@@ -570,9 +559,6 @@ title:
     create_forum_category: Create forum category
     editing_forum_category: 'Editing forum category: %category%'
     wiki_diff: Showing difference between revisions %from% and %to%
-    add_forum_webhook: Adding webhook for %forum%
-    editing_forum_webhook: Editing webhook in %forum%
-    forum_webhooks: Webhooks for %forum%
     search_site: Search the site
     search_forum: Search this forum
     hidden_forums: Hidden forums

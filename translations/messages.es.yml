@@ -118,8 +118,6 @@ flash:
     page_unlocked: Se ha desanclado la página.
     no_cookies_verification: ¿La imagen no carga correctamente? Asegúrate de que no estás bloqueando las cookies e inténtalo de nuevo.
     no_password_resets: Los restablecimientos de contraseña han sido deshabilitados por la administradora.
-    webhook_added: El webhook fue añadido con éxito.
-    webhook_edited: El webhook fue editado con éxito.
 
 forum:
     moderators: Moderadoras
@@ -258,13 +256,6 @@ label:
     posting: Publicando
     auto_fetch_submission_titles: Obtener automáticamente títulos de publicaciones
     compare: Comparar
-    url: URL
-    secret_token: Token secreto
-    event: Evento
-    event.new_submission: Nueva publicación
-    event.edit_submission: Editar publicación
-    event.new_comment: Nuevo comentario
-    event.edit_comment: Editar comentario
     forums_in_this_category: Foros en esta categoría
     description: Descripción
     show_post_previews: Muestra previsualización de mensajes
@@ -330,8 +321,6 @@ nav:
     forum_bans: Vetos de foro
     forum_categories: Categorías de foro
     new_category: Nueva categoría
-    webhooks: Webhooks
-    add_webhook: Añade webhook
 
 placeholder:
     default: (predeterminado)
@@ -437,9 +426,6 @@ title:
     create_forum_category: Crear categoría de foro
     editing_forum_category: 'Editando categoría de foro: %category%'
     wiki_diff: Mostrando diferencia entre revisiones %from% y %to%
-    add_forum_webhook: Añadiendo webhook para %forum%
-    editing_forum_webhook: Editando webhook en %forum%
-    forum_webhooks: Webhooks para %forum%
 
 user:
     submissions: Publicaciones

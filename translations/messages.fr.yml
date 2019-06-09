@@ -120,8 +120,6 @@ flash:
     page_unlocked: La page a été déverrouillée.
     no_cookies_verification: Est-ce que l'image ne se charge pas correctement? Veuillez vous assurer que vous ne bloquez pas les cookies et essayez à nouveau.
     no_password_resets: La réinitialisation des mots de passe a été désactivée par l'administrateur.
-    webhook_added: Le webhook a été ajouté avec succès.
-    webhook_edited: Le webhook a été modifié avec succès.
 
 forum:
     moderators: Modérateurs
@@ -257,13 +255,6 @@ label:
     posting: Posting
     auto_fetch_submission_titles: Récupérer le titre des posts automatiquement
     compare: Comparer
-    url: URL
-    secret_token: Token secret
-    event: Evènement
-    event.new_submission: Nouveau post
-    event.edit_submission: Modifier le post
-    event.new_comment: Nouveau commentaire
-    event.edit_comment: Modifier le commentaire
     forums_in_this_category: Forums dans cette catégorie
     description: Description
     show_post_previews: Montrer les aperçus de post
@@ -331,8 +322,6 @@ nav:
     forum_bans: Bans du forum
     forum_categories: Catégories du forum
     new_category: Nouvelle catégorie
-    webhooks: Webhooks
-    add_webhook: Ajouter un webhook
 
 placeholder:
     default: (défaut)
@@ -444,9 +433,6 @@ title:
     create_forum_category: Créer une catégorie de forum
     editing_forum_category: 'Modification de catégorie de forum: %category%'
     wiki_diff: Affichage des modifications entre %from% et %to%
-    add_forum_webhook: Ajout de webhook pour %forum%
-    editing_forum_webhook: Modification du webhook pour %forum%
-    forum_webhooks: Webhooks de %forum%
     search_site: Chercher sur le site
     search_forum: Chercher dans ce forum
 

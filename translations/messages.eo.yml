@@ -126,8 +126,6 @@ flash:
     page_unlocked: La paĝo estis malŝlosita.
     no_cookies_verification: Ĉu la bildo ne ŝarĝas korekte? Bonvolu kontroli, ke vi ne estas barinta kuketojn kaj reprovi.
     no_password_resets: Pasvortaj restarigoj estis malebligitaj de la administranto.
-    webhook_added: La reto-hoko aldoniĝis korekte
-    webhook_edited: La reto-hoko redaktiĝis korekte.
     wiki_page_deleted: La vikia paĝo estis ĵus forigita
     editing_credentials_of_other_user: Vi redaktas la ensalutilojn de alia uzulo. Ĉi tio povas malebligi al ili ensaluti.
     notifications_cleared: Viaj sciigoj ĵus estis forigitaj.
@@ -291,13 +289,6 @@ label:
     posting: Afiŝinta
     auto_fetch_submission_titles: Aŭtomate ŝargi afiŝan titolon
     compare: Kompari
-    url: URL
-    secret_token: Sekreta ĵetono
-    event: Evento
-    event.new_submission: Nova afiŝo
-    event.edit_submission: Redakti afiŝon
-    event.new_comment: Nova komento
-    event.edit_comment: Redakti komenton
     forums_in_this_category: Diskutejo en ĉi tiu kategorio
     description: Priskribo
     show_post_previews: Montri lasta antaŭmontro
@@ -378,8 +369,6 @@ nav:
     forum_bans: Diskutejaj forbaroj
     forum_categories: Distutejaj kategorioj
     new_category: Novan kategorion
-    webhooks: Reto-hokoj
-    add_webhook: Aldoni reto-hokon
     hidden_forums: Kaŝitaj diskutejoj
     recent_comments: Freŝaj komentoj
     notifications: Sciigoj
@@ -498,9 +487,6 @@ title:
     create_forum_category: Krei diskutejan kategorion
     editing_forum_category: 'Redaktado de diskuteja kategorio: %category%'
     wiki_diff: Montrata diferencojn inter revizioj %from% kaj %to%
-    add_forum_webhook: Aldonado de reto-hoko por %forum%
-    editing_forum_webhook: Redaktado de reto-hoko en %forum%
-    forum_webhooks: Reto-hokoj por %forum%
     search_site: Serĉi en la retejo
     search_forum: Serĉi en ĉi tiu diskutejo
     hidden_forums: Kaŝitaj diskutejoj

@@ -32,11 +32,6 @@ final class AppExtension extends AbstractExtension {
     private $version;
 
     /**
-     * @var bool
-     */
-    private $enableWebhooks;
-
-    /**
      * @var array
      */
     private $fontsConfig;
@@ -53,7 +48,6 @@ final class AppExtension extends AbstractExtension {
         string $siteName,
         ?string $branch,
         ?string $version,
-        bool $enableWebhooks,
         array $fontsConfig,
         array $themesConfig,
         string $uploadRoot
@@ -62,7 +56,6 @@ final class AppExtension extends AbstractExtension {
         $this->siteName = $siteName;
         $this->branch = $branch;
         $this->version = $version;
-        $this->enableWebhooks = $enableWebhooks;
         $this->fontsConfig = $fontsConfig;
         $this->themesConfig = $themesConfig;
         $this->uploadRoot = $uploadRoot;
@@ -78,9 +71,6 @@ final class AppExtension extends AbstractExtension {
             }),
             new TwigFunction('app_version', function () {
                 return $this->version;
-            }),
-            new TwigFunction('app_webhooks_enabled', function () {
-                return $this->enableWebhooks;
             }),
             new TwigFunction('font_list', function (): array {
                 return \array_keys($this->fontsConfig);
