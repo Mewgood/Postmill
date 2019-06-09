@@ -6,7 +6,7 @@ use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
-use App\Form\DeleteAccountType;
+use App\Form\ConfirmDeletionType;
 use App\Form\Model\UserBlockData;
 use App\Form\Model\UserData;
 use App\Form\Model\UserFilterData;
@@ -214,8 +214,8 @@ final class UserController extends AbstractController {
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
     public function deleteAccount(User $user, Request $request): Response {
-        $form = $this->createForm(DeleteAccountType::class, null, [
-            'username' => $user->getUsername(),
+        $form = $this->createForm(ConfirmDeletionType::class, null, [
+            'name' => $user->getUsername(),
         ]);
         $form->handleRequest($request);
 

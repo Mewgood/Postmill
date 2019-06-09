@@ -153,7 +153,7 @@ class User implements UserInterface, EquatableInterface {
     /**
      * @ORM\JoinTable(name="hidden_forums",
      *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="forum_id", referencedColumnName="id")}
+     *     inverseJoinColumns={@ORM\JoinColumn(name="forum_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      * @ORM\ManyToMany(targetEntity="Forum")
      *

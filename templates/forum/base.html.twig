@@ -109,7 +109,7 @@
       },
       ('nav.delete_forum'|trans): {
         route: 'delete_forum',
-        condition: is_granted('ROLE_ADMIN'),
+        condition: is_granted('delete', forum),
       },
     } %}
 

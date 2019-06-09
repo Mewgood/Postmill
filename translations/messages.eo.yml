@@ -225,7 +225,6 @@ label:
     name: Nomo
     author: Aŭtoro
     password: Pasvorto
-    confirm: Konfirmu
     save_settings: Konservi agordojn
     source_code: Fontkodo
     sidebar: Flankpanelo

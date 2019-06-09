@@ -191,7 +191,6 @@ label:
     name: Nombre
     author: Autora
     password: Contraseña
-    confirm: Corfirmar
     save_settings: Guardar ajustes
     source_code: Código fuente
     sidebar: Barra lateral

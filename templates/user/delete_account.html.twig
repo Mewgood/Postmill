@@ -23,7 +23,9 @@
   {% endembed %}
 
   {{ form_start(form) }}
-    {{ form_rest(form) }}
+    {{ form_row(form.name, { label: 'label.confirm_username'|trans }) }}
+
+    {{ form_row(form.confirm, { label: 'label.delete_account_confirmation'|trans }) }}
 
     <div class="form__row form__button-row">
       <button type="submit" class="button">{{ 'action.delete_account'|trans }}</button>

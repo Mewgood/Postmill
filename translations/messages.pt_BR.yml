@@ -171,7 +171,6 @@ label:
     name: Nome
     author: Autor
     password: Senha
-    confirm: Confirmar
     save_settings: Salvar configurações
     source_code: Código fonte
     sidebar: Barra lateral

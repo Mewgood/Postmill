@@ -191,7 +191,6 @@ label:
     name: Nom
     author: Auteur
     password: Mot de passe
-    confirm: Confirmer
     save_settings: Sauvegarder les réglages
     source_code: Code source
     sidebar: Barre latérale

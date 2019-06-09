@@ -39,6 +39,7 @@ action:
     purge: Purge
     subscribe_via_rss: Subscribe via RSS
     delete_account: Delete account
+    delete_forum: Delete forum
 
 add_moderator:
     title: Add moderator to %forum%
@@ -253,7 +254,6 @@ label:
     name: Name
     author: Author
     password: Password
-    confirm: Confirm
     suggested_theme: Suggested theme
     save_settings: Save settings
     source_code: Source code
@@ -344,6 +344,8 @@ label:
     creation_date: Creation date
     confirm_username: Confirm username
     delete_account_confirmation: I understand there's no way of retrieving this account once it's gone.
+    confirm_forum_name: Confirm forum name
+    delete_forum_confirmation: I understand there's no way of reviving the data on this forum once it's gone.
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'

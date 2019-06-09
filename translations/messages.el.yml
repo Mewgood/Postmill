@@ -175,7 +175,6 @@ label:
     name: Ονομα
     author: Author
     password: Κωδικός πρόσβασης
-    confirm: Επιβεβαιώνω
     save_settings: Αποθήκευση ρυθμίσεων
     source_code: Κωδικός προγραμματισμού
     sidebar: Πλευρικός πίνακας

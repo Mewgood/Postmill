@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Forum;
 use App\Entity\Moderator;
 use App\Entity\User;
+use App\Form\ConfirmDeletionType;
 use App\Form\ForumAppearanceType;
 use App\Form\ForumBanType;
 use App\Form\ForumType;
@@ -12,7 +13,6 @@ use App\Form\Model\ForumBanData;
 use App\Form\Model\ForumData;
 use App\Form\Model\ModeratorData;
 use App\Form\ModeratorType;
-use App\Form\PasswordConfirmType;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
 use App\Repository\ForumCategoryRepository;
@@ -148,7 +148,8 @@ final class ForumController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     * @IsGranted("ROLE_ADMIN", statusCode=403)
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("delete", subject="forum", statusCode=403)
      *
      * @param Request       $request
      * @param Forum         $forum
@@ -156,15 +157,17 @@ final class ForumController extends AbstractController {
      *
      * @return Response
      */
-    public function delete(Request $request, Forum $forum, ObjectManager $em) {
-        $form = $this->createForm(PasswordConfirmType::class);
+    public function delete(Request $request, Forum $forum, ObjectManager $em): Response {
+        $form = $this->createForm(ConfirmDeletionType::class, null, [
+            'name' => $forum->getName(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->remove($forum);
             $em->flush();
 
-            $this->addFlash('success', 'flash.forum_deleted');
+            $this->addFlash('notice', 'flash.forum_deleted');
 
             return $this->redirectToRoute('front');
         }

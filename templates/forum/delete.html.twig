@@ -11,7 +11,18 @@
     -}}
   </h1>
 
-  <p>{{ 'help.delete_forum_warning'|trans }}</p>
+  {% embed '_layouts/alert.html.twig' %}
+    {% block alert_type 'warn' %}
+    {% block alert_paragraph 'help.delete_forum_warning'|trans %}
+  {% endembed %}
 
-  {{ form(form) }}
+  {{ form_start(form) }}
+    {{ form_row(form.name, { label: 'label.confirm_forum_name'|trans }) }}
+
+    {{ form_row(form.confirm, { label: 'label.delete_forum_confirmation'|trans }) }}
+
+    <div class="form__row form__button-row">
+      <button class="button">{{ 'action.delete_forum'|trans }}</button>
+    </div>
+  {{ form_end(form) }}
 {% endblock %}

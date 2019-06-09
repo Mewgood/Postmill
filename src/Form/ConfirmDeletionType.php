@@ -10,24 +10,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class DeleteAccountType extends AbstractType {
+final class ConfirmDeletionType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('username', TextType::class, [
+            ->add('name', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
-                    new EqualTo($options['username']),
+                    new EqualTo($options['name']),
                 ],
-                'label' => 'label.confirm_username',
             ])
-            ->add('confirm', CheckboxType::class, [
-                'label' => 'label.delete_account_confirmation',
-            ]);
+            ->add('confirm', CheckboxType::class)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver) {
-        $resolver->setDefaults(['username' => null]);
-        $resolver->setAllowedTypes('username', ['string']);
-        $resolver->setRequired('username');
+        $resolver->setDefaults(['name' => null]);
+        $resolver->setAllowedTypes('name', ['string']);
+        $resolver->setRequired('name');
     }
 }
