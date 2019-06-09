@@ -49,6 +49,7 @@
         "symfony/monolog-bundle": "^3.0",
         "symfony/orm-pack": "^1.0",
         "symfony/polyfill-intl-grapheme": "^1.4",
+        "symfony/process": "^4.0",
         "symfony/requirements-checker": "^1.0",
         "symfony/routing": "^4.0",
         "symfony/security-bundle": "^4.0",
