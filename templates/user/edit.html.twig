@@ -9,8 +9,7 @@
   <h1 class="page-heading break-text">{{ block('title') }}</h1>
 
   {% if app.user != user %}
-    {% embed '_layouts/alert.html.twig' %}
-      {% block alert_type 'warn' %}
+    {% embed '_layouts/alert.html.twig' with { type: 'warn' } %}
       {% block alert_paragraph 'flash.editing_credentials_of_other_user'|trans %}
     {% endembed %}
   {% endif %}

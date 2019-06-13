@@ -10,8 +10,7 @@
     })|raw }}
   </h1>
 
-  {% embed '_layouts/alert.html.twig' %}
-    {% block alert_type 'info' %}
+  {% embed '_layouts/alert.html.twig' with { type: 'info' } %}
     {% block alert_text %}
       <p>{{ 'help.block_users'|trans }}</p>
     {% endblock alert_text %}

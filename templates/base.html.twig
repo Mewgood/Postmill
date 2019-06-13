@@ -38,7 +38,6 @@
             {%- for notice in notices -%}
               {% embed '_layouts/alert.html.twig' with { notice: notice, type: type } only %}
                 {% block alert_classes 'site-alerts__alert' %}
-                {% block alert_type type %}
                 {% block alert_text %}
                   <p>
                     {{- notice|trans ~}}

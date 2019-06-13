@@ -12,7 +12,7 @@
   notice: 'info-circled',
   success: 'ok-circled',
 } %}
-{% set type = block('alert_type') is defined ? block('alert_type') : 'notice' %}
+{% set type = type ?? 'notice' %}
 {% from '_macros/icon.html.twig' import icon %}
 <div class="alert bg-{{ colors[type] }} {% block alert_classes '' %}"
      {% block alert_attributes '' %}>

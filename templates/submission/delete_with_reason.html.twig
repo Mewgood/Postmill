@@ -13,9 +13,9 @@
     {{ form_row(form.reason) }}
 
     {% if purge %}
-      <div class="form__row alert alert--error">
-        <p>{{ 'flash.purge_submission_warning'|trans }}</p>
-      </div>
+      {% embed '_layouts/alert.html.twig' with { type: 'warn' } %}
+        {% block alert_paragraph 'flash.purge_submission_warning'|trans %}
+      {% endembed %}
     {% endif %}
 
     <div class="form__button-row">

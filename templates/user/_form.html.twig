@@ -7,9 +7,8 @@
 
   {% if form.verification is defined %}
     {% if app.request.method == 'POST' and not app.request.hasPreviousSession %}
-      {% embed '_layouts/alert.html.twig' %}
+      {% embed '_layouts/alert.html.twig' with { type: 'error' } %}
         {% block alert_classes 'form__row' %}
-        {% block alert_type 'error' %}
         {% block alert_paragraph 'flash.no_cookies_verification'|trans %}
       {% endembed %}
     {% endif %}

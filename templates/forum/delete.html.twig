@@ -11,8 +11,7 @@
     -}}
   </h1>
 
-  {% embed '_layouts/alert.html.twig' %}
-    {% block alert_type 'warn' %}
+  {% embed '_layouts/alert.html.twig' with { type: 'warn' } %}
     {% block alert_paragraph 'help.delete_forum_warning'|trans %}
   {% endembed %}
 
