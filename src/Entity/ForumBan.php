@@ -9,7 +9,6 @@ use Ramsey\Uuid\Uuid;
  * Represents a ban or unban action that applies to a user and a forum.
  *
  * @ORM\Entity(repositoryClass="App\Repository\ForumBanRepository")
- * @ORM\Table(name="forum_bans")
  */
 class ForumBan {
     /**

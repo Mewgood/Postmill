@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="users", uniqueConstraints={
+ * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="users_username_idx", columns={"username"}),
  *     @ORM\UniqueConstraint(name="users_normalized_username_idx", columns={"normalized_username"}),
  * })

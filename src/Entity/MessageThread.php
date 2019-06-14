@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MessageThreadRepository")
- * @ORM\Table(name="message_threads")
  */
 class MessageThread {
     /**

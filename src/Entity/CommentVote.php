@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="comment_votes", uniqueConstraints={
+ * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(
  *         name="comment_user_vote_idx",
  *         columns={"comment_id", "user_id"}

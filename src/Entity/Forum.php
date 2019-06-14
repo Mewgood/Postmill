@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ForumRepository")
- * @ORM\Table(name="forums", indexes={
+ * @ORM\Table(indexes={
  *     @ORM\Index(name="forum_featured_idx", columns={"featured"})
  * }, uniqueConstraints={
  *     @ORM\UniqueConstraint(name="forums_name_idx", columns={"name"}),

@@ -11,7 +11,7 @@ use Pagerfanta\Pagerfanta;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WikiPageRepository")
- * @ORM\Table(name="wiki_pages", uniqueConstraints={
+ * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="wiki_pages_path_idx", columns={"path"}),
  *     @ORM\UniqueConstraint(name="wiki_pages_normalized_path_idx", columns={"normalized_path"}),
  * })

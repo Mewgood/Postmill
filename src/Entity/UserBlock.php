@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="user_blocks", uniqueConstraints={
+ * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(columns={"blocker_id", "blocked_id"}, name="user_blocks_blocker_blocked_idx")
  * })
  */

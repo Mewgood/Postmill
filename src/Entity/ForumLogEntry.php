@@ -7,7 +7,6 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ForumLogEntryRepository")
- * @ORM\Table(name="forum_log_entries")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="action_type", type="text")
  * @ORM\DiscriminatorMap({

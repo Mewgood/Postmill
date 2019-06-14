@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\DBAL\Type;
+namespace App\Tests\Doctrine\Type;
 
-use App\DBAL\Type\InetType;
+use App\Doctrine\Type\InetType;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

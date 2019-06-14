@@ -8,7 +8,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
- * @ORM\Table(name="messages")
  */
 class Message {
     /**

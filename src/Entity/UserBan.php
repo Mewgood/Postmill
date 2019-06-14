@@ -7,7 +7,6 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserBanRepository")
- * @ORM\Table(name="user_bans")
  */
 class UserBan {
     /**

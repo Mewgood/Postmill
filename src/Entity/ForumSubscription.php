@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="forum_subscriptions", uniqueConstraints={
+ * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="forum_user_idx", columns={"forum_id", "user_id"})
  * })
  */

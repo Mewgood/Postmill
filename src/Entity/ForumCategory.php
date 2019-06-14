@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ForumCategoryRepository")
- * @ORM\Table(name="forum_categories", uniqueConstraints={
+ * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="forum_categories_name_idx", columns={"name"}),
  *     @ORM\UniqueConstraint(name="forum_categories_normalized_name_idx", columns={"normalized_name"})
  * })

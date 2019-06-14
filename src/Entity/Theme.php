@@ -11,7 +11,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="themes")
  */
 class Theme {
     /**

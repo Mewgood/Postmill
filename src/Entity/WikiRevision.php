@@ -7,7 +7,6 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WikiRevisionRepository")
- * @ORM\Table(name="wiki_revisions")
  */
 class WikiRevision {
     /**

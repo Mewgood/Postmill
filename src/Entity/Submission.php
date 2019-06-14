@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
- * @ORM\Table(name="submissions", indexes={
+ * @ORM\Table(indexes={
  *     @ORM\Index(name="submissions_timestamp_idx", columns={"timestamp"}),
  *     @ORM\Index(name="submissions_ranking_id_idx", columns={"ranking", "id"}),
  *     @ORM\Index(name="submissions_last_active_id_idx", columns={"last_active", "id"}),
