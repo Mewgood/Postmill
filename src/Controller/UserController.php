@@ -29,6 +29,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @Entity("user", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
@@ -213,14 +214,19 @@ final class UserController extends AbstractController {
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
-    public function deleteAccount(User $user, Request $request): Response {
+    public function deleteAccount(User $user, Request $request, TokenStorageInterface $tokenStorage): Response {
         $form = $this->createForm(ConfirmDeletionType::class, null, [
             'name' => $user->getUsername(),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($user === $this->getUser()) {
+                $tokenStorage->setToken(null);
+            }
+
             $this->dispatchMessage(new DeleteUser($user));
+
             $this->addFlash('notice', 'flash.account_deletion_in_progress');
 
             return $this->redirectToRoute('front');
