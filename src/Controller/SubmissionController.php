@@ -71,10 +71,11 @@ final class SubmissionController extends AbstractController {
      *
      * @Cache(smaxage="10 seconds")
      */
-    public function submission(Forum $forum, Submission $submission): Response {
+    public function submission(Forum $forum, Submission $submission, string $commentView): Response {
         $this->comments->hydrate(...$submission->getComments());
 
         return $this->render('submission/submission.html.twig', [
+            'comment_view' => $commentView,
             'forum' => $forum,
             'submission' => $submission,
         ]);

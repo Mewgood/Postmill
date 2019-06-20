@@ -251,6 +251,12 @@
       "css": "rss-squared",
       "code": 61763,
       "src": "fontawesome"
+    },
+    {
+      "uid": "3d39c828009c04ddb6764c0b04cd2439",
+      "css": "forward",
+      "code": 59420,
+      "src": "fontawesome"
     }
   ]
 }

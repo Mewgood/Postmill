@@ -23,6 +23,10 @@
     flex-direction: row-reverse;
   }
 
+  &:target {
+    outline: solid var(--primary);
+  }
+
   &__vote {
     padding: 0.5rem 0;
   }
@@ -53,8 +57,12 @@
     flex-grow: 1;
   }
 
-  &__hide-toggle {
+  &__info-link {
     padding: 0.5rem;
+  }
+
+  &__replying-to {
+    margin-bottom: 0.5rem;
   }
 
   &__body {

@@ -82,6 +82,9 @@ comments:
     moderator_info: (edited by a moderator %edited_at%)
     context.top_level_reply: Reply to %submission_title% by %submission_author%
     context.comment_reply: Reply to comment by %comment_author% in %submission_title% by %submission_author%
+    nested: Nested
+    linear: Linear
+    replying_to_comment: Replying to %user% (%id%)
 
 comment_form:
     comment: Comment
@@ -445,6 +448,9 @@ nav:
     jump_to_main_content: Jump to main content
     jump_to_sidebar: Jump to sidebar
     delete_this_account: Delete this account
+
+number:
+    id: '#%number%'
 
 placeholder:
     choose_one: Choose one…

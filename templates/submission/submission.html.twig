@@ -13,21 +13,40 @@
   <meta property="og:article:author" content="{{ submission.user.username }}">
 
   <link rel="canonical" href="{{ url('submission', {forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify}) }}">
-{% endblock %}
+{% endblock head %}
 
 {% block body %}
   {{ parent() }}
 
   {{ submission(submission, {show_body: true}) }}
 
-  <h2>{{ 'comments.comments'|trans }}</h2>
+  <header class="nav nav--guttered">
+    <h2>{{ 'comments.comments'|trans }}</h2>
+
+    <ul class="nav unlistify" role="navigation">
+      {% for view in ['nested', 'linear'] %}
+        <li>
+          <a href="{{ path('submission', { forum_name: forum.name, submission_id: submission.id, slug: submission.title|slugify, commentView: view }) }}"
+             class="tab {{ comment_view == view ? 'tab--active' }}">
+            {{- ('comments.'~view)|trans -}}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </header>
 
   {{ comment_form(submission) }}
 
   <div class="submission-comments">
-    {% for comment in submission.topLevelComments %}
-      {{ comment(comment, {recurse: true}) }}
-    {% endfor %}
+    {% if comment_view == 'nested' %}
+      {% for comment in submission.topLevelComments %}
+        {{ comment(comment, { recurse: true }) }}
+      {% endfor %}
+    {% else %}
+      {% for comment in submission.comments %}
+        {{ comment(comment, { post_numbers: true }) }}
+      {% endfor %}
+    {% endif %}
   </div>
 
   {% if submission.topLevelComments is empty %}
@@ -38,4 +57,4 @@
        data-comment-count="{{ submission.comments|length }}"
        data-submission-id="{{ submission.id }}"
        hidden></div>
-{% endblock %}
+{% endblock body %}

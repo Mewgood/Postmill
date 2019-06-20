@@ -1,9 +1,9 @@
 submission:
     controller: App\Controller\SubmissionController::submission
-    defaults: { slug: ~ }
-    path: /f/{forum_name}/{submission_id}/{slug}
+    defaults: { slug: ~, commentView: nested }
+    path: /f/{forum_name}/{submission_id}/{slug}/{commentView}
     methods: [GET]
-    requirements: { submission_id: "%number_regex%" }
+    requirements: { submission_id: "%number_regex%", commentView: nested|linear }
 
 submission_json:
     controller: App\Controller\SubmissionController::submissionJson
