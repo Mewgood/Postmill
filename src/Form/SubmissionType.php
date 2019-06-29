@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Forum;
+use App\Entity\Submission;
 use App\Form\Model\SubmissionData;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
@@ -54,9 +55,16 @@ final class SubmissionType extends AbstractType {
         $forum = $data->getForum();
 
         $builder
-            ->add('title', TextareaType::class)
-            ->add('url', UrlType::class, ['required' => false])
+            ->add('title', TextareaType::class, [
+                'max_chars' => Submission::MAX_TITLE_LENGTH,
+            ])
+            ->add('url', UrlType::class, [
+                // TODO: indicate that this check must be 8-bit
+                'max_chars' => Submission::MAX_URL_LENGTH,
+                'required' => false,
+            ])
             ->add('body', MarkdownType::class, [
+                'max_chars' => Submission::MAX_BODY_LENGTH,
                 'required' => false,
             ]);
 

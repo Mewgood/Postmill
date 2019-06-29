@@ -25,6 +25,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * })
  */
 class Submission extends Votable {
+    public const MAX_TITLE_LENGTH = 300;
+    public const MAX_URL_LENGTH = 2000;
+    public const MAX_BODY_LENGTH = 25000;
+
     public const VISIBILITY_VISIBLE = 'visible';
     public const VISIBILITY_DELETED = 'deleted';
 

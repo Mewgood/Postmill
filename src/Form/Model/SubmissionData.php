@@ -19,14 +19,14 @@ class SubmissionData {
 
     /**
      * @Assert\NotBlank(groups={"create", "edit"})
-     * @Assert\Length(max=300, groups={"create", "edit"})
+     * @Assert\Length(max=Submission::MAX_TITLE_LENGTH, groups={"create", "edit"})
      *
      * @var string|null
      */
     private $title;
 
     /**
-     * @Assert\Length(max=2000, charset="8bit", groups={"create", "edit"})
+     * @Assert\Length(max=Submission::MAX_URL_LENGTH, charset="8bit", groups={"create", "edit"})
      * @Assert\Url(protocols={"http", "https"}, groups={"create", "edit"})
      *
      * @see https://stackoverflow.com/questions/417142/
@@ -36,7 +36,7 @@ class SubmissionData {
     private $url;
 
     /**
-     * @Assert\Length(max=25000, groups={"create", "edit"})
+     * @Assert\Length(max=Submission::MAX_BODY_LENGTH, groups={"create", "edit"})
      *
      * @var string|null
      */

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Comment;
 use App\Entity\Forum;
 use App\Form\Model\CommentData;
 use App\Form\Type\HoneypotType;
@@ -44,6 +45,7 @@ final class CommentType extends AbstractType {
         }
 
         $builder->add('comment', MarkdownType::class, [
+            'max_chars' => Comment::MAX_BODY_LENGTH,
             'property_path' => 'body',
         ]);
 

@@ -18,6 +18,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * })
  */
 class Comment extends Votable {
+    public const MAX_BODY_LENGTH = 10000;
+
     /**
      * @ORM\Column(type="bigint")
      * @ORM\GeneratedValue(strategy="AUTO")

@@ -28,7 +28,7 @@ class CommentData {
     /**
      * @Assert\NotBlank(message="The comment must not be empty.")
      * @Assert\Regex("/[[:graph:]]/u", message="The comment must not be empty.")
-     * @Assert\Length(max=10000)
+     * @Assert\Length(max=Comment::MAX_BODY_LENGTH)
      *
      * @var string|null
      */

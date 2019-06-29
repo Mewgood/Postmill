@@ -17,6 +17,7 @@ import './fetch_titles';
 import './forms';
 import './markdown';
 import './relative-time';
+import './remaining';
 import './select2';
 import './subscribe';
 import './syntax';
