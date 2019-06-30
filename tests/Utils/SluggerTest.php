@@ -24,10 +24,10 @@ class SluggerTest extends TestCase {
         yield ['run-bin-console-server-run-to-start-the-application', 'Run `bin/console server:run` to start the application.'];
         yield ['one-two-three-four-five-six-seven-eight-nine-ten-eleven', 'one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen'];
         yield [str_repeat('a', 60), str_repeat('a', 60)];
-        yield ['', str_repeat('a', 61)];
+        yield ['-', str_repeat('a', 61)];
         yield ['foo-bar', 'foo∑bar'];
-        yield ['', '[]!@#$%^&*(){}/'];
+        yield ['-', '[]!@#$%^&*(){}/'];
         yield ['a-a', 'a🔥a'];
-        yield ['', ''];
+        yield ['-', ''];
     }
 }
