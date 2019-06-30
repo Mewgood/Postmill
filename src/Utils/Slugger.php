@@ -30,6 +30,10 @@ final class Slugger {
             $slug .= $add;
         }
 
+        if ($slug === '') {
+            return '-';
+        }
+
         return $slug;
     }
 }
