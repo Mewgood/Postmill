@@ -76,7 +76,7 @@ build-assets:prod:
         - curl -sS https://getcomposer.org/installer | php
         - php composer.phar install -n
         - bin/console doctrine:migrations:migrate -nq
-        - bin/console doctrine:fixtures:load -n
+        - bin/console doctrine:fixtures:load --append -n
     script:
         - find {config,public,src,tests} -type f -name '*.php' -print0 |
           xargs -0 -n1 -P4 php -l -n | (! grep -v "No syntax errors detected" )

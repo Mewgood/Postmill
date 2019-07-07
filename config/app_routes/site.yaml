@@ -1,0 +1,4 @@
+site_settings:
+    controller: App\Controller\SiteController::settings
+    methods: [GET, POST]
+    path: /site/settings

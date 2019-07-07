@@ -25,7 +25,7 @@ services:
             $fontsConfig: "%fonts_config%"
             $themesConfig: "%themes_config%"
             $secret: "%env(APP_SECRET)%"
-            $siteName: "%env(SITE_NAME)%"
+            $siteName: '@=service("App\\Repository\\SiteRepository").getCurrentSiteName()'
             $uploadRoot: "%env(resolve:UPLOAD_ROOT)%"
         public: false
 

@@ -10,9 +10,9 @@ services:
 
     App\Mailer\ResetPasswordMailer:
         arguments:
-            $siteName: "%env(SITE_NAME)%"
             $noReplyAddress: "%env(NO_REPLY_ADDRESS)%"
             $secret: "%env(APP_SECRET)%"
+            $siteName: Postmill
 
     App\Tests\Fixtures\:
         resource: '../tests/Fixtures'

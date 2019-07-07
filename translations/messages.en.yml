@@ -156,6 +156,7 @@ flash:
     delete_someone_elses_account_warning: You are deleting someone else's account! Once you do this, they will never, ever be able to get their account back.
     account_deletion_in_progress: The account is being deleted.
     too_many_characters: You entered too many characters (max %max%, %count% entered)
+    site_settings_saved: The settings have been saved.
 
 forum:
     moderators: Moderators
@@ -350,6 +351,7 @@ label:
     delete_account_confirmation: I understand there's no way of retrieving this account once it's gone.
     confirm_forum_name: Confirm forum name
     delete_forum_confirmation: I understand there's no way of reviving the data on this forum once it's gone.
+    site_name: Site name
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'
@@ -449,6 +451,7 @@ nav:
     jump_to_main_content: Jump to main content
     jump_to_sidebar: Jump to sidebar
     delete_this_account: Delete this account
+    site_settings: Site settings
 
 number:
     id: '#%number%'
@@ -573,6 +576,7 @@ title:
     hidden_forums: Hidden forums
     notifications: Notifications
     delete_account: Delete account
+    site_settings: Site settings
 
 user:
     submissions: Submissions

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'title.site_settings'|trans %}
+{% block sidebar ' ' %}
+{% block site_nav_active 'admin' %}
+{% block site_nav_main_menu_active 'site_settings' %}
+
+{% block body %}
+  <h1 class="page-heading">{{ block('title') }}</h1>
+
+  {{ form_start(form) }}
+    {{ form_rest(form) }}
+
+    <div class="form__row form__button-row">
+      <button class="button">{{ 'action.save'|trans }}</button>
+    </div>
+  {{ form_end(form) }}
+{% endblock body %}

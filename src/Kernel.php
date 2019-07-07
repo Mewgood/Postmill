@@ -53,6 +53,9 @@ class Kernel extends BaseKernel implements HttpCacheProvider {
 
     protected function configureRoutes(RouteCollectionBuilder $routes) {
         $confDir = $this->getProjectDir().'/config';
+        if (is_dir($confDir.'/app_routes/')) {
+            $routes->import($confDir.'/app_routes/*'.self::CONFIG_EXTS, '/', 'glob');
+        }
         if (is_dir($confDir.'/routes/')) {
             $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
         }
