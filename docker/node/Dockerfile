@@ -1,6 +1,8 @@
 FROM node:10-alpine
 
 RUN set -ex && \
-    apk --no-cache add git
+    apk --no-cache add \
+        curl \
+        git
 
 WORKDIR /app

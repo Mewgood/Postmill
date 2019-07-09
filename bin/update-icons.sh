@@ -15,9 +15,12 @@ OUT="$PROJECT_ROOT/assets/icons/icons.svg"
 
 trap 'rm -rf "$TEMP"' EXIT
 
-fontello-cli install --config "$PROJECT_ROOT/assets/fontello.json" --font "$TEMP" --css "$TEMP"
+SESSION_ID=$(curl -fsSL -X POST -F "config=@$PROJECT_ROOT/assets/fontello.json" http://fontello.com/)
+TEMP_ZIP=$(mktemp)
+curl -fsSL -o "$TEMP_ZIP" "http://fontello.com/$SESSION_ID/get"
+unzip -jn "$TEMP_ZIP" -d "$TEMP"
+
 font-blast "$TEMP/postmill.svg" "$TEMP"
-#cp "$PROJECT_ROOT"/assets/icons/*.svg "$TEMP/svg"
 
 # no webpack svg sprite loaders, they suck and don't work
 echo '<svg xmlns="http://www.w3.org/2000/svg"

@@ -5,7 +5,6 @@
         "babel-eslint": "^10.0.2",
         "eslint": "^6.0.1",
         "font-blast": "^0.7.0",
-        "fontello-cli": "git+https://git@gitlab.com/postmill/fontello-cli.git",
         "less": "^3.9.0",
         "less-loader": "^4.1.0"
     },
