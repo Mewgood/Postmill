@@ -16,7 +16,7 @@ function inputHandler() {
     if (characterCount > maxCharacters) {
         const message = translator.trans('flash.too_many_characters', {
             count: characterCount,
-            max: maxCharacters
+            max: maxCharacters,
         });
 
         this.setCustomValidity(message);
@@ -25,8 +25,6 @@ function inputHandler() {
     }
 }
 
-$(() => {
-    $('[data-max-characters]')
-        .each(inputHandler)
-        .on('input', inputHandler);
-});
+$('[data-max-characters]')
+    .each(inputHandler)
+    .on('input', inputHandler);

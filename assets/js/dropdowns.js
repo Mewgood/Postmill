@@ -1,5 +1,3 @@
-'use strict';
-
 import $ from 'jquery';
 
 const KEY_ESC = 27;
@@ -59,7 +57,7 @@ function globalKeyDownHandler(event) {
 
     const $dropdown = $('.dropdown--expanded');
 
-    if ($dropdown.length == 0) {
+    if ($dropdown.length === 0) {
         return;
     }
 

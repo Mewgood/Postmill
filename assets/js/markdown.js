@@ -1,8 +1,5 @@
-'use strict';
-
-import debounce from 'lodash.debounce';
-// noinspection NpmUsedModulesInstalled
-import Routing from 'fosjsrouting';
+import { debounce } from 'lodash';
+import routing from 'fosjsrouting';
 import translator from 'bazinga-translator';
 import $ from 'jquery';
 
@@ -10,7 +7,7 @@ function createPreview() {
     const $input = $(this);
 
     $.ajax({
-        url: Routing.generate('markdown_preview'),
+        url: routing.generate('markdown_preview'),
         method: 'POST',
         dataType: 'html',
         data: { markdown: $input.val() },

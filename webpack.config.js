@@ -2,10 +2,13 @@
 
 const Encore = require('@symfony/webpack-encore');
 const fs = require('fs');
-const merge = require('webpack-merge');
 
 Encore
     .addEntry('main', './assets/js/main.js')
+    .addExternals({
+        'bazinga-translator': 'Translator',
+        'fosjsrouting': 'Routing',
+    })
     .cleanupOutputBeforeBuild()
     .copyFiles({
         from: './assets/icons',
@@ -22,7 +25,7 @@ Encore
     .createSharedEntry('vendor', './assets/js/vendor.js');
 
 (function addStyleEntrypoints(directory, prefix) {
-    fs.readdirSync(directory, { withFileTypes: true }).forEach(function (file) {
+    fs.readdirSync(directory, { withFileTypes: true }).forEach((file) => {
         if (file.name[0] !== '_') {
             const filePath = directory + '/' + file.name;
 
@@ -39,8 +42,4 @@ Encore
     });
 })(__dirname + '/assets/css', '');
 
-module.exports = merge(Encore.getWebpackConfig(), {
-    externals: {
-        "fosjsrouting": "Routing",
-    },
-});
+module.exports = Encore.getWebpackConfig();

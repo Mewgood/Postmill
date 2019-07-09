@@ -1,5 +1,3 @@
-'use strict';
-
 import $ from 'jquery';
 import { distanceInWords, distanceInWordsToNow, isBefore } from 'date-fns';
 import Translator from 'bazinga-translator';
@@ -49,13 +47,11 @@ function loadLocaleAndMakeTimesRelative(lang) {
     });
 }
 
-$(function () {
-    const locale = $(':root').attr('lang');
+const locale = $(':root').attr('lang');
 
-    if (!locale || locale === 'en') {
-        // english is the default, always-loaded locale
-        makeTimesRelative();
-    } else {
-        loadLocaleAndMakeTimesRelative(locale);
-    }
-});
+if (!locale || locale === 'en') {
+    // english is the default, always-loaded locale
+    makeTimesRelative();
+} else {
+    loadLocaleAndMakeTimesRelative(locale);
+}

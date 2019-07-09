@@ -1,5 +1,3 @@
-'use strict';
-
 import $ from 'jquery';
 import translator from 'bazinga-translator';
 
@@ -102,12 +100,10 @@ function vote($form, isUp) {
     });
 }
 
-$(function () {
-    $(document)
-        .on('submit', '.user-logged-in .vote', event => event.preventDefault())
-        .on('click', '.user-logged-in .vote__button', function () {
-            const $form = $(this).parents('.vote');
+$(document)
+    .on('submit', '.user-logged-in .vote', event => event.preventDefault())
+    .on('click', '.user-logged-in .vote__button', function () {
+        const $form = $(this).parents('.vote');
 
-            vote($form, $(this).hasClass('vote__up'));
-        });
-});
+        vote($form, $(this).hasClass('vote__up'));
+    });

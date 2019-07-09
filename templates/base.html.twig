@@ -11,6 +11,12 @@
     <link rel="apple-touch-icon-precomposed" href="{{ asset('apple-touch-icon-precomposed.png') }}">
     <link rel="search" type="application/opensearchdescription+xml" href="{{ path('opensearch_description') }}" title="{{ site_name() }}">
 
+    {% cspscript %}
+      <script>
+        document.documentElement.classList.replace('no-js', 'js');
+      </script>
+    {% endcspscript %}
+
     {% block stylesheets %}
       {{ include('_includes/stylesheets.html.twig', with_context=false) }}
     {% endblock stylesheets %}
@@ -80,27 +86,33 @@
     {% endblock site_footer %}
 
     {% block javascripts %}
+      <script src="{{ preload(asset('bundles/bazingajstranslation/js/translator.min.js', 'static_asset')) }}"></script>
       <script src="{{ preload(asset('bundles/fosjsrouting/js/router.js', 'static_asset')) }}"></script>
-
-      {% if app.environment != 'dev' or app.request.query.has('static_assets') %}
-        <script src="{{ preload(asset('js/routing.js', 'static_asset')) }}"></script>
-      {% else %}
-        <script src="{{ path('fos_js_routing_js', {callback: 'fos.Router.setData'}) }}"></script>
-      {% endif %}
-
-      {{ encore_entry_script_tags('main') }}
 
       {% if app.environment != 'dev' or app.request.query.has('static_assets') %}
         <script src="{{ preload(asset('js/translations/config.js', 'static_asset')) }}"></script>
         <script src="{{ preload(asset('js/translations/%s.js'|format(app.request.locale), 'static_asset')) }}"></script>
+        <script src="{{ preload(asset('js/routing.js', 'static_asset')) }}"></script>
       {% else %}
         <script src="{{ path('bazinga_jstranslation_js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
       {% endif %}
 
       {% if app.request.locale != 'en' %}
         {# load fallback locale #}
         <script src="{{ preload(asset('js/translations/en.js', 'static_asset')) }}"></script>
       {% endif %}
+
+      {{ encore_entry_script_tags('main') }}
+
+      {# restore no-js if scripts failed to load #}
+      {% cspscript %}
+        <script>
+          if (!window.$ || !window.Translator || !window.Routing) {
+            document.documentElement.classList.replace('js', 'no-js');
+          }
+        </script>
+      {% endcspscript %}
     {% endblock javascripts %}
   </body>
 </html>

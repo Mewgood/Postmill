@@ -1,5 +1,3 @@
-'use strict';
-
 import $ from 'jquery';
 
 $(document).on('click', '.site-alerts__alert', function () {
