@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e4c585b28f0c9effe23e808e1cf2920",
+    "content-hash": "a16e12594f5286aec871e1b162259518",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2309,34 +2309,35 @@
         },
         {
             "name": "league/commonmark",
-            "version": "0.18.5",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "f94e18d68260f43a7d846279cad88405854b1306"
+                "reference": "7a40f2b0931602c504c2a9692d9f1e33635fd5ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/f94e18d68260f43a7d846279cad88405854b1306",
-                "reference": "f94e18d68260f43a7d846279cad88405854b1306",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/7a40f2b0931602c504c2a9692d9f1e33635fd5ef",
+                "reference": "7a40f2b0931602c504c2a9692d9f1e33635fd5ef",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": ">=5.6.5"
+                "php": "^7.1"
             },
             "replace": {
                 "colinodell/commonmark-php": "*"
             },
             "require-dev": {
                 "cebe/markdown": "~1.0",
-                "commonmark/commonmark.js": "0.28",
+                "commonmark/commonmark.js": "0.29.0",
                 "erusev/parsedown": "~1.0",
                 "michelf/php-markdown": "~1.4",
-                "mikehaertl/php-shellcommand": "^1.2",
-                "phpunit/phpunit": "^5.7.27|^6.5.14",
-                "scrutinizer/ocular": "^1.1",
-                "symfony/finder": "^3.0|^4.0"
+                "mikehaertl/php-shellcommand": "^1.4",
+                "phpstan/phpstan-shim": "^0.11.5",
+                "phpunit/phpunit": "^7.5",
+                "scrutinizer/ocular": "^1.5",
+                "symfony/finder": "^4.2"
             },
             "suggest": {
                 "league/commonmark-extras": "Library of useful extensions including smart punctuation"
@@ -2347,12 +2348,12 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.19-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "League\\CommonMark\\": "src/"
+                    "League\\CommonMark\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2368,13 +2369,74 @@
                 }
             ],
             "description": "PHP Markdown parser based on the CommonMark spec",
-            "homepage": "https://github.com/thephpleague/commonmark",
+            "homepage": "https://commonmark.thephpleague.com",
             "keywords": [
                 "commonmark",
                 "markdown",
                 "parser"
             ],
-            "time": "2019-03-28T13:52:31+00:00"
+            "time": "2019-06-29T11:19:01+00:00"
+        },
+        {
+            "name": "league/commonmark-ext-strikethrough",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/commonmark-ext-strikethrough.git",
+                "reference": "99892ad549e101fe1fbe424ff71224efc32d2d68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/commonmark-ext-strikethrough/zipball/99892ad549e101fe1fbe424ff71224efc32d2d68",
+                "reference": "99892ad549e101fe1fbe424ff71224efc32d2d68",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "league/commonmark": "^1.0",
+                "php": "^7.1"
+            },
+            "replace": {
+                "uafrica/commonmark-ext": ">=0.1.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5"
+            },
+            "type": "commonmark-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\CommonMark\\Ext\\Strikethrough\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colin O'Dell",
+                    "email": "colinodell@gmail.com"
+                },
+                {
+                    "name": "Johan Meiring",
+                    "email": "johan@uafrica.com"
+                }
+            ],
+            "description": "Strikethrough support for the PHP League's CommonMark Markdown parser",
+            "homepage": "https://github.com/thephpleague/commonmark-ext-strikethrough",
+            "keywords": [
+                "commonmark",
+                "extension",
+                "markdown",
+                "strikeout",
+                "strikethrough"
+            ],
+            "time": "2019-06-29T11:34:00+00:00"
         },
         {
             "name": "league/flysystem",
@@ -8246,32 +8308,33 @@
         },
         {
             "name": "webuni/commonmark-table-extension",
-            "version": "0.9.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webuni/commonmark-table-extension.git",
-                "reference": "94bc98d802d0b706e748716854e5fa0bd3644df3"
+                "reference": "9b976a59d50586b7334d63d3383d325f2576990f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webuni/commonmark-table-extension/zipball/94bc98d802d0b706e748716854e5fa0bd3644df3",
-                "reference": "94bc98d802d0b706e748716854e5fa0bd3644df3",
+                "url": "https://api.github.com/repos/webuni/commonmark-table-extension/zipball/9b976a59d50586b7334d63d3383d325f2576990f",
+                "reference": "9b976a59d50586b7334d63d3383d325f2576990f",
                 "shasum": ""
             },
             "require": {
-                "league/commonmark": "^0.16|^0.17|^0.18",
-                "php": "^5.6|^7.0"
+                "league/commonmark": "~0.19.3|^1.0",
+                "php": "^7.1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.9",
-                "phpunit/phpunit": "^5.4|^6.0",
-                "symfony/var-dumper": "^3.0|^4.0",
-                "vimeo/psalm": "~0.3"
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "phpstan/phpstan": "~0.11",
+                "phpunit/phpunit": "^7.0|^8.0",
+                "symfony/var-dumper": "^4.0",
+                "vimeo/psalm": "^3.0"
             },
-            "type": "library",
+            "type": "commonmark-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.9-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
@@ -8300,7 +8363,7 @@
                 "markdown",
                 "table"
             ],
-            "time": "2018-11-28T11:29:11+00:00"
+            "time": "2019-07-09T13:34:17+00:00"
         },
         {
             "name": "white-october/pagerfanta-bundle",

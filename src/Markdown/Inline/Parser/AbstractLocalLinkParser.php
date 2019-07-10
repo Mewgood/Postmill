@@ -3,13 +3,13 @@
 namespace App\Markdown\Inline\Parser;
 
 use League\CommonMark\Inline\Element\Link;
-use League\CommonMark\Inline\Parser\AbstractInlineParser;
 use League\CommonMark\InlineParserContext;
+use League\CommonMark\Inline\Parser\InlineParserInterface;
 
 /**
  * Parses links like /u/foo, w/bar, etc.
  */
-abstract class AbstractLocalLinkParser extends AbstractInlineParser {
+abstract class AbstractLocalLinkParser implements InlineParserInterface {
     /**
      * Return a single-character prefix.
      *
@@ -31,19 +31,19 @@ abstract class AbstractLocalLinkParser extends AbstractInlineParser {
     /**
      * {@inheritdoc}
      */
-    final public function getCharacters() {
+    final public function getCharacters(): array {
         return ['/', $this->getPrefix()];
     }
 
     /**
      * {@inheritdoc}
      */
-    final public function parse(InlineParserContext $inlineContext) {
+    final public function parse(InlineParserContext $inlineContext): bool {
         $cursor = $inlineContext->getCursor();
 
         $previousChar = $cursor->peek(-1);
 
-        if (!ctype_space($previousChar) && $previousChar !== null) {
+        if ($previousChar !== null && !\ctype_space($previousChar)) {
             return false;
         }
 

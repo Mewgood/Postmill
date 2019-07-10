@@ -5,9 +5,8 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Event\MarkdownCacheEvent;
 use App\Event\MarkdownInitEvent;
-use App\Events;
 use App\Markdown\AppExtension;
-use League\CommonMark\Extension\CommonMarkCoreExtension;
+use League\CommonMark\Ext\Strikethrough\StrikethroughExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webuni\CommonMark\TableExtension\TableExtension;
@@ -37,18 +36,19 @@ final class MarkdownListener implements EventSubscriberInterface {
 
     public static function getSubscribedEvents() {
         return [
-            Events::MARKDOWN_INIT => ['onMarkdownInit'],
-            Events::MARKDOWN_CACHE => ['onMarkdownCache'],
+            MarkdownInitEvent::class => ['onMarkdownInit'],
+            MarkdownCacheEvent::class => ['onMarkdownCache'],
         ];
     }
 
     public function onMarkdownInit(MarkdownInitEvent $event) {
-        $event->addExtension(new CommonMarkCoreExtension());
-        $event->addExtension(new TableExtension());
-        $event->addExtension($this->appExtension);
-
-        $event->addCommonMarkConfig([
+        $environment = $event->getEnvironment();
+        $environment->addExtension($this->appExtension);
+        $environment->addExtension(new StrikethroughExtension());
+        $environment->addExtension(new TableExtension());
+        $environment->mergeConfig([
             'html_input' => 'escape',
+            'max_nesting_level' => 25,
         ]);
 
         $event->addHtmlPurifierConfig([

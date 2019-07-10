@@ -4,7 +4,6 @@ namespace App\Markdown;
 
 use App\Event\MarkdownCacheEvent;
 use App\Event\MarkdownInitEvent;
-use App\Events;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
 use Psr\Cache\CacheItemPoolInterface;
@@ -33,20 +32,12 @@ class MarkdownConverter {
     }
 
     public function convertToHtml(string $markdown, array $context = []): string {
-        $event = new MarkdownInitEvent($context);
+        $environment = Environment::createCommonMarkEnvironment();
+        $event = new MarkdownInitEvent($environment, $context);
 
-        $this->dispatcher->dispatch($event, Events::MARKDOWN_INIT);
+        $this->dispatcher->dispatch($event);
 
-        $commonMarkEnvironment = new Environment();
-
-        foreach ($event->getExtensions() as $extension) {
-            $commonMarkEnvironment->addExtension($extension);
-        }
-
-        $commonMarkConverter = new CommonMarkConverter(
-            $event->getCommonMarkConfig(),
-            $commonMarkEnvironment
-        );
+        $commonMarkConverter = new CommonMarkConverter([], $environment);
 
         $purifierConfig = \HTMLPurifier_Config::create($event->getHtmlPurifierConfig());
         $purifier = new \HTMLPurifier($purifierConfig);
@@ -60,7 +51,7 @@ class MarkdownConverter {
     public function convertToHtmlCached(string $markdown, array $context = []): string {
         $event = new MarkdownCacheEvent($context);
 
-        $this->dispatcher->dispatch($event, Events::MARKDOWN_CACHE);
+        $this->dispatcher->dispatch($event);
 
         $key = sprintf(
             'cached_markdown.%s.%s',

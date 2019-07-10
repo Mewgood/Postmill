@@ -2,10 +2,15 @@
 
 namespace App\Markdown;
 
-use League\CommonMark\Extension\Extension;
+use App\Markdown\Inline\Parser\CategoryLinkParser;
+use App\Markdown\Inline\Parser\ForumLinkParser;
+use App\Markdown\Inline\Parser\UserLinkParser;
+use App\Markdown\Inline\Parser\WikiLinkParser;
+use League\CommonMark\ConfigurableEnvironmentInterface;
+use League\CommonMark\Extension\ExtensionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class AppExtension extends Extension {
+final class AppExtension implements ExtensionInterface {
     /**
      * @var UrlGeneratorInterface
      */
@@ -15,25 +20,10 @@ class AppExtension extends Extension {
         $this->urlGenerator = $urlGenerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getInlineParsers() {
-        return [
-            new Inline\Parser\CategoryLinkParser($this->urlGenerator),
-            new Inline\Parser\ForumLinkParser($this->urlGenerator),
-            new Inline\Parser\UserLinkParser($this->urlGenerator),
-            new Inline\Parser\WikiLinkParser($this->urlGenerator),
-            new Inline\Parser\StrikethroughParser(),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getInlineRenderers() {
-        return [
-            Inline\Element\Strikethrough::class => new Inline\Renderer\StrikethroughRenderer(),
-        ];
+    public function register(ConfigurableEnvironmentInterface $environment): void {
+        $environment->addInlineParser(new CategoryLinkParser($this->urlGenerator));
+        $environment->addInlineParser(new ForumLinkParser($this->urlGenerator));
+        $environment->addInlineParser(new UserLinkParser($this->urlGenerator));
+        $environment->addInlineParser(new WikiLinkParser($this->urlGenerator));
     }
 }

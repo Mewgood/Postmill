@@ -26,7 +26,8 @@
         "friendsofsymfony/jsrouting-bundle": "^2.1",
         "gregwar/captcha": "^1.1",
         "gregwar/captcha-bundle": "^2.0.4",
-        "league/commonmark": "^0.18.1",
+        "league/commonmark": "^1.0",
+        "league/commonmark-ext-strikethrough": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "liip/imagine-bundle": "^2.1.0",
         "nelmio/security-bundle": "^2.7",
@@ -64,7 +65,7 @@
         "symfony/yaml": "^4.0",
         "twig/extensions": "^1.4",
         "twig/twig": "^2.0",
-        "webuni/commonmark-table-extension": "^0.9.0",
+        "webuni/commonmark-table-extension": "^1.0",
         "white-october/pagerfanta-bundle": "^1.0",
         "willdurand/js-translation-bundle": "^2.6"
     },

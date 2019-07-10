@@ -6,8 +6,10 @@ use App\Entity\User;
 use App\Event\MarkdownInitEvent;
 use App\EventListener\MarkdownListener;
 use App\Markdown\AppExtension;
+use League\CommonMark\ConfigurableEnvironmentInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -29,17 +31,22 @@ class MarkdownListenerTest extends TestCase {
             ->method('getToken')
             ->willReturn($token);
 
-        /* @var AppExtension|MockObject $extension */
-        $extension = $this->createMock(AppExtension::class);
+        /** @var ConfigurableEnvironmentInterface|MockObject $environment */
+        $environment = $this->createMock(ConfigurableEnvironmentInterface::class);
+
+        /** @var UrlGeneratorInterface|MockObject $urlGenerator */
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+
+        $extension = new AppExtension($urlGenerator);
 
         $listener = new MarkdownListener($extension, $tokenStorage);
 
-        $event = new MarkdownInitEvent([]);
+        $event = new MarkdownInitEvent($environment, []);
         $listener->onMarkdownInit($event);
         $this->assertArrayHasKey('HTML.TargetBlank', $event->getHtmlPurifierConfig());
         $this->assertTrue($event->getHtmlPurifierConfig()['HTML.TargetBlank']);
 
-        $event = new MarkdownInitEvent([]);
+        $event = new MarkdownInitEvent($environment, []);
         $listener->onMarkdownInit($event);
         $this->assertArrayNotHasKey('HTML.TargetBlank', $event->getHtmlPurifierConfig());
     }

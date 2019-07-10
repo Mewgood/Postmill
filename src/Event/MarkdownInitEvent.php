@@ -2,26 +2,32 @@
 
 namespace App\Event;
 
+use League\CommonMark\ConfigurableEnvironmentInterface;
 use League\CommonMark\Extension\Extension;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class MarkdownInitEvent extends Event {
     /**
+     * @var ConfigurableEnvironmentInterface
+     */
+    private $environment;
+
+    /**
      * @var string[]
      */
     private $context;
-
-    /**
-     * @var Extension[]
-     */
-    private $extensions = [];
 
     private $commonMarkConfig = [];
 
     private $htmlPurifierConfig = [];
 
-    public function __construct(array $context) {
+    public function __construct(ConfigurableEnvironmentInterface $environment, array $context) {
+        $this->environment = $environment;
         $this->context = $context;
+    }
+
+    public function getEnvironment(): ConfigurableEnvironmentInterface {
+        return $this->environment;
     }
 
     /**
@@ -29,25 +35,6 @@ final class MarkdownInitEvent extends Event {
      */
     public function getContext(): array {
         return $this->context;
-    }
-
-    /**
-     * @return Extension[]
-     */
-    public function getExtensions(): array {
-        return $this->extensions;
-    }
-
-    public function addExtension(Extension $extension): void {
-        $this->extensions[] = $extension;
-    }
-
-    public function getCommonMarkConfig(): array {
-        return $this->commonMarkConfig;
-    }
-
-    public function addCommonMarkConfig(array $config): void {
-        $this->commonMarkConfig = array_replace($this->commonMarkConfig, $config);
     }
 
     public function getHtmlPurifierConfig(): array {
