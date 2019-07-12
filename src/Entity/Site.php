@@ -27,6 +27,13 @@ class Site {
      */
     private $siteName;
 
+    /**
+     * @ORM\Column(type="boolean")
+     *
+     * @var bool
+     */
+    private $imageUploadingAllowed = false;
+
     public function getId(): UuidInterface {
         return $this->id;
     }
@@ -37,5 +44,13 @@ class Site {
 
     public function setSiteName(string $siteName): void {
         $this->siteName = $siteName;
+    }
+
+    public function isImageUploadingAllowed(): bool {
+        return $this->imageUploadingAllowed;
+    }
+
+    public function setImageUploadingAllowed(bool $imageUploadingAllowed): void {
+        $this->imageUploadingAllowed = $imageUploadingAllowed;
     }
 }

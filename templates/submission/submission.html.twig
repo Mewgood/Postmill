@@ -27,7 +27,7 @@
       {% for view in ['nested', 'linear'] %}
         <li>
           <a href="{{ path('submission', { forum_name: forum.name, submission_id: submission.id, slug: submission.title|slugify, commentView: view }) }}"
-             class="tab {{ comment_view == view ? 'tab--active' }}">
+             class="discreet-tab {{ comment_view == view ? 'discreet-tab--active' }}">
             {{- ('comments.'~view)|trans -}}
           </a>
         </li>

@@ -352,6 +352,9 @@ label:
     confirm_forum_name: Confirm forum name
     delete_forum_confirmation: I understand there's no way of reviving the data on this forum once it's gone.
     site_name: Site name
+    image: Image
+    media_type: Media type
+    allow_image_uploads: Allow image uploads
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'

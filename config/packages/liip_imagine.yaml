@@ -1,4 +1,7 @@
 services:
+    League\Flysystem\FilesystemInterface $submissionImages: '@postmill.submission_images'
+    League\Flysystem\FilesystemInterface $submissionThumbnails: '@postmill.submission_thumbnails'
+
     postmill.submission_images:
         class: League\Flysystem\FilesystemInterface
         factory: [App\Flysystem\DsnAwareFilesystemFactory, createFilesystem]

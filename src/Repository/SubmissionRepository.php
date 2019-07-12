@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Submission;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SubmissionRepository extends ServiceEntityRepository {
@@ -13,11 +12,6 @@ class SubmissionRepository extends ServiceEntityRepository {
      * @var AuthorizationCheckerInterface
      */
     private $authorizationChecker;
-
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
 
     public function __construct(
         ManagerRegistry $registry,
@@ -56,5 +50,20 @@ class SubmissionRepository extends ServiceEntityRepository {
                 ->getQuery()
                 ->getResult();
         }
+    }
+
+    public function findRemovableImages(array $images): array {
+        if (!$images) {
+            return [];
+        }
+
+        $nonRemovable = $this->createQueryBuilder('s')
+            ->select('s.image')
+            ->where('s.image IN (?1)')
+            ->setParameter(1, $images)
+            ->getQuery()
+            ->execute();
+
+        return \array_diff($images, \array_column($nonRemovable, 'image'));
     }
 }

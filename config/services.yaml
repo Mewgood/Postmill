@@ -21,6 +21,7 @@ services:
         autoconfigure: true
         autowire: true
         bind:
+            $batchSize: "%env(BATCH_SIZE)%"
             $defaultLocale: "%env(APP_LOCALE)%"
             $fontsConfig: "%fonts_config%"
             $themesConfig: "%themes_config%"
@@ -67,12 +68,8 @@ services:
     App\Markdown\MarkdownConverter:
         $cacheItemPool: "@cache.markdown"
 
-    App\MessageHandler\AddSubmissionImageHandler:
-        $filesystem: "@postmill.submission_images"
+    App\Message\Handler\DownloadSubmissionImageHandler:
         $httpClient: "@eight_points_guzzle.client.submission_image_client"
-
-    App\MessageHandler\DeleteUserHandler:
-        $batchSize: "%env(BATCH_SIZE)%"
 
     App\Security\AuthenticationHelper:
         $rememberMeServices: "@security.authentication.rememberme.services.simplehash.main"

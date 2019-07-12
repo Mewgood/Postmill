@@ -2,13 +2,13 @@
 
 namespace App\EventListener;
 
-use App\Events;
+use App\Event\NewCommentEvent;
+use App\Event\NewSubmissionEvent;
 use App\Markdown\MarkdownConverter;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -43,8 +43,8 @@ class MentionsListener implements EventSubscriberInterface {
 
     public static function getSubscribedEvents() {
         return [
-            Events::NEW_COMMENT => ['onNewComment'],
-            Events::NEW_SUBMISSION => ['onNewSubmission'],
+            NewCommentEvent::class => ['onNewComment'],
+            NewSubmissionEvent::class => ['onNewSubmission'],
         ];
     }
 
@@ -62,9 +62,8 @@ class MentionsListener implements EventSubscriberInterface {
         $this->users = $users;
     }
 
-    public function onNewSubmission(GenericEvent $event) {
-        /* @var \App\Entity\Submission $submission */
-        $submission = $event->getSubject();
+    public function onNewSubmission(NewSubmissionEvent $event) {
+        $submission = $event->getSubmission();
 
         if ($submission->getBody() === null) {
             return;
@@ -84,9 +83,8 @@ class MentionsListener implements EventSubscriberInterface {
         $this->manager->flush();
     }
 
-    public function onNewComment(GenericEvent $event) {
-        /* @var \App\Entity\Comment $comment */
-        $comment = $event->getSubject();
+    public function onNewComment(NewCommentEvent $event) {
+        $comment = $event->getComment();
 
         if ($comment->getBody() === null) {
             return;

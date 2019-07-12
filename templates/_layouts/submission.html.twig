@@ -3,6 +3,8 @@
   {%- from '_macros/time.html.twig' import relative_time, relative_time_diff -%}
   {%- from 'vote/_macros.html.twig' import vote -%}
   {%- set open_external = submission.url is not empty and open_external_links_in_new_tab -%}
+  {%- set has_thumbnail = submission.image and show_thumbnails and not
+    (show_body and submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE')) -%}
   <article class="{{ block('submission_classes') }}">
     <div class="submission__row">
 
@@ -13,7 +15,7 @@
                class="submission__link"
                rel="{{ submission.url ? 'nofollow noreferrer noopener' }}"
                target="{{ open_external ? '_blank' : '_self' }}">
-              {%- if submission.image and show_thumbnails -%}
+              {%- if has_thumbnail -%}
                 <img src="{{ submission.image|imagine_filter('submission_thumbnail_1x') }}"
                      srcset="{{ submission.image|imagine_filter('submission_thumbnail_2x') }} 2x"
                      class="submission__thumb"
@@ -87,6 +89,14 @@
               {%- endif -%}
             </div>
           {% endif %}
+
+          {% if submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image %}
+            <a href="{{ upload_url('submission_images/'~submission.image) }}"
+               class="submission__image-link"
+               target="{{ open_external ? '_blank' : '_self' }}">
+              <img src="{{ upload_url('submission_images/'~submission.image) }}" alt="" class="submission__image">
+            </a>
+          {% endif %}
         {%- endif -%}
 
         <nav class="submission__nav">
@@ -106,6 +116,8 @@
 {%- block submission_url -%}
   {%- if submission.url -%}
     {{- submission.url -}}
+  {%- elseif submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image -%}
+    {{- upload_url('submission_images/'~submission.image) -}}
   {%- else -%}
     {{- path('submission', { forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify }) -}}
   {%- endif -%}
@@ -118,7 +130,7 @@
   {{ not show_body ? 'submission--collapsed' : 'submission--expanded' }}
   {{ submission.sticky ? 'submission--sticky' }}
   {{ submission.locked ? 'submission--locked' }}
-  {{ submission.image and show_thumbnails ? 'submission--has-image' }}
+  {{ has_thumbnail ? 'submission--has-thumbnail' }}
   submission--visibility-{{ submission.visibility }}
 {% endblock submission_classes %}
 

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace App\Controller;
 
@@ -7,8 +7,8 @@ use App\Entity\Forum;
 use App\Entity\ForumLogCommentDeletion;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Event\EntityModifiedEvent;
-use App\Events;
+use App\Event\EditCommentEvent;
+use App\Event\NewCommentEvent;
 use App\Form\CommentType;
 use App\Form\Model\CommentData;
 use App\Repository\CommentRepository;
@@ -17,7 +17,6 @@ use App\Utils\Slugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -112,8 +111,8 @@ final class CommentController extends AbstractController {
             $this->entityManager->persist($reply);
             $this->entityManager->flush();
 
-            $event = new GenericEvent($reply);
-            $this->eventDispatcher->dispatch(Events::NEW_COMMENT, $event);
+            $event = new NewCommentEvent($reply);
+            $this->eventDispatcher->dispatch($event);
 
             return $this->redirectToRoute('comment', [
                 'forum_name' => $forum->getName(),
@@ -156,8 +155,7 @@ final class CommentController extends AbstractController {
 
             $this->entityManager->flush();
 
-            $event = new EntityModifiedEvent($before, $comment);
-            $this->eventDispatcher->dispatch($event, Events::EDIT_COMMENT);
+            $this->eventDispatcher->dispatch(new EditCommentEvent($before, $comment));
 
             return $this->redirectToRoute('comment', [
                 'forum_name' => $forum->getName(),

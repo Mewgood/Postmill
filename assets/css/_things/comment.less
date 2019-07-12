@@ -80,7 +80,7 @@
     margin-bottom: 0;
   }
 
-  .hideable__checkbox:checked ~ &__row &__header {
+  .hideable__checkbox:not(:checked) ~ &__row &__header {
     background-image: repeating-linear-gradient(-45deg,
       var(--bg-grey),
       var(--bg-grey) 0.5rem,
@@ -89,7 +89,7 @@
     );
   }
 
-  .hideable__checkbox:checked ~ &__row &__info {
+  .hideable__checkbox:not(:checked) ~ &__row &__info {
     padding-left: @vote-width;
   }
 

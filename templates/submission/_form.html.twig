@@ -1,7 +1,41 @@
 {{ form_start(form, {attr: {class: (app.user.autoFetchSubmissionTitles ?? true) ? 'auto-fetch-submission-titles'}}) }}
   {{ form_errors(form) }}
 
-  {{ form_row(form.url, {attr: {class: 'fetch-title'}}) }}
+  {% if form.image is defined %}
+    <div class="form-tabs">
+      {% apply spaceless %}
+        {{ form_widget(form.mediaType.url, {
+          attr: { class: 'form-tabs__checkbox hidden', 'data-for': 0 },
+          unstyled: true,
+        }) }}
+
+        {{ form_label(form.mediaType.url, null, {
+          label_attr: { class: 'discreet-tab form-tabs__tab' },
+          show_required_indicator: false,
+        }) }}
+
+        {{ form_widget(form.mediaType.image, {
+          attr: { class: 'form-tabs__checkbox hidden', 'data-for': 1 },
+          unstyled: true,
+        }) }}
+
+        {{ form_label(form.mediaType.image, null, {
+          label_attr: { class: 'discreet-tab form-tabs__tab' },
+          show_required_indicator: false,
+        }) }}
+      {% endapply %}
+
+      <div class="form-tabs__content" data-id="0">
+        {{ form_row(form.url, { label_attr: { hidden: true }, attr: { class: 'fetch-title' }}) }}
+      </div>
+
+      <div class="form-tabs__content" data-id="1">
+        {{ form_row(form.image, { label_attr: { hidden: true }}) }}
+      </div>
+    </div>
+  {% elseif form.url is defined %}
+    {{ form_row(form.url, { attr: { class: 'fetch-title' }}) }}
+  {% endif %}
 
   {{ form_row(form.title, {attr: {rows: 3, class: 'receive-title'}}) }}
 

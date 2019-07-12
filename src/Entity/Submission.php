@@ -22,9 +22,14 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     @ORM\Index(name="submissions_net_score_id_idx", columns={"net_score", "id"}),
  *     @ORM\Index(name="submissions_search_idx", columns={"search_doc"}),
  *     @ORM\Index(name="submissions_visibility_idx", columns={"visibility"}),
+ *     @ORM\Index(name="submissions_image_idx", columns={"image"}),
  * })
  */
 class Submission extends Votable {
+    public const MEDIA_TYPES = [self::MEDIA_URL, self::MEDIA_IMAGE];
+    public const MEDIA_URL = 'url';
+    public const MEDIA_IMAGE = 'image';
+
     public const MAX_TITLE_LENGTH = 300;
     public const MAX_URL_LENGTH = 2000;
     public const MAX_BODY_LENGTH = 25000;
@@ -116,6 +121,15 @@ class Submission extends Votable {
      * @var string|null
      */
     private $body;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @Groups({"submission:read"})
+     *
+     * @var string
+     */
+    private $mediaType = self::MEDIA_URL;
 
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="submission",
@@ -343,6 +357,20 @@ class Submission extends Votable {
 
     public function setBody(?string $body): void {
         $this->body = $body;
+    }
+
+    public function getMediaType(): string {
+        return $this->mediaType;
+    }
+
+    public function setMediaType(string $mediaType): void {
+        if ($mediaType === self::MEDIA_IMAGE && $this->url !== null) {
+            throw new \BadMethodCallException(
+                'Submission with URL cannot have image as media type'
+            );
+        }
+
+        $this->mediaType = $mediaType;
     }
 
     /**

@@ -9,7 +9,7 @@
                   hideable"
            id="comment_{{ comment.id }}"
            data-level="{{ level }}">
-    <input type="checkbox" class="hideable__checkbox" id="comment_toggle_{{ comment.id }}">
+    <input type="checkbox" class="hideable__checkbox" id="comment_toggle_{{ comment.id }}" checked>
 
     {% if show_context %}
       {{- block('comment_context') -}}

@@ -17,10 +17,16 @@ class EntityModifiedEvent extends Event {
         $this->after = $after;
     }
 
+    /**
+     * @return object
+     */
     public function getBefore() {
         return $this->before;
     }
 
+    /**
+     * @return object
+     */
     public function getAfter() {
         return $this->after;
     }

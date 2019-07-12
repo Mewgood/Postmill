@@ -1,21 +1,29 @@
 {% use 'form_div_layout.html.twig' %}
 
 {%- block checkbox_widget -%}
-  {%- from '_macros/icon.html.twig' import icon -%}
-  {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
-  <span class="unstylable-widget">
+  {%- if not (unstyled ?? false) %}
+    {%- from '_macros/icon.html.twig' import icon -%}
+    {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
+    <span class="unstylable-widget">
+      {{- parent() -}}
+      {{- icon('ok', 'X', 'icon--no-align unstylable-widget__check') -}}
+    </span>
+  {%- else -%}
     {{- parent() -}}
-    {{- icon('ok', 'X', 'icon--no-align unstylable-widget__check') -}}
-  </span>
+  {%- endif -%}
 {%- endblock checkbox_widget %}
 
 {%- block radio_widget -%}
-  {%- from '_macros/icon.html.twig' import icon -%}
-  {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
-  <span class="unstylable-widget">
+  {%- if not (unstyled ?? false) %}
+    {%- from '_macros/icon.html.twig' import icon -%}
+    {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
+    <span class="unstylable-widget">
+      {{- parent() -}}
+      <span class="unstylable-widget__circle" aria-hidden="true"></span>
+    </span>
+  {%- else -%}
     {{- parent() -}}
-    <span class="unstylable-widget__circle" aria-hidden="true"></span>
-  </span>
+  {%- endif -%}
 {%- endblock radio_widget %}
 
 {# apply proper class to widgets  #}
@@ -93,7 +101,7 @@
     {%- set widget_attr = (widget_attr ?? {})|merge({ attr: { 'aria-describedby': id~"_help" } }) -%}
   {%- endif -%}
   {{- form_errors(form) -}}
-  <div class="form-row form__row">
+  <div {% with { attr: (row_attr ?? {})|merge({ class: (row_attr.class ?? '')~' form-row form__row' }) } %}{{ block('attributes') }}{% endwith %}>
     {{- form_label(form, null, label_attr ?? {}) -}}
     {{- form_widget(form, attr|merge(widget_attr ?? {})) -}}
   </div>

@@ -41,7 +41,8 @@
   &[type="password"],
   &[type="email"],
   &[type="url"],
-  &[type="search"] {
+  &[type="search"],
+  &[type="file"] {
     max-width: 100%;
 
     &:not([size]) {
@@ -63,6 +64,10 @@
 
   &[type="radio"] {
     border-radius: 50%;
+  }
+
+  &[type="file"] {
+    cursor: pointer;
   }
 
   textarea& {

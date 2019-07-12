@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\UserFlags;
 use App\Validator\Constraints\NotForumBanned;
 use App\Validator\Constraints\RateLimit;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,8 +27,8 @@ class SubmissionData {
     private $title;
 
     /**
-     * @Assert\Length(max=Submission::MAX_URL_LENGTH, charset="8bit", groups={"create", "edit"})
-     * @Assert\Url(protocols={"http", "https"}, groups={"create", "edit"})
+     * @Assert\Length(max=Submission::MAX_URL_LENGTH, charset="8bit", groups={"url"})
+     * @Assert\Url(protocols={"http", "https"}, groups={"url"})
      *
      * @see https://stackoverflow.com/questions/417142/
      *
@@ -41,6 +42,23 @@ class SubmissionData {
      * @var string|null
      */
     private $body;
+
+    /**
+     * @Assert\Choice(Submission::MEDIA_TYPES, strict=true, groups={"media"})
+     * @Assert\NotBlank(groups={"media"})
+     *
+     * @var string
+     */
+    private $mediaType;
+
+    /**
+     * @Assert\Image(maxSize="10M", detectCorrupted=true, groups={"image"})
+     *
+     * @var UploadedFile
+     */
+    private $uploadedImage;
+
+    private $image;
 
     private $userFlag = UserFlags::FLAG_NONE;
 
@@ -64,6 +82,7 @@ class SubmissionData {
         $self->body = $submission->getBody();
         $self->userFlag = $submission->getUserFlag();
         $self->forum = $submission->getForum();
+        $self->mediaType = $submission->getMediaType();
 
         return $self;
     }
@@ -71,6 +90,15 @@ class SubmissionData {
     public function toSubmission(User $user, ?string $ip): Submission {
         $submission = new Submission($this->title, $this->url, $this->body, $this->forum, $user, $ip);
         $submission->setUserFlag($this->userFlag);
+
+        if ($this->mediaType === Submission::MEDIA_IMAGE) {
+            $submission->setUrl(null);
+
+            if ($this->image) {
+                $submission->setImage($this->image);
+                $submission->setMediaType($this->mediaType);
+            }
+        }
 
         return $submission;
     }
@@ -136,5 +164,29 @@ class SubmissionData {
 
     public function setForum($forum) {
         $this->forum = $forum;
+    }
+
+    public function getMediaType(): ?string {
+        return $this->mediaType;
+    }
+
+    public function setMediaType(string $mediaType): void {
+        $this->mediaType = $mediaType;
+    }
+
+    public function getUploadedImage(): ?UploadedFile {
+        return $this->uploadedImage;
+    }
+
+    public function setUploadedImage(UploadedFile $image) {
+        $this->uploadedImage = $image;
+    }
+
+    public function getImage(): ?string {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): void {
+        $this->image = $image;
     }
 }

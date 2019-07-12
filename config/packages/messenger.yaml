@@ -6,3 +6,4 @@ framework:
         routing:
             App\Message\DeleteUser: default
             App\Message\NewSubmission: default
+            App\Message\DeleteSubmissionImage: default

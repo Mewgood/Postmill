@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MessageHandler;
+namespace App\Message\Handler;
 
 use App\Entity\Comment;
 use App\Entity\ForumSubscription;
@@ -10,6 +10,7 @@ use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
 use App\Entity\Votable;
+use App\Event\DeleteSubmissionEvent;
 use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\MessageRepository;
@@ -18,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Delete user account.
@@ -36,6 +38,11 @@ final class DeleteUserHandler implements MessageHandlerInterface {
      * @var EntityManagerInterface
      */
     private $entityManager;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * @var MessageBusInterface
@@ -64,6 +71,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
     public function __construct(
         EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
         MessageBusInterface $messageBus,
         CommentRepository $comments,
         MessageRepository $messages,
@@ -71,6 +79,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         int $batchSize
     ) {
         $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
         $this->messageBus = $messageBus;
         $this->comments = $comments;
         $this->messages = $messages;
@@ -95,7 +104,6 @@ final class DeleteUserHandler implements MessageHandlerInterface {
             $this->removeMessages($user)
         ;
 
-        $this->entityManager->flush();
         $this->entityManager->clear();
 
         if ($dispatchAgain) {
@@ -149,17 +157,17 @@ final class DeleteUserHandler implements MessageHandlerInterface {
             ->getQuery()
             ->execute();
 
+        $this->entityManager->flush();
+
         return true;
     }
 
-    public function removeSubmissions(User $user): bool {
+    public function removeSubmissions(User $user): array {
         /** @var Submission[] $submissions */
         $submissions = $this->submissions->findBy([
             'user' => $user,
             'visibility' => 'visible',
         ], ['id' => 'DESC'], $this->batchSize);
-
-        $dispatchAgain = false;
 
         foreach ($submissions as $submission) {
             $dispatchAgain = true;
@@ -171,7 +179,11 @@ final class DeleteUserHandler implements MessageHandlerInterface {
             }
         }
 
-        return $dispatchAgain;
+        $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(new DeleteSubmissionEvent(...$submissions));
+
+        return $submissions;
     }
 
     public function removeComments(User $user): bool {
@@ -199,6 +211,8 @@ final class DeleteUserHandler implements MessageHandlerInterface {
             }
         }
 
+        $this->entityManager->flush();
+
         return $dispatchAgain;
     }
 
@@ -222,6 +236,8 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
             $submission->vote($user, null, Votable::VOTE_RETRACT);
         }
+
+        $this->entityManager->flush();
 
         return $dispatchAgain;
     }
@@ -247,6 +263,8 @@ final class DeleteUserHandler implements MessageHandlerInterface {
             $comment->vote($user, null, Votable::VOTE_RETRACT);
         }
 
+        $this->entityManager->flush();
+
         return $dispatchAgain;
     }
 
@@ -268,6 +286,8 @@ final class DeleteUserHandler implements MessageHandlerInterface {
                 $this->entityManager->remove($thread);
             }
         }
+
+        $this->entityManager->flush();
 
         return $dispatchAgain;
     }

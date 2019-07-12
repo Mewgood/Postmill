@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Form\Model\SiteData;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,6 +14,10 @@ final class SiteSettingsType extends AbstractType {
         $builder
             ->add('siteName', TextType::class, [
                 'label' => 'label.site_name',
+            ])
+            ->add('imageUploadingAllowed', CheckboxType::class, [
+                'label' => 'label.allow_image_uploads',
+                'required' => false,
             ])
         ;
     }

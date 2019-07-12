@@ -1,13 +1,18 @@
+@import (reference) '../_utilities/hidden';
+
 // js-free method for hiding things
 .hideable {
   &__checkbox {
-    opacity: 0;
-    position: absolute;
-    z-index: -1;
+    .hidden();
   }
 
-  &__checkbox:checked ~ &__hide,
-  &__checkbox:checked ~ * &__hide {
+  &:not(&--direct) &__checkbox:not(:checked) ~ &__hide,
+  &:not(&--direct) &__checkbox:not(:checked) ~ * &__hide {
+    display: none;
+  }
+
+  &--direct &__checkbox:not(:checked) + &__hide,
+  &--direct &__checkbox:not(:checked) + * &__hide {
     display: none;
   }
 
@@ -25,11 +30,11 @@
   }
 
   &__indicator::after {
-    content: attr(data-hide-text) '\20\2212';
+    content: attr(data-unhide-text) ' +';
   }
 
   &__checkbox:checked ~ &__indicator::after,
   &__checkbox:checked ~ * &__indicator::after {
-    content: attr(data-unhide-text) ' +';
+    content: attr(data-hide-text) '\20\2212';
   }
 }

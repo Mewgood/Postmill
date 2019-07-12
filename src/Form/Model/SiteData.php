@@ -14,14 +14,21 @@ final class SiteData {
      */
     public $siteName;
 
+    /**
+     * @var bool
+     */
+    public $imageUploadingAllowed;
+
     public static function createFromSite(Site $site): self {
         $self = new self();
         $self->siteName = $site->getSiteName();
+        $self->imageUploadingAllowed = $site->isImageUploadingAllowed();
 
         return $self;
     }
 
     public function updateSite(Site $site): void {
         $site->setSiteName($this->siteName);
+        $site->setImageUploadingAllowed($this->imageUploadingAllowed);
     }
 }

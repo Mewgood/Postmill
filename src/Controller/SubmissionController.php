@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace App\Controller;
 
@@ -7,8 +7,9 @@ use App\Entity\Forum;
 use App\Entity\ForumLogSubmissionDeletion;
 use App\Entity\ForumLogSubmissionLock;
 use App\Entity\Submission;
-use App\Event\EntityModifiedEvent;
-use App\Events;
+use App\Event\DeleteSubmissionEvent;
+use App\Event\EditSubmissionEvent;
+use App\Event\NewSubmissionEvent;
 use App\Form\DeleteReasonType;
 use App\Form\Model\SubmissionData;
 use App\Form\SubmissionType;
@@ -20,7 +21,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -128,7 +128,8 @@ final class SubmissionController extends AbstractController {
             $this->entityManager->persist($submission);
             $this->entityManager->flush();
 
-            $this->eventDispatcher->dispatch(new GenericEvent($submission), Events::NEW_SUBMISSION);
+            $this->eventDispatcher->dispatch(new NewSubmissionEvent($submission));
+
             $this->messageBus->dispatch(new NewSubmission($submission));
 
             return $this->redirectToRoute('submission', [
@@ -162,8 +163,7 @@ final class SubmissionController extends AbstractController {
 
             $this->addFlash('success', 'flash.submission_edited');
 
-            $event = new EntityModifiedEvent($before, $submission);
-            $this->eventDispatcher->dispatch($event, Events::EDIT_SUBMISSION);
+            $this->eventDispatcher->dispatch(new EditSubmissionEvent($before, $submission));
 
             return $this->redirectToRoute('submission', [
                 'forum_name' => $forum->getName(),
@@ -202,6 +202,9 @@ final class SubmissionController extends AbstractController {
 
             $this->entityManager->flush();
 
+            $event = new DeleteSubmissionEvent($submission);
+            $this->eventDispatcher->dispatch($event);
+
             $this->addFlash('success', 'flash.submission_deleted');
 
             return $this->redirectToRoute('forum', [
@@ -231,6 +234,9 @@ final class SubmissionController extends AbstractController {
         }
 
         $this->entityManager->flush();
+
+        $event = new DeleteSubmissionEvent($submission);
+        $this->eventDispatcher->dispatch($event);
 
         $this->addFlash('success', 'flash.submission_deleted');
 
