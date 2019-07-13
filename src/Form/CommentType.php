@@ -7,38 +7,14 @@ use App\Entity\Forum;
 use App\Form\Model\CommentData;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
+use App\Form\Type\UserFlagType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class CommentType extends AbstractType {
-    use UserFlagTrait;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         if ($options['honeypot']) {
             $builder->add('email', HoneypotType::class);
@@ -49,7 +25,9 @@ final class CommentType extends AbstractType {
             'property_path' => 'body',
         ]);
 
-        $this->addUserFlagOption($builder, $options['forum']);
+        $builder->add('userFlag', UserFlagType::class, [
+            'forum' => $options['forum'],
+        ]);
 
         $editing = $builder->getData() && $builder->getData()->getEntityId();
 
@@ -58,9 +36,6 @@ final class CommentType extends AbstractType {
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'data_class' => CommentData::class,

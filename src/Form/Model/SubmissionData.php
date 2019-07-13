@@ -150,11 +150,11 @@ class SubmissionData {
         $this->body = $body;
     }
 
-    public function getUserFlag() {
+    public function getUserFlag(): ?string {
         return $this->userFlag;
     }
 
-    public function setUserFlag($userFlag) {
+    public function setUserFlag(?string $userFlag): void {
         $this->userFlag = $userFlag;
     }
 

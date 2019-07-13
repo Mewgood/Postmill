@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
@@ -260,9 +259,11 @@ class Submission extends Votable {
     private $moderated = false;
 
     /**
-     * @ORM\Column(type="smallint", options={"default": 0})
+     * @ORM\Column(type="text")
      *
-     * @var int
+     * @Groups("submission:read")
+     *
+     * @var string
      */
     private $userFlag = UserFlags::FLAG_NONE;
 
@@ -588,22 +589,12 @@ class Submission extends Votable {
         $this->moderated = $moderated;
     }
 
-    public function getUserFlag(): int {
+    public function getUserFlag(): string {
         return $this->userFlag;
     }
 
-    /**
-     * @Groups({"submission:read"})
-     * @SerializedName("userFlag")
-     */
-    public function getReadableUserFlag(): ?string {
-        return UserFlags::toReadable($this->userFlag);
-    }
-
-    public function setUserFlag(int $userFlag): void {
-        if (!in_array($userFlag, UserFlags::FLAGS, true)) {
-            throw new \InvalidArgumentException('Bad flag');
-        }
+    public function setUserFlag(string $userFlag): void {
+        UserFlags::checkUserFlag($userFlag);
 
         $this->userFlag = $userFlag;
     }

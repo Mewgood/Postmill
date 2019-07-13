@@ -5,8 +5,6 @@ namespace App\Entity;
 /**
  * Flags that apply to a submission or comment and which describes the role of
  * the poster.
- *
- * @todo just use strings as constants instead - needs db changes, etc.
  */
 final class UserFlags {
     public const FLAGS = [
@@ -15,20 +13,13 @@ final class UserFlags {
         self::FLAG_ADMIN,
     ];
 
-    public const FLAG_NONE = 0;
-    public const FLAG_MODERATOR = 1;
-    public const FLAG_ADMIN = 2;
+    public const FLAG_NONE = 'none';
+    public const FLAG_MODERATOR = 'moderator';
+    public const FLAG_ADMIN = 'admin';
 
-    public static function toReadable(int $userFlag): ?string {
-        switch ($userFlag) {
-        case self::FLAG_NONE:
-            return null;
-        case self::FLAG_MODERATOR:
-            return 'moderator';
-        case self::FLAG_ADMIN:
-            return 'admin';
-        default:
-            throw new \InvalidArgumentException();
+    public static function checkUserFlag(string $userFlag): void {
+        if (!\in_array($userFlag, self::FLAGS, true)) {
+            throw new \InvalidArgumentException("Bad user flag '$userFlag'");
         }
     }
 }

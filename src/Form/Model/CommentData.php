@@ -35,7 +35,7 @@ class CommentData {
     private $body;
 
     /**
-     * @var int|null
+     * @var string|null
      */
     private $userFlag = UserFlags::FLAG_NONE;
 
@@ -89,11 +89,11 @@ class CommentData {
         $this->body = $body;
     }
 
-    public function getUserFlag(): ?int {
+    public function getUserFlag(): ?string {
         return $this->userFlag;
     }
 
-    public function setUserFlag($userFlag): void {
+    public function setUserFlag(?string $userFlag): void {
         $this->userFlag = $userFlag;
     }
 

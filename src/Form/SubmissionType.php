@@ -9,6 +9,7 @@ use App\Form\EventListener\SubmissionImageListener;
 use App\Form\Model\SubmissionData;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
+use App\Form\Type\UserFlagType;
 use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,12 +22,9 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class SubmissionType extends AbstractType {
-    use UserFlagTrait;
-
     /**
      * @var AuthorizationCheckerInterface
      */
@@ -42,27 +40,17 @@ final class SubmissionType extends AbstractType {
      */
     private $submissionImageListener;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         SiteRepository $siteRepository,
-        SubmissionImageListener $submissionImageListener,
-        TokenStorageInterface $tokenStorage
+        SubmissionImageListener $submissionImageListener
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->siteRepository = $siteRepository;
         $this->submissionImageListener = $submissionImageListener;
-        $this->tokenStorage = $tokenStorage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         if ($options['honeypot']) {
             $builder->add('email', HoneypotType::class);
         }
@@ -70,7 +58,6 @@ final class SubmissionType extends AbstractType {
         /** @var SubmissionData $data */
         $data = $builder->getData();
         $editing = $data->getEntityId() !== null;
-        $forum = $data->getForum();
 
         $builder
             ->add('title', TextareaType::class, [
@@ -131,22 +118,16 @@ final class SubmissionType extends AbstractType {
             ]);
         }
 
-        if (
-            ($editing && $this->authorizationChecker->isGranted('moderator', $forum)) ||
-            $this->authorizationChecker->isGranted('ROLE_ADMIN')
-        ) {
-            $this->addUserFlagOption($builder, $forum);
-        }
+        $builder->add('userFlag', UserFlagType::class, [
+            'forum' => $options['forum'] ?? null,
+        ]);
 
         $builder->add('submit', SubmitType::class, [
             'label' => 'submission_form.'.($editing ? 'edit' : 'create'),
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => SubmissionData::class,
             'label_format' => 'submission_form.%name%',

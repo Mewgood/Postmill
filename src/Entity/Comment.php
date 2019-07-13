@@ -126,11 +126,13 @@ class Comment extends Votable {
     private $moderated = false;
 
     /**
-     * @ORM\Column(type="smallint", options={"default": 0})
+     * @ORM\Column(type="text")
      *
-     * @var int
+     * @Groups("comment:read")
+     *
+     * @var string
      */
-    private $userFlag = 0;
+    private $userFlag = UserFlags::FLAG_NONE;
 
     /**
      * @ORM\OneToMany(targetEntity="CommentNotification", mappedBy="comment", cascade={"remove"})
@@ -174,7 +176,7 @@ class Comment extends Votable {
         string $body,
         User $user,
         Submission $submission,
-        int $userFlag = UserFlags::FLAG_NONE,
+        string $userFlag = UserFlags::FLAG_NONE,
         self $parent = null,
         $ip = null,
         \DateTime $timestamp = null
@@ -369,24 +371,12 @@ class Comment extends Votable {
         $this->moderated = $moderated;
     }
 
-    public function getUserFlag(): int {
+    public function getUserFlag(): string {
         return $this->userFlag;
     }
 
-    /**
-     * @Groups({"comment:read"})
-     * @SerializedName("userFlag")
-     *
-     * @return string|null
-     */
-    public function getReadableUserFlag(): ?string {
-        return UserFlags::toReadable($this->userFlag);
-    }
-
-    public function setUserFlag(int $userFlag) {
-        if (!in_array($userFlag, UserFlags::FLAGS, true)) {
-            throw new \InvalidArgumentException('Bad flag');
-        }
+    public function setUserFlag(string $userFlag): void {
+        UserFlags::checkUserFlag($userFlag);
 
         $this->userFlag = $userFlag;
     }

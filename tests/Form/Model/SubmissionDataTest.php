@@ -4,6 +4,7 @@ namespace App\Tests\Form\Model;
 
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Entity\UserFlags;
 use App\Form\Model\SubmissionData;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +33,7 @@ class SubmissionDataTest extends TestCase {
             ->method('getUser')
             ->willReturn($this->createMock(User::class));
 
-        $this->submission->setUserFlag(0);
+        $this->submission->setUserFlag(UserFlags::FLAG_NONE);
         $this->submission->setTitle('foo');
         $this->submission->setUrl('http://example.com/');
         $this->submission->setBody('bar');
