@@ -112,7 +112,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     }
 
     public function removeMetaData(User $user): bool {
-        if (\strpos($user->getUsername(), '!deleted') === 0) {
+        if ($user->isAccountDeleted()) {
             return false;
         }
 
@@ -162,12 +162,14 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         return true;
     }
 
-    public function removeSubmissions(User $user): array {
+    public function removeSubmissions(User $user): bool  {
         /** @var Submission[] $submissions */
         $submissions = $this->submissions->findBy([
             'user' => $user,
             'visibility' => 'visible',
         ], ['id' => 'DESC'], $this->batchSize);
+
+        $dispatchAgain = false;
 
         foreach ($submissions as $submission) {
             $dispatchAgain = true;
@@ -183,7 +185,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
         $this->eventDispatcher->dispatch(new DeleteSubmissionEvent(...$submissions));
 
-        return $submissions;
+        return $dispatchAgain;
     }
 
     public function removeComments(User $user): bool {
