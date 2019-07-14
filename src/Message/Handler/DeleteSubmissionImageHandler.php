@@ -5,10 +5,21 @@ namespace App\Message\Handler;
 use App\Flysystem\SubmissionImageManager;
 use App\Message\DeleteSubmissionImage;
 use App\Repository\SubmissionRepository;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class DeleteSubmissionImageHandler implements MessageHandlerInterface {
+    private const LIIP_FILTERS = [
+        'submission_thumbnail_1x',
+        'submission_thumbnail_2x',
+    ];
+
+    /**
+     * @var CacheManager
+     */
+    private $cacheManager;
+
     /**
      * @var MessageBusInterface
      */
@@ -30,11 +41,13 @@ final class DeleteSubmissionImageHandler implements MessageHandlerInterface {
     private $batchSize;
 
     public function __construct(
+        CacheManager $cacheManager,
         MessageBusInterface $messageBus,
         SubmissionImageManager $imageManager,
         SubmissionRepository $submissions,
         int $batchSize
     ) {
+        $this->cacheManager = $cacheManager;
         $this->messageBus = $messageBus;
         $this->imageManager = $imageManager;
         $this->submissions = $submissions;
@@ -46,6 +59,8 @@ final class DeleteSubmissionImageHandler implements MessageHandlerInterface {
         $batch = \array_slice($images, 0, $this->batchSize);
 
         $removableImages = $this->submissions->findRemovableImages($batch);
+
+        $this->cacheManager->remove($removableImages, self::LIIP_FILTERS);
 
         foreach ($removableImages as $image) {
             $this->imageManager->prune($image);
