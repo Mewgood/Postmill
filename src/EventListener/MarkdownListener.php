@@ -7,9 +7,9 @@ use App\Event\MarkdownCacheEvent;
 use App\Event\MarkdownInitEvent;
 use App\Markdown\AppExtension;
 use League\CommonMark\Ext\Strikethrough\StrikethroughExtension;
+use League\CommonMark\Ext\Table\TableExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Webuni\CommonMark\TableExtension\TableExtension;
 
 /**
  * Set up the CommonMark and HTML Purifier libraries with all the default stuff

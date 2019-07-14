@@ -176,6 +176,9 @@
     "league/commonmark-ext-strikethrough": {
         "version": "v1.0.0"
     },
+    "league/commonmark-ext-table": {
+        "version": "v2.0.0"
+    },
     "league/flysystem": {
         "version": "1.0.41"
     },
@@ -640,9 +643,6 @@
     },
     "webmozart/assert": {
         "version": "1.2.0"
-    },
-    "webuni/commonmark-table-extension": {
-        "version": "1.0.0"
     },
     "white-october/pagerfanta-bundle": {
         "version": "v1.1.2"
