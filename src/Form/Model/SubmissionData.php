@@ -52,7 +52,8 @@ class SubmissionData {
     private $mediaType;
 
     /**
-     * @Assert\Image(maxSize="10M", detectCorrupted=true, groups={"image"})
+     * @Assert\Image(maxSize="10M", detectCorrupted=true, groups={"image"},
+     *     mimeTypes={"image/gif", "image/jpeg", "image/png", "image/webp"})
      *
      * @var UploadedFile
      */
