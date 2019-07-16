@@ -29,6 +29,10 @@ final class SubmissionImageListener implements EventSubscriberInterface {
     }
 
     public function onPostSubmit(PostSubmitEvent $event) {
+        if (!$event->getForm()->isValid()) {
+            return;
+        }
+
         $data = $event->getData();
 
         assert($data instanceof SubmissionData);
