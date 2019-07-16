@@ -28,11 +28,18 @@ class Site {
     private $siteName;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="text")
      *
-     * @var bool
+     * @var string
      */
-    private $imageUploadingAllowed = false;
+    private $forumCreateRole = 'ROLE_USER';
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @var string
+     */
+    private $imageUploadRole = 'ROLE_USER';
 
     public function getId(): UuidInterface {
         return $this->id;
@@ -46,11 +53,23 @@ class Site {
         $this->siteName = $siteName;
     }
 
-    public function isImageUploadingAllowed(): bool {
-        return $this->imageUploadingAllowed;
+    public function getForumCreateRole(): string {
+        return $this->forumCreateRole;
     }
 
-    public function setImageUploadingAllowed(bool $imageUploadingAllowed): void {
-        $this->imageUploadingAllowed = $imageUploadingAllowed;
+    public function setForumCreateRole(string $forumCreateRole): void {
+        if (!\in_array($forumCreateRole, User::ROLES, true)) {
+            throw new \InvalidArgumentException("Invalid role '$forumCreateRole'");
+        }
+
+        $this->forumCreateRole = $forumCreateRole;
+    }
+
+    public function getImageUploadRole(): string {
+        return $this->imageUploadRole;
+    }
+
+    public function setImageUploadRole(string $imageUploadRole): void {
+        $this->imageUploadRole = $imageUploadRole;
     }
 }

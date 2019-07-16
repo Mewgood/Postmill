@@ -15,16 +15,12 @@
       </li>
     {% endwith %}
   </ul>
-{% endmacro %}
+{% endmacro forum_list_tabs %}
 
 {% macro create_forum() %}
   {% if is_granted('create_forum') %}
     <p role="navigation">
       <a href="{{ path('create_forum') }}" class="button">{{ 'forum_list.create_forum'|trans }}</a>
     </p>
-  {% elseif is_granted('ROLE_USER') %}
-    {% embed '_layouts/alert.html.twig' %}
-      {% block alert_paragraph 'flash.you_cannot_create_forums_yet'|trans %}
-    {% endembed %}
   {% endif %}
-{% endmacro %}
+{% endmacro create_forum %}

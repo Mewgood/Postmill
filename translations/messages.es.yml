@@ -110,7 +110,6 @@ flash:
     submission_unlocked: La publicación fue desbloqueada.
     submission_is_locked: La publicación está bloqueada. No puedes publicar nuevos comentarios.
     no_moderated_forums: No moderas ningún foro.
-    you_cannot_create_forums_yet: No puedes crear foros aún.
     user_biography_updated: Se actualizó la biografía.
     user_unmodded: Se le quitó la función de moderadora a la usuaria.
     no_entries_to_display: No hay entradas que mostrar.

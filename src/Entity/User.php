@@ -23,6 +23,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class User implements UserInterface, EquatableInterface {
     /**
+     * User roles, from most privileged to least privileged.
+     */
+    public const ROLES = [
+        'ROLE_ADMIN',
+        'ROLE_TRUSTED_USER',
+        'ROLE_USER',
+    ];
+
+    /**
      * @ORM\Column(type="bigint")
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id()

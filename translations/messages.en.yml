@@ -137,7 +137,6 @@ flash:
     submission_unlocked: The submission was unlocked.
     submission_is_locked: The submission is locked. You cannot post new comments.
     no_moderated_forums: You don't moderate any forums.
-    you_cannot_create_forums_yet: You cannot create forums yet.
     user_biography_updated: The biography was updated.
     user_unmodded: The user was unmodded.
     no_entries_to_display: There are no entries to display.
@@ -271,6 +270,7 @@ label:
     action: Action
     ban: Ban
     unban: Unban
+    permissions: Permissions
     general: General
     appearance: Appearance
     preferred_theme: Preferred theme
@@ -351,10 +351,12 @@ label:
     delete_account_confirmation: I understand there's no way of retrieving this account once it's gone.
     confirm_forum_name: Confirm forum name
     delete_forum_confirmation: I understand there's no way of reviving the data on this forum once it's gone.
-    site_name: Site name
     image: Image
     media_type: Media type
-    allow_image_uploads: Allow image uploads
+    upload_image: Upload image
+    admins: Admins
+    trusted_users: Trusted users
+    everyone: Everyone
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'
@@ -502,6 +504,11 @@ reset_password:
 
 site_footer:
     version: Running %app% %version% (%branch%)
+
+site_settings:
+    site_name: Site name
+    forum_create_role: Who can create new forums?
+    image_upload_role: Who can upload images?
 
 submission_form:
     title: Title

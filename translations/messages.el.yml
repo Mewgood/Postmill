@@ -99,7 +99,6 @@ flash:
     submission_unlocked: Η υποβολή έχει ξεκλειδωθεί.
     submission_is_locked: Η υποβολή είναι κλειδωμένη. Δεν μπορείτε να δημοσιεύσετε νέα σχόλια.
     no_moderated_forums: Δεν συντονίζετε κανένα φόρουμ.
-    you_cannot_create_forums_yet: Δεν μπορείτε να δημιουργήσετε ακόμη φόρουμ.
     user_biography_updated: Η βιογραφία ενημερώθηκε.
     user_unmodded: Ο χρήστης δεν είναι πλέον συντονιστής.
     no_entries_to_display: Δεν υπάρχουν καταχωρήσεις για εμφάνιση.

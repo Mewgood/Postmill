@@ -5,10 +5,25 @@
 {% block site_nav_active 'admin' %}
 {% block site_nav_main_menu_active 'site_settings' %}
 
+{% form_theme form '_forms/aligned_form_theme.html.twig' %}
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
   {{ form_start(form) }}
+    <fieldset class="fieldset">
+      <legend>{{ 'label.general'|trans }}</legend>
+
+      {{ form_row(form.siteName) }}
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend>{{ 'label.permissions'|trans }}</legend>
+
+      {{ form_row(form.forumCreateRole) }}
+
+      {{ form_row(form.imageUploadRole) }}
+    </fieldset>
+
     {{ form_rest(form) }}
 
     <div class="form__row form__button-row">

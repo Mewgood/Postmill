@@ -3,14 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Forum;
-use App\Entity\Site;
 use App\Entity\Submission;
 use App\Form\EventListener\SubmissionImageListener;
 use App\Form\Model\SubmissionData;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
 use App\Form\Type\UserFlagType;
-use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -31,22 +29,15 @@ final class SubmissionType extends AbstractType {
     private $authorizationChecker;
 
     /**
-     * @var SiteRepository
-     */
-    private $siteRepository;
-
-    /**
      * @var SubmissionImageListener
      */
     private $submissionImageListener;
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        SiteRepository $siteRepository,
         SubmissionImageListener $submissionImageListener
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->siteRepository = $siteRepository;
         $this->submissionImageListener = $submissionImageListener;
     }
 
@@ -77,11 +68,7 @@ final class SubmissionType extends AbstractType {
             ]);
         }
 
-        $site = $this->siteRepository->findCurrentSite();
-
-        assert($site instanceof Site);
-
-        if (!$editing && $site->isImageUploadingAllowed()) {
+        if (!$editing && $this->authorizationChecker->isGranted('upload_image')) {
             $builder
                 ->add('mediaType', ChoiceType::class, [
                     'choices' => [

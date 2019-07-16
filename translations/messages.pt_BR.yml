@@ -97,7 +97,6 @@ flash:
     submission_unlocked: A postagem foi destrancada.
     submission_is_locked: A postagem está trancada. Você não pode postar novos comentários.
     no_moderated_forums: Você não modera nenhum fórum.
-    you_cannot_create_forums_yet: Você não pode criar fóruns ainda.
     user_biography_updated: A biografia foi atualizada.
     user_unmodded: O usuário não é mais moderador.
     no_entries_to_display: Não há entradas para exibir.

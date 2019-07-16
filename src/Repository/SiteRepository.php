@@ -39,15 +39,13 @@ final class SiteRepository extends ServiceEntityRepository {
      */
     public function getCurrentSiteName(): string {
         try {
-            $site = $this->findCurrentSite();
-
-            assert($site instanceof Site);
-
-            return $site->getSiteName();
+            $siteName = $this->_em->getConnection()
+                ->query('SELECT site_name FROM sites WHERE id = \'00000000-0000-0000-0000-000000000000\'')
+                ->fetchColumn();
         } catch (DBALException $e) {
             $this->logger->error((string) $e);
-
-            return $_SERVER['SITE_NAME'] ?? '[name unavailable]';
         }
+
+        return ($siteName ?? null) ?: ($_SERVER['SITE_NAME'] ?? '[name unavailable]');
     }
 }

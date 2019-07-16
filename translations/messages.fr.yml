@@ -112,7 +112,6 @@ flash:
     submission_unlocked: Le post a été déverrouillé.
     submission_is_locked: Le post est verrouillé. Vous ne pouvez pas ajouter de commentaires.
     no_moderated_forums: Vous n'êtes le modérateur d'aucun forum.
-    you_cannot_create_forums_yet: Vous ne pouvez pas encore créer de forum.
     user_biography_updated: La biographie a été mise à jour.
     user_unmodded: L'utilisateur a été retiré des modérateurs.
     no_entries_to_display: Il n'y a pas d'entrées à afficher.

@@ -3,6 +3,7 @@
 namespace App\Form\Model;
 
 use App\Entity\Site;
+use App\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class SiteData {
@@ -15,20 +16,33 @@ final class SiteData {
     public $siteName;
 
     /**
-     * @var bool
+     * @Assert\Choice(User::ROLES, strict=true)
+     * @Assert\NotBlank()
+     *
+     * @var string
      */
-    public $imageUploadingAllowed;
+    public $forumCreateRole;
+
+    /**
+     * @Assert\Choice(User::ROLES, strict=true)
+     * @Assert\NotBlank()
+     *
+     * @var string
+     */
+    public $imageUploadRole;
 
     public static function createFromSite(Site $site): self {
         $self = new self();
         $self->siteName = $site->getSiteName();
-        $self->imageUploadingAllowed = $site->isImageUploadingAllowed();
+        $self->forumCreateRole = $site->getForumCreateRole();
+        $self->imageUploadRole = $site->getImageUploadRole();
 
         return $self;
     }
 
     public function updateSite(Site $site): void {
         $site->setSiteName($this->siteName);
-        $site->setImageUploadingAllowed($this->imageUploadingAllowed);
+        $site->setForumCreateRole($this->forumCreateRole);
+        $site->setImageUploadRole($this->imageUploadRole);
     }
 }
