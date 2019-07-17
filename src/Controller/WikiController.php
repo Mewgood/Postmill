@@ -16,6 +16,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @IsGranted("view_wiki", statusCode=404)
+ */
 final class WikiController extends AbstractController {
     /**
      * Views a wiki page.

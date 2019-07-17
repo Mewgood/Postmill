@@ -13,10 +13,12 @@ final class SiteVoter extends Voter {
     public const ATTRIBUTES = [
         self::CREATE_FORUM,
         self::UPLOAD_IMAGE,
+        self::VIEW_WIKI,
     ];
 
     public const CREATE_FORUM = 'create_forum';
     public const UPLOAD_IMAGE = 'upload_image';
+    public const VIEW_WIKI = 'view_wiki';
 
     /**
      * @var AccessDecisionManagerInterface
@@ -42,10 +44,6 @@ final class SiteVoter extends Voter {
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool {
-        if (!$token->getUser() instanceof User) {
-            return false;
-        }
-
         if (!$subject) {
             $subject = $this->siteRepository->findCurrentSite();
 
@@ -57,6 +55,8 @@ final class SiteVoter extends Voter {
             return $this->decide($token, $subject->getForumCreateRole());
         case self::UPLOAD_IMAGE:
             return $this->decide($token, $subject->getImageUploadRole());
+        case self::VIEW_WIKI:
+            return $subject->isWikiEnabled();
         default:
             throw new \InvalidArgumentException("Unknown attribute '$attribute'");
         }

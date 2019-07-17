@@ -2,8 +2,10 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\Site;
 use App\Entity\User;
 use App\Entity\WikiPage;
+use App\Repository\SiteRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -16,21 +18,25 @@ final class WikiVoter extends Voter {
      */
     private $decisionManager;
 
-    public function __construct(AccessDecisionManagerInterface $decisionManager) {
+    /**
+     * @var SiteRepository
+     */
+    private $siteRepository;
+
+    public function __construct(
+        AccessDecisionManagerInterface $decisionManager,
+        SiteRepository $siteRepository
+    ) {
         $this->decisionManager = $decisionManager;
+        $this->siteRepository = $siteRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supports($attribute, $subject) {
-        return $subject instanceof WikiPage && in_array($attribute, self::ATTRIBUTES);
+    protected function supports($attribute, $subject): bool {
+        return $subject instanceof WikiPage &&
+            \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool {
         if (!$token->getUser() instanceof User) {
             return false;
         }
@@ -48,21 +54,22 @@ final class WikiVoter extends Voter {
     }
 
     private function canWrite(WikiPage $page, TokenInterface $token): bool {
+        if (!$token->getUser() instanceof User) {
+            return false;
+        }
+
         if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
             return true;
         }
 
-        $user = $token->getUser();
-
-        if (!$user instanceof User) {
+        if ($page->isLocked()) {
             return false;
         }
 
-        // TODO: make this configurable
-        if (!$user->isTrustedOrAdmin() && $user->getCreated() > new \DateTime('@'.time().' -24 hours')) {
-            return false;
-        }
+        $site = $this->siteRepository->findCurrentSite();
 
-        return !$page->isLocked();
+        assert($site instanceof Site);
+
+        return $this->decisionManager->decide($token, [$site->getWikiEditRole()]);
     }
 }

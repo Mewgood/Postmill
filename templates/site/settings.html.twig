@@ -14,6 +14,8 @@
       <legend>{{ 'label.general'|trans }}</legend>
 
       {{ form_row(form.siteName) }}
+
+      {{ form_row(form.wikiEnabled) }}
     </fieldset>
 
     <fieldset class="fieldset">
@@ -22,6 +24,8 @@
       {{ form_row(form.forumCreateRole) }}
 
       {{ form_row(form.imageUploadRole) }}
+
+      {{ form_row(form.wikiEditRole) }}
     </fieldset>
 
     {{ form_rest(form) }}
