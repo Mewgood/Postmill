@@ -20,7 +20,7 @@
         "ext-json": "*",
         "ext-pdo_pgsql": "*",
         "eightpoints/guzzle-bundle": "^7.3",
-        "embed/embed": "^3.0",
+        "embed/embed": "3.3.*",
         "ezyang/htmlpurifier": "^4.8",
         "friendsofsymfony/http-cache-bundle": "^2.6",
         "friendsofsymfony/jsrouting-bundle": "^2.1",
