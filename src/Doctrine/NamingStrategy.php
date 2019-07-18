@@ -2,9 +2,9 @@
 
 namespace App\Doctrine;
 
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\NamingStrategy as NamingStrategyInterface;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
-use Symfony\Component\Inflector\Inflector;
 
 class NamingStrategy extends UnderscoreNamingStrategy {
     /**
@@ -12,16 +12,6 @@ class NamingStrategy extends UnderscoreNamingStrategy {
      * plural.
      */
     public function classToTableName($className) {
-        $className = \preg_replace('/^.*\\\\/', '', $className);
-        $className = Inflector::pluralize($className);
-
-        if (\is_array($className)) {
-            $className = $className[0];
-        }
-
-        // change fora to forum
-        $className = \preg_replace('/\b(for)a\b/i', '$1ums', $className);
-
-        return parent::classToTableName($className);
+        return parent::classToTableName(Inflector::pluralize($className));
     }
 }

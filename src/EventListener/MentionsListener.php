@@ -86,10 +86,6 @@ class MentionsListener implements EventSubscriberInterface {
     public function onNewComment(NewCommentEvent $event) {
         $comment = $event->getComment();
 
-        if ($comment->getBody() === null) {
-            return;
-        }
-
         $html = $this->converter->convertToHtml($comment->getBody(), [
             'context' => 'comment',
             'comment' => $comment,
@@ -124,7 +120,10 @@ class MentionsListener implements EventSubscriberInterface {
         );
 
         $hrefs = (new Crawler($html))
-            ->filter('a[href^="/user/"]') // FIXME: potentially unreliable????
+            ->filterXPath(\sprintf(
+                '//a[starts-with(@href,"%s/user/")]',
+                $request->getBasePath()
+            ))
             ->extract(['href']);
 
         $usernames = [];
