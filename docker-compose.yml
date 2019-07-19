@@ -31,6 +31,7 @@ services:
         volumes:
             - ./.git:/app/.git:ro
             - ./:/app
+        working_dir: /app
     assets:
         build: docker/node
         command: ["sh", "-c", "yarn && yarn run watch"]
