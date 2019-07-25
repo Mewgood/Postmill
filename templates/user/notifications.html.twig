@@ -45,7 +45,7 @@
   {% from 'comment/_macros.html.twig' import comment %}
   {% set comment = notification.comment %}
   {% set submission = comment.submission %}
-  <h1 class="notification-head">
+  <h1 class="text-md no-margin">
     {{ 'heading.you_were_mentioned'|trans({
       '%user%': '<a href="%s">/u/%s</a>'|format(path('user', { username: comment.user.username })|e, comment.user.username|e)
     })|raw }}
@@ -57,7 +57,7 @@
 {% block notification_message %}
   {% from 'message/_macros.html.twig' import message %}
 
-  <h1 class="notification-head">
+  <h1 class="text-md no-margin">
     <a href="{{ path('message_thread', { id: notification.message.thread.id }) }}#message_{{ notification.message.id }}">
       {%- if notification.message is same as(notification.message.thread.messages|first) -%}
         {{ notification.message.thread.title }}
@@ -73,7 +73,7 @@
 {% block notification_submission_mention %}
   {% from 'submission/_macros.html.twig' import submission %}
   {% set submission = notification.submission %}
-  <h1 class="notification-head">
+  <h1 class="text-md no-margin">
     {{ 'heading.you_were_mentioned'|trans({
       '%user%': '<a href="%s">/u/%s</a>'|format(path('user', { username: submission.user.username })|e, submission.user.username|e )
     })|raw }}
