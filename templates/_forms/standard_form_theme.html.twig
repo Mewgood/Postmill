@@ -152,7 +152,7 @@
       {{- label|trans({}, translation_domain) -}}
     {%- endif %}
     {% if show_required_indicator -%}
-      <b class="required-indicator" role="presentation" title="{{ 'help.required_field'|trans }}" aria-label="{{ 'help.required_field'|trans }}">*</b>
+      <b class="fg-red" role="presentation" title="{{ 'help.required_field'|trans }}" aria-label="{{ 'help.required_field'|trans }}">*</b>
     {%- endif -%}
     </{{ element|default('label') }}>
   {%- endif -%}
