@@ -1,5 +1,76 @@
 # Change Log
 
+## v2.0.0 (2019-07-25)
+
+* Add accessible nav for skipping to certain locations on the page.
+* Add client-side checking of character count on some input fields.
+* Add comment hiding.
+* Add comment listing for forums.
+* Add Content Security Policy for near fool-proof mitigation of potential XSS &
+  IP harvesting attacks.
+* Add full-text search.
+* Add HTTP cache support, with Symfony's built-in HTTP cache enabled by default.
+* Add image upload for submissions.
+* Add linear comment ordering.
+* Add native spoiler tags.
+* Add quick search by submission URL host.
+* Add preferences for disabling notifications.
+* Add preference for disabling private messages.
+* Add preference for selecting one's preferred fonts.
+* Add preference for setting the front page's sort mode.
+* Add preference for timezone.
+* Add private message deletion.
+* Add 'remember me' checkbox to login form.
+* Add RSS link and creation date to forum sidebar.
+* Add S3 support for submission images and thumbnails.
+* Add site setting for disabling wiki.
+* Add site settings for minimum roles needed to perform some tasks.
+* Add site setting for site name.
+* Add soft-deletion of submissions (preserves comments).
+* Add sort by submission activity.
+* Add sort by creation date to forum list.
+* Add user deletion.
+* Change some URLs for consistency/easy path matching.
+* Clean up Composer dependencies.
+* Create self-signed HTTPS certificate and enable HTTP/2 in docker-compose
+  setup.
+* Disable logging of redirects and bad HTTP requests.
+* Fix inconsistency of RSS feeds.
+* Fix inconsistent width of subscribe buttons.
+* Improve performance of authorization checking.
+* Improve performance of forum list.
+* Make forms more accessible.
+* Miscellaneous performance fixes, code fixes, and UI fixes (too many to
+  mention).
+* Move night mode preference to user menu.
+* Override native styling of checkboxes/radio buttons/selector widgets for
+  consistency.
+* Prevent duplicate form submission.
+* Redesign alerts.
+* Redesign comments.
+* Redesign forum list.
+* Redesign the general site layout to look modern and consistent.
+* Redesign site nav to be mobile-friendly, have search.
+* Remove CAPTCHA cookie alert on non-POST requests.
+* Remove dev dependency on the fontello-cli library due to vulnerabilities.
+* Remove DuckDuckGo search box in favour of native search bar.
+* Remove legacy theme support.
+* Remove neglected webhook support.
+* Require entering name of forum one is about to delete, replacing password
+  verification.
+* Require re-authentication when editing user credentials.
+* Replace external formatting help link with built-in formatting help.
+* Replace 'recent comments' with submissions/comments selector.
+* Select locale based on `Accept-Language` header.
+* Show ban details to admins on banned users' profiles.
+* Show number of new comments since last visit.
+* Update to Symfony 4.3
+* Update Esperanto translation.
+* Use a message bus to download submission images asynchronously. This replaces
+  the old method which was only compatible with PHP-FPM.
+* Use Unicode minus when displaying negative votes.
+* Use tag-style lists for forums/moderators in sidebars.
+
 ## v1.1.0 (2019-03-16)
 
 * Add ability for users to hide forums.
