@@ -1,46 +1,75 @@
-version: '3'
+# This configuration sets up a development environment for Postmill.
+# It should never be used in production.
+
+version: '3.4'
+
+networks:
+    web: {}
+    app: {}
 
 volumes:
     minio_data:
-        driver: local
     postgres_data:
-        driver: local
 
 services:
     db:
+        environment:
+            POSTGRES_USER: postmill
+            POSTGRES_PASSWORD: secret
         image: postgres:11-alpine
+        networks:
+            - app
         volumes:
             - postgres_data:/var/lib/postgresql/data
     web:
-        build: docker/nginx
-        links:
+        build:
+            context: .
+            target: postmill_web
+        depends_on:
             - php
+        environment:
+            HTTPS_SELF_SIGNED: 1
+        networks:
+            - web
         ports:
             - 80:80
             - 443:443
         volumes:
+            - ./keys:/etc/ssl/private
             - ./public:/app/public:ro
     php:
-        build: docker/php
-        environment:
-            - DATABASE_URL=pgsql://postgres@db/postgres?serverVersion=11
-        links:
+        build:
+            args: { DEVELOPMENT: 1 }
+            context: .
+            target: postmill_php
+        depends_on:
+            - assets
             - db
             - rabbitmq
             - s3
+        environment:
+            APP_ENV: dev
+            DATABASE_URL: 'pgsql://postmill:secret@db/postmill?serverVersion=11'
+        networks:
+            - web
+            - app
         volumes:
-            - ./.git:/app/.git:ro
-            - ./:/app
-        working_dir: /app
+            - ./:/app:ro
+            - ./public/media/cache:/app/public/media/cache
+            - ./public/submission_images:/app/public/submission_images
+            - ./var:/app/var
     assets:
-        build: docker/node
+        image: node:10-alpine
         command: ["sh", "-c", "yarn && yarn run watch"]
         volumes:
             - ./.git:/app/.git:ro
             - ./:/app:rw
+        working_dir: /app
     s3:
         command: server /data/minio
         image: minio/minio
+        networks:
+            - app
         ports:
             - 9000:9000
         volumes:
@@ -50,3 +79,5 @@ services:
             MINIO_SECRET_KEY: minio123
     rabbitmq:
         image: rabbitmq:3.7-alpine
+        networks:
+            - app

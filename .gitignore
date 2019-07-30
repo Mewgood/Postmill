@@ -12,8 +12,10 @@ tags
 # Misc crap
 *.bak
 *.phar
+*.sql
 .DS_Store
 docker-compose.override.yml
+/keys/
 
 # Built assets and uploaded files
 /public/js/
