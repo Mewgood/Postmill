@@ -54,10 +54,8 @@ services:
             - web
             - app
         volumes:
-            - ./:/app:ro
-            - ./public/media/cache:/app/public/media/cache
-            - ./public/submission_images:/app/public/submission_images
-            - ./var:/app/var
+            - ./.git:/app/.git:ro
+            - ./:/app:rw
     assets:
         image: node:10-alpine
         command: ["sh", "-c", "yarn && yarn run watch"]

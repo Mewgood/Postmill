@@ -27,13 +27,13 @@ function makeTimesRelative(locale) {
 }
 
 function loadLocaleAndMakeTimesRelative(lang) {
-    lang = lang.toLowerCase().replace('-', '_');
-
     import(`date-fns/locale/${lang}/index.js`).then(locale => {
         makeTimesRelative(locale);
     }).catch(error => {
-        if (lang.indexOf('_') !== -1) {
-            const newLang = lang.replace(/_.*/, '');
+        const i = lang.indexOf('-');
+
+        if (i !== -1) {
+            const newLang = lang.substring(0, i);
 
             console && console.log(`Couldn't load ${lang}; trying ${newLang}`);
 

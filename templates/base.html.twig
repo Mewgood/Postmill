@@ -1,6 +1,6 @@
 {% use '_layouts/site_nav.html.twig' %}
 <!DOCTYPE html>
-<html class="no-js" lang="{{ app.request.locale }}" prefix="og: http://ogp.me/ns#">
+<html class="no-js" lang="{{ app.request.locale|replace({'_': '-'}) }}" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
     <title>{% block title %}{{ site_name() }}{% endblock %}</title>
