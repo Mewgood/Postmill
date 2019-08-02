@@ -55,7 +55,10 @@ services:
             - app
         volumes:
             - ./.git:/app/.git:ro
-            - ./:/app:rw
+            - ./public/submission_images:/app/public/submission_images
+            - ./public/media/cache:/app/public/media/cache
+            - ./var:/app/var
+            - ./:/app
     assets:
         image: node:10-alpine
         command: ["sh", "-c", "yarn && yarn run watch"]
