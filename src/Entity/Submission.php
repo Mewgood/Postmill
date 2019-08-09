@@ -467,11 +467,12 @@ class Submission extends Votable {
     public function softDelete(): void {
         $this->visibility = self::VISIBILITY_DELETED;
         $this->title = '';
+        $this->mediaType = self::MEDIA_URL;
         $this->url = null;
         $this->body = null;
         $this->image = null;
         $this->sticky = false;
-        $this->userFlag = 0;
+        $this->userFlag = UserFlags::FLAG_NONE;
         $this->mentions->clear();
     }
 
