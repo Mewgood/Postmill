@@ -21,19 +21,14 @@
       {% endblock header %}
 
       {% block row %}
+        {% from '_macros/form.html.twig' import radio %}
         {% from '_macros/time.html.twig' import relative_time %}
 
         <td class="table__shrink">
-          <span class="unstylable-widget">
-            <input class="form-control" type="radio" name="from" value="{{ item.id }}" {{ loop.index == 2 ? 'checked' }}>
-            <span class="unstylable-widget__circle" aria-hidden="true"></span>
-          </span>
+          {{ radio({ name: 'from', value: item.id, checked: loop.index == 2 }) }}
         </td>
         <td class="table__shrink">
-          <span class="unstylable-widget">
-            <input class="form-control" type="radio" name="to" value="{{ item.id }}" {{ loop.index == 1 ? 'checked' }}>
-            <span class="unstylable-widget__circle" aria-hidden="true"></span>
-          </span>
+          {{ radio({ name: 'to', value: item.id, checked: loop.index == 1 }) }}
         </td>
         <td class="table__shrink">
           <a href="{{ path('wiki_revision', {id: item.id}) }}">{{ item.id.hex|slice(0, 8) }}</a>

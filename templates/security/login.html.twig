@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% from '_macros/icon.html.twig' import icon %}
+{% from '_macros/form.html.twig' import checkbox %}
 
 {% block site_nav_active 'login' %}
 {% block title 'title.log_in'|trans %}
@@ -50,15 +50,7 @@
 
     <div class="form-row form-row--single-line form-row--no-collapse">
       <div class="form-row__align" aria-hidden="true"></div>
-      <span class="unstylable-widget">
-        <input type="checkbox"
-               name="_remember_me"
-               value="on"
-               class="form-control"
-               id="login-remember-me"
-               {{ (remember_me ?? true) ? 'checked' }}>
-        {{- icon('ok', 'X', 'icon--no-align unstylable-widget__check') -}}
-      </span>
+      {{ checkbox({ name: '_remember_me', id: 'login-remember-me', checked: remember_me ?? true }) }}
       <label for="login-remember-me">{{ 'label.remember_me'|trans }}</label>
     </div>
 

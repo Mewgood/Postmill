@@ -2,12 +2,15 @@
 
 {%- block checkbox_widget -%}
   {%- if not (unstyled ?? false) %}
-    {%- from '_macros/icon.html.twig' import icon -%}
-    {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
-    <span class="unstylable-widget">
-      {{- parent() -}}
-      {{- icon('ok', 'X', 'icon--no-align unstylable-widget__check') -}}
-    </span>
+    {%- from '_macros/form.html.twig' import checkbox -%}
+    {{- checkbox(attr|merge({
+      id: id,
+      name: full_name,
+      value: value ?? false,
+      disabled: disabled,
+      required: required,
+      checked: checked,
+    })) -}}
   {%- else -%}
     {{- parent() -}}
   {%- endif -%}
@@ -15,12 +18,15 @@
 
 {%- block radio_widget -%}
   {%- if not (unstyled ?? false) %}
-    {%- from '_macros/icon.html.twig' import icon -%}
-    {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
-    <span class="unstylable-widget">
-      {{- parent() -}}
-      <span class="unstylable-widget__circle" aria-hidden="true"></span>
-    </span>
+    {%- from '_macros/form.html.twig' import radio -%}
+    {{- radio(attr|merge({
+      id: id,
+      name: full_name,
+      value: value ?? false,
+      disabled: disabled,
+      required: required,
+      checked: checked,
+    })) -}}
   {%- else -%}
     {{- parent() -}}
   {%- endif -%}
