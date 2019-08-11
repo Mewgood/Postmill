@@ -127,6 +127,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/forums/by_title/1'];
         yield ['/forums/by_subscribers/1'];
         yield ['/forums/by_submissions/1'];
+        yield ['/wiki'];
         yield ['/login'];
         yield ['/registration'];
         yield ['/user/emma'];

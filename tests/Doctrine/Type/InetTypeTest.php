@@ -3,28 +3,31 @@
 namespace App\Tests\Doctrine\Type;
 
 use App\Doctrine\Type\InetType;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Types\Type;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use PHPUnit\Framework\TestCase;
 
-class InetTypeTest extends KernelTestCase {
+class InetTypeTest extends TestCase {
     /**
-     * @var InetType
+     * @var Type
      */
     private $type;
 
     /**
-     * @var PostgreSqlPlatform
+     * @var \PHPUnit\Framework\MockObject\MockObject|PostgreSqlPlatform
      */
     private $platform;
 
     public static function setUpBeforeClass() {
-        self::bootKernel();
+        if (!Type::hasType('inet')) {
+            Type::addType('inet', InetType::class);
+        }
     }
 
     protected function setUp() {
         $this->type = Type::getType('inet');
-        $this->platform = new PostgreSqlPlatform();
+        $this->platform = $this->createMock(PostgreSqlPlatform::class);
     }
 
     /**
@@ -35,6 +38,16 @@ class InetTypeTest extends KernelTestCase {
             $expected,
             $this->type->convertToDatabaseValue($value, $this->platform)
         );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testDoesNotWorkWithNonPostgresPlatforms() {
+        /** @var \PHPUnit\Framework\MockObject\MockObject|MySqlPlatform $platform */
+        $platform = $this->createMock(MySqlPlatform::class);
+
+        $this->type->convertToDatabaseValue('::1', $platform);
     }
 
     public function inetProvider() {

@@ -11,6 +11,7 @@ use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
+ * @covers \App\Controller\ResetPasswordController
  * @group time-sensitive
  */
 class ResetPasswordControllerTest extends WebTestCase {

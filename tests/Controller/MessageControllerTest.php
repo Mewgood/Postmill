@@ -15,7 +15,7 @@ class MessageControllerTest extends WebTestCase {
      * @param string $password
      */
     public function testCanViewMessageList($username, $password) {
-        $client = $this->createClient([], [
+        $client = self::createClient([], [
             'PHP_AUTH_USER' => $username,
             'PHP_AUTH_PW' => $password,
         ]);
@@ -30,7 +30,7 @@ class MessageControllerTest extends WebTestCase {
     }
 
     public function testMessageListIsEmptyForUserWithNoMessages() {
-        $client = $this->createClient([], [
+        $client = self::createClient([], [
             'PHP_AUTH_USER' => 'third',
             'PHP_AUTH_PW' => 'example3',
         ]);
@@ -41,7 +41,7 @@ class MessageControllerTest extends WebTestCase {
     }
 
     public function testMustBeLoggedInToViewMessageList() {
-        $client = $this->createClient();
+        $client = self::createClient();
         $client->request('GET', '/messages');
 
         $this->assertTrue($client->getResponse()->isRedirect());
@@ -55,7 +55,7 @@ class MessageControllerTest extends WebTestCase {
      * @param string $password
      */
     public function testCanReadOwnMessages($username, $password) {
-        $client = $this->createClient([], [
+        $client = self::createClient([], [
             'PHP_AUTH_USER' => $username,
             'PHP_AUTH_PW' => $password,
         ]);
@@ -69,7 +69,7 @@ class MessageControllerTest extends WebTestCase {
     }
 
     public function testCannotReadOthersMessages() {
-        $client = $this->createClient([], [
+        $client = self::createClient([], [
             'PHP_AUTH_USER' => 'third',
             'PHP_AUTH_PW' => 'example3',
         ]);
@@ -80,7 +80,7 @@ class MessageControllerTest extends WebTestCase {
     }
 
     public function testCannotReadMessagesWhileLoggedOut() {
-        $client = $this->createClient();
+        $client = self::createClient();
         $client->request('GET', '/messages/thread/1');
 
         $this->assertTrue($client->getResponse()->isRedirect());
@@ -88,7 +88,7 @@ class MessageControllerTest extends WebTestCase {
     }
 
     public function testCanReply() {
-        $client = $this->createClient([], [
+        $client = self::createClient([], [
             'PHP_AUTH_USER' => 'emma',
             'PHP_AUTH_PW' => 'goodshit',
         ]);

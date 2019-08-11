@@ -2,14 +2,14 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\WebTestCase;
 
 /**
  * @covers \App\Controller\UserController
  */
 class UserControllerTest extends WebTestCase {
-    public function testCannotSignUpWithPasswordLongerThan72Characters() {
-        $client = $this->createClient();
+    public function testCannotSignUpWithPasswordLongerThan72Characters(): void {
+        $client = self::createClient();
         $crawler = $client->request('GET', '/registration');
 
         $password = str_repeat('a', 73);
@@ -29,8 +29,8 @@ class UserControllerTest extends WebTestCase {
         );
     }
 
-    public function testCanReceiveSubmissionNotifications() {
-        $client = $this->createEmmaClient();
+    public function testCanReceiveSubmissionNotifications(): void {
+        $client = self::createAdminClient();
         $crawler = $client->request('GET', '/f/cats/3');
 
         $form = $crawler->selectButton('reply_to_submission_3[submit]')->form([
@@ -39,7 +39,7 @@ class UserControllerTest extends WebTestCase {
 
         $client->submit($form);
 
-        $client = $this->createZachClient();
+        $client = self::createUserClient();
         $crawler = $client->request('GET', '/notifications');
 
         $this->assertContains(
@@ -48,9 +48,9 @@ class UserControllerTest extends WebTestCase {
         );
     }
 
-    public function testCanReceiveCommentNotifications() {
-        $client = $this->createEmmaClient();
-        $crawler = $client->request('GET', '/f/cats/3/-/comment/3/');
+    public function testCanReceiveCommentNotifications(): void {
+        $client = self::createAdminClient();
+        $crawler = $client->request('GET', '/f/cats/3/-/comment/3');
 
         $form = $crawler->selectButton('reply_to_comment_3[submit]')->form([
             'reply_to_comment_3[comment]' => 'You will be notified about this comment.',
@@ -58,40 +58,12 @@ class UserControllerTest extends WebTestCase {
 
         $client->submit($form);
 
-        $client = $this->createZachClient();
+        $client = self::createUserClient();
         $crawler = $client->request('GET', '/notifications');
 
         $this->assertContains(
             'You will be notified about this comment.',
             $crawler->filter('.comment__body')->text()
         );
-    }
-
-    /**
-     * @return \Symfony\Bundle\FrameworkBundle\Client
-     */
-    private function createEmmaClient() {
-        $client = $this->createClient([], [
-            'PHP_AUTH_USER' => 'emma',
-            'PHP_AUTH_PW' => 'goodshit',
-        ]);
-
-        $client->followRedirects();
-
-        return $client;
-    }
-
-    /**
-     * @return \Symfony\Bundle\FrameworkBundle\Client
-     */
-    private function createZachClient() {
-        $client = $this->createClient([], [
-            'PHP_AUTH_USER' => 'zach',
-            'PHP_AUTH_PW' => 'example2',
-        ]);
-
-        $client->followRedirects();
-
-        return $client;
     }
 }

@@ -90,8 +90,7 @@ test:7.3: &test
         POSTGRES_USER: postmill
         POSTGRES_PASSWORD: secret
     before_script:
-        - composer install --prefer-dist --no-scripts --no-suggest --no-interaction
-        - bin/console cache:clear
+        - composer install --prefer-dist --no-suggest --no-interaction
         - bin/console doctrine:migrations:migrate -n
         - bin/console doctrine:fixtures:load --append -n
         - mkdir public/build

@@ -44,12 +44,10 @@ class AjaxController {
     }
 
     public function markdownPreview(Request $request, MarkdownConverter $converter) {
-        $markdown = $request->request->get('markdown', '');
-
-        if (!\is_string($markdown)) {
-            throw new BadRequestHttpException();
+        if ($request->getContentType() !== 'html') {
+            throw new BadRequestHttpException('Expected HTML request body');
         }
 
-        return new Response($converter->convertToHtml($markdown));
+        return new Response($converter->convertToHtml($request->getContent()));
     }
 }

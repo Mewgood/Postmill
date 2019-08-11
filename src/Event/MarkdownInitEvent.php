@@ -3,7 +3,6 @@
 namespace App\Event;
 
 use League\CommonMark\ConfigurableEnvironmentInterface;
-use League\CommonMark\Extension\Extension;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class MarkdownInitEvent extends Event {
@@ -16,8 +15,6 @@ final class MarkdownInitEvent extends Event {
      * @var string[]
      */
     private $context;
-
-    private $commonMarkConfig = [];
 
     private $htmlPurifierConfig = [];
 
@@ -42,6 +39,6 @@ final class MarkdownInitEvent extends Event {
     }
 
     public function addHtmlPurifierConfig(array $config): void {
-        $this->htmlPurifierConfig = array_replace($this->htmlPurifierConfig, $config);
+        $this->htmlPurifierConfig = $config + $this->htmlPurifierConfig;
     }
 }

@@ -1,37 +1,31 @@
 <?php
 
-namespace App\Tests\Asset {
-    use App\Asset\HashingVersionStrategy;
-    use PHPUnit\Framework\TestCase;
+namespace App\Tests\Asset;
 
-    class HashingVersionStrategyTest extends TestCase {
-        /**
-         * @var HashingVersionStrategy
-         */
-        private $strategy;
+use App\Asset\HashingVersionStrategy;
+use PHPUnit\Framework\TestCase;
 
-        protected function setUp() {
-            $this->strategy = new HashingVersionStrategy();
-        }
+class HashingVersionStrategyTest extends TestCase {
+    /**
+     * @var HashingVersionStrategy
+     */
+    private $strategy;
 
-        public function testGetVersion() {
-            $this->assertEquals(
-                str_repeat('a', 16),
-                $this->strategy->getVersion('foo')
-            );
-        }
-
-        public function testApplyVersion() {
-            $this->assertEquals(
-                'foo?'.str_repeat('a', 16),
-                $this->strategy->applyVersion('foo')
-            );
-        }
+    protected function setUp() {
+        $this->strategy = new HashingVersionStrategy(__DIR__.'/../Resources');
     }
-}
 
-namespace App\Asset {
-    function hash_file() {
-        return str_repeat('a', 32);
+    public function testGetVersion() {
+        $this->assertEquals(
+            '1052d25a298fce69',
+            $this->strategy->getVersion('garbage.bin')
+        );
+    }
+
+    public function testApplyVersion() {
+        $this->assertEquals(
+            'garbage.bin?1052d25a298fce69',
+            $this->strategy->applyVersion('garbage.bin')
+        );
     }
 }

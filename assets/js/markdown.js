@@ -10,7 +10,8 @@ function createPreview() {
         url: routing.generate('markdown_preview'),
         method: 'POST',
         dataType: 'html',
-        data: { markdown: $input.val() },
+        contentType: 'text/html; charset=UTF-8',
+        data: $input.val(),
     }).done(content => {
         const html = content.length > 0
             ? `<h3 class="markdown-preview__title">${translator.trans('markdown_type.preview')}</h3>
