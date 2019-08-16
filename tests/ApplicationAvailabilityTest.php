@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Simple availability tests to ensure the application isn't majorly screwed up.
+ *
+ * @coversNothing
  */
 class ApplicationAvailabilityTest extends WebTestCase {
     /**

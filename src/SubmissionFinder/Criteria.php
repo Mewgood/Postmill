@@ -62,8 +62,7 @@ final class Criteria {
     }
 
     /**
-     * @return int One of App\SubmissionFinder\SubmissionFinder::VIEW_*
-     *             constants
+     * @return int One of App\SubmissionFinder\Criteria::VIEW_* constants
      */
     public function getView(): int {
         return $this->view;
@@ -113,6 +112,10 @@ final class Criteria {
     }
 
     public function getUsers(): array {
+        if ($this->view !== self::VIEW_USERS) {
+            throw new \BadMethodCallException('showUsers() was not called');
+        }
+
         return $this->users;
     }
 

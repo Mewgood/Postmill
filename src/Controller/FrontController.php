@@ -53,7 +53,7 @@ final class FrontController extends AbstractController {
             $sortBy = $sortBy ?? Submission::SORT_HOT;
         }
 
-        return [$this, $listing]($sortBy, 'html');
+        return $this->$listing($sortBy, 'html');
     }
 
     public function featured(string $sortBy, string $_format): Response {

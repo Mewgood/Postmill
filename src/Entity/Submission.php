@@ -311,7 +311,7 @@ class Submission extends Votable {
         \DateTime $timestamp = null
     ) {
         if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
-            throw new \InvalidArgumentException('Invalid IP address');
+            throw new \InvalidArgumentException("Invalid IP address '$ip'");
         }
 
         if ($forum->userIsBanned($user)) {
