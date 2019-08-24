@@ -4,7 +4,7 @@ namespace App\Markdown\Inline\Parser;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ForumLinkParser extends AbstractLocalLinkParser {
+final class ForumLinkParser extends AbstractLocalLinkParser {
     /**
      * @var UrlGeneratorInterface
      */
@@ -14,9 +14,6 @@ class ForumLinkParser extends AbstractLocalLinkParser {
         $this->urlGenerator = $urlGenerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrefix(): string {
         return 'f';
     }
@@ -25,9 +22,6 @@ class ForumLinkParser extends AbstractLocalLinkParser {
         return '/^(?:\w{3,25}\+){0,70}\w{3,25}\b/';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUrl(string $suffix): string {
         if (strpos($suffix, '+') !== false) {
             return $this->urlGenerator->generate('multi', [

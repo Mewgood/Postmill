@@ -15,12 +15,9 @@ class UserBanRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|UserBan[]
      */
-    public function findActiveBans(int $page, int $maxPerPage = 25) {
+    public function findActiveBans(int $page, int $maxPerPage = 25): Pagerfanta {
         $qb = $this->createQueryBuilder('m')
             ->leftJoin(UserBan::class, 'b',
                 'WITH', 'm.user = b.user AND '.

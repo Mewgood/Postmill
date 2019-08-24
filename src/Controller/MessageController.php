@@ -18,13 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @IsGranted("ROLE_USER")
  */
 final class MessageController extends AbstractController {
-    /**
-     * @param MessageThreadRepository $repository
-     * @param int                     $page
-     *
-     * @return Response
-     */
-    public function threads(MessageThreadRepository $repository, int $page) {
+    public function threads(MessageThreadRepository $repository, int $page): Response {
         $messageThreads = $repository->findUserMessages($this->getUser(), $page);
 
         return $this->render('message/threads.html.twig', [
@@ -37,14 +31,8 @@ final class MessageController extends AbstractController {
      *
      * @IsGranted("message", subject="receiver", statusCode=403)
      * @Entity("receiver", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
-     *
-     * @param Request       $request
-     * @param ObjectManager $em
-     * @param User          $receiver
-     *
-     * @return Response
      */
-    public function compose(Request $request, ObjectManager $em, User $receiver) {
+    public function compose(Request $request, ObjectManager $em, User $receiver): Response {
         $data = new MessageData();
 
         $form = $this->createForm(MessageType::class, $data);
@@ -71,18 +59,14 @@ final class MessageController extends AbstractController {
      * View a message thread.
      *
      * @IsGranted("access", subject="thread", statusCode=403)
-     *
-     * @param MessageThread $thread
-     *
-     * @return Response
      */
-    public function thread(MessageThread $thread) {
+    public function thread(MessageThread $thread): Response {
         return $this->render('message/thread.html.twig', [
             'thread' => $thread,
         ]);
     }
 
-    public function replyForm($threadId) {
+    public function replyForm(string $threadId): Response {
         $form = $this->createForm(MessageType::class, null, [
             'action' => $this->generateUrl('reply_to_message', [
                 'id' => $threadId,
@@ -96,14 +80,8 @@ final class MessageController extends AbstractController {
 
     /**
      * @IsGranted("reply", subject="thread", statusCode=403)
-     *
-     * @param Request       $request
-     * @param ObjectManager $em
-     * @param MessageThread $thread
-     *
-     * @return Response
      */
-    public function reply(Request $request, ObjectManager $em, MessageThread $thread) {
+    public function reply(Request $request, ObjectManager $em, MessageThread $thread): Response {
         $data = new MessageData();
 
         $form = $this->createForm(MessageType::class, $data);
@@ -128,14 +106,8 @@ final class MessageController extends AbstractController {
 
     /**
      * @IsGranted("delete", subject="message", statusCode=403)
-     *
-     * @param Request       $request
-     * @param ObjectManager $em
-     * @param Message       $message
-     *
-     * @return Response
      */
-    public function delete(Request $request, ObjectManager $em, Message $message) {
+    public function delete(Request $request, ObjectManager $em, Message $message): Response {
         $this->validateCsrf('delete_message', $request->request->get('token'));
 
         $em->refresh($message);
@@ -158,5 +130,4 @@ final class MessageController extends AbstractController {
             'id' => $thread->getId(),
         ]);
     }
-
 }

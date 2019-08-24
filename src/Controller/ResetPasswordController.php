@@ -14,11 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ResetPasswordController extends AbstractController {
-    public function requestReset(
-        Request $request,
-        UserRepository $users,
-        ResetPasswordMailer $mailer
-    ) {
+    public function requestReset(Request $request, UserRepository $users, ResetPasswordMailer $mailer): Response {
         if (!$mailer->canMail()) {
             return $this->render('reset_password/cannot_reset.html.twig', [],
                 new Response('', 403)
@@ -49,20 +45,15 @@ final class ResetPasswordController extends AbstractController {
 
     /**
      * @ParamConverter("expires", options={"format": "U"}, converter="datetime")
-     *
-     * @param Request             $request
-     * @param ObjectManager       $em
-     * @param User                $user
-     * @param ResetPasswordMailer $mailer
-     * @param \DateTime           $expires
-     * @param string              $checksum
-     *
-     * @return Response
      */
     public function reset(
-        Request $request, ObjectManager $em, User $user,
-        ResetPasswordMailer $mailer, \DateTime $expires, string $checksum
-    ) {
+        Request $request,
+        ObjectManager $em,
+        User $user,
+        ResetPasswordMailer $mailer,
+        \DateTime $expires,
+        string $checksum
+    ): Response {
         if (!$mailer->validateChecksum($checksum, $user, $expires)) {
             throw $this->createNotFoundException('Invalid checksum');
         }

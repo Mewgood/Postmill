@@ -20,10 +20,10 @@ class NewSubmission {
             }
 
             $this->submissionId = $submission->getId();
-        } elseif (\is_scalar($submission)) {
+        } elseif (is_scalar($submission)) {
             $this->submissionId = (int) $submission;
         } else {
-            throw new \InvalidArgumentException(\sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 '$submission must be integer or instance of %s',
                 Submission::class
             ));

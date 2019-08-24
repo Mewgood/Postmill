@@ -31,6 +31,14 @@ final class BanListener implements EventSubscriberInterface {
      */
     private $tokenStorage;
 
+    public static function getSubscribedEvents(): array {
+        return [
+            // the priority must be less than 8, as the token storage won't be
+            // populated otherwise!
+            KernelEvents::REQUEST => ['onKernelRequest', 4],
+        ];
+    }
+
     public function __construct(
         IpBanRepository $repository,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -41,7 +49,7 @@ final class BanListener implements EventSubscriberInterface {
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function onKernelRequest(RequestEvent $event) {
+    public function onKernelRequest(RequestEvent $event): void {
         $request = $event->getRequest();
 
         // Don't check for bans on subrequests or requests that are 'safe' (i.e.
@@ -73,18 +81,7 @@ final class BanListener implements EventSubscriberInterface {
         }
     }
 
-    private function setController(Request $request) {
+    private function setController(Request $request): void {
         $request->attributes->set('_controller', BanLandingPageController::class);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents() {
-        return [
-            // the priority must be less than 8, as the token storage won't be
-            // populated otherwise!
-            KernelEvents::REQUEST => ['onKernelRequest', 4],
-        ];
     }
 }

@@ -10,9 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 class Version20170101133959 extends AbstractMigration implements ContainerAwareInterface {
     use ContainerAwareTrait;
 
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
         $this->addSql('ALTER TABLE forums ADD canonical_name TEXT');
@@ -25,9 +22,6 @@ class Version20170101133959 extends AbstractMigration implements ContainerAwareI
         $this->addSql('ALTER TABLE forums ALTER COLUMN canonical_name SET NOT NULL');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 

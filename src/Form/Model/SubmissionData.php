@@ -47,7 +47,7 @@ class SubmissionData {
      * @Assert\Choice(Submission::MEDIA_TYPES, strict=true, groups={"media"})
      * @Assert\NotBlank(groups={"media"})
      *
-     * @var string
+     * @var string|null
      */
     private $mediaType;
 
@@ -104,7 +104,7 @@ class SubmissionData {
         return $submission;
     }
 
-    public function updateSubmission(Submission $submission, User $editingUser) {
+    public function updateSubmission(Submission $submission, User $editingUser): void {
         if (
             $this->url !== $submission->getUrl() ||
             $this->title !== $submission->getTitle() ||
@@ -127,27 +127,27 @@ class SubmissionData {
         return $this->entityId;
     }
 
-    public function getTitle() {
+    public function getTitle(): ?string {
         return $this->title;
     }
 
-    public function setTitle($title) {
+    public function setTitle(?string $title): void {
         $this->title = $title;
     }
 
-    public function getUrl() {
+    public function getUrl(): ?string {
         return $this->url;
     }
 
-    public function setUrl($url) {
+    public function setUrl(?string $url): void {
         $this->url = $url;
     }
 
-    public function getBody() {
+    public function getBody(): ?string {
         return $this->body;
     }
 
-    public function setBody($body) {
+    public function setBody(?string $body): void {
         $this->body = $body;
     }
 
@@ -159,11 +159,11 @@ class SubmissionData {
         $this->userFlag = $userFlag;
     }
 
-    public function getForum() {
+    public function getForum(): ?Forum {
         return $this->forum;
     }
 
-    public function setForum($forum) {
+    public function setForum(?Forum $forum): void {
         $this->forum = $forum;
     }
 
@@ -179,7 +179,7 @@ class SubmissionData {
         return $this->uploadedImage;
     }
 
-    public function setUploadedImage(UploadedFile $image) {
+    public function setUploadedImage(UploadedFile $image): void {
         $this->uploadedImage = $image;
     }
 

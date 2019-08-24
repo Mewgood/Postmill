@@ -20,7 +20,7 @@ class SubmissionImageManagerTest extends TestCase {
      */
     private $manager;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->filesystem = $this->createMock(FilesystemInterface::class);
 
         $this->manager = new SubmissionImageManager($this->filesystem);

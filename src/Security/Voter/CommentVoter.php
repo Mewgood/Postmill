@@ -14,7 +14,7 @@ final class CommentVoter extends Voter {
      * - softdelete - Ability to soft delete a comment.
      * - edit - Ability to edit a comment.
      */
-    const ATTRIBUTES = ['delete_thread', 'softdelete', 'edit'];
+    public const ATTRIBUTES = ['delete_thread', 'softdelete', 'edit'];
 
     private $decisionManager;
 

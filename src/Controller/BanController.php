@@ -15,19 +15,20 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @IsGranted("ROLE_ADMIN", statusCode=403)
  * @Entity("user", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
  */
 final class BanController extends AbstractController {
-    public function userBans(UserBanRepository $repository, int $page) {
+    public function userBans(UserBanRepository $repository, int $page): Response {
         return $this->render('ban/user_bans.html.twig', [
             'bans' => $repository->findActiveBans($page),
         ]);
     }
 
-    public function banUser(User $user, UserRepository $repository, ObjectManager $em, Request $request) {
+    public function banUser(User $user, UserRepository $repository, ObjectManager $em, Request $request): Response {
         $data = new UserBanData($repository->findIpsUsedByUser($user));
 
         $form = $this->createForm(BanUserType::class, $data);
@@ -54,7 +55,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function unbanUser(User $user, ObjectManager $em, Request $request) {
+    public function unbanUser(User $user, ObjectManager $em, Request $request): Response {
         $data = new UserBanData();
 
         $form = $this->createForm(UnbanUserType::class, $data);
@@ -84,13 +85,13 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function ipBans(int $page, IpBanRepository $repository) {
+    public function ipBans(int $page, IpBanRepository $repository): Response {
         return $this->render('ban/ip_bans.html.twig', [
             'bans' => $repository->findAllPaginated($page),
         ]);
     }
 
-    public function banIp(Request $request, ObjectManager $em) {
+    public function banIp(Request $request, ObjectManager $em): Response {
         $data = new IpBanData();
 
         $form = $this->createForm(IpBanType::class, $data);
@@ -112,11 +113,11 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function unbanIps(Request $request, IpBanRepository $repository, ObjectManager $em) {
+    public function unbanIps(Request $request, IpBanRepository $repository, ObjectManager $em): Response {
         $this->validateCsrf('unban_ips', $request->request->get('token'));
 
         $ids = array_filter((array) $request->request->get('ban'), function ($id) {
-            return is_int(+$id);
+            return \is_int(+$id);
         });
 
         foreach ($repository->findBy(['id' => $ids]) as $ban) {

@@ -11,10 +11,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadExampleComments extends AbstractFixture implements DependentFixtureInterface {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager): void {
         $i = 0;
 
         foreach ($this->provideComments() as $data) {
@@ -45,7 +42,7 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
         $manager->flush();
     }
 
-    private function provideComments() {
+    private function provideComments(): iterable {
         yield [
             'body' => "This is a comment body. It is quite neat.\n\n*markdown*",
             'submission' => 1,
@@ -74,10 +71,7 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
+    public function getDependencies(): array {
         return [LoadExampleSubmissions::class];
     }
 }

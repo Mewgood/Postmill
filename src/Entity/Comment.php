@@ -221,7 +221,7 @@ class Comment extends Votable {
         return $this->body;
     }
 
-    public function setBody(string $body) {
+    public function setBody(string $body): void {
         $this->body = $body;
     }
 
@@ -244,8 +244,6 @@ class Comment extends Votable {
     /**
      * @Groups({"comment:read"})
      * @SerializedName("parent")
-     *
-     * @return int|null
      */
     public function getParentId(): ?int {
         return $this->parent ? $this->parent->id : null;
@@ -268,8 +266,6 @@ class Comment extends Votable {
 
     /**
      * @Groups({"comment:read"})
-     *
-     * @return int
      */
     public function getReplyCount(): int {
         return \count($this->children);
@@ -279,14 +275,11 @@ class Comment extends Votable {
         $this->children->removeElement($reply);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVotes(): Collection {
         return $this->votes;
     }
 
-    public function addMention(User $mentioned) {
+    public function addMention(User $mentioned): void {
         if ($mentioned === $this->getUser()) {
             // don't notify yourself
             return;
@@ -320,14 +313,9 @@ class Comment extends Votable {
         return new CommentVote($user, $ip, $choice, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function vote(User $user, ?string $ip, int $choice): void {
-        if ($choice !== self::VOTE_RETRACT) {
-            if ($this->submission->getForum()->userIsBanned($user)) {
-                throw new BannedFromForumException();
-            }
+        if ($choice !== self::VOTE_RETRACT && $this->submission->getForum()->userIsBanned($user)) {
+            throw new BannedFromForumException();
         }
 
         parent::vote($user, $ip, $choice);
@@ -359,7 +347,7 @@ class Comment extends Votable {
         return $this->editedAt;
     }
 
-    public function setEditedAt(?\DateTime $editedAt) {
+    public function setEditedAt(?\DateTime $editedAt): void {
         $this->editedAt = $editedAt;
     }
 
@@ -367,7 +355,7 @@ class Comment extends Votable {
         return $this->moderated;
     }
 
-    public function setModerated(bool $moderated) {
+    public function setModerated(bool $moderated): void {
         $this->moderated = $moderated;
     }
 
@@ -381,7 +369,7 @@ class Comment extends Votable {
         $this->userFlag = $userFlag;
     }
 
-    private function notify() {
+    private function notify(): void {
         $receiver = ($this->parent ?: $this->submission)->getUser();
 
         if (

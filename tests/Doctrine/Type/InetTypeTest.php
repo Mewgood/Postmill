@@ -19,13 +19,13 @@ class InetTypeTest extends TestCase {
      */
     private $platform;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         if (!Type::hasType('inet')) {
             Type::addType('inet', InetType::class);
         }
     }
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->type = Type::getType('inet');
         $this->platform = $this->createMock(PostgreSqlPlatform::class);
     }
@@ -33,7 +33,7 @@ class InetTypeTest extends TestCase {
     /**
      * @dataProvider inetProvider
      */
-    public function testCanConvertValueToDatabaseType($value, $expected) {
+    public function testCanConvertValueToDatabaseType($value, $expected): void {
         $this->assertSame(
             $expected,
             $this->type->convertToDatabaseValue($value, $this->platform)
@@ -43,7 +43,7 @@ class InetTypeTest extends TestCase {
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testDoesNotWorkWithNonPostgresPlatforms() {
+    public function testDoesNotWorkWithNonPostgresPlatforms(): void {
         /** @var \PHPUnit\Framework\MockObject\MockObject|MySqlPlatform $platform */
         $platform = $this->createMock(MySqlPlatform::class);
 

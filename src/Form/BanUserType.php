@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BanUserType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('reason', TextareaType::class, [
                 'label' => 'label.reason',
@@ -49,7 +49,7 @@ class BanUserType extends AbstractType {
         ));
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => UserBanData::class,
             'validation_groups' => function (FormInterface $form) {

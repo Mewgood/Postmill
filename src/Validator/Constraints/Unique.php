@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @Target({"CLASS"})
  */
 class Unique extends Constraint {
-    const NOT_UNIQUE_ERROR = 'eec1b008-c55b-4d91-b5ad-f0b201eb8ada';
+    public const NOT_UNIQUE_ERROR = 'eec1b008-c55b-4d91-b5ad-f0b201eb8ada';
 
     protected static $errorNames = [
         self::NOT_UNIQUE_ERROR => 'NOT_UNIQUE_ERROR',
@@ -43,50 +43,38 @@ class Unique extends Constraint {
 
     public $errorPath;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($options = null) {
         parent::__construct($options);
 
         $fields = $options['fields'] ?? $options['value'];
 
-        if (!is_array($fields) && !is_string($fields)) {
+        if (!\is_array($fields) && !\is_string($fields)) {
             throw new UnexpectedTypeException($fields, 'array or string');
         }
 
         $fields = (array) $fields;
 
-        if (count($fields) === 0) {
+        if (\count($fields) === 0) {
             throw new InvalidOptionsException(
                 'fields option must have at least one field',
                 ['fields']
             );
         }
 
-        if (!strlen($options['entityClass'])) {
+        if (!$options['entityClass']) {
             throw new InvalidOptionsException('Bad entity class', ['entityClass']);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRequiredOptions() {
+    public function getRequiredOptions(): array {
         return ['fields', 'entityClass'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOption() {
+    public function getDefaultOption(): string {
         return 'fields';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTargets() {
+    public function getTargets(): array {
         return [Constraint::CLASS_CONSTRAINT];
     }
 }

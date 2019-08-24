@@ -7,10 +7,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadExampleUsers extends AbstractFixture {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager): void {
         foreach ($this->provideUsers() as $data) {
             // use plaintext passwords in fixtures to speed up tests
             $user = new User($data['username'], $data['password']);
@@ -25,7 +22,7 @@ class LoadExampleUsers extends AbstractFixture {
         $manager->flush();
     }
 
-    private function provideUsers() {
+    private function provideUsers(): iterable {
         yield [
             'username' => 'emma',
             'password' => 'goodshit',

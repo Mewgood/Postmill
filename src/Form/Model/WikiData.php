@@ -24,7 +24,7 @@ class WikiData {
      */
     private $body;
 
-    public static function createFromPage(WikiPage $page) {
+    public static function createFromPage(WikiPage $page): self {
         $self = new self();
 
         $self->title = $page->getLatestRevision()->getTitle();
@@ -37,25 +37,25 @@ class WikiData {
         return new WikiPage($path, $this->title, $this->body, $user);
     }
 
-    public function updatePage(WikiPage $page, User $user) {
+    public function updatePage(WikiPage $page, User $user): void {
         $revision = new WikiRevision($page, $this->title, $this->body, $user);
 
         $page->addRevision($revision);
     }
 
-    public function getTitle() {
+    public function getTitle(): ?string {
         return $this->title;
     }
 
-    public function setTitle($title) {
+    public function setTitle(?string $title): void {
         $this->title = $title;
     }
 
-    public function getBody() {
+    public function getBody(): ?string {
         return $this->body;
     }
 
-    public function setBody($body) {
+    public function setBody(?string $body): void {
         $this->body = $body;
     }
 }

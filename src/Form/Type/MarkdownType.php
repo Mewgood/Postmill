@@ -7,19 +7,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class MarkdownType extends AbstractType {
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'trim' => false,
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent() {
+    public function getParent(): string {
         return TextareaType::class;
     }
 }

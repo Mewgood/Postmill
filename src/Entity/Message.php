@@ -100,7 +100,7 @@ class Message {
         return $this->ip;
     }
 
-    private function notify() {
+    private function notify(): void {
         foreach ($this->thread->getParticipants() as $user) {
             if (
                 $user === $this->sender ||

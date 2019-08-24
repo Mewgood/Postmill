@@ -33,9 +33,9 @@ class HoneypotType extends AbstractType {
         $this->logger = $logger ?: new NullLogger();
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            if (strlen($event->getData()) > 0) {
+            if ((string) $event->getData() !== '') {
                 $ip = $this->requestStack->getCurrentRequest()->getClientIp();
 
                 $this->logger->info('Honeypot triggered for IP {ip}', [
@@ -47,15 +47,15 @@ class HoneypotType extends AbstractType {
         });
     }
 
-    public function getBlockPrefix() {
+    public function getBlockPrefix(): string {
         return 'honeypot';
     }
 
-    public function getParent() {
+    public function getParent(): string {
         return TextType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'trim' => false,
             'mapped' => false,

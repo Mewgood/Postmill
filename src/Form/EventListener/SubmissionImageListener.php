@@ -22,20 +22,20 @@ final class SubmissionImageListener implements EventSubscriberInterface {
         $this->imageHelper = $imageHelper;
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array {
         return [
-            FormEvents::POST_SUBMIT => ['onPostSubmit', -200]
+            FormEvents::POST_SUBMIT => ['onPostSubmit', -200],
         ];
     }
 
-    public function onPostSubmit(PostSubmitEvent $event) {
+    public function onPostSubmit(PostSubmitEvent $event): void {
         if (!$event->getForm()->isValid()) {
             return;
         }
 
         $data = $event->getData();
 
-        assert($data instanceof SubmissionData);
+        \assert($data instanceof SubmissionData);
 
         $upload = $data->getUploadedImage();
 

@@ -22,13 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
 final class WikiController extends AbstractController {
     /**
      * Views a wiki page.
-     *
-     * @param string             $path
-     * @param WikiPageRepository $wikiPageRepository
-     *
-     * @return Response
      */
-    public function wiki(string $path, WikiPageRepository $wikiPageRepository) {
+    public function wiki(string $path, WikiPageRepository $wikiPageRepository): Response {
         $page = $wikiPageRepository->findOneCaseInsensitively($path);
 
         if (!$page) {
@@ -47,16 +42,10 @@ final class WikiController extends AbstractController {
      *
      * @IsGranted("ROLE_USER")
      *
-     * @param Request       $request
-     * @param string        $path
-     * @param ObjectManager $em
-     *
-     * @return Response
-     *
      * @todo handle conflicts
      * @todo do something if the page already exists
      */
-    public function create(Request $request, string $path, ObjectManager $em) {
+    public function create(Request $request, string $path, ObjectManager $em): Response {
         $data = new WikiData();
 
         $form = $this->createForm(WikiType::class, $data);
@@ -81,14 +70,8 @@ final class WikiController extends AbstractController {
      * @Entity("page", expr="repository.findOneCaseInsensitively(path)")
      * @IsGranted("ROLE_USER")
      * @IsGranted("delete", subject="page", statusCode=403)
-     *
-     * @param Request       $request
-     * @param WikiPage      $page
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
-    public function delete(Request $request, WikiPage $page, ObjectManager $em) {
+    public function delete(Request $request, WikiPage $page, ObjectManager $em): Response {
         $this->validateCsrf('wiki_delete', $request->request->get('token'));
 
         $em->remove($page);
@@ -106,15 +89,9 @@ final class WikiController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("write", subject="page", statusCode=403)
      *
-     * @param Request       $request
-     * @param WikiPage      $page
-     * @param ObjectManager $em
-     *
-     * @return Response
-     *
      * @todo handle conflicts
      */
-    public function edit(Request $request, WikiPage $page, ObjectManager $em) {
+    public function edit(Request $request, WikiPage $page, ObjectManager $em): Response {
         $data = WikiData::createFromPage($page);
         $form = $this->createForm(WikiType::class, $data);
         $form->handleRequest($request);
@@ -138,15 +115,8 @@ final class WikiController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("lock", subject="page", statusCode=403)
-     *
-     * @param Request       $request
-     * @param WikiPage      $page
-     * @param bool          $lock
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
-    public function lock(Request $request, WikiPage $page, bool $lock, ObjectManager $em) {
+    public function lock(Request $request, WikiPage $page, bool $lock, ObjectManager $em): Response {
         $this->validateCsrf('wiki_lock', $request->request->get('token'));
 
         $page->setLocked($lock);
@@ -164,20 +134,15 @@ final class WikiController extends AbstractController {
 
     /**
      * @Entity("wikiPage", expr="repository.findOneCaseInsensitively(path)")
-     *
-     * @param WikiPage $wikiPage
-     * @param int      $page
-     *
-     * @return Response
      */
-    public function history(WikiPage $wikiPage, int $page) {
+    public function history(WikiPage $wikiPage, int $page): Response {
         return $this->render('wiki/history.html.twig', [
             'page' => $wikiPage,
             'revisions' => $wikiPage->getPaginatedRevisions($page),
         ]);
     }
 
-    public function diff(Request $request, WikiRevisionRepository $repository) {
+    public function diff(Request $request, WikiRevisionRepository $repository): Response {
         /* @var WikiRevision $from
          * @var WikiRevision $to */
         [$from, $to] = array_map(function ($q) use ($request, $repository) {
@@ -208,25 +173,14 @@ final class WikiController extends AbstractController {
         ]);
     }
 
-    /**
-     * @param WikiRevision $revision
-     *
-     * @return Response
-     */
-    public function revision(WikiRevision $revision) {
+    public function revision(WikiRevision $revision): Response {
         return $this->render('wiki/revision.html.twig', [
             'page' => $revision->getPage(),
             'revision' => $revision,
         ]);
     }
 
-    /**
-     * @param int                $page
-     * @param WikiPageRepository $wikiPageRepository
-     *
-     * @return Response
-     */
-    public function all(int $page, WikiPageRepository $wikiPageRepository) {
+    public function all(int $page, WikiPageRepository $wikiPageRepository): Response {
         $pages = $wikiPageRepository->findAllPages($page);
 
         return $this->render('wiki/all.html.twig', [
@@ -234,7 +188,7 @@ final class WikiController extends AbstractController {
         ]);
     }
 
-    public function recentChanges(WikiRevisionRepository $repository, int $page) {
+    public function recentChanges(WikiRevisionRepository $repository, int $page): Response {
         return $this->render('wiki/recent.html.twig', [
             'revisions' => $repository->findRecent($page),
         ]);

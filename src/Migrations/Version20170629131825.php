@@ -6,9 +6,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20170629131825 extends AbstractMigration {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
@@ -16,9 +13,6 @@ class Version20170629131825 extends AbstractMigration {
         $this->addSql('ALTER TABLE comments ADD user_flag SMALLINT DEFAULT 0 NOT NULL');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 

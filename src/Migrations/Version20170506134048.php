@@ -6,9 +6,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20170506134048 extends AbstractMigration {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
@@ -33,9 +30,6 @@ class Version20170506134048 extends AbstractMigration {
         $this->addSql('COMMENT ON COLUMN submission_votes.ip IS \'(DC2Type:inet)\'');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 

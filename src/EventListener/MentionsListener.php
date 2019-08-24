@@ -62,7 +62,7 @@ class MentionsListener implements EventSubscriberInterface {
         $this->users = $users;
     }
 
-    public function onNewSubmission(NewSubmissionEvent $event) {
+    public function onNewSubmission(NewSubmissionEvent $event): void {
         $submission = $event->getSubmission();
 
         if ($submission->getBody() === null) {
@@ -83,7 +83,7 @@ class MentionsListener implements EventSubscriberInterface {
         $this->manager->flush();
     }
 
-    public function onNewComment(NewCommentEvent $event) {
+    public function onNewComment(NewCommentEvent $event): void {
         $comment = $event->getComment();
 
         $html = $this->converter->convertToHtml($comment->getBody(), [
@@ -101,8 +101,6 @@ class MentionsListener implements EventSubscriberInterface {
     }
 
     /**
-     * @param string $html
-     *
      * @return \App\Entity\User[]
      */
     public function getUsersToNotify(string $html): array {
@@ -120,7 +118,7 @@ class MentionsListener implements EventSubscriberInterface {
         );
 
         $hrefs = (new Crawler($html))
-            ->filterXPath(\sprintf(
+            ->filterXPath(sprintf(
                 '//a[starts-with(@href,"%s/user/")]',
                 $request->getBasePath()
             ))
@@ -142,7 +140,7 @@ class MentionsListener implements EventSubscriberInterface {
             } catch (ExceptionInterface $e) {
             }
 
-            if ($count == 10) {
+            if ($count === 10) {
                 break;
             }
         }

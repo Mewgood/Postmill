@@ -19,7 +19,7 @@ final class PreventMultipleSubmitExtension extends AbstractTypeExtension {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
 
             if (

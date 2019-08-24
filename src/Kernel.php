@@ -14,20 +14,12 @@ class Kernel extends BaseKernel implements HttpCacheProvider {
     use HttpCacheAware;
     use MicroKernelTrait;
 
-    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     public function __construct(...$args) {
         parent::__construct(...$args);
 
         $this->setHttpCache(new CacheKernel($this));
-    }
-
-    public function getCacheDir() {
-        return $this->getProjectDir().'/var/cache/'.$this->environment;
-    }
-
-    public function getLogDir() {
-        return $this->getProjectDir().'/var/log';
     }
 
     public function registerBundles() {
@@ -39,7 +31,7 @@ class Kernel extends BaseKernel implements HttpCacheProvider {
         }
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader) {
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void {
         $container->setParameter('container.autowiring.strict_mode', true);
         $container->setParameter('container.dumper.inline_class_loader', true);
         $confDir = $this->getProjectDir().'/config';
@@ -51,7 +43,7 @@ class Kernel extends BaseKernel implements HttpCacheProvider {
         $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes) {
+    protected function configureRoutes(RouteCollectionBuilder $routes): void {
         $confDir = $this->getProjectDir().'/config';
         if (is_dir($confDir.'/app_routes/')) {
             $routes->import($confDir.'/app_routes/*'.self::CONFIG_EXTS, '/', 'glob');

@@ -73,34 +73,34 @@ final class AppExtension extends AbstractExtension {
                 return $this->version;
             }),
             new TwigFunction('font_list', function (): array {
-                return \array_keys($this->fontsConfig);
+                return array_keys($this->fontsConfig);
             }),
             new TwigFunction('font_names', function (string $font): array {
-                $font = \strtolower($font);
+                $font = strtolower($font);
 
                 return $this->fontsConfig[$font]['alias'] ?? [$font];
             }),
             new TwigFunction('font_entrypoint', function (string $font): ?string {
-                $font = \strtolower($font);
+                $font = strtolower($font);
 
                 return $this->fontsConfig[$font]['entrypoint'] ?? null;
             }),
             new TwigFunction('theme_list', function (): array {
-                return \array_keys($this->fontsConfig);
+                return array_keys($this->fontsConfig);
             }),
             new TwigFunction('theme_entrypoint', function (string $name, bool $nightMode): ?string {
                 if ($name === '_default') {
                     $name = $this->themesConfig['_default'];
                 }
 
-                $config = $this->themesConfig[\strtolower($name)];
+                $config = $this->themesConfig[strtolower($name)];
 
                 return $config['entrypoint'][$nightMode ? 'night' : 'day'] ?? $config['entrypoint'];
             }),
             new TwigFunction('upload_url', function (string $path) {
-                $path = \rtrim($this->uploadRoot, '/').'/'.$path;
+                $path = rtrim($this->uploadRoot, '/').'/'.$path;
 
-                if (\strpos($path, '//') === false) {
+                if (strpos($path, '//') === false) {
                     $request = $this->requestStack->getCurrentRequest();
 
                     $path = $request->getSchemeAndHttpHost().$path;

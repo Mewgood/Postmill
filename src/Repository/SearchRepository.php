@@ -48,11 +48,9 @@ final class SearchRepository {
     /**
      * The more amazing-er cross-entity search engine.
      *
-     * @param array  $options An array with the following options:
-     *                        - `query` (string)
-     *                        - `is` (array with entity class names)
-     *
-     * @return array
+     * @param array $options An array with the following options:
+     *                       - `query` (string)
+     *                       - `is` (array with entity class names)
      *
      * @todo pagination, more options!
      */
@@ -65,7 +63,7 @@ final class SearchRepository {
             }
         }
 
-        \usort($results, function ($a, $b) {
+        usort($results, function ($a, $b) {
             return $b['search_rank'] <=> $a['search_rank'];
         });
 
@@ -105,7 +103,7 @@ final class SearchRepository {
         foreach (self::ENTITY_HEADLINES[$entityClass] as $name => $headline) {
             $rsm->addScalarResult($name, $name);
 
-            $qb->addSelect(\sprintf(
+            $qb->addSelect(sprintf(
                 "ts_headline(%s, search_query, :{$name}_config) AS %s",
                 $headline['document'],
                 $name
@@ -116,8 +114,8 @@ final class SearchRepository {
 
         $qb
             ->addSelect($rsm->generateSelectClause())
-            ->addSelect(":entity::TEXT AS entity")
-            ->addSelect("ts_rank(search_doc, search_query) AS search_rank")
+            ->addSelect(':entity::TEXT AS entity')
+            ->addSelect('ts_rank(search_doc, search_query) AS search_rank')
             ->from($table, 'e')
             ->from('plainto_tsquery(:query::TEXT)', 'search_query')
             ->where('search_doc @@ search_query')

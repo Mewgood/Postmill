@@ -13,16 +13,13 @@ interface PageInterface {
     /**
      * Get the fields of the entity/DTO used for pagination.
      *
-     * @param string $group
      *
      * @return string[]
      */
     public function getPaginationFields(string $group): array;
 
     /**
-     * @param string $group
-     *
-     * @return string One of `SORT_*` constants.
+     * @return string one of `SORT_*` constants
      */
     public function getSortOrder(string $group): string;
 

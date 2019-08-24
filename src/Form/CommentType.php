@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CommentType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         if ($options['honeypot']) {
             $builder->add('email', HoneypotType::class);
         }
@@ -36,7 +36,7 @@ final class CommentType extends AbstractType {
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => CommentData::class,
             'forum' => null, // for UserFlagTrait

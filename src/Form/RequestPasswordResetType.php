@@ -20,7 +20,7 @@ final class RequestPasswordResetType extends AbstractType {
         $this->bypass = $bypass;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('email', EmailType::class)
             ->add('verification', CaptchaType::class, [
@@ -32,7 +32,7 @@ final class RequestPasswordResetType extends AbstractType {
             ->add('submit', SubmitType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => RequestPasswordReset::class,
             'label_format' => 'request_password_reset_form.%name%',

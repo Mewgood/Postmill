@@ -48,7 +48,7 @@ class MarkdownConverterTest extends TestCase {
         return new MarkdownConverter($dispatcher, $cacheItemPool);
     }
 
-    public function testLinksHaveNoTargetByDefault() {
+    public function testLinksHaveNoTargetByDefault(): void {
         $converter = $this->createMarkdownConverter(false);
 
         $output = $converter->convertToHtml('[link](http://example.com)');
@@ -59,7 +59,7 @@ class MarkdownConverterTest extends TestCase {
         $this->assertEquals('link', $crawler->html());
     }
 
-    public function testLinksHaveTargetWithOpenExternalLinksInNewTabOption() {
+    public function testLinksHaveTargetWithOpenExternalLinksInNewTabOption(): void {
         $converter = $this->createMarkdownConverter(true);
 
         $output = $converter->convertToHtml('[link](http://example.com)');

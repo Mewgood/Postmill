@@ -12,10 +12,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class SubmissionFinder {
     private const SORT_CLAUSE_FORMATS = [
@@ -183,9 +180,9 @@ final class SubmissionFinder {
 
         $format = self::SORT_CLAUSE_FORMATS[SubmissionPage::SORT_ORDER[$sortBy]];
 
-        $qb->andWhere(\sprintf($format,
-            \implode(', ', $columns),
-            \implode(', :next_', $columns)
+        $qb->andWhere(sprintf($format,
+            implode(', ', $columns),
+            implode(', :next_', $columns)
         ));
 
         foreach ($columns as $field => $column) {

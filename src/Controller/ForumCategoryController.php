@@ -53,11 +53,6 @@ class ForumCategoryController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
-     *
-     * @param Request       $request
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
     public function create(Request $request, ObjectManager $em): Response {
         $data = new ForumCategoryData();
@@ -82,12 +77,6 @@ class ForumCategoryController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
-     *
-     * @param ForumCategory $category
-     * @param Request       $request
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
     public function edit(ForumCategory $category, Request $request, ObjectManager $em): Response {
         $data = new ForumCategoryData($category);
@@ -112,13 +101,8 @@ class ForumCategoryController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
-     *
-     * @param ForumCategoryRepository $repository
-     * @param int                     $page
-     *
-     * @return Response
      */
-    public function manage(ForumCategoryRepository $repository, int $page) {
+    public function manage(ForumCategoryRepository $repository, int $page): Response {
         $categories = $repository->findPaginated($page);
 
         return $this->render('forum_category/manage.html.twig', [

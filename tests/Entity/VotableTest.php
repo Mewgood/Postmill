@@ -15,13 +15,14 @@ class VotableTest extends TestCase {
      */
     private $votable;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->votable = $this->createVotable();
     }
 
     public function testVotableScores(): void {
         $votable = $this->createVotable();
-        $user = $this->createMock(User::class);
+
+        $user = $this->createUser();
 
         $this->assertEquals(0, $votable->getNetScore());
         $this->assertEquals(0, $votable->getUpvotes());
@@ -41,7 +42,7 @@ class VotableTest extends TestCase {
     }
 
     public function testVoteCollectionHasCorrectProperties(): void {
-        $user = $this->createMock(User::class);
+        $user = $this->createUser();
 
         $this->votable->vote($user, null, Votable::VOTE_UP);
         $this->assertEquals(Votable::USER_UPVOTED, $this->votable->getVotes()->first()->getChoice());
@@ -59,19 +60,19 @@ class VotableTest extends TestCase {
      * @expectedException \InvalidArgumentException
      */
     public function testCannotGiveIncorrectVote(): void {
-        $user = $this->createMock(User::class);
+        $user = $this->createUser();
 
         $this->votable->vote($user, null, 69);
     }
 
     public function testGetUserVote(): void {
-        $user1 = $this->createMock(User::class);
+        $user1 = $this->createUser();
         $this->votable->vote($user1, null, Votable::VOTE_UP);
 
-        $user2 = $this->createMock(User::class);
+        $user2 = $this->createUser();
         $this->votable->vote($user2, null, Votable::VOTE_DOWN);
 
-        $user3 = $this->createMock(User::class);
+        $user3 = $this->createUser();
 
         $this->assertEquals(Votable::USER_UPVOTED, $this->votable->getUserChoice($user1));
         $this->assertEquals(Votable::USER_DOWNVOTED, $this->votable->getUserChoice($user2));
@@ -82,23 +83,29 @@ class VotableTest extends TestCase {
      * @doesNotPerformAssertions
      */
     public function testAcceptsWellFormedIpAddresses(): void {
-        $user = $this->createMock(User::class);
+        $user = $this->createUser();
         $this->votable->vote($user, '127.0.4.20', Votable::VOTE_UP);
         $this->votable->vote($user, '::69', Votable::VOTE_UP);
         $this->votable->vote($user, null, Votable::VOTE_UP);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Bad IP address
+     */
     public function testThrowsExceptionOnBadIpAddress(): void {
-        $user = $this->createMock(User::class);
-
-        $this->expectException(\InvalidArgumentException::class);
+        $user = $this->createUser();
 
         $this->votable->vote($user, 'poop', Votable::VOTE_UP);
     }
 
     /**
-     * @return Votable
+     * @return User|\PHPUnit\Framework\MockObject\MockObject
      */
+    private function createUser() {
+        return $this->createMock(User::class);
+    }
+
     private function createVotable(): Votable {
         return new class() extends Votable {
             private $votes;

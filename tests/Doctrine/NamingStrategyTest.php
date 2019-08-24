@@ -11,14 +11,14 @@ class NamingStrategyTest extends TestCase {
      */
     private $namingStrategy;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->namingStrategy = new NamingStrategy();
     }
 
     /**
      * @dataProvider nameProvider
      */
-    public function testNamesAreCorrectlyTransformed($to, $from) {
+    public function testNamesAreCorrectlyTransformed($to, $from): void {
         $this->assertEquals($to, $this->namingStrategy->classToTableName($from));
     }
 

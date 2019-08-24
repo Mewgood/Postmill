@@ -2,7 +2,7 @@
 
 namespace App\Pagination;
 
-class Pager implements \IteratorAggregate {
+class Pager implements \Countable, \IteratorAggregate {
     /**
      * @var array
      */
@@ -39,5 +39,9 @@ class Pager implements \IteratorAggregate {
 
     public function isEmpty(): bool {
         return empty($this->entries);
+    }
+
+    public function count(): int {
+        return \count($this->entries);
     }
 }

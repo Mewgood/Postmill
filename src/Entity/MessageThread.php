@@ -59,9 +59,9 @@ class MessageThread {
      * @return User[]
      */
     public function getOtherParticipants(User $self): array {
-       return $this->participants->filter(function (User $user) use ($self) {
+        return $this->participants->filter(function (User $user) use ($self) {
             return $user !== $self;
-       })->getValues();
+        })->getValues();
     }
 
     public function userIsParticipant($user): bool {
@@ -93,10 +93,10 @@ class MessageThread {
         $body = $this->messages[0]->getBody();
         $firstLine = preg_replace('/^# |\R.*/', '', $body);
 
-        if (\grapheme_strlen($firstLine) <= 100) {
+        if (grapheme_strlen($firstLine) <= 100) {
             return $firstLine;
         }
 
-        return \grapheme_substr($firstLine, 0, 100).'…';
+        return grapheme_substr($firstLine, 0, 100).'…';
     }
 }

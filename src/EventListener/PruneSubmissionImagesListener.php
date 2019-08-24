@@ -27,7 +27,7 @@ class PruneSubmissionImagesListener implements EventSubscriberInterface {
     }
 
     public function onDeleteSubmission(DeleteSubmissionEvent $event): void {
-        $images = \array_filter(\array_map(function (Submission $submission) {
+        $images = array_filter(array_map(function (Submission $submission) {
             return $submission->getImage();
         }, $event->getSubmissions()), 'is_string');
 

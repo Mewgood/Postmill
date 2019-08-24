@@ -11,11 +11,11 @@ final class HashingVersionStrategy implements VersionStrategyInterface {
     private $webRoot;
 
     public function __construct(string $webRoot = __DIR__.'/../../public') {
-        $this->webRoot = \rtrim($webRoot, '/');
+        $this->webRoot = rtrim($webRoot, '/');
     }
 
     public function getVersion($path): string {
-        return \substr(\hash_file('sha256', $this->webRoot.'/'.$path), 0, 16);
+        return substr(hash_file('sha256', $this->webRoot.'/'.$path), 0, 16);
     }
 
     public function applyVersion($path): string {
@@ -25,6 +25,6 @@ final class HashingVersionStrategy implements VersionStrategyInterface {
             return $path;
         }
 
-        return \sprintf('%s?%s', $path, $this->getVersion($path));
+        return sprintf('%s?%s', $path, $this->getVersion($path));
     }
 }

@@ -3,14 +3,10 @@
 namespace App\Utils;
 
 final class Slugger {
-    const MAX_LENGTH = 60;
+    public const MAX_LENGTH = 60;
 
     /**
      * Creates URL slugs.
-     *
-     * @param string $input
-     *
-     * @return string
      */
     public static function slugify(string $input): string {
         $input = mb_strtolower($input, 'UTF-8');

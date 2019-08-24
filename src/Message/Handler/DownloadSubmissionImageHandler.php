@@ -56,7 +56,7 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
         $this->validator = $validator;
     }
 
-    public function __invoke(NewSubmission $message) {
+    public function __invoke(NewSubmission $message): void {
         $id = $message->getSubmissionId();
         $submission = $this->entityManager->find(Submission::class, $id);
 
@@ -90,13 +90,13 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
             $imageName = $this->imageHelper->getFileName($tempFile);
             $this->imageHelper->store($tempFile, $imageName);
 
-            $this->entityManager->transactional(function () use ($submission, $imageName) {
+            $this->entityManager->transactional(function () use ($submission, $imageName): void {
                 $submission->setImage($imageName);
             });
         } catch (\RuntimeException $e) {
             throw new UnrecoverableMessageHandlingException($e->getMessage(), $e->getCode(), $e);
         } finally {
-            @\unlink($tempFile);
+            @unlink($tempFile);
         }
     }
 
@@ -111,7 +111,7 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     }
 
     private function downloadImage(string $url): ?string {
-        $tempFile = @\tempnam(\sys_get_temp_dir(), 'pml');
+        $tempFile = @tempnam(sys_get_temp_dir(), 'pml');
 
         if ($tempFile === false) {
             throw new UnrecoverableMessageHandlingException('Couldn\'t create temporary file');

@@ -9,17 +9,11 @@ final class BannedFromForumException extends \DomainException implements HttpExc
         parent::__construct('User is banned from forum');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatusCode() {
+    public function getStatusCode(): int {
         return 403;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getHeaders() {
+    public function getHeaders(): array {
         return [];
     }
 }

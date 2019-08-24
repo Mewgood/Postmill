@@ -12,14 +12,14 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  * @Target("CLASS")
  */
 class RateLimit extends Constraint {
-    const RATE_LIMITED_ERROR = 'bf95a6b8-f86d-4c9c-80ba-db0f8630fb27';
+    public const RATE_LIMITED_ERROR = 'bf95a6b8-f86d-4c9c-80ba-db0f8630fb27';
 
     protected static $errorNames = [
         self::RATE_LIMITED_ERROR => 'RATE_LIMITED_ERROR',
     ];
 
     public $entityClass;
-    public $errorPath = null;
+    public $errorPath;
     public $message = 'You cannot post more. Wait a while before trying again.';
     public $max;
     public $timestampField = 'timestamp';
@@ -33,9 +33,6 @@ class RateLimit extends Constraint {
      */
     public $period;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($options = null) {
         parent::__construct($options);
 
@@ -51,14 +48,11 @@ class RateLimit extends Constraint {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRequiredOptions() {
+    public function getRequiredOptions(): array {
         return ['max', 'period'];
     }
 
-    public function getTargets() {
-        return Constraint::CLASS_CONSTRAINT;
+    public function getTargets(): array {
+        return [Constraint::CLASS_CONSTRAINT];
     }
 }

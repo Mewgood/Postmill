@@ -18,11 +18,8 @@ class UniqueValidator extends ConstraintValidator {
         $this->manager = $manager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value, Constraint $constraint) {
-        if (!is_array($value) && !is_object($value)) {
+    public function validate($value, Constraint $constraint): void {
+        if (!\is_array($value) && !\is_object($value)) {
             throw new UnexpectedTypeException($value, 'array or object');
         }
 
@@ -38,7 +35,7 @@ class UniqueValidator extends ConstraintValidator {
         $param = 0;
 
         foreach ((array) $constraint->fields as $dtoField => $entityField) {
-            if (is_int($dtoField)) {
+            if (\is_int($dtoField)) {
                 $dtoField = $entityField;
             }
 
@@ -49,7 +46,7 @@ class UniqueValidator extends ConstraintValidator {
         }
 
         foreach ((array) $constraint->idFields as $dtoField => $entityField) {
-            if (is_int($dtoField)) {
+            if (\is_int($dtoField)) {
                 $dtoField = $entityField;
             }
 

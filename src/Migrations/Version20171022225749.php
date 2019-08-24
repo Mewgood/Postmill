@@ -6,9 +6,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20171022225749 extends AbstractMigration {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
@@ -18,9 +15,6 @@ class Version20171022225749 extends AbstractMigration {
         $this->addSql('CREATE INDEX IDX_130108F01255CD1D ON forum_log_entries (ban_id)');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 

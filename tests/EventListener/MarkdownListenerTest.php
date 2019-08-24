@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class MarkdownListenerTest extends TestCase {
-    public function testInitListenerAddsTargetBlankToPurifierConfig() {
+    public function testInitListenerAddsTargetBlankToPurifierConfig(): void {
         $user = $this->createMock(User::class);
         $user
             ->method('openExternalLinksInNewTab')

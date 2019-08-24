@@ -21,7 +21,7 @@ final class ResponseFixingListener implements EventSubscriberInterface {
 
     public function __construct(SerializerInterface $serializer) {
         if (!$serializer instanceof EncoderInterface) {
-            throw new \InvalidArgumentException(\sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 '$serializer must implement the "%s" interface',
                 EncoderInterface::class
             ));
@@ -42,8 +42,8 @@ final class ResponseFixingListener implements EventSubscriberInterface {
         $contentType = $response->headers->get('Content-Type');
         $charset = $response->getCharset() ?: 'UTF-8';
 
-        if (\preg_match('#[/+](?:json|xml)$#', $contentType)) {
-            $contentType = \sprintf("%s; charset=%s", $contentType, $charset);
+        if (preg_match('#[/+](?:json|xml)$#', $contentType)) {
+            $contentType = sprintf('%s; charset=%s', $contentType, $charset);
 
             $response->headers->set('Content-Type', $contentType);
         }

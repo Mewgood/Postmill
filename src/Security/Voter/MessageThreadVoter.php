@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class MessageThreadVoter extends Voter {
-    const ATTRIBUTES = ['access', 'reply'];
+    public const ATTRIBUTES = ['access', 'reply'];
 
     /**
      * @var AccessDecisionManagerInterface
@@ -21,7 +21,7 @@ final class MessageThreadVoter extends Voter {
     }
 
     protected function supports($attribute, $subject) {
-        return $subject instanceof MessageThread && in_array($attribute, self::ATTRIBUTES);
+        return $subject instanceof MessageThread && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {

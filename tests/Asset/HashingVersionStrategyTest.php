@@ -11,18 +11,18 @@ class HashingVersionStrategyTest extends TestCase {
      */
     private $strategy;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->strategy = new HashingVersionStrategy(__DIR__.'/../Resources');
     }
 
-    public function testGetVersion() {
+    public function testGetVersion(): void {
         $this->assertEquals(
             '1052d25a298fce69',
             $this->strategy->getVersion('garbage.bin')
         );
     }
 
-    public function testApplyVersion() {
+    public function testApplyVersion(): void {
         $this->assertEquals(
             'garbage.bin?1052d25a298fce69',
             $this->strategy->applyVersion('garbage.bin')

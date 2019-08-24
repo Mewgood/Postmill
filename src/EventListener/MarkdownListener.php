@@ -41,7 +41,7 @@ final class MarkdownListener implements EventSubscriberInterface {
         ];
     }
 
-    public function onMarkdownInit(MarkdownInitEvent $event) {
+    public function onMarkdownInit(MarkdownInitEvent $event): void {
         $environment = $event->getEnvironment();
         $environment->addExtension($this->appExtension);
         $environment->addExtension(new StrikethroughExtension());
@@ -67,7 +67,7 @@ final class MarkdownListener implements EventSubscriberInterface {
         }
     }
 
-    public function onMarkdownCache(MarkdownCacheEvent $event) {
+    public function onMarkdownCache(MarkdownCacheEvent $event): void {
         if ($this->shouldOpenExternalLinksInNewTab()) {
             $event->addToCacheKey('open_external_links_in_new_tab');
         }

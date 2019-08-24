@@ -14,7 +14,7 @@ class MessageControllerTest extends WebTestCase {
      * @param string $username
      * @param string $password
      */
-    public function testCanViewMessageList($username, $password) {
+    public function testCanViewMessageList($username, $password): void {
         $client = self::createClient([], [
             'PHP_AUTH_USER' => $username,
             'PHP_AUTH_PW' => $password,
@@ -29,7 +29,7 @@ class MessageControllerTest extends WebTestCase {
         $this->assertEquals('1', trim($crawler->filter('tbody tr td:nth-child(3)')->text()));
     }
 
-    public function testMessageListIsEmptyForUserWithNoMessages() {
+    public function testMessageListIsEmptyForUserWithNoMessages(): void {
         $client = self::createClient([], [
             'PHP_AUTH_USER' => 'third',
             'PHP_AUTH_PW' => 'example3',
@@ -40,7 +40,7 @@ class MessageControllerTest extends WebTestCase {
         $this->assertContains('There are no messages to display.', $crawler->filter('main p')->text());
     }
 
-    public function testMustBeLoggedInToViewMessageList() {
+    public function testMustBeLoggedInToViewMessageList(): void {
         $client = self::createClient();
         $client->request('GET', '/messages');
 
@@ -54,7 +54,7 @@ class MessageControllerTest extends WebTestCase {
      * @param string $username
      * @param string $password
      */
-    public function testCanReadOwnMessages($username, $password) {
+    public function testCanReadOwnMessages($username, $password): void {
         $client = self::createClient([], [
             'PHP_AUTH_USER' => $username,
             'PHP_AUTH_PW' => $password,
@@ -68,7 +68,7 @@ class MessageControllerTest extends WebTestCase {
         );
     }
 
-    public function testCannotReadOthersMessages() {
+    public function testCannotReadOthersMessages(): void {
         $client = self::createClient([], [
             'PHP_AUTH_USER' => 'third',
             'PHP_AUTH_PW' => 'example3',
@@ -79,7 +79,7 @@ class MessageControllerTest extends WebTestCase {
         $this->assertTrue($client->getResponse()->isForbidden());
     }
 
-    public function testCannotReadMessagesWhileLoggedOut() {
+    public function testCannotReadMessagesWhileLoggedOut(): void {
         $client = self::createClient();
         $client->request('GET', '/messages/thread/1');
 
@@ -87,7 +87,7 @@ class MessageControllerTest extends WebTestCase {
         $this->assertStringEndsWith('/login', $client->getResponse()->headers->get('Location'));
     }
 
-    public function testCanReply() {
+    public function testCanReply(): void {
         $client = self::createClient([], [
             'PHP_AUTH_USER' => 'emma',
             'PHP_AUTH_PW' => 'goodshit',

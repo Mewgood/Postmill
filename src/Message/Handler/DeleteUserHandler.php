@@ -87,7 +87,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $this->batchSize = $batchSize;
     }
 
-    public function __invoke(DeleteUser $message) {
+    public function __invoke(DeleteUser $message): void {
         /** @var User|null $user */
         $user = $this->entityManager->find(User::class, $message->getUserId());
 
@@ -133,7 +133,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $user->setFrontPageSortMode(Submission::SORT_HOT);
         $user->setPreferredTheme(null);
         $user->setPreferredFonts(null);
-        $user->setTimezone(new \DateTimeZone(\date_default_timezone_get()));
+        $user->setTimezone(new \DateTimeZone(date_default_timezone_get()));
         $user->setTrusted(false);
 
         $this->entityManager->createQueryBuilder()
@@ -162,7 +162,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         return true;
     }
 
-    public function removeSubmissions(User $user): bool  {
+    public function removeSubmissions(User $user): bool {
         /** @var Submission[] $submissions */
         $submissions = $this->submissions->findBy([
             'user' => $user,

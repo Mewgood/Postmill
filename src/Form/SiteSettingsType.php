@@ -17,7 +17,7 @@ final class SiteSettingsType extends AbstractType {
         'label.everyone' => 'ROLE_USER',
     ];
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('siteName', TextType::class, [
                 'label' => 'site_settings.site_name',
@@ -41,7 +41,7 @@ final class SiteSettingsType extends AbstractType {
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => SiteData::class,
         ]);

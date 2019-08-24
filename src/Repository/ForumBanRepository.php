@@ -20,14 +20,9 @@ class ForumBanRepository extends ServiceEntityRepository {
      * Find all bans in a forum that haven't been undone and which haven't
      * expired.
      *
-     * @param Forum $forum
-     * @param int   $page
-     * @param int   $maxPerPage
-     *
      * @return Pagerfanta|ForumBan[]
      */
-    public function findValidBansInForum(Forum $forum, int $page, int $maxPerPage = 25) {
-        // Oh, you need to change the query? Good luck. :v)
+    public function findValidBansInForum(Forum $forum, int $page, int $maxPerPage = 25): Pagerfanta {
         $qb = $this->createQueryBuilder('m')
             ->leftJoin(ForumBan::class, 'b',
                 'WITH', 'm.user = b.user AND '.
@@ -49,7 +44,10 @@ class ForumBanRepository extends ServiceEntityRepository {
         return $pager;
     }
 
-    public function findActiveBansByUser(User $user, int $page, int $maxPerPage = 25) {
+    /**
+     * @return Pagerfanta|ForumBan[]
+     */
+    public function findActiveBansByUser(User $user, int $page, int $maxPerPage = 25): Pagerfanta {
         $qb = $this->createQueryBuilder('m')
             ->leftJoin(ForumBan::class, 'b',
                 'WITH', 'm.user = b.user AND '.

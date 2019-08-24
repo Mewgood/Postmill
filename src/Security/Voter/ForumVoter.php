@@ -8,18 +8,12 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class ForumVoter extends Voter {
-    const ATTRIBUTES = ['moderator', 'delete'];
+    public const ATTRIBUTES = ['moderator', 'delete'];
 
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject) {
-        return $subject instanceof Forum && in_array($attribute, self::ATTRIBUTES);
+        return $subject instanceof Forum && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
         if (!$subject instanceof Forum) {
             throw new \InvalidArgumentException('$subject must be '.Forum::class);

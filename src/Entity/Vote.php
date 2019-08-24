@@ -49,9 +49,7 @@ abstract class Vote {
     private $ip;
 
     /**
-     * @param User        $user
-     * @param string|null $ip
-     * @param bool|int    $choice
+     * @param bool|int $choice
      *
      * @throws \InvalidArgumentException if $choice is bad
      */
@@ -108,7 +106,6 @@ abstract class Vote {
     /**
      * Legacy getter needed for `Selectable` compatibility.
      *
-     * @return bool
      *
      * @internal
      */

@@ -169,7 +169,7 @@ class Forum {
         return $this->name;
     }
 
-    public function setName(string $name) {
+    public function setName(string $name): void {
         $this->name = $name;
         $this->normalizedName = self::normalizeName($name);
     }
@@ -182,7 +182,7 @@ class Forum {
         return $this->title;
     }
 
-    public function setTitle(string $title) {
+    public function setTitle(string $title): void {
         $this->title = $title;
     }
 
@@ -190,7 +190,7 @@ class Forum {
         return $this->description;
     }
 
-    public function setDescription(?string $description) {
+    public function setDescription(?string $description): void {
         $this->description = $description;
     }
 
@@ -198,24 +198,21 @@ class Forum {
         return $this->sidebar;
     }
 
-    public function setSidebar(string $sidebar) {
+    public function setSidebar(string $sidebar): void {
         $this->sidebar = $sidebar;
     }
 
     /**
      * @return Collection|Moderator[]
      */
-    public function getModerators() {
+    public function getModerators(): Collection {
         return $this->moderators;
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|Moderator[]
      */
-    public function getPaginatedModerators(int $page, int $maxPerPage = 25) {
+    public function getPaginatedModerators(int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'ASC']);
 
         $moderators = new Pagerfanta(new DoctrineSelectableAdapter($this->moderators, $criteria));
@@ -241,10 +238,10 @@ class Forum {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('forum', $this));
 
-        return count($user->getModeratorTokens()->matching($criteria)) > 0;
+        return \count($user->getModeratorTokens()->matching($criteria)) > 0;
     }
 
-    public function addModerator(Moderator $moderator) {
+    public function addModerator(Moderator $moderator): void {
         if (!$this->moderators->contains($moderator)) {
             $this->moderators->add($moderator);
         }
@@ -263,13 +260,13 @@ class Forum {
             return false;
         }
 
-        return count($this->submissions) === 0;
+        return \count($this->submissions) === 0;
     }
 
     /**
      * @return Collection|Submission[]
      */
-    public function getSubmissions() {
+    public function getSubmissions(): Collection {
         return $this->submissions;
     }
 
@@ -280,7 +277,7 @@ class Forum {
     /**
      * @return ForumSubscription[]|Collection|Selectable
      */
-    public function getSubscriptions() {
+    public function getSubscriptions(): Collection {
         return $this->subscriptions;
     }
 
@@ -288,16 +285,16 @@ class Forum {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('user', $user));
 
-        return count($this->subscriptions->matching($criteria)) > 0;
+        return \count($this->subscriptions->matching($criteria)) > 0;
     }
 
-    public function subscribe(User $user) {
+    public function subscribe(User $user): void {
         if (!$this->isSubscribed($user)) {
             $this->subscriptions->add(new ForumSubscription($user, $this));
         }
     }
 
-    public function unsubscribe(User $user) {
+    public function unsubscribe(User $user): void {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('user', $user));
 
@@ -330,13 +327,9 @@ class Forum {
     }
 
     /**
-     * @param User $user
-     * @param int  $page
-     * @param int  $maxPerPage
-     *
      * @return Pagerfanta|ForumBan[]
      */
-    public function getPaginatedBansByUser(User $user, int $page, int $maxPerPage = 25) {
+    public function getPaginatedBansByUser(User $user, int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('user', $user))
             ->orderBy(['timestamp' => 'DESC']);
@@ -348,7 +341,7 @@ class Forum {
         return $pager;
     }
 
-    public function addBan(ForumBan $ban) {
+    public function addBan(ForumBan $ban): void {
         if (!$this->bans->contains($ban)) {
             $this->bans->add($ban);
 
@@ -360,7 +353,7 @@ class Forum {
         return $this->featured;
     }
 
-    public function setFeatured(bool $featured) {
+    public function setFeatured(bool $featured): void {
         $this->featured = $featured;
     }
 
@@ -368,7 +361,7 @@ class Forum {
         return $this->category;
     }
 
-    public function setCategory(?ForumCategory $category) {
+    public function setCategory(?ForumCategory $category): void {
         $this->category = $category;
     }
 
@@ -381,9 +374,6 @@ class Forum {
     }
 
     /**
-     * @param int $page
-     * @param int $max
-     *
      * @return Pagerfanta|ForumLogEntry[]
      */
     public function getPaginatedLogEntries(int $page, int $max = 50): Pagerfanta {
@@ -394,7 +384,7 @@ class Forum {
         return $pager;
     }
 
-    public function addLogEntry(ForumLogEntry $entry) {
+    public function addLogEntry(ForumLogEntry $entry): void {
         if (!$this->logEntries->contains($entry)) {
             $this->logEntries->add($entry);
         }

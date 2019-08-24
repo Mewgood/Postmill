@@ -4,7 +4,7 @@ namespace App\Markdown\Inline\Parser;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class UserLinkParser extends AbstractLocalLinkParser {
+final class UserLinkParser extends AbstractLocalLinkParser {
     /**
      * @var UrlGeneratorInterface
      */
@@ -14,16 +14,10 @@ class UserLinkParser extends AbstractLocalLinkParser {
         $this->urlGenerator = $urlGenerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrefix(): string {
         return 'u';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUrl(string $suffix): string {
         return $this->urlGenerator->generate('user', [
             'username' => $suffix,

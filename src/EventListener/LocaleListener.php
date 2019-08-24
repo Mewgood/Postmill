@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Manage locale for a request, based on user's setting.
@@ -62,7 +62,7 @@ final class LocaleListener {
         $this->defaultLocale = $defaultLocale;
     }
 
-    public function onKernelRequest(RequestEvent $event) {
+    public function onKernelRequest(RequestEvent $event): void {
         if (!$event->isMasterRequest()) {
             return;
         }
@@ -79,7 +79,7 @@ final class LocaleListener {
             $default = [$this->defaultLocale];
 
             $locale = $request->getPreferredLanguage(
-                \array_merge($default, \array_diff($this->availableLocales, $default))
+                array_merge($default, array_diff($this->availableLocales, $default))
             );
         }
 
@@ -88,7 +88,7 @@ final class LocaleListener {
         }
     }
 
-    public function onInteractiveLogin(InteractiveLoginEvent $event) {
+    public function onInteractiveLogin(InteractiveLoginEvent $event): void {
         $user = $event->getAuthenticationToken()->getUser();
 
         if ($user instanceof User) {
@@ -103,7 +103,7 @@ final class LocaleListener {
         }
     }
 
-    public function postUpdate(LifecycleEventArgs $args) {
+    public function postUpdate(LifecycleEventArgs $args): void {
         $user = $args->getEntity();
 
         if ($user instanceof User) {

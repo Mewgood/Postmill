@@ -81,7 +81,7 @@ class ForumData {
         return $forum;
     }
 
-    public function updateForum(Forum $forum) {
+    public function updateForum(Forum $forum): void {
         $forum->setName($this->name);
         $forum->setTitle($this->title);
         $forum->setSidebar($this->sidebar);
@@ -101,14 +101,12 @@ class ForumData {
 
     /**
      * For unique validator.
-     *
-     * @return string|null
      */
-    public function getNormalizedName() {
+    public function getNormalizedName(): ?string {
         return $this->normalizedName;
     }
 
-    public function setName($name) {
+    public function setName(?string $name): void {
         $this->name = $name;
         $this->normalizedName = $name !== null ? Forum::normalizeName($name) : null;
     }
@@ -117,7 +115,7 @@ class ForumData {
         return $this->title;
     }
 
-    public function setTitle($title) {
+    public function setTitle(?string $title): void {
         $this->title = $title;
     }
 
@@ -125,7 +123,7 @@ class ForumData {
         return $this->sidebar;
     }
 
-    public function setSidebar($sidebar) {
+    public function setSidebar(?string $sidebar): void {
         $this->sidebar = $sidebar;
     }
 
@@ -133,7 +131,7 @@ class ForumData {
         return $this->description;
     }
 
-    public function setDescription($description) {
+    public function setDescription(?string $description): void {
         $this->description = $description;
     }
 
@@ -141,7 +139,7 @@ class ForumData {
         return $this->featured;
     }
 
-    public function setFeatured(bool $featured) {
+    public function setFeatured(bool $featured): void {
         $this->featured = $featured;
     }
 
@@ -149,7 +147,7 @@ class ForumData {
         return $this->suggestedTheme;
     }
 
-    public function setSuggestedTheme($suggestedTheme) {
+    public function setSuggestedTheme($suggestedTheme): void {
         $this->suggestedTheme = $suggestedTheme;
     }
 
@@ -157,7 +155,7 @@ class ForumData {
         return $this->category;
     }
 
-    public function setCategory($category) {
+    public function setCategory($category): void {
         $this->category = $category;
     }
 }

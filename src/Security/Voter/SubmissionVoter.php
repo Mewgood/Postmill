@@ -8,13 +8,13 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class SubmissionVoter extends Voter {
-    const ATTRIBUTES = [
+    public const ATTRIBUTES = [
         'delete_own',
         'edit',
         'lock',
         'mod_delete',
         'pin',
-        'purge'
+        'purge',
     ];
 
     protected function supports($attribute, $subject) {

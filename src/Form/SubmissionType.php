@@ -88,7 +88,6 @@ final class SubmissionType extends AbstractType {
                     'required' => false,
                 ]);
 
-
             $builder->addEventSubscriber($this->submissionImageListener);
         }
 

@@ -18,7 +18,7 @@ class CriteriaTest extends TestCase {
         $this->assertEquals(Submission::SORT_HOT, $criteria->getSortBy());
         $this->assertEquals(Criteria::VIEW_ALL, $criteria->getView());
         $this->assertEquals(0, $criteria->getExclusions());
-        $this->assertEquals(false, $criteria->getStickiesFirst());
+        $this->assertFalse($criteria->getStickiesFirst());
         $this->assertEquals(25, $criteria->getMaxPerPage());
         $this->assertSame($user, $criteria->getUser());
     }
@@ -172,7 +172,7 @@ class CriteriaTest extends TestCase {
             'showSubscribed',
             'showModerated',
             'showForums',
-            'showUsers'
+            'showUsers',
         ];
 
         foreach ($viewMethods as $y) {

@@ -17,7 +17,7 @@ class UserBanData {
      *
      * @var string[]|iterable
      */
-    private $ips = [];
+    private $ips;
 
     /**
      * @Assert\Length(max=300, groups={"ban_user", "ban_ip"})
@@ -36,12 +36,9 @@ class UserBanData {
     }
 
     /**
-     * @param User $user
-     * @param User $bannedBy
-     *
-     * @return IpBan[]|\Traversable
+     * @return IpBan[]
      */
-    public function toIpBans(User $user, User $bannedBy): \Traversable {
+    public function toIpBans(User $user, User $bannedBy): iterable {
         foreach ($this->ips as $ip) {
             yield new IpBan($ip, $this->reason, $user, $bannedBy, $this->expiresAt);
         }

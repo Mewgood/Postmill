@@ -20,10 +20,10 @@ class DeleteUser {
             }
 
             $this->userId = $user->getId();
-        } elseif (\is_scalar($user)) {
+        } elseif (is_scalar($user)) {
             $this->userId = $user;
         } else {
-            throw new \InvalidArgumentException(\sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 '$user must be integer or instance of %s, %s given',
                 User::class,
                 \is_object($user) ? \get_class($user) : \gettype($user)

@@ -23,7 +23,7 @@ class MarkdownInitEventTest extends TestCase {
         'other_context' => 'bar',
     ];
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->environment = $this->createMock(ConfigurableEnvironmentInterface::class);
 
         $this->event = new MarkdownInitEvent($this->environment, self::$context);

@@ -28,10 +28,7 @@ final class ForumType extends AbstractType {
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         if ($options['honeypot']) {
             $builder->add('email', HoneypotType::class);
         }
@@ -72,10 +69,7 @@ final class ForumType extends AbstractType {
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => ForumData::class,
             'label_format' => 'forum_form.%name%',

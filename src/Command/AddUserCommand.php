@@ -46,10 +46,7 @@ class AddUserCommand extends Command {
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure() {
+    protected function configure(): void {
         $this
             ->setName('app:user:add')
             ->setAliases(['app:add-user'])
@@ -61,12 +58,12 @@ class AddUserCommand extends Command {
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output): int {
         $io = new SymfonyStyle($input, $output);
 
         $password = $input->getOption('password');
 
-        if (!strlen($password)) {
+        if ((string) $password === '') {
             if ($input->isInteractive()) {
                 $password = $io->askHidden('Enter the password for the new account');
             } else {
@@ -87,7 +84,7 @@ class AddUserCommand extends Command {
 
         $errors = $this->validator->validate($data, null, ['registration']);
 
-        if (count($errors) > 0) {
+        if (\count($errors) > 0) {
             /* @var ConstraintViolationInterface $e */
             foreach ($errors as $error) {
                 $io->error(sprintf('%s: %s', $error->getPropertyPath(), $error->getMessage()));

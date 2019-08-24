@@ -4,17 +4,18 @@ namespace App\Tests\Validator\Constraints;
 
 use App\Validator\Constraints\IpWithCidr;
 use App\Validator\Constraints\IpWithCidrValidator;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class IpWithCidrValidatorTest extends ConstraintValidatorTestCase {
-    protected function createValidator() {
+    protected function createValidator(): ConstraintValidatorInterface {
         return new IpWithCidrValidator();
     }
 
     /**
      * @dataProvider validValuesProvider
      */
-    public function testValidValues($value) {
+    public function testValidValues(string $value): void {
         $this->validator->validate($value, new IpWithCidr());
 
         $this->assertNoViolation();
@@ -23,7 +24,7 @@ class IpWithCidrValidatorTest extends ConstraintValidatorTestCase {
     /**
      * @dataProvider cidrLessProvider
      */
-    public function testRaisesErrorWithoutCidr($value) {
+    public function testRaisesErrorWithoutCidr(string $value): void {
         $constraint = new IpWithCidr([
             'cidrOptional' => false,
             'missingCidrMessage' => 'missingCidr',
@@ -39,7 +40,7 @@ class IpWithCidrValidatorTest extends ConstraintValidatorTestCase {
     /**
      * @dataProvider invalidIpProvider
      */
-    public function testRaisesErrorOnInvalidIp($value) {
+    public function testRaisesErrorOnInvalidIp(string $value): void {
         $constraint = new IpWithCidr([
             'invalidIpMessage' => 'invalidIp',
         ]);
@@ -54,7 +55,7 @@ class IpWithCidrValidatorTest extends ConstraintValidatorTestCase {
     /**
      * @dataProvider invalidCidrProvider
      */
-    public function testRaisesErrorOnInvalidCidr($value) {
+    public function testRaisesErrorOnInvalidCidr(string $value): void {
         $constraint = new IpWithCidr([
             'invalidCidrMessage' => 'invalidCidr',
         ]);
@@ -66,7 +67,7 @@ class IpWithCidrValidatorTest extends ConstraintValidatorTestCase {
             ->assertRaised();
     }
 
-    public function validValuesProvider() {
+    public function validValuesProvider(): iterable {
         yield ['127.0.0.1/32'];
         yield ['254.253.252.251/31'];
         yield ['192.168.4.20'];
@@ -75,17 +76,17 @@ class IpWithCidrValidatorTest extends ConstraintValidatorTestCase {
         yield ['4:3:2::1'];
     }
 
-    public function cidrLessProvider() {
+    public function cidrLessProvider(): iterable {
         yield ['::1'];
         yield ['192.168.4.20'];
     }
 
-    public function invalidIpProvider() {
+    public function invalidIpProvider(): iterable {
         yield ['256.256.256.256/32'];
         yield ['goop::crap'];
     }
 
-    public function invalidCidrProvider() {
+    public function invalidCidrProvider(): iterable {
         yield ['::1/129'];
         yield ['::/-128'];
         yield ['127.6.5.4/33'];

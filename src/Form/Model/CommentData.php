@@ -64,7 +64,7 @@ class CommentData {
         );
     }
 
-    public function updateComment(Comment $comment, User $editingUser) {
+    public function updateComment(Comment $comment, User $editingUser): void {
         $comment->setUserFlag($this->userFlag);
 
         if ($this->body !== $comment->getBody()) {

@@ -319,7 +319,7 @@ class User implements UserInterface, EquatableInterface {
         $this->blocks = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
         $this->moderatorTokens = new ArrayCollection();
-        $this->timezone = \date_default_timezone_get();
+        $this->timezone = date_default_timezone_get();
     }
 
     public function getId(): ?int {
@@ -330,7 +330,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->username;
     }
 
-    public function setUsername(string $username) {
+    public function setUsername(string $username): void {
         $this->username = $username;
         $this->normalizedUsername = self::normalizeUsername($username);
     }
@@ -347,7 +347,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->password;
     }
 
-    public function setPassword(string $password) {
+    public function setPassword(string $password): void {
         $this->password = $password;
     }
 
@@ -355,7 +355,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->email;
     }
 
-    public function setEmail(?string $email) {
+    public function setEmail(?string $email): void {
         $this->email = $email;
         $this->normalizedEmail = $email ? self::normalizeEmail($email) : null;
     }
@@ -365,8 +365,6 @@ class User implements UserInterface, EquatableInterface {
      *
      * Sending email to the normalized address is evil. Use this for lookup,
      * but *always* send to the regular, canon address.
-     *
-     * @return string|null
      */
     public function getNormalizedEmail(): ?string {
         return $this->normalizedEmail;
@@ -380,7 +378,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->lastSeen;
     }
 
-    public function setLastSeen(?\DateTime $lastSeen) {
+    public function setLastSeen(?\DateTime $lastSeen): void {
         $this->lastSeen = $lastSeen;
     }
 
@@ -388,7 +386,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->admin;
     }
 
-    public function setAdmin(bool $admin) {
+    public function setAdmin(bool $admin): void {
         $this->admin = $admin;
     }
 
@@ -400,16 +398,13 @@ class User implements UserInterface, EquatableInterface {
     }
 
     /**
-     * @return Collection|Moderator[]
+     * @return Collection|Moderator[]|Selectable
      */
     public function getModeratorTokens(): Collection {
         return $this->moderatorTokens;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoles() {
+    public function getRoles(): array {
         $roles = ['ROLE_USER'];
 
         if ($this->admin) {
@@ -423,19 +418,13 @@ class User implements UserInterface, EquatableInterface {
         return $roles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSalt() {
+    public function getSalt(): ?string {
         // Salt is not needed when bcrypt is used, as the password hash contains
         // the salt.
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseCredentials() {
+    public function eraseCredentials(): void {
     }
 
     /**
@@ -457,9 +446,6 @@ class User implements UserInterface, EquatableInterface {
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|Comment[]
      */
     public function getPaginatedComments(int $page, int $maxPerPage = 25): Pagerfanta {
@@ -495,7 +481,7 @@ class User implements UserInterface, EquatableInterface {
         return (bool) $this->getActiveBan();
     }
 
-    public function addBan(UserBan $ban) {
+    public function addBan(UserBan $ban): void {
         if (!$this->bans->contains($ban)) {
             $this->bans[] = $ban;
         }
@@ -509,8 +495,6 @@ class User implements UserInterface, EquatableInterface {
     }
 
     /**
-     * @param int $page
-     *
      * @return Pagerfanta|Forum[]
      */
     public function getPaginatedHiddenForums(int $page): Pagerfanta {
@@ -539,7 +523,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->locale;
     }
 
-    public function setLocale(string $locale) {
+    public function setLocale(string $locale): void {
         $this->locale = $locale;
     }
 
@@ -547,7 +531,7 @@ class User implements UserInterface, EquatableInterface {
         return new \DateTimeZone($this->timezone);
     }
 
-    public function setTimezone(\DateTimeZone $timezone) {
+    public function setTimezone(\DateTimeZone $timezone): void {
         $this->timezone = $timezone->getName();
     }
 
@@ -558,16 +542,13 @@ class User implements UserInterface, EquatableInterface {
         return $this->notifications;
     }
 
-    public function sendNotification(Notification $notification) {
+    public function sendNotification(Notification $notification): void {
         if (!$this->notifications->contains($notification)) {
             $this->notifications->add($notification);
         }
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|Notification[]
      */
     public function getPaginatedNotifications(int $page, int $maxPerPage = 25): Pagerfanta {
@@ -584,7 +565,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->nightMode;
     }
 
-    public function setNightMode(bool $nightMode) {
+    public function setNightMode(bool $nightMode): void {
         $this->nightMode = $nightMode;
     }
 
@@ -592,7 +573,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->showCustomStylesheets;
     }
 
-    public function setShowCustomStylesheets(bool $showCustomStylesheets) {
+    public function setShowCustomStylesheets(bool $showCustomStylesheets): void {
         $this->showCustomStylesheets = $showCustomStylesheets;
     }
 
@@ -604,7 +585,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->admin || $this->trusted;
     }
 
-    public function setTrusted(bool $trusted) {
+    public function setTrusted(bool $trusted): void {
         $this->trusted = $trusted;
     }
 
@@ -617,9 +598,6 @@ class User implements UserInterface, EquatableInterface {
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|UserBlock[]
      */
     public function getPaginatedBlocks(int $page, int $maxPerPage = 25) {
@@ -630,7 +608,7 @@ class User implements UserInterface, EquatableInterface {
         return $pager;
     }
 
-    public function addBlock(UserBlock $block) {
+    public function addBlock(UserBlock $block): void {
         if (!$this->blocks->contains($block)) {
             $this->blocks->add($block);
         }
@@ -640,14 +618,14 @@ class User implements UserInterface, EquatableInterface {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('blocked', $user));
 
-        return count($this->blocks->matching($criteria)) > 0;
+        return \count($this->blocks->matching($criteria)) > 0;
     }
 
     public function getFrontPage(): string {
         return $this->frontPage;
     }
 
-    public function setFrontPage(string $frontPage) {
+    public function setFrontPage(string $frontPage): void {
         if (!\in_array($frontPage, Submission::FRONT_PAGE_OPTIONS, true)) {
             throw new \InvalidArgumentException("Unknown choice '$frontPage'");
         }
@@ -659,7 +637,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->frontPageSortMode;
     }
 
-    public function setFrontPageSortMode(string $sortMode) {
+    public function setFrontPageSortMode(string $sortMode): void {
         if (!\in_array($sortMode, Submission::SORT_OPTIONS, true)) {
             throw new \InvalidArgumentException("Unknown choice '$sortMode'");
         }
@@ -671,7 +649,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->openExternalLinksInNewTab;
     }
 
-    public function setOpenExternalLinksInNewTab(bool $openExternalLinksInNewTab) {
+    public function setOpenExternalLinksInNewTab(bool $openExternalLinksInNewTab): void {
         $this->openExternalLinksInNewTab = $openExternalLinksInNewTab;
     }
 
@@ -679,7 +657,7 @@ class User implements UserInterface, EquatableInterface {
         return $this->biography;
     }
 
-    public function setBiography(?string $biography) {
+    public function setBiography(?string $biography): void {
         $this->biography = $biography;
     }
 
@@ -741,20 +719,12 @@ class User implements UserInterface, EquatableInterface {
 
     /**
      * Returns the normalized form of the username.
-     *
-     * @param string $username
-     *
-     * @return string
      */
     public static function normalizeUsername(string $username): string {
         return mb_strtolower($username, 'UTF-8');
     }
 
     /**
-     * @param string $email
-     *
-     * @return string
-     *
      * @throws \InvalidArgumentException if `$email` is not a valid address
      */
     public static function normalizeEmail(string $email): string {
@@ -762,7 +732,7 @@ class User implements UserInterface, EquatableInterface {
             throw new \InvalidArgumentException('Invalid email address');
         }
 
-        list($username, $domain) = explode('@', $email, 2);
+        [$username, $domain] = explode('@', $email, 2);
 
         switch (strtolower($domain)) {
         case 'gmail.com':
@@ -781,10 +751,7 @@ class User implements UserInterface, EquatableInterface {
         return sprintf('%s@%s', $username, $domain);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isEqualTo(UserInterface $user) {
+    public function isEqualTo(UserInterface $user): bool {
         return $user instanceof self &&
             $this->id === $user->id &&
             $this->username === $user->username &&

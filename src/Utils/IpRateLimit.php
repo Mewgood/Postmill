@@ -75,7 +75,7 @@ final class IpRateLimit {
     }
 
     private function getCacheKey(string $ip): string {
-        return $this->prefix.\str_replace(':', 'x', '-'.$ip);
+        return $this->prefix.str_replace(':', 'x', '-'.$ip);
     }
 
     private function isWhitelisted(string $ip): bool {

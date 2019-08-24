@@ -15,9 +15,6 @@ class ForumLogEntryRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|ForumLogEntry[]
      */
     public function findAllPaginated(int $page, int $maxPerPage = 50): Pagerfanta {

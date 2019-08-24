@@ -3,7 +3,6 @@
 namespace App\Security\Voter;
 
 use App\Entity\Site;
-use App\Entity\User;
 use App\Repository\SiteRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -47,7 +46,7 @@ final class SiteVoter extends Voter {
         if (!$subject) {
             $subject = $this->siteRepository->findCurrentSite();
 
-            assert($subject instanceof Site);
+            \assert($subject instanceof Site);
         }
 
         switch ($attribute) {

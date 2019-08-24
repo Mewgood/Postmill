@@ -9,7 +9,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\VarExporter\Tests\Fixtures\error;
 
 final class SyncThemesCommand extends Command {
     /**
@@ -41,16 +40,16 @@ final class SyncThemesCommand extends Command {
         unset($this->themesConfig['_default']);
     }
 
-    protected function configure() {
+    protected function configure(): void {
         $this
             ->setName('app:theme:sync')
             ->setDescription('Sync theme configuration with database');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output): int {
         $io = new SymfonyStyle($input, $output);
 
-        $keys = \array_keys($this->themesConfig);
+        $keys = array_keys($this->themesConfig);
 
         $themes = $this->repository->createQueryBuilder('t', 't.configKey')
             ->where('t.configKey IN (:keys)')
@@ -58,7 +57,7 @@ final class SyncThemesCommand extends Command {
             ->getQuery()
             ->execute();
 
-        foreach (\array_diff_key($this->themesConfig, $themes) as $key => $theme) {
+        foreach (array_diff_key($this->themesConfig, $themes) as $key => $theme) {
             $changes = true;
             $io->text("Creating theme '$key'...");
 
@@ -71,7 +70,7 @@ final class SyncThemesCommand extends Command {
             ->getQuery()
             ->execute();
 
-        foreach (\array_diff_key($themes, $this->themesConfig) as $key => $theme) {
+        foreach (array_diff_key($themes, $this->themesConfig) as $key => $theme) {
             $changes = true;
             $io->text("Removing theme '$key'...");
 
@@ -84,7 +83,7 @@ final class SyncThemesCommand extends Command {
             return 1;
         }
 
-        if (!$io->confirm('Is this OK?', true)) {
+        if (!$io->confirm('Is this OK?')) {
             $io->text('Aborting.');
 
             return 1;

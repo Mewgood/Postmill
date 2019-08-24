@@ -8,7 +8,7 @@ use App\Tests\WebTestCase;
  * @covers \App\Controller\AjaxController
  */
 class AjaxControllerTest extends WebTestCase {
-    public function testMarkdownPreview() {
+    public function testMarkdownPreview(): void {
         $client = self::createUserClient();
         $client->request('POST', '/md', [], [], [
             'CONTENT_TYPE' => 'text/html; charset=UTF-8',

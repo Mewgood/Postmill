@@ -7,10 +7,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class IpWithCidrValidator extends ConstraintValidator {
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value, Constraint $constraint) {
+    public function validate($value, Constraint $constraint): void {
         if (!$constraint instanceof IpWithCidr) {
             throw new UnexpectedTypeException($constraint, IpWithCidr::class);
         }
@@ -25,7 +22,7 @@ class IpWithCidrValidator extends ConstraintValidator {
             return;
         }
 
-        list($ip, $cidr) = array_pad(explode('/', $value, 2), 2, null);
+        [$ip, $cidr] = array_pad(explode('/', $value, 2), 2, null);
 
         if (!filter_var($ip, FILTER_VALIDATE_IP)) {
             $this->context->buildViolation($constraint->invalidIpMessage)

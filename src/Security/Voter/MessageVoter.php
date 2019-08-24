@@ -7,10 +7,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class MessageVoter extends Voter {
-    const ATTRIBUTES = ['delete'];
+    public const ATTRIBUTES = ['delete'];
 
     protected function supports($attribute, $subject) {
-        return $subject instanceof Message && \in_array($attribute, self::ATTRIBUTES);
+        return $subject instanceof Message && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {

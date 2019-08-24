@@ -13,7 +13,10 @@ class WikiRevisionRepository extends ServiceEntityRepository {
         parent::__construct($registry, WikiRevision::class);
     }
 
-    public function findRecent(int $page) {
+    /**
+     * @return Pagerfanta|WikiRevision[]
+     */
+    public function findRecent(int $page): Pagerfanta {
         $qb = $this->createQueryBuilder('wr')
             ->addSelect('wr')
             ->join('wr.page', 'wp')

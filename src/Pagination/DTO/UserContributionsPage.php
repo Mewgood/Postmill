@@ -19,7 +19,7 @@ class UserContributionsPage implements PageInterface {
 
     public function populateFromPagerEntity($entity): void {
         if (!$entity instanceof Comment && !$entity instanceof Submission) {
-            throw new \InvalidArgumentException(\sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 '$entity must be instance of %s or %s',
                 Comment::class,
                 Submission::class

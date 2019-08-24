@@ -8,7 +8,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadExampleWiki extends AbstractFixture implements DependentFixtureInterface {
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager): void {
+        /** @noinspection PhpParamsInspection */
         $page = new WikiPage(
             'index',
             'This is the title',
@@ -21,7 +22,7 @@ class LoadExampleWiki extends AbstractFixture implements DependentFixtureInterfa
         $manager->flush();
     }
 
-    public function getDependencies() {
+    public function getDependencies(): array {
         return [LoadExampleUsers::class];
     }
 }

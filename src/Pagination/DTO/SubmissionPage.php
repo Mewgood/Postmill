@@ -18,11 +18,11 @@ class SubmissionPage implements PageInterface {
     ];
 
     public const SORT_ORDER = [
-        Submission::SORT_HOT            => PageInterface::SORT_DESC,
-        Submission::SORT_NEW            => PageInterface::SORT_DESC,
-        Submission::SORT_ACTIVE         => PageInterface::SORT_DESC,
-        Submission::SORT_TOP            => PageInterface::SORT_DESC,
-        Submission::SORT_CONTROVERSIAL  => PageInterface::SORT_ASC,
+        Submission::SORT_HOT => PageInterface::SORT_DESC,
+        Submission::SORT_NEW => PageInterface::SORT_DESC,
+        Submission::SORT_ACTIVE => PageInterface::SORT_DESC,
+        Submission::SORT_TOP => PageInterface::SORT_DESC,
+        Submission::SORT_CONTROVERSIAL => PageInterface::SORT_ASC,
         Submission::SORT_MOST_COMMENTED => PageInterface::SORT_DESC,
     ];
 

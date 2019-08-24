@@ -19,10 +19,7 @@ class UserTransformer implements DataTransformerInterface {
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function transform($value) {
+    public function transform($value): ?string {
         if ($value instanceof User) {
             return $value->getUsername();
         }
@@ -30,11 +27,8 @@ class UserTransformer implements DataTransformerInterface {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reverseTransform($value) {
-        if (strlen($value) > 0) {
+    public function reverseTransform($value): ?User {
+        if ((string) $value !== '') {
             return $this->userRepository->loadUserByUsername($value);
         }
 

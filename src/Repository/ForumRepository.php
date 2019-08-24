@@ -1,5 +1,8 @@
 <?php
 
+/** @noinspection SqlRedundantOrderingDirection */
+/** @noinspection SqlResolve */
+
 namespace App\Repository;
 
 use App\Entity\Forum;
@@ -42,7 +45,6 @@ final class ForumRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param int    $page
      * @param string $sortBy one of 'name', 'title', 'submissions',
      *                       'subscribers', or 'creation_date', optionally with
      *                       'by_' prefix
@@ -52,7 +54,7 @@ final class ForumRepository extends ServiceEntityRepository {
     public function findForumsByPage(int $page, string $sortBy): Pagerfanta {
         $qb = $this->createQueryBuilder('f');
 
-        switch (\preg_replace('/^by_/', '', $sortBy)) {
+        switch (preg_replace('/^by_/', '', $sortBy)) {
         case 'name':
             break;
         case 'title':
@@ -85,12 +87,9 @@ final class ForumRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param User $user
-     *
      * @return string[]
      */
-    public function findSubscribedForumNames(User $user) {
-        /* @noinspection SqlDialectInspection */
+    public function findSubscribedForumNames(User $user): array {
         $dql =
             'SELECT f.id, f.name FROM '.Forum::class.' f WHERE f IN ('.
                 'SELECT IDENTITY(fs.forum) FROM '.ForumSubscription::class.' fs WHERE fs.user = ?1'.
@@ -108,7 +107,7 @@ final class ForumRepository extends ServiceEntityRepository {
      *
      * @return string[]
      */
-    public function findFeaturedForumNames() {
+    public function findFeaturedForumNames(): array {
         $names = $this->createQueryBuilder('f')
             ->select('f.id')
             ->addSelect('f.name')
@@ -121,12 +120,9 @@ final class ForumRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param User $user
-     *
      * @return string[]
      */
-    public function findModeratedForumNames(User $user) {
-        /* @noinspection SqlDialectInspection */
+    public function findModeratedForumNames(User $user): array {
         $dql = 'SELECT f.id, f.name FROM '.Forum::class.' f WHERE f IN ('.
             'SELECT IDENTITY(m.forum) FROM '.Moderator::class.' m WHERE m.user = ?1'.
         ') ORDER BY f.normalizedName ASC';
@@ -138,21 +134,10 @@ final class ForumRepository extends ServiceEntityRepository {
         return array_column($names, 'name', 'id');
     }
 
-    public function findForumNames($names) {
-        /* @noinspection SqlDialectInspection */
-        $dql = 'SELECT f.id, f.name FROM '.Forum::class.' f '.
-            'WHERE f.normalizedName IN (?1) '.
-            'ORDER BY f.normalizedName ASC';
-
-        $names = $this->_em->createQuery($dql)
-            ->setParameter(1, $names)
-            ->getResult();
-
-        return array_column($names, 'name', 'id');
-    }
-
-    public function findForumsInCategory(ForumCategory $category) {
-        /* @noinspection SqlDialectInspection */
+    /**
+     * @return string[]
+     */
+    public function findForumsInCategory(ForumCategory $category): array {
         $dql = 'SELECT f.id, f.name FROM '.Forum::class.' f '.
             'WHERE f.category = :category '.
             'ORDER BY f.normalizedName ASC';
@@ -174,6 +159,11 @@ final class ForumRepository extends ServiceEntityRepository {
         return $this->findOneByNormalizedName(Forum::normalizeName($name));
     }
 
+    /**
+     * @param string $param name of forum name param in request attribute bag
+     *
+     * @throws HttpException when redirecting to canonical URL
+     */
     public function findOneOrRedirectToCanonical(?string $name, string $param): ?Forum {
         $forum = $this->findOneByCaseInsensitiveName($name);
 

@@ -16,11 +16,11 @@ class MessageData {
      */
     private $body;
 
-    public function getBody() {
+    public function getBody(): ?string {
         return $this->body;
     }
 
-    public function setBody($body) {
+    public function setBody(?string $body): void {
         $this->body = $body;
     }
 

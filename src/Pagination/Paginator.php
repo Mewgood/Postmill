@@ -65,11 +65,6 @@ final class Paginator {
 
     /**
      * Get the page data, if any, from the current request.
-     *
-     * @param string $pageDataClass
-     * @param string $group
-     *
-     * @return PageInterface|null
      */
     public function getPage(string $pageDataClass, string $group): ?PageInterface {
         $request = $this->requestStack->getCurrentRequest();

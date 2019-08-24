@@ -33,6 +33,9 @@ class UserData implements UserInterface {
      */
     private $normalizedUsername;
 
+    /**
+     * @var string|null
+     */
     private $password;
 
     /**
@@ -49,6 +52,9 @@ class UserData implements UserInterface {
      */
     private $email;
 
+    /**
+     * @var string|null
+     */
     private $locale;
 
     /**
@@ -59,15 +65,22 @@ class UserData implements UserInterface {
     /**
      * @Assert\Choice(Submission::FRONT_PAGE_OPTIONS, groups={"settings"}, strict=true)
      * @Assert\NotBlank(groups={"settings"})
+     *
+     * @var string|null
      */
     private $frontPage;
 
     /**
      * @Assert\Choice({Submission::SORT_ACTIVE, Submission::SORT_HOT, Submission::SORT_NEW}, groups={"settings"}, strict=true)
      * @Assert\NotBlank(groups={"settings"})
+     *
+     * @var string|null
      */
     private $frontPageSortMode;
 
+    /**
+     * @var bool|null
+     */
     private $showCustomStylesheets;
 
     /**
@@ -75,6 +88,9 @@ class UserData implements UserInterface {
      */
     private $preferredTheme;
 
+    /**
+     * @var bool|null
+     */
     private $openExternalLinksInNewTab;
 
     /**
@@ -84,16 +100,34 @@ class UserData implements UserInterface {
      */
     private $biography;
 
+    /**
+     * @var bool|null
+     */
     private $autoFetchSubmissionTitles;
 
+    /**
+     * @var bool|null
+     */
     private $enablePostPreviews;
 
+    /**
+     * @var bool|null
+     */
     private $showThumbnails;
 
+    /**
+     * @var bool|null
+     */
     private $allowPrivateMessages;
 
+    /**
+     * @var bool|null
+     */
     private $notifyOnReply;
 
+    /**
+     * @var bool|null
+     */
     private $notifyOnMentions;
 
     /**
@@ -130,7 +164,7 @@ class UserData implements UserInterface {
         return $self;
     }
 
-    public function updateUser(User $user) {
+    public function updateUser(User $user): void {
         $user->setUsername($this->username);
 
         if ($this->password) {
@@ -188,39 +222,36 @@ class UserData implements UserInterface {
         return $user;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getEntityId() {
+    public function getEntityId(): ?int {
         return $this->entityId;
     }
 
-    public function getUsername() {
+    public function getUsername(): ?string {
         return $this->username;
     }
 
-    public function setUsername($username) {
+    public function setUsername(?string $username): void {
         $this->username = $username;
         $this->normalizedUsername = isset($username) ? User::normalizeUsername($username) : null;
     }
 
-    public function getNormalizedUsername() {
+    public function getNormalizedUsername(): ?string {
         return $this->normalizedUsername;
     }
 
-    public function getPassword() {
+    public function getPassword(): ?string {
         return $this->password;
     }
 
-    public function setPassword($password) {
+    public function setPassword(?string $password): void {
         $this->password = $password;
     }
 
-    public function getPlainPassword() {
+    public function getPlainPassword(): ?string {
         return $this->plainPassword;
     }
 
-    public function setPlainPassword($plainPassword) {
+    public function setPlainPassword(?string $plainPassword): void {
         $this->plainPassword = $plainPassword;
     }
 
@@ -228,7 +259,7 @@ class UserData implements UserInterface {
         return $this->email;
     }
 
-    public function setEmail($email) {
+    public function setEmail(?string $email): void {
         $this->email = $email;
     }
 
@@ -236,7 +267,7 @@ class UserData implements UserInterface {
         return $this->locale;
     }
 
-    public function setLocale($locale) {
+    public function setLocale(?string $locale): void {
         $this->locale = $locale;
     }
 
@@ -252,15 +283,15 @@ class UserData implements UserInterface {
         return $this->frontPage;
     }
 
-    public function setFrontPage($frontPage) {
+    public function setFrontPage(?string $frontPage): void {
         $this->frontPage = $frontPage;
     }
 
-    public function getFrontPageSortMode() {
+    public function getFrontPageSortMode(): ?string {
         return $this->frontPageSortMode;
     }
 
-    public function setFrontPageSortMode($frontPageSortMode) {
+    public function setFrontPageSortMode(?string $frontPageSortMode): void {
         $this->frontPageSortMode = $frontPageSortMode;
     }
 
@@ -268,7 +299,7 @@ class UserData implements UserInterface {
         return $this->showCustomStylesheets;
     }
 
-    public function setShowCustomStylesheets($showCustomStylesheets) {
+    public function setShowCustomStylesheets(bool $showCustomStylesheets): void {
         $this->showCustomStylesheets = $showCustomStylesheets;
     }
 
@@ -280,19 +311,19 @@ class UserData implements UserInterface {
         $this->preferredTheme = $preferredTheme;
     }
 
-    public function openExternalLinksInNewTab() {
+    public function openExternalLinksInNewTab(): ?bool {
         return $this->openExternalLinksInNewTab;
     }
 
-    public function setOpenExternalLinksInNewTab($openExternalLinksInNewTab) {
+    public function setOpenExternalLinksInNewTab(bool $openExternalLinksInNewTab): void {
         $this->openExternalLinksInNewTab = $openExternalLinksInNewTab;
     }
 
-    public function getBiography() {
+    public function getBiography(): ?string {
         return $this->biography;
     }
 
-    public function setBiography($biography) {
+    public function setBiography(?string $biography): void {
         $this->biography = $biography;
     }
 
@@ -300,7 +331,7 @@ class UserData implements UserInterface {
         return $this->autoFetchSubmissionTitles;
     }
 
-    public function setAutoFetchSubmissionTitles(?bool $autoFetchSubmissionTitles): void {
+    public function setAutoFetchSubmissionTitles(bool $autoFetchSubmissionTitles): void {
         $this->autoFetchSubmissionTitles = $autoFetchSubmissionTitles;
     }
 
@@ -312,11 +343,11 @@ class UserData implements UserInterface {
         $this->enablePostPreviews = $enablePostPreviews;
     }
 
-    public function showThumbnails() {
+    public function showThumbnails(): ?bool {
         return $this->showThumbnails;
     }
 
-    public function setShowThumbnails($showThumbnails): void {
+    public function setShowThumbnails(bool $showThumbnails): void {
         $this->showThumbnails = $showThumbnails;
     }
 
@@ -360,24 +391,15 @@ class UserData implements UserInterface {
         $this->admin = $admin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoles() {
+    public function getRoles(): array {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSalt() {
+    public function getSalt(): ?string {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseCredentials() {
+    public function eraseCredentials(): void {
         $this->plainPassword = null;
     }
 }

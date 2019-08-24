@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class WikiVoter extends Voter {
-    const ATTRIBUTES = ['write', 'delete', 'lock'];
+    public const ATTRIBUTES = ['write', 'delete', 'lock'];
 
     /**
      * @var AccessDecisionManagerInterface
@@ -68,7 +68,7 @@ final class WikiVoter extends Voter {
 
         $site = $this->siteRepository->findCurrentSite();
 
-        assert($site instanceof Site);
+        \assert($site instanceof Site);
 
         return $this->decisionManager->decide($token, [$site->getWikiEditRole()]);
     }

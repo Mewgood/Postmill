@@ -14,7 +14,10 @@ final class IpBanRepository extends ServiceEntityRepository {
         parent::__construct($registry, IpBan::class);
     }
 
-    public function findAllPaginated($page, $maxPerPage = 25) {
+    /**
+     * @return Pagerfanta|IpBan[]
+     */
+    public function findAllPaginated(int $page, $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'DESC']);
 
         $bans = new Pagerfanta(new DoctrineSelectableAdapter($this, $criteria));
@@ -24,11 +27,6 @@ final class IpBanRepository extends ServiceEntityRepository {
         return $bans;
     }
 
-    /**
-     * @param string $ip
-     *
-     * @return bool
-     */
     public function ipIsBanned(string $ip): bool {
         $count = $this->_em->getConnection()->createQueryBuilder()
             ->select('COUNT(b)')

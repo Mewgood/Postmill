@@ -120,7 +120,7 @@ class ForumCategory {
         return $this->forums;
     }
 
-    public static function normalizeName(string $name) {
+    public static function normalizeName(string $name): string {
         return Forum::normalizeName($name);
     }
 }

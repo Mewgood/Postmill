@@ -15,7 +15,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
      *
      * @param string $url
      */
-    public function testCanAccessPublicPages($url) {
+    public function testCanAccessPublicPages($url): void {
         $client = self::createClient();
         $client->request('GET', $url);
 
@@ -27,7 +27,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
      *
      * @param string $url
      */
-    public function testCanAccessPagesThatNeedAuthentication($url) {
+    public function testCanAccessPagesThatNeedAuthentication($url): void {
         $client = self::createClient([], [
             'PHP_AUTH_USER' => 'emma',
             'PHP_AUTH_PW' => 'goodshit',
@@ -42,7 +42,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
      *
      * @param string $url
      */
-    public function testCannotAccessPagesThatNeedAuthenticationWhenNotAuthenticated($url) {
+    public function testCannotAccessPagesThatNeedAuthenticationWhenNotAuthenticated($url): void {
         $client = self::createClient();
         $client->request('GET', $url);
 
@@ -56,7 +56,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
      * @param string $expectedLocation
      * @param string $url
      */
-    public function testRedirectedUrlsGoToExpectedLocation($expectedLocation, $url) {
+    public function testRedirectedUrlsGoToExpectedLocation($expectedLocation, $url): void {
         $client = self::createClient();
         $client->followRedirects();
         $client->request('GET', $url);

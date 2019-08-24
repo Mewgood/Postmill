@@ -15,12 +15,9 @@ class MessageThreadRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param User $user
-     * @param int  $page
-     *
      * @return MessageThread[]|Pagerfanta
      */
-    public function findUserMessages(User $user, int $page = 1) {
+    public function findUserMessages(User $user, int $page = 1): Pagerfanta {
         $qb = $this->createQueryBuilder('mt')
             ->where(':user MEMBER OF mt.participants')
             ->orderBy('mt.id', 'DESC')

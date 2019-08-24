@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Locales;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class UserSettingsType extends AbstractType {
@@ -25,7 +25,7 @@ final class UserSettingsType extends AbstractType {
         $this->availableLocales = $availableLocales;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('locale', ChoiceType::class, [
                 'choices' => $this->buildLocaleChoices(),
@@ -39,7 +39,7 @@ final class UserSettingsType extends AbstractType {
                 $builder->create('frontPage', FormType::class, [
                     'error_bubbling' => false,
                     'label' => 'label.front_page',
-                    'inherit_data' => true
+                    'inherit_data' => true,
                 ])
                 ->add('filterBy', ChoiceType::class, [
                     'choices' => [
@@ -107,7 +107,7 @@ final class UserSettingsType extends AbstractType {
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => UserData::class,
             'label_format' => 'user_settings_form.%name%',
@@ -117,23 +117,20 @@ final class UserSettingsType extends AbstractType {
 
     private function buildLocaleChoices(): array {
         $localeChoices = [];
-        $localeBundle = Intl::getLocaleBundle();
 
         foreach ($this->availableLocales as $locale) {
-            $name = $localeBundle->getLocaleName($locale, $locale);
-
-            $localeChoices[$name] = $locale;
+            $localeChoices[Locales::getName($locale, $locale)] = $locale;
         }
 
-        \uksort($localeChoices, function ($a, $b) {
-            [$a, $b] = \array_map(function ($key) {
-                return \transliterator_transliterate(
+        uksort($localeChoices, function ($a, $b) {
+            [$a, $b] = array_map(function ($key) {
+                return transliterator_transliterate(
                     'NFKD; Latin; Latin/US-ASCII; [:Nonspacing Mark:] Remove; Lower',
                     $key
                 );
             }, [$a, $b]);
 
-            return \strnatcasecmp($a, $b);
+            return strnatcasecmp($a, $b);
         });
 
         return $localeChoices;

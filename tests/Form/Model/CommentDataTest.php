@@ -19,11 +19,11 @@ class CommentDataTest extends TestCase {
      */
     private $comment;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         ClockMock::register(CommentData::class);
     }
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->comment = $this->getMockBuilder(Comment::class)
             ->setMethods(['getSubmission', 'getUser'])
             ->disableOriginalConstructor()
@@ -40,7 +40,7 @@ class CommentDataTest extends TestCase {
         $this->comment->setBody('foo');
     }
 
-    public function testUpdate() {
+    public function testUpdate(): void {
         $data = CommentData::createFromComment($this->comment);
         $data->setBody('bar');
         $data->updateComment($this->comment, $this->comment->getUser());

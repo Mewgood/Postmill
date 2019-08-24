@@ -4,7 +4,7 @@ namespace App\Markdown\Inline\Parser;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class WikiLinkParser extends AbstractLocalLinkParser {
+final class WikiLinkParser extends AbstractLocalLinkParser {
     /**
      * @var UrlGeneratorInterface
      */

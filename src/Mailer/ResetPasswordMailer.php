@@ -58,7 +58,7 @@ final class ResetPasswordMailer {
         return !empty($this->noReplyAddress);
     }
 
-    public function mail(User $user, Request $request) {
+    public function mail(User $user, Request $request): void {
         if (!$this->canMail()) {
             throw new \RuntimeException('Cannot send mail without a no-reply address');
         }
@@ -98,12 +98,6 @@ final class ResetPasswordMailer {
     /**
      * Ensures that a checksum in a reset URL was actually sent by us and that
      * the password hasn't changed (which invalidates the reset URL).
-     *
-     * @param string    $checksum
-     * @param User      $user
-     * @param \DateTime $expiresAt
-     *
-     * @return bool
      */
     public function validateChecksum(string $checksum, User $user, \DateTime $expiresAt): bool {
         return hash_equals($checksum, $this->createChecksum($user, $expiresAt));

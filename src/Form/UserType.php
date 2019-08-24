@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class UserType extends AbstractType {
@@ -25,27 +24,11 @@ final class UserType extends AbstractType {
      */
     private $encoder;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
-
-    /**
-     * @param UserPasswordEncoderInterface  $encoder
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     */
-    public function __construct(
-        UserPasswordEncoderInterface $encoder,
-        AuthorizationCheckerInterface $authorizationChecker
-    ) {
+    public function __construct(UserPasswordEncoderInterface $encoder) {
         $this->encoder = $encoder;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         if ($options['honeypot']) {
             $builder->add('phone', HoneypotType::class);
         }
@@ -83,7 +66,7 @@ final class UserType extends AbstractType {
         $builder->addEventSubscriber(new PasswordEncodingSubscriber($this->encoder));
     }
 
-    public function finishView(FormView $view, FormInterface $form, array $options) {
+    public function finishView(FormView $view, FormInterface $form, array $options): void {
         if ($form->getData() && $form->getData()->getEntityId()) {
             // don't auto-complete the password fields when editing the user
             $view['password']['first']->vars['attr']['autocomplete'] = 'new-password';
@@ -91,10 +74,7 @@ final class UserType extends AbstractType {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => UserData::class,
             'honeypot' => true,

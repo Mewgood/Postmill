@@ -8,16 +8,10 @@ use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserChecker implements UserCheckerInterface {
-    /**
-     * {@inheritdoc}
-     */
-    public function checkPreAuth(UserInterface $user) {
+    public function checkPreAuth(UserInterface $user): void {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function checkPostAuth(UserInterface $user) {
+    public function checkPostAuth(UserInterface $user): void {
         if (!$user instanceof User) {
             return;
         }

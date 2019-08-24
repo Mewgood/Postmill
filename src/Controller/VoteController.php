@@ -29,7 +29,7 @@ final class VoteController extends AbstractController {
 
         $choice = $request->request->getInt('choice', null);
 
-        if (!in_array($choice, Votable::VOTE_CHOICES, true)) {
+        if (!\in_array($choice, Votable::VOTE_CHOICES, true)) {
             throw new BadRequestHttpException('Bad choice');
         }
 

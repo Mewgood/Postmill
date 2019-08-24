@@ -23,17 +23,13 @@ class AjaxController {
      * - 200 - Found a title
      * - 400 - Bad URL
      * - 404 - No title found
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
-    public function fetchTitle(Request $request) {
+    public function fetchTitle(Request $request): Response {
         $url = $request->request->get('url');
         try {
             $title = Embed::create($url)->getTitle();
 
-            if (!strlen($title)) {
+            if ((string) $title === '') {
                 return new JsonResponse(null, 404);
             }
 
@@ -43,7 +39,7 @@ class AjaxController {
         }
     }
 
-    public function markdownPreview(Request $request, MarkdownConverter $converter) {
+    public function markdownPreview(Request $request, MarkdownConverter $converter): Response {
         if ($request->getContentType() !== 'html') {
             throw new BadRequestHttpException('Expected HTML request body');
         }

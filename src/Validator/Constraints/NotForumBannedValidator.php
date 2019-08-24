@@ -68,7 +68,10 @@ class NotForumBannedValidator extends ConstraintValidator {
             return;
         }
 
-        if ($forum->userIsBanned($token->getUser())) {
+        /** @var \App\Entity\User $user */
+        $user = $token->getUser();
+
+        if ($forum->userIsBanned($user)) {
             $this->context->buildViolation($constraint->message)
                 ->setCode(NotForumBanned::FORUM_BANNED_ERROR)
                 ->atPath($constraint->errorPath)

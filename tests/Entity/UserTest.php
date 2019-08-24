@@ -4,7 +4,6 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use App\Entity\UserBan;
-use App\Entity\UserBlock;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase {
@@ -14,7 +13,7 @@ class UserTest extends TestCase {
      * @param string $expected
      * @param string $input
      */
-    public function testCanNormalizeUsername($expected, $input) {
+    public function testCanNormalizeUsername($expected, $input): void {
         $this->assertEquals($expected, User::normalizeUsername($input));
     }
 
@@ -24,24 +23,24 @@ class UserTest extends TestCase {
      * @param string $expected
      * @param string $input
      */
-    public function testCanNormalizeEmail($expected, $input) {
+    public function testCanNormalizeEmail($expected, $input): void {
         $this->assertEquals($expected, User::normalizeEmail($input));
     }
 
-    public function testNewUserIsNotBanned() {
+    public function testNewUserIsNotBanned(): void {
         $user = new User('u', 'p');
 
         $this->assertFalse($user->isBanned());
     }
 
-    public function testUserBanIsEffective() {
+    public function testUserBanIsEffective(): void {
         $user = new User('u', 'p');
         $user->addBan(new UserBan($user, 'foo', true, new User('ben', 'p')));
 
         $this->assertTrue($user->isBanned());
     }
 
-    public function testExpiringUserBanIsEffective() {
+    public function testExpiringUserBanIsEffective(): void {
         $user = new User('u', 'p');
         $expires = new \DateTime('@'.time().' +1 hour');
         $user->addBan(new UserBan($user, 'foo', true, new User('ben', 'p'), $expires));
@@ -52,7 +51,7 @@ class UserTest extends TestCase {
     /**
      * @group time-sensitive
      */
-    public function testExpiredUserBanIsIneffective() {
+    public function testExpiredUserBanIsIneffective(): void {
         $user = new User('u', 'p');
         $expires = new \DateTime('@'.time().' +1 hour');
         $user->addBan(new UserBan($user, 'ofo', true, new User('ben', 'p'), $expires));
@@ -68,16 +67,16 @@ class UserTest extends TestCase {
      *
      * @param string $input
      */
-    public function testNormalizeFailsOnInvalidEmailAddress($input) {
+    public function testNormalizeFailsOnInvalidEmailAddress($input): void {
         User::normalizeEmail($input);
     }
 
-    public function unnormalizedUserProvider() {
+    public function unnormalizedUserProvider(): iterable {
         yield ['emma', 'Emma'];
         yield ['zach', 'zaCH'];
     }
 
-    public function unnormalizedEmailAddressProvider() {
+    public function unnormalizedEmailAddressProvider(): iterable {
         yield ['pzm87i6bhxs2vzgm@gmail.com', 'PzM87.I6bhx.S2vzGm@gmail.com'];
         yield ['ays1hbjbpluzdivl@gmail.com', 'AyS1hBjbPLuZDiVl@googlemail.com'];
         yield ['pcpanmvb@gmail.com', 'pCPaNmvB+roHYEByv@gmail.com'];
@@ -85,7 +84,7 @@ class UserTest extends TestCase {
         yield ['pCPaNmvBroHYEByv@example.com', 'pCPaNmvBroHYEByv@ExaMPle.CoM'];
     }
 
-    public function invalidEmailAddressProvider() {
+    public function invalidEmailAddressProvider(): iterable {
         yield ['gasg7a8.'];
         yield ['foo@examplenet@example.net'];
     }

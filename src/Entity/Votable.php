@@ -8,14 +8,14 @@ use Doctrine\Common\Collections\Selectable;
 
 abstract class Votable {
     // these values should probably never change
-    const USER_NO_VOTE = 0;
-    const USER_UPVOTED = 1;
-    const USER_DOWNVOTED = -1;
+    public const USER_NO_VOTE = 0;
+    public const USER_UPVOTED = 1;
+    public const USER_DOWNVOTED = -1;
 
-    const VOTE_UP = 1;
-    const VOTE_DOWN = -1;
-    const VOTE_RETRACT = 0;
-    const VOTE_CHOICES = [self::VOTE_UP, self::VOTE_DOWN, self::VOTE_RETRACT];
+    public const VOTE_UP = 1;
+    public const VOTE_DOWN = -1;
+    public const VOTE_RETRACT = 0;
+    public const VOTE_CHOICES = [self::VOTE_UP, self::VOTE_DOWN, self::VOTE_RETRACT];
 
     final public static function descendingNetScoreCmp(self $a, self $b): int {
         return $b->getNetScore() <=> $a->getNetScore();
@@ -29,10 +29,6 @@ abstract class Votable {
     abstract protected function createVote(User $user, ?string $ip, int $choice): Vote;
 
     /**
-     * @param User        $user
-     * @param string|null $ip
-     * @param int         $choice
-     *
      * @throws \InvalidArgumentException if the vote is not a VOTE_* constant
      */
     public function vote(User $user, ?string $ip, int $choice): void {
@@ -57,7 +53,7 @@ abstract class Votable {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('upvote', true));
 
-        return count($this->getVotes()->matching($criteria));
+        return \count($this->getVotes()->matching($criteria));
     }
 
     public function getDownvotes(): int {
@@ -66,7 +62,7 @@ abstract class Votable {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('upvote', false));
 
-        return count($this->getVotes()->matching($criteria));
+        return \count($this->getVotes()->matching($criteria));
     }
 
     public function getNetScore(): int {

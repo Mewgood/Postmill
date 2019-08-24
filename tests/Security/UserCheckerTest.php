@@ -14,7 +14,7 @@ class UserCheckerTest extends TestCase {
     /**
      * @doesNotPerformAssertions
      */
-    public function testNonBannedUserDoesNotCauseExceptionOnAuth() {
+    public function testNonBannedUserDoesNotCauseExceptionOnAuth(): void {
         /* @var User|MockObject $user */
         $user = $this->createMock(User::class);
         $user->method('isBanned')->willReturn(false, false);
@@ -25,7 +25,7 @@ class UserCheckerTest extends TestCase {
     /**
      * @expectedException \App\Security\Exception\AccountBannedException
      */
-    public function testBannedUserCausesExceptionOnPostAuth() {
+    public function testBannedUserCausesExceptionOnPostAuth(): void {
         /* @var User|MockObject $user */
         $user = $this->createMock(User::class);
         $user->method('isBanned')->willReturn(true);

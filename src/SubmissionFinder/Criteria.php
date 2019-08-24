@@ -70,7 +70,7 @@ final class Criteria {
 
     public function getUser(): User {
         if (!$this->user) {
-            throw new \BadMethodCallException("No user was set");
+            throw new \BadMethodCallException('No user was set');
         }
 
         return $this->user;
@@ -82,7 +82,7 @@ final class Criteria {
 
     public function showSubscribed(): self {
         if (!$this->user) {
-            throw new \BadMethodCallException("No user was set");
+            throw new \BadMethodCallException('No user was set');
         }
 
         return $this->setView(self::VIEW_SUBSCRIBED);
@@ -90,7 +90,7 @@ final class Criteria {
 
     public function showModerated(): self {
         if (!$this->user) {
-            throw new \BadMethodCallException("No user was set");
+            throw new \BadMethodCallException('No user was set');
         }
 
         return $this->setView(self::VIEW_MODERATED);
@@ -127,7 +127,7 @@ final class Criteria {
     }
 
     /**
-     * @return int exclusions, as a bit field.
+     * @return int exclusions, as a bit field
      */
     public function getExclusions(): int {
         $exclude = $this->exclude;
@@ -144,7 +144,7 @@ final class Criteria {
      */
     public function excludeHiddenForums(): self {
         if ($this->exclude & self::EXCLUDE_HIDDEN_FORUMS) {
-            throw new \BadMethodCallException("This method was already called");
+            throw new \BadMethodCallException('This method was already called');
         }
 
         $this->exclude |= self::EXCLUDE_HIDDEN_FORUMS;

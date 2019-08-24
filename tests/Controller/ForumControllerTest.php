@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @covers \App\Controller\ForumController
  */
 class ForumControllerTest extends WebTestCase {
-    public function testCanSubscribeToForumFromForumView() {
+    public function testCanSubscribeToForumFromForumView(): void {
         $client = self::createClient([], [
             'PHP_AUTH_USER' => 'emma',
             'PHP_AUTH_PW' => 'goodshit',
@@ -28,7 +28,7 @@ class ForumControllerTest extends WebTestCase {
         );
     }
 
-    public function testCanSubscribeToForumFromForumList() {
+    public function testCanSubscribeToForumFromForumList(): void {
         $client = self::createClient([], [
             'PHP_AUTH_USER' => 'emma',
             'PHP_AUTH_PW' => 'goodshit',
@@ -46,7 +46,7 @@ class ForumControllerTest extends WebTestCase {
     /**
      * @group time-sensitive
      */
-    public function testCanBanUser() {
+    public function testCanBanUser(): void {
         ClockMock::register(ForumBan::class);
 
         $client = self::createClient([], [

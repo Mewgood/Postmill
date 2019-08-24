@@ -10,17 +10,15 @@ use App\Pagination\DTO\UserContributionsPage;
 use App\Pagination\Pager;
 use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\FetchMode;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @method User|null findOneByUsername(string|string[] $username)
@@ -57,8 +55,6 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
 
     /**
      * @param string|null $username
-     *
-     * @return User|null
      */
     public function loadUserByUsername($username): ?User {
         if ($username === null) {
@@ -95,11 +91,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
-     * @param string $email
-     *
-     * @return User[]|Collection
+     * @return User[]
      */
-    public function lookUpByEmail(string $email) {
+    public function lookUpByEmail(string $email): array {
         // Normalization of email address is prone to change, so look them up
         // by both canonical and normalized variations just in case.
         return $this->createQueryBuilder('u')
@@ -118,9 +112,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * at the same second, and if they were to appear on separate pages. This is
      * an edge case, so we don't really care.
      *
-     * @param User $user
-     *
-     * @return Pager
+     * @return Pager|Submission[]|Comment[]
      */
     public function findContributions(User $user): Pager {
         $submissionsQuery = $this->_em->createQueryBuilder()
@@ -149,12 +141,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
-     * @param int      $page
-     * @param Criteria $criteria
-     *
-     * @return User[]|Pagerfanta
+     * @return Pagerfanta|User[]
      */
-    public function findPaginated(int $page, Criteria $criteria) {
+    public function findPaginated(int $page, Criteria $criteria): Pagerfanta {
         $pager = new Pagerfanta(new DoctrineSelectableAdapter($this, $criteria));
         $pager->setMaxPerPage(25);
         $pager->setCurrentPage($page);
@@ -162,7 +151,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         return $pager;
     }
 
-    public function findIpsUsedByUser(User $user): \Traversable {
+    public function findIpsUsedByUser(User $user): iterable {
         $sql = 'SELECT DISTINCT ip FROM ('.
             'SELECT ip FROM submissions WHERE user_id = :id AND ip IS NOT NULL UNION ALL '.
             'SELECT ip FROM comments WHERE user_id = :id AND ip IS NOT NULL UNION ALL '.
@@ -181,8 +170,6 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
-     * @param User $user
-     *
      * @return array|int[]
      */
     public function findHiddenForumIdsByUser(User $user): array {
@@ -192,7 +179,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $sth->bindValue(':user_id', $user->getId());
         $sth->execute();
 
-        return $sth->fetchAll(\PDO::FETCH_COLUMN);
+        return $sth->fetchAll(FetchMode::COLUMN);
     }
 
     private function hydrateContributions(iterable $contributions): void {

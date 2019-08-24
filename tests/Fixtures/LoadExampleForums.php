@@ -4,16 +4,12 @@ namespace App\Tests\Fixtures;
 
 use App\Entity\Forum;
 use App\Entity\Moderator;
-use App\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadExampleForums extends AbstractFixture implements DependentFixtureInterface {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager): void {
         foreach ($this->provideForums() as $data) {
             $forum = new Forum(
                 $data['name'],
@@ -27,15 +23,13 @@ class LoadExampleForums extends AbstractFixture implements DependentFixtureInter
             $forum->setFeatured($data['featured']);
 
             foreach ($data['moderators'] as $username) {
-                /** @var User $user */
-                $user = $this->getReference('user-'.$username);
-                new Moderator($forum, $user);
+                /* @noinspection PhpParamsInspection */
+                new Moderator($forum, $this->getReference('user-'.$username));
             }
 
             foreach ($data['subscribers'] as $username) {
-                /** @var User $user */
-                $user = $this->getReference('user-'.$username);
-                $forum->subscribe($user);
+                /* @noinspection PhpParamsInspection */
+                $forum->subscribe($this->getReference('user-'.$username));
             }
 
             $this->addReference('forum-'.$data['name'], $forum);
@@ -46,7 +40,7 @@ class LoadExampleForums extends AbstractFixture implements DependentFixtureInter
         $manager->flush();
     }
 
-    private function provideForums() {
+    private function provideForums(): iterable {
         yield [
             'name' => 'cats',
             'title' => 'Cat Memes',
@@ -70,10 +64,7 @@ class LoadExampleForums extends AbstractFixture implements DependentFixtureInter
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
+    public function getDependencies(): array {
         return [LoadExampleUsers::class];
     }
 }

@@ -17,7 +17,7 @@ use Symfony\Bridge\PhpUnit\ClockMock;
  * @group time-sensitive
  */
 class SubmissionTest extends TestCase {
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         ClockMock::register(Submission::class);
     }
 
@@ -98,7 +98,7 @@ class SubmissionTest extends TestCase {
     /**
      * @dataProvider constructorArgsProvider
      */
-    public function testConstructor($title, $url, $body, $forum, $user, $ip, $sticky, $userFlag) {
+    public function testConstructor(string $title, ?string $url, ?string $body, Forum $forum, User $user, ?string $ip, bool $sticky, string $userFlag): void {
         $submission = new Submission($title, $url, $body, $forum, $user, $ip);
         $submission->setSticky($sticky);
         $submission->setUserFlag($userFlag);
@@ -117,7 +117,7 @@ class SubmissionTest extends TestCase {
         $this->assertSame($user, $submission->getVotes()->first()->getUser('u', 'p'));
     }
 
-    public function testBannedUserCannotCreateSubmission() {
+    public function testBannedUserCannotCreateSubmission(): void {
         $user = new User('u', 'p');
         $forum = new Forum('a', 'a', 'a', 'a');
         $forum->addBan(new ForumBan($forum, $user, 'a', true, new User('u', 'p')));
@@ -127,7 +127,7 @@ class SubmissionTest extends TestCase {
         new Submission('a', null, 'a', $forum, $user, null);
     }
 
-    public function testBannedUserCannotVote() {
+    public function testBannedUserCannotVote(): void {
         $user = new User('u', 'p');
         $forum = new Forum('a', 'a', 'a', 'a');
         $forum->addBan(new ForumBan($forum, $user, 'a', true, new User('u', 'p')));
@@ -139,7 +139,7 @@ class SubmissionTest extends TestCase {
         $submission->vote($user, '::1', Votable::VOTE_UP);
     }
 
-    public function constructorArgsProvider() {
+    public function constructorArgsProvider(): iterable {
         $forum = $this->createMock(Forum::class);
         $user = $this->createMock(User::class);
         $url = 'http://example.com';

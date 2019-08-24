@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 abstract class AbstractController extends BaseAbstractController {
     /**
-     * @param string       $id
      * @param string|mixed $token
      *
      * @throws BadRequestHttpException if the token isn't valid

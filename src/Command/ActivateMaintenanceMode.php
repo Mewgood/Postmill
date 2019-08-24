@@ -26,7 +26,7 @@ class ActivateMaintenanceMode extends Command {
         $this->includeFilePath = $includeFilePath;
     }
 
-    public function configure() {
+    public function configure(): void {
         $this
             ->setName('app:maintenance')
             ->addOption('message', 'm', InputOption::VALUE_REQUIRED, 'Custom message to display.')
@@ -42,7 +42,7 @@ EOHELP
 );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output) {
+    public function execute(InputInterface $input, OutputInterface $output): int {
         $io = new SymfonyStyle($input, $output);
 
         if (!$input->getOption('deactivate')) {
@@ -59,14 +59,15 @@ EOHELP
             $io->success('Maintenance mode is now deactivated.');
         }
 
-        if (function_exists('opcache_invalidate')) {
+        if (\function_exists('opcache_invalidate')) {
+            /* @noinspection PhpComposerExtensionStubsInspection */
             opcache_invalidate($this->includeFilePath, true);
         }
 
         return 0;
     }
 
-    private function writeIncludeFile($message) {
+    private function writeIncludeFile($message): void {
         $title = $this->siteName;
         $img = base64_encode(file_get_contents(__DIR__.'/../../public/apple-touch-icon-precomposed.png'));
         $message = nl2br($message ?: 'The site will return shortly.');
@@ -85,7 +86,7 @@ body {
   text-align: center;
 }
 </style>
-<p><img src="data:image/png;base64,{$img}"></p>
+<p><img src="data:image/png;base64,{$img}" alt=""></p>
 <h1>{$title} is down for maintenance</h1>
 <p>$message</p>
 <?php exit ?>

@@ -44,11 +44,6 @@ class AuthenticationHelper {
 
     /**
      * Programmatically set a user as logged in.
-     *
-     * @param User     $user
-     * @param Request  $request
-     * @param Response $response
-     * @param string   $providerKey
      */
     public function login(User $user, Request $request, Response $response, string $providerKey): void {
         $token = $this->loginAuthenticator->createAuthenticatedToken($user, $providerKey);

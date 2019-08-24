@@ -19,8 +19,6 @@ final class Differ {
      * Diff in a format that's easy to work with in templates, and contains only
      * what we want (changed lines).
      *
-     * @param string $from
-     * @param string $to
      *
      * @return array[]
      */
@@ -34,7 +32,7 @@ final class Differ {
 
         $diff = (new BaseDiffer())->diffToArray($from, $to);
 
-        for ($i = 0, $len = count($diff); $i < $len; $i++) {
+        for ($i = 0, $len = \count($diff); $i < $len; $i++) {
             switch ($diff[$i][1]) {
             case self::B_OLD:
                 $oldLineNo++;
@@ -42,7 +40,7 @@ final class Differ {
                 break;
 
             case self::B_ADDED:
-                if ($i > 0 && $diff[$i - 1][1] == self::B_REMOVED) {
+                if ($i > 0 && $diff[$i - 1][1] === self::B_REMOVED) {
                     $newLineNo++;
                     $oldLineNo++;
 
@@ -66,7 +64,7 @@ final class Differ {
                 break;
 
             case self::B_REMOVED:
-                if ($i == $len - 1 || $diff[$i + 1][1] != self::B_ADDED) {
+                if ($i === $len - 1 || $diff[$i + 1][1] !== self::B_ADDED) {
                     $oldLineNo++;
 
                     $output[] = [

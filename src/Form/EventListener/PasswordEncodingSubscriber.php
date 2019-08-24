@@ -14,14 +14,11 @@ final class PasswordEncodingSubscriber implements EventSubscriberInterface {
      */
     private $encoder;
 
-    /**
-     * @param UserPasswordEncoderInterface $encoder
-     */
     public function __construct(UserPasswordEncoderInterface $encoder) {
         $this->encoder = $encoder;
     }
 
-    public function onPostSubmit(FormEvent $event) {
+    public function onPostSubmit(FormEvent $event): void {
         if (!$event->getForm()->isValid()) {
             return;
         }
@@ -41,10 +38,7 @@ final class PasswordEncodingSubscriber implements EventSubscriberInterface {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array {
         return [
             FormEvents::POST_SUBMIT => ['onPostSubmit', -200],
         ];

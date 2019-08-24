@@ -83,13 +83,8 @@ final class ForumController extends AbstractController {
      *
      * @IsGranted("ROLE_USER")
      * @IsGranted("create_forum", statusCode=403)
-     *
-     * @param Request       $request
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
-    public function createForum(Request $request, ObjectManager $em) {
+    public function createForum(Request $request, ObjectManager $em): Response {
         $data = new ForumData();
 
         $form = $this->createForm(ForumType::class, $data);
@@ -114,14 +109,8 @@ final class ForumController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
-     *
-     * @param Request       $request
-     * @param Forum         $forum
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
-    public function editForum(Request $request, Forum $forum, ObjectManager $em) {
+    public function editForum(Request $request, Forum $forum, ObjectManager $em): Response {
         $data = ForumData::createFromForum($forum);
 
         $form = $this->createForm(ForumType::class, $data);
@@ -149,12 +138,6 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @IsGranted("delete", subject="forum", statusCode=403)
-     *
-     * @param Request       $request
-     * @param Forum         $forum
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
     public function delete(Request $request, Forum $forum, ObjectManager $em): Response {
         $form = $this->createForm(ConfirmDeletionType::class, null, [
@@ -186,16 +169,8 @@ final class ForumController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     *
-     * @param Request       $request
-     * @param ObjectManager $em
-     * @param Forum         $forum
-     * @param bool          $subscribe
-     * @param string        $_format
-     *
-     * @return Response
      */
-    public function subscribe(Request $request, ObjectManager $em, Forum $forum, bool $subscribe, string $_format) {
+    public function subscribe(Request $request, ObjectManager $em, Forum $forum, bool $subscribe, string $_format): Response {
         $this->validateCsrf('subscribe', $request->request->get('token'));
 
         if ($subscribe) {
@@ -217,27 +192,14 @@ final class ForumController extends AbstractController {
         return $this->redirectToRoute('forum', ['forum_name' => $forum->getName()]);
     }
 
-    /**
-     * @param ForumRepository $repository
-     * @param int             $page
-     * @param string          $sortBy
-     *
-     * @return Response
-     */
-    public function list(ForumRepository $repository, int $page = 1, string $sortBy) {
+    public function list(ForumRepository $repository, int $page = 1, string $sortBy): Response {
         return $this->render('forum/list.html.twig', [
             'forums' => $repository->findForumsByPage($page, $sortBy),
             'sortBy' => $sortBy,
         ]);
     }
 
-    /**
-     * @param ForumCategoryRepository $fcr
-     * @param ForumRepository         $fr
-     *
-     * @return Response
-     */
-    public function listCategories(ForumCategoryRepository $fcr, ForumRepository $fr) {
+    public function listCategories(ForumCategoryRepository $fcr, ForumRepository $fr): Response {
         $forumCategories = $fcr->findBy([], ['name' => 'ASC']);
         $uncategorizedForums = $fr->findBy(['category' => null], ['normalizedName' => 'ASC']);
 
@@ -249,13 +211,8 @@ final class ForumController extends AbstractController {
 
     /**
      * Show a list of forum moderators.
-     *
-     * @param Forum $forum
-     * @param int   $page
-     *
-     * @return Response
      */
-    public function moderators(Forum $forum, int $page) {
+    public function moderators(Forum $forum, int $page): Response {
         return $this->render('forum/moderators.html.twig', [
             'forum' => $forum,
             'moderators' => $forum->getPaginatedModerators($page),
@@ -265,14 +222,8 @@ final class ForumController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
-     *
-     * @param ObjectManager $em
-     * @param Forum         $forum
-     * @param Request       $request
-     *
-     * @return Response
      */
-    public function addModerator(ObjectManager $em, Forum $forum, Request $request) {
+    public function addModerator(ObjectManager $em, Forum $forum, Request $request): Response {
         $data = new ModeratorData($forum);
         $form = $this->createForm(ModeratorType::class, $data);
         $form->handleRequest($request);
@@ -298,15 +249,8 @@ final class ForumController extends AbstractController {
      * @Entity("moderator", expr="repository.findOneBy({'forum': forum, 'id': moderator_id})")
      * @IsGranted("ROLE_USER")
      * @IsGranted("remove", subject="moderator", statusCode=403)
-     *
-     * @param ObjectManager $em
-     * @param Forum         $forum
-     * @param Request       $request
-     * @param Moderator     $moderator
-     *
-     * @return Response
      */
-    public function removeModerator(ObjectManager $em, Forum $forum, Request $request, Moderator $moderator) {
+    public function removeModerator(ObjectManager $em, Forum $forum, Request $request, Moderator $moderator): Response {
         $this->validateCsrf('remove_moderator', $request->request->get('token'));
 
         $em->remove($moderator);
@@ -319,14 +263,14 @@ final class ForumController extends AbstractController {
         ]);
     }
 
-    public function moderationLog(Forum $forum, int $page) {
+    public function moderationLog(Forum $forum, int $page): Response {
         return $this->render('forum/moderation_log.html.twig', [
             'forum' => $forum,
             'logs' => $forum->getPaginatedLogEntries($page),
         ]);
     }
 
-    public function globalModerationLog(ForumLogEntryRepository $forumLogs, int $page) {
+    public function globalModerationLog(ForumLogEntryRepository $forumLogs, int $page): Response {
         return $this->render('forum/global_moderation_log.html.twig', [
             'logs' => $forumLogs->findAllPaginated($page),
         ]);
@@ -337,14 +281,8 @@ final class ForumController extends AbstractController {
      *
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
-     *
-     * @param Forum         $forum
-     * @param Request       $request
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
-    public function appearance(Forum $forum, Request $request, ObjectManager $em) {
+    public function appearance(Forum $forum, Request $request, ObjectManager $em): Response {
         $data = ForumData::createFromForum($forum);
 
         $form = $this->createForm(ForumAppearanceType::class, $data);
@@ -366,14 +304,7 @@ final class ForumController extends AbstractController {
         ]);
     }
 
-    /**
-     * @param Forum              $forum
-     * @param ForumBanRepository $banRepository
-     * @param int                $page
-     *
-     * @return Response
-     */
-    public function bans(Forum $forum, ForumBanRepository $banRepository, int $page = 1) {
+    public function bans(Forum $forum, ForumBanRepository $banRepository, int $page = 1): Response {
         return $this->render('forum/bans.html.twig', [
             'bans' => $banRepository->findValidBansInForum($forum, $page),
             'forum' => $forum,
@@ -383,14 +314,8 @@ final class ForumController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
-     *
-     * @param Forum $forum
-     * @param User  $user
-     * @param int   $page
-     *
-     * @return Response
      */
-    public function banHistory(Forum $forum, User $user, int $page = 1) {
+    public function banHistory(Forum $forum, User $user, int $page = 1): Response {
         return $this->render('forum/ban_history.html.twig', [
             'bans' => $forum->getPaginatedBansByUser($user, $page),
             'forum' => $forum,
@@ -401,15 +326,8 @@ final class ForumController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
-     *
-     * @param Forum         $forum
-     * @param User          $user
-     * @param Request       $request
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
-    public function ban(Forum $forum, User $user, Request $request, ObjectManager $em) {
+    public function ban(Forum $forum, User $user, Request $request, ObjectManager $em): Response {
         $data = new ForumBanData();
 
         $form = $this->createForm(ForumBanType::class, $data, ['intent' => 'ban']);
@@ -437,15 +355,8 @@ final class ForumController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
-     *
-     * @param Forum         $forum
-     * @param User          $user
-     * @param Request       $request
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
-    public function unban(Forum $forum, User $user, Request $request, ObjectManager $em) {
+    public function unban(Forum $forum, User $user, Request $request, ObjectManager $em): Response {
         $data = new ForumBanData();
 
         $form = $this->createForm(ForumBanType::class, $data, ['intent' => 'unban']);

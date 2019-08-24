@@ -13,13 +13,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * input length validation.
  */
 final class CharactersRemainingExtension extends AbstractTypeExtension {
-    public function finishView(FormView $view, FormInterface $form, array $options) {
+    public function finishView(FormView $view, FormInterface $form, array $options): void {
         if ($options['max_chars']) {
             $view->vars['attr']['data-max-characters'] = $options['max_chars'];
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'max_chars' => null,
         ]);

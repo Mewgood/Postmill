@@ -75,7 +75,7 @@ class WikiPage {
         return $this->path;
     }
 
-    public function setPath(string $path) {
+    public function setPath(string $path): void {
         $this->path = $path;
         $this->normalizedPath = self::normalizePath($path);
     }
@@ -99,16 +99,13 @@ class WikiPage {
         return $this->revisions->matching($criteria)->first();
     }
 
-    public function addRevision(WikiRevision $revision) {
+    public function addRevision(WikiRevision $revision): void {
         if (!$this->revisions->contains($revision)) {
             $this->revisions->add($revision);
         }
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|WikiRevision[]
      */
     public function getPaginatedRevisions(int $page, int $maxPerPage = 25): Pagerfanta {
@@ -125,7 +122,7 @@ class WikiPage {
         return $this->locked;
     }
 
-    public function setLocked(bool $locked) {
+    public function setLocked(bool $locked): void {
         $this->locked = $locked;
     }
 

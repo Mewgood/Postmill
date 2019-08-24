@@ -24,11 +24,17 @@ final class UpdateLastSeenListener implements EventSubscriberInterface {
      */
     private $manager;
 
+    public static function getSubscribedEvents(): array {
+        return [
+            SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',
+        ];
+    }
+
     public function __construct(EntityManagerInterface $manager) {
         $this->manager = $manager;
     }
 
-    public function onInteractiveLogin(InteractiveLoginEvent $event) {
+    public function onInteractiveLogin(InteractiveLoginEvent $event): void {
         $user = $event->getAuthenticationToken()->getUser();
 
         if (!$user instanceof User) {
@@ -39,14 +45,5 @@ final class UpdateLastSeenListener implements EventSubscriberInterface {
 
         // this should be safe since login occurs at the beginning of a request
         $this->manager->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents() {
-        return [
-            SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',
-        ];
     }
 }

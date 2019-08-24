@@ -29,7 +29,7 @@ class DsnAwareFilesystemFactoryTest extends TestCase {
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Unknown filesystem 'poop'
      */
-    public function testThrowsOnUnrecognizedAdapter() {
+    public function testThrowsOnUnrecognizedAdapter(): void {
         DsnAwareFilesystemFactory::createFilesystem('poop://crap');
     }
 }

@@ -14,7 +14,7 @@ final class Version20190503205914 extends AbstractMigration {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('ALTER TABLE users ADD timezone TEXT');
-        $this->addSql('UPDATE users SET timezone = ?', [\date_default_timezone_get()]);
+        $this->addSql('UPDATE users SET timezone = ?', [date_default_timezone_get()]);
         $this->addSql('ALTER TABLE users ALTER timezone SET NOT NULL');
     }
 

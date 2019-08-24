@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class UserVoter extends Voter {
-    const ATTRIBUTES = ['edit_user', 'message'];
+    public const ATTRIBUTES = ['edit_user', 'message'];
 
     /**
      * @var AccessDecisionManagerInterface

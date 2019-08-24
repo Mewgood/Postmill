@@ -6,7 +6,7 @@ use App\Event\MarkdownCacheEvent;
 use PHPUnit\Framework\TestCase;
 
 class MarkdownCacheEventTest extends TestCase {
-    public function testContext() {
+    public function testContext(): void {
         $event = new MarkdownCacheEvent(['some' => 'context']);
 
         $this->assertEquals(['some' => 'context'], $event->getContext());

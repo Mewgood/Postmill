@@ -9,16 +9,14 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadExampleMessages extends AbstractFixture implements DependentFixtureInterface {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager): void {
         /** @noinspection PhpParamsInspection */
         $thread = new MessageThread(
             $this->getReference('user-zach'),
             $this->getReference('user-emma')
         );
 
+        /* @noinspection PhpParamsInspection */
         $thread->addMessage(new Message(
             $thread,
             $this->getReference('user-zach'),
@@ -26,6 +24,7 @@ class LoadExampleMessages extends AbstractFixture implements DependentFixtureInt
             '192.168.0.4'
         ));
 
+        /* @noinspection PhpParamsInspection */
         $thread->addMessage(new Message(
             $thread,
             $this->getReference('user-emma'),
@@ -37,10 +36,7 @@ class LoadExampleMessages extends AbstractFixture implements DependentFixtureInt
         $manager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
+    public function getDependencies(): array {
         return [LoadExampleUsers::class];
     }
 }

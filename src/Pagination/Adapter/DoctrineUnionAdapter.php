@@ -4,7 +4,6 @@ namespace App\Pagination\Adapter;
 
 use App\Pagination\AdapterResult;
 use App\Pagination\PageInterface;
-use App\Pagination\Pager;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -39,7 +38,7 @@ final class DoctrineUnionAdapter implements AdapterInterface {
 
             // TODO: how do we handle cases where the field isn't on the root
             // entity???
-            $alias = $qb->getRootAlias();
+            $alias = $qb->getRootAliases()[0];
 
             foreach ($fields as $field) {
                 if ($sortOrder === PageInterface::SORT_DESC) {
@@ -56,10 +55,12 @@ final class DoctrineUnionAdapter implements AdapterInterface {
                 $qb->addOrderBy("$alias.$field", $sortOrder);
             }
 
-            $results = \array_merge($results, $qb->getQuery()->execute());
+            $results[] = $qb->getQuery()->execute();
         }
 
-        \usort($results, function ($x, $y) use ($fields, $page, $sortOrder) {
+        $results = array_merge(...$results);
+
+        usort($results, function ($x, $y) use ($fields, $page, $sortOrder) {
             $aData = clone $page;
             $aData->populateFromPagerEntity($x);
             $bData = clone $page;

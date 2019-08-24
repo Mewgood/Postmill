@@ -52,7 +52,7 @@ class UserBlock {
 
     public function __construct(User $blocker, User $blocked, ?string $comment) {
         if ($blocker === $blocked) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException('cannot block self');
         }
 
         $this->id = Uuid::uuid4();

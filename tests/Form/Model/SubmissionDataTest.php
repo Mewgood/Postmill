@@ -19,11 +19,11 @@ class SubmissionDataTest extends TestCase {
      */
     private $submission;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         ClockMock::register(SubmissionData::class);
     }
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->submission = $this->getMockBuilder(Submission::class)
             ->disableOriginalConstructor()
             ->setMethods(['getUser', 'getForum'])
@@ -39,7 +39,7 @@ class SubmissionDataTest extends TestCase {
         $this->submission->setBody('bar');
     }
 
-    public function testUpdate() {
+    public function testUpdate(): void {
         $data = SubmissionData::createFromSubmission($this->submission);
         $data->setBody('bleh');
         $data->updateSubmission($this->submission, $this->submission->getUser());

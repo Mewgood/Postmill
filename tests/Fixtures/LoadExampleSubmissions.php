@@ -5,16 +5,12 @@ namespace App\Tests\Fixtures;
 use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Entity\UserFlags;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadExampleSubmissions extends AbstractFixture implements DependentFixtureInterface {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager): void {
         $i = 0;
 
         foreach ($this->provideSubmissions() as $data) {
@@ -42,7 +38,7 @@ class LoadExampleSubmissions extends AbstractFixture implements DependentFixture
         $manager->flush();
     }
 
-    private function provideSubmissions() {
+    private function provideSubmissions(): iterable {
         yield [
             'url' => 'http://www.example.com/some/thing',
             'title' => 'A submission with a URL and body',
@@ -74,10 +70,7 @@ class LoadExampleSubmissions extends AbstractFixture implements DependentFixture
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
+    public function getDependencies(): array {
         return [LoadExampleForums::class];
     }
 }

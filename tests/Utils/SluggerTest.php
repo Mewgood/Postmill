@@ -12,7 +12,7 @@ class SluggerTest extends TestCase {
      * @param string $expected
      * @param string $input
      */
-    public function testCanSlugifyInputs($expected, $input) {
+    public function testCanSlugifyInputs($expected, $input): void {
         $this->assertEquals($expected, Slugger::slugify($input));
     }
 

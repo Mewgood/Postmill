@@ -23,7 +23,7 @@ final class SubmissionImageManager {
      * @throws \RuntimeException if MIME type couldn't be guessed
      */
     public function getFileName(string $file): string {
-        $hash = \hash_file('sha256', $file);
+        $hash = hash_file('sha256', $file);
 
         $mimeTypes = new MimeTypes();
         $mimeType = $mimeTypes->guessMimeType($file);
@@ -38,7 +38,7 @@ final class SubmissionImageManager {
             throw new \RuntimeException("Couldn't guess extension of image");
         }
 
-        return \sprintf('%s.%s', $hash, $ext);
+        return sprintf('%s.%s', $hash, $ext);
     }
 
     /**
@@ -47,7 +47,7 @@ final class SubmissionImageManager {
      * @throws \RuntimeException if file couldn't be stored
      */
     public function store(string $source, string $destination): void {
-        $fh = \fopen($source, 'rb');
+        $fh = fopen($source, 'rb');
 
         try {
             $success = $this->filesystem->writeStream($destination, $fh);
@@ -58,7 +58,7 @@ final class SubmissionImageManager {
         } catch (FileExistsException $e) {
             // do nothing
         } finally {
-            \is_resource($fh) and \fclose($fh);
+            \is_resource($fh) and fclose($fh);
         }
     }
 

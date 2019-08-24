@@ -5,13 +5,13 @@ namespace App\Form\Model;
 use Doctrine\Common\Collections\Criteria;
 
 class UserFilterData {
-    const ROLE_ANY = 'any';
-    const ROLE_ADMIN = 'admin';
-    const ROLE_TRUSTED = 'trusted';
-    const ROLE_NONE = 'none';
+    public const ROLE_ANY = 'any';
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_TRUSTED = 'trusted';
+    public const ROLE_NONE = 'none';
 
-    const ORDER_CREATED = 'created';
-    const ORDER_USERNAME = 'username';
+    public const ORDER_CREATED = 'created';
+    public const ORDER_USERNAME = 'username';
 
     /**
      * @var string

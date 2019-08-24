@@ -14,9 +14,6 @@ class ForumCategoryRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|ForumCategory[]
      */
     public function findPaginated(int $page, int $maxPerPage = 25): Pagerfanta {

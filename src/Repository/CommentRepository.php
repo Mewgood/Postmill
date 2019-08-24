@@ -28,9 +28,6 @@ class CommentRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param Submission|null $submission
-     * @param int|null        $id
-     *
      * @return Comment
      *
      * @throws NotFoundHttpException if no such comment
@@ -53,9 +50,6 @@ class CommentRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|Comment[]
      */
     public function findRecentPaginated(int $page, int $maxPerPage = 25) {
@@ -73,10 +67,6 @@ class CommentRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param Forum $forum
-     * @param int $page
-     * @param int $maxPerPage
-     *
      * @return Pagerfanta|Comment[]
      */
     public function findRecentPaginatedInForum(Forum $forum, int $page, int $maxPerPage = 25) {

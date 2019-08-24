@@ -10,7 +10,7 @@ use App\Entity\UserFlags;
 use PHPUnit\Framework\TestCase;
 
 class CommentTest extends TestCase {
-    public function testNewTopLevelCommentSendsNotification() {
+    public function testNewTopLevelCommentSendsNotification(): void {
         $forum = $this->createMock(Forum::class);
         $submission = new Submission('a', null, null, $forum, new User('u', 'p'), null);
 
@@ -20,7 +20,7 @@ class CommentTest extends TestCase {
         $this->assertCount(1, $submission->getUser()->getNotifications());
     }
 
-    public function testNewChildReplySendsNotifications() {
+    public function testNewChildReplySendsNotifications(): void {
         $submission = $this->createMock(Submission::class);
 
         $parent = new Comment('a', new User('u', 'p'), $submission);
@@ -30,7 +30,7 @@ class CommentTest extends TestCase {
         $this->assertCount(1, $parent->getUser()->getNotifications());
     }
 
-    public function testDoesNotSendNotificationsWhenReplyingToSelf() {
+    public function testDoesNotSendNotificationsWhenReplyingToSelf(): void {
         $user = new User('u', 'p');
 
         $submission = $this->createMock(Submission::class);

@@ -19,10 +19,10 @@ use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
 use App\Repository\NotificationRepository;
-use App\SubmissionFinder\Criteria;
-use App\SubmissionFinder\SubmissionFinder;
 use App\Repository\UserRepository;
 use App\Security\AuthenticationHelper;
+use App\SubmissionFinder\Criteria;
+use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -62,14 +62,8 @@ final class UserController extends AbstractController {
 
     /**
      * Show the user's profile page.
-     *
-     * @param User           $user
-     * @param Request        $request
-     * @param UserRepository $users
-     *
-     * @return Response
      */
-    public function userPage(User $user, Request $request, UserRepository $users) {
+    public function userPage(User $user, Request $request, UserRepository $users): Response {
         $nextUnixTime = $request->query->getInt('next_timestamp');
 
         if ($nextUnixTime) {
@@ -114,14 +108,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
-     *
-     * @param UserRepository $users
-     * @param int            $page
-     * @param Request        $request
-     *
-     * @return Response
      */
-    public function list(UserRepository $users, int $page, Request $request) {
+    public function list(UserRepository $users, int $page, Request $request): Response {
         $filter = new UserFilterData();
         $criteria = $filter->buildCriteria();
 
@@ -143,7 +131,7 @@ final class UserController extends AbstractController {
         Request $request,
         ObjectManager $em,
         AuthenticationHelper $authenticationHelper
-    ) {
+    ): Response {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('front');
         }
@@ -178,14 +166,8 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @IsGranted("edit_user", subject="user", statusCode=403)
-     *
-     * @param ObjectManager $em
-     * @param User          $user
-     * @param Request       $request
-     *
-     * @return Response
      */
-    public function editUser(ObjectManager $em, User $user, Request $request) {
+    public function editUser(ObjectManager $em, User $user, Request $request): Response {
         $data = UserData::fromUser($user);
 
         $form = $this->createForm(UserType::class, $data);
@@ -241,14 +223,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
-     *
-     * @param ObjectManager $em
-     * @param User          $user
-     * @param Request       $request
-     *
-     * @return Response
      */
-    public function userSettings(ObjectManager $em, User $user, Request $request) {
+    public function userSettings(ObjectManager $em, User $user, Request $request): Response {
         $data = UserData::fromUser($user);
 
         $form = $this->createForm(UserSettingsType::class, $data);
@@ -273,14 +249,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
-     *
-     * @param ObjectManager $em
-     * @param User          $user
-     * @param Request       $request
-     *
-     * @return Response
      */
-    public function editBiography(ObjectManager $em, User $user, Request $request) {
+    public function editBiography(ObjectManager $em, User $user, Request $request): Response {
         $data = UserData::fromUser($user);
 
         $form = $this->createForm(UserBiographyType::class, $data);
@@ -305,13 +275,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
-     *
-     * @param User $user
-     * @param int $page
-     *
-     * @return Response
      */
-    public function blockList(User $user, int $page) {
+    public function blockList(User $user, int $page): Response {
         return $this->render('user/block_list.html.twig', [
             'blocks' => $user->getPaginatedBlocks($page),
             'user' => $user,
@@ -321,14 +286,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @Entity("blockee", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
-     *
-     * @param User          $blockee
-     * @param Request       $request
-     * @param ObjectManager $em
-     *
-     * @return Response
      */
-    public function block(User $blockee, Request $request, ObjectManager $em) {
+    public function block(User $blockee, Request $request, ObjectManager $em): Response {
         /* @var User $blocker */
         $blocker = $this->getUser();
 
@@ -363,14 +322,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @Security("user === block.getBlocker()", statusCode=403)
-     *
-     * @param UserBlock     $block
-     * @param ObjectManager $em
-     * @param Request       $request
-     *
-     * @return Response
      */
-    public function unblock(UserBlock $block, ObjectManager $em, Request $request) {
+    public function unblock(UserBlock $block, ObjectManager $em, Request $request): Response {
         $this->validateCsrf('unblock', $request->request->get('token'));
 
         $em->remove($block);
@@ -385,12 +338,8 @@ final class UserController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     *
-     * @param int $page
-     *
-     * @return Response
      */
-    public function notifications(int $page) {
+    public function notifications(int $page): Response {
         /* @var User $user */
         $user = $this->getUser();
 
@@ -401,15 +350,8 @@ final class UserController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     *
-     * @param Request                $request
-     * @param NotificationRepository $nr
-     * @param ObjectManager          $em
-     * @param string                 $_format
-     *
-     * @return Response
      */
-    public function clearNotifications(Request $request, NotificationRepository $nr, ObjectManager $em, string $_format) {
+    public function clearNotifications(Request $request, NotificationRepository $nr, ObjectManager $em, string $_format): Response {
         $this->validateCsrf('clear_notifications', $request->request->get('token'));
 
         $user = $this->getUser();
@@ -429,15 +371,8 @@ final class UserController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     *
-     * @param Request                $request
-     * @param NotificationRepository $nr
-     * @param ObjectManager          $em
-     * @param string                 $_format
-     *
-     * @return Response
      */
-    public function clearNotification(Request $request, NotificationRepository $nr, ObjectManager $em, string $_format) {
+    public function clearNotification(Request $request, NotificationRepository $nr, ObjectManager $em, string $_format): Response {
         $this->validateCsrf('clear_notification', $request->request->get('token'));
 
         $user = $this->getUser();
@@ -458,15 +393,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
-     *
-     * @param Request       $request
-     * @param User          $user
-     * @param ObjectManager $em
-     * @param bool          $trusted
-     *
-     * @return Response
      */
-    public function markAsTrusted(Request $request, User $user, ObjectManager $em, bool $trusted) {
+    public function markAsTrusted(Request $request, User $user, ObjectManager $em, bool $trusted): Response {
         $this->validateCsrf('mark_trusted', $request->request->get('token'));
 
         $user->setTrusted($trusted);
@@ -482,14 +410,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
-     *
-     * @param User               $user
-     * @param ForumBanRepository $repository
-     * @param int                $page
-     *
-     * @return Response
      */
-    public function listForumBans(User $user, ForumBanRepository $repository, int $page) {
+    public function listForumBans(User $user, ForumBanRepository $repository, int $page): Response {
         return $this->render('user/forum_bans.html.twig', [
             'bans' => $repository->findActiveBansByUser($user, $page),
             'user' => $user,
@@ -499,13 +421,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
-     *
-     * @param User $user
-     * @param int  $page
-     *
-     * @return Response
      */
-    public function hiddenForums(User $user, int $page) {
+    public function hiddenForums(User $user, int $page): Response {
         return $this->render('user/hidden_forums.html.twig', [
             'forums' => $user->getPaginatedHiddenForums($page),
             'user' => $user,
@@ -515,15 +432,8 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
-     *
-     * @param ObjectManager $em
-     * @param Request       $request @param User          $user
-     * @param Forum         $forum
-     * @param bool          $hide
-     *
-     * @return Response
      */
-    public function hideForum(ObjectManager $em, Request $request, User $user, Forum $forum, bool $hide) {
+    public function hideForum(ObjectManager $em, Request $request, User $user, Forum $forum, bool $hide): Response {
         $this->validateCsrf('hide_forum', $request->request->get('token'));
 
         if ($hide) {
@@ -545,12 +455,6 @@ final class UserController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     *
-     * @param ObjectManager $em
-     * @param Request       $request
-     * @param bool          $enabled
-     *
-     * @return Response
      */
     public function toggleNightMode(ObjectManager $em, Request $request, bool $enabled): Response {
         $this->validateCsrf('toggle_night_mode', $request->request->get('token'));

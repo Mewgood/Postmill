@@ -4,17 +4,14 @@ namespace App\Controller;
 
 use App\Mailer\ResetPasswordMailer;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 final class SecurityController extends AbstractController {
     use TargetPathTrait;
 
-    public function login(
-        AuthenticationUtils $helper,
-        ResetPasswordMailer $mailer,
-        Request $request
-    ) {
+    public function login(AuthenticationUtils $helper, ResetPasswordMailer $mailer, Request $request): Response {
         // store the last visited location if none exists
         if (!$this->getTargetPath($request->getSession(), 'main')) {
             $referer = $request->headers->get('Referer');

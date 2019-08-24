@@ -9,11 +9,11 @@ class DifferTest extends TestCase {
     /**
      * @dataProvider provideDiffs
      */
-    public function testDiff(array $expected, string $from, string $to) {
+    public function testDiff(array $expected, string $from, string $to): void {
         $this->assertEquals($expected, Differ::diff($from, $to), '', 0.0, 10, true);
     }
 
-    public function provideDiffs() {
+    public function provideDiffs(): iterable {
         yield [[], '', ''];
 
         yield [

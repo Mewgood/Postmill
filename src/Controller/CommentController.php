@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpUnusedParameterInspection */
+<?php
+
+/** @noinspection PhpUnusedParameterInspection */
 
 namespace App\Controller;
 
@@ -60,7 +62,7 @@ final class CommentController extends AbstractController {
         $this->forums = $forums;
     }
 
-    public function list(int $page) {
+    public function list(int $page): Response {
         return $this->render('comment/list.html.twig', [
             'comments' => $this->comments->findRecentPaginated($page),
         ]);
@@ -96,7 +98,7 @@ final class CommentController extends AbstractController {
      *
      * @IsGranted("ROLE_USER")
      */
-    public function comment(Forum $forum, Submission $submission, ?Comment $comment, Request $request) {
+    public function comment(Forum $forum, Submission $submission, ?Comment $comment, Request $request): Response {
         $name = $this->getFormName($submission, $comment);
         $data = new CommentData($submission);
 
@@ -131,7 +133,7 @@ final class CommentController extends AbstractController {
         ]);
     }
 
-    public function commentJson(Forum $forum, Submission $submission, Comment $comment) {
+    public function commentJson(Forum $forum, Submission $submission, Comment $comment): Response {
         return $this->json($comment, 200, [], [
             'groups' => ['comment:read', 'abbreviated_relations'],
         ]);
@@ -143,7 +145,7 @@ final class CommentController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit", subject="comment", statusCode=403)
      */
-    public function editComment(Forum $forum, Submission $submission, Comment $comment, Request $request) {
+    public function editComment(Forum $forum, Submission $submission, Comment $comment, Request $request): Response {
         $data = CommentData::createFromComment($comment);
 
         $form = $this->createForm(CommentType::class, $data, ['forum' => $forum]);
@@ -227,7 +229,7 @@ final class CommentController extends AbstractController {
         return $this->redirectAfterAction($comment, $request);
     }
 
-    private function logDeletion(Forum $forum, Comment $comment) {
+    private function logDeletion(Forum $forum, Comment $comment): void {
         /* @var User $user */
         $user = $this->getUser();
 

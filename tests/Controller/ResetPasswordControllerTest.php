@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @group time-sensitive
  */
 class ResetPasswordControllerTest extends WebTestCase {
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         ClockMock::register(ResetPasswordMailer::class);
         ClockMock::register(ResetPasswordController::class);
     }
@@ -69,7 +69,7 @@ class ResetPasswordControllerTest extends WebTestCase {
      *
      * @param string $url
      */
-    public function testCanResetPassword($url) {
+    public function testCanResetPassword($url): void {
         $client = static::createClient();
         $crawler = $client->request('GET', $url);
 
@@ -92,7 +92,7 @@ class ResetPasswordControllerTest extends WebTestCase {
      *
      * @param $url
      */
-    public function testResetLinkDoesNotWorkAfterTwentyFourHours($url) {
+    public function testResetLinkDoesNotWorkAfterTwentyFourHours($url): void {
         sleep(86400);
 
         $client = static::createClient();

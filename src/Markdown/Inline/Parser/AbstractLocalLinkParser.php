@@ -3,8 +3,8 @@
 namespace App\Markdown\Inline\Parser;
 
 use League\CommonMark\Inline\Element\Link;
-use League\CommonMark\InlineParserContext;
 use League\CommonMark\Inline\Parser\InlineParserInterface;
+use League\CommonMark\InlineParserContext;
 
 /**
  * Parses links like /u/foo, w/bar, etc.
@@ -12,38 +12,26 @@ use League\CommonMark\Inline\Parser\InlineParserInterface;
 abstract class AbstractLocalLinkParser implements InlineParserInterface {
     /**
      * Return a single-character prefix.
-     *
-     * @return string
      */
     abstract public function getPrefix(): string;
 
     /**
      * Generates a URL based on the extracted suffix.
-     *
-     * @param string $suffix
-     *
-     * @return string
      */
     abstract public function getUrl(string $suffix): string;
 
     abstract public function getRegex(): string;
 
-    /**
-     * {@inheritdoc}
-     */
     final public function getCharacters(): array {
         return ['/', $this->getPrefix()];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function parse(InlineParserContext $inlineContext): bool {
         $cursor = $inlineContext->getCursor();
 
         $previousChar = $cursor->peek(-1);
 
-        if ($previousChar !== null && !\ctype_space($previousChar)) {
+        if ($previousChar !== null && !ctype_space($previousChar)) {
             return false;
         }
 

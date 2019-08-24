@@ -3,7 +3,6 @@
 namespace App\Form\Type;
 
 use App\Entity\Theme;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +17,7 @@ final class ThemeSelectorType extends AbstractType {
         $this->themesConfig = $themesConfig;
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'class' => Theme::class,
             'choice_label' => function (Theme $theme, $key, $value) {

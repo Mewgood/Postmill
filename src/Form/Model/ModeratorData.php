@@ -18,16 +18,16 @@ class ModeratorData {
      */
     private $forum;
 
-    public function __construct(Forum $forum) {
-        $this->forum = $forum;
-    }
-
     /**
      * @Assert\NotBlank()
      *
      * @var User|null
      */
     private $user;
+
+    public function __construct(Forum $forum) {
+        $this->forum = $forum;
+    }
 
     public function toModerator(): Moderator {
         return new Moderator($this->forum, $this->user);
@@ -37,17 +37,11 @@ class ModeratorData {
         return $this->forum;
     }
 
-    /**
-     * @return User|null
-     */
-    public function getUser() {
+    public function getUser(): ?User {
         return $this->user;
     }
 
-    /**
-     * @param User|null $user
-     */
-    public function setUser(User $user) {
+    public function setUser(?User $user): void {
         $this->user = $user;
     }
 }

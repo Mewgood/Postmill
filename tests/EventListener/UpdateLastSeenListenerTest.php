@@ -22,11 +22,11 @@ class UpdateLastSeenListenerTest extends TestCase {
      */
     private $entityManager;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         ClockMock::register(UpdateLastSeenListener::class);
     }
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
     }
 

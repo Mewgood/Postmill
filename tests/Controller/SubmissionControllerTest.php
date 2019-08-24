@@ -8,7 +8,7 @@ use App\Tests\WebTestCase;
  * @covers \App\Controller\SubmissionController
  */
 class SubmissionControllerTest extends WebTestCase {
-    public function testCanCreateSubmission() {
+    public function testCanCreateSubmission(): void {
         $client = self::createUserClient();
         $client->followRedirects();
 
@@ -24,11 +24,11 @@ class SubmissionControllerTest extends WebTestCase {
         $crawler = $client->submit($form);
 
         $this->assertEquals('Making a submission', $crawler->filter('.submission__link')->text());
-        $this->assertEquals("http://www.foo.example/", $crawler->filter('.submission__link')->attr('href'));
+        $this->assertEquals('http://www.foo.example/', $crawler->filter('.submission__link')->attr('href'));
         $this->assertEquals("<p>This is a test submission</p>\n<p>a new line</p>\n", $crawler->filter('.submission__body')->html());
     }
 
-    public function testSubmissionJson() {
+    public function testSubmissionJson(): void {
         $client = self::createClient();
         $client->request('GET', '/f/news/1.json');
 
@@ -40,14 +40,14 @@ class SubmissionControllerTest extends WebTestCase {
         ], json_decode($client->getResponse()->getContent(), true));
     }
 
-    public function testSubmissionShortcut() {
+    public function testSubmissionShortcut(): void {
         $client = self::createClient();
         $client->request('GET', '/1');
 
         $this->assertTrue($client->getResponse()->isRedirect('/f/news/1/a-submission-with-a-url-and-body'));
     }
 
-    public function testEditingOwnSubmission() {
+    public function testEditingOwnSubmission(): void {
         $client = self::createUserClient();
         $client->followRedirects();
 
@@ -64,7 +64,7 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertContains('Edited body', $crawler->filter('.submission__body')->text());
     }
 
-    public function testDeletingOwnSubmissionWithCommentsResultsInSoftDeletion() {
+    public function testDeletingOwnSubmissionWithCommentsResultsInSoftDeletion(): void {
         $client = self::createUserClient();
         $client->followRedirects();
 
@@ -74,7 +74,7 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertContains('[deleted]', $crawler->filter('.submission__link')->text());
     }
 
-    public function testDeletingOwnSubmissionWithoutCommentsResultsInHardDeletion() {
+    public function testDeletingOwnSubmissionWithoutCommentsResultsInHardDeletion(): void {
         $client = self::createUserClient();
         $client->followRedirects();
 
@@ -86,7 +86,7 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertTrue($client->getResponse()->isNotFound());
     }
 
-    public function testSoftDeletingSubmissionOfOtherUser() {
+    public function testSoftDeletingSubmissionOfOtherUser(): void {
         $client = self::createAdminClient();
         $client->followRedirects();
 
@@ -102,7 +102,7 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertContains('[deleted]', $crawler->filter('.submission__link')->text());
     }
 
-    public function testSubmissionLocking() {
+    public function testSubmissionLocking(): void {
         $client = self::createAdminClient();
         $client->followRedirects();
         $crawler = $client->request('GET', '/f/news/1');
@@ -118,7 +118,7 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertContains('The submission was unlocked.', $crawler->filter('.alert__text')->text());
     }
 
-    public function testSubmissionPinning() {
+    public function testSubmissionPinning(): void {
         $client = self::createAdminClient();
         $client->followRedirects();
         $crawler = $client->request('GET', '/f/news/1');

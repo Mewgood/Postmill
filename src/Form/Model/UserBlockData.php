@@ -18,11 +18,11 @@ class UserBlockData {
         return new UserBlock($blocker, $blocked, $this->comment);
     }
 
-    public function getComment() {
+    public function getComment(): ?string {
         return $this->comment;
     }
 
-    public function setComment($comment) {
+    public function setComment(?string $comment): void {
         $this->comment = $comment;
     }
 }

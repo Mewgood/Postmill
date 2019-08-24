@@ -87,7 +87,7 @@ final class FrontController extends AbstractController {
 
         $submissions = $this->submissionFinder->find($criteria);
 
-        return $this->render("front/subscribed.html.twig", [
+        return $this->render('front/subscribed.html.twig', [
             'forums' => $forums,
             'sort_by' => $sortBy,
             'submissions' => $submissions,

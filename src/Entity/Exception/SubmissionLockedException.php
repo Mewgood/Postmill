@@ -9,16 +9,10 @@ final class SubmissionLockedException extends \DomainException implements HttpEx
         parent::__construct('The submission is locked');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStatusCode(): int {
         return 403;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHeaders(): array {
         return [];
     }

@@ -49,7 +49,7 @@ class ModifyUserCommand extends Command {
         $this->validator = $validator;
     }
 
-    public function configure() {
+    public function configure(): void {
         $this
             ->setName('app:user:modify')
             ->setDescription('Change some attributes of a user account')

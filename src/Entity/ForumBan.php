@@ -130,7 +130,7 @@ class ForumBan {
         return $this->expiresAt;
     }
 
-    public function isExpired() {
+    public function isExpired(): bool {
         if ($this->expiresAt === null) {
             return false;
         }

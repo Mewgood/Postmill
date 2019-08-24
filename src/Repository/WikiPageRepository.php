@@ -16,12 +16,7 @@ class WikiPageRepository extends ServiceEntityRepository {
         parent::__construct($registry, WikiPage::class);
     }
 
-    /**
-     * @param string|null $path
-     *
-     * @return WikiPage|null
-     */
-    public function findOneCaseInsensitively($path) {
+    public function findOneCaseInsensitively(?string $path): ?WikiPage {
         if ($path === null) {
             return null;
         }
@@ -30,11 +25,9 @@ class WikiPageRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param int $page
-     *
-     * @return Pagerfanta|WikiPage
+     * @return Pagerfanta|WikiPage[]
      */
-    public function findAllPages(int $page) {
+    public function findAllPages(int $page): Pagerfanta {
         $qb = $this->createQueryBuilder('wp')
             ->orderBy('wp.normalizedPath', 'ASC');
 

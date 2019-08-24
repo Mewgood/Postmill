@@ -22,11 +22,11 @@ class ResponseFixingListenerTest extends KernelTestCase {
     private $serializer;
 
     /**
-     * @var AjaxListener
+     * @var ResponseFixingListener
      */
     private $listener;
 
-    protected function setUp() {
+    protected function setUp(): void {
         static::bootKernel();
 
         $this->serializer = self::$kernel->getContainer()->get('serializer');
@@ -74,7 +74,7 @@ class ResponseFixingListenerTest extends KernelTestCase {
         $this->assertEquals($e->getMessage(), $event->getResponse()->getContent());
     }
 
-    public function fourOhThreeOnExceptionWithSerializedBodyProvider() {
+    public function fourOhThreeOnExceptionWithSerializedBodyProvider(): iterable {
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $request->setRequestFormat('json');
@@ -91,7 +91,7 @@ class ResponseFixingListenerTest extends KernelTestCase {
         yield [$request, $exception];
     }
 
-    public function fourOhThreeOnExceptionWithPlainBodyProvider() {
+    public function fourOhThreeOnExceptionWithPlainBodyProvider(): iterable {
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $exception = new AuthenticationException('sheep');

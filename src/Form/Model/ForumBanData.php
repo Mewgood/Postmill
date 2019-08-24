@@ -19,7 +19,7 @@ class ForumBanData {
     /**
      * @Assert\DateTime(groups={"ban"})
      *
-     * @var string|null
+     * @var \DateTime|null
      */
     private $expiryTime;
 
@@ -31,19 +31,19 @@ class ForumBanData {
         return new ForumBan($forum, $user, $this->reason, false, $bannedBy);
     }
 
-    public function getReason() {
+    public function getReason(): ?string {
         return $this->reason;
     }
 
-    public function setReason($reason) {
+    public function setReason(?string $reason): void {
         $this->reason = $reason;
     }
 
-    public function getExpiryTime() {
+    public function getExpiryTime(): ?\DateTime {
         return $this->expiryTime;
     }
 
-    public function setExpiryTime($expiryTime) {
+    public function setExpiryTime(?\DateTime $expiryTime): void {
         $this->expiryTime = $expiryTime;
     }
 }

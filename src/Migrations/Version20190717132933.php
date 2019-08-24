@@ -19,7 +19,7 @@ final class Version20190717132933 extends AbstractMigration {
         $this->addSql('ALTER TABLE sites ALTER wiki_enabled DROP DEFAULT');
     }
 
-    public function down(Schema $schema) : void {
+    public function down(Schema $schema): void {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('ALTER TABLE sites DROP wiki_edit_role');

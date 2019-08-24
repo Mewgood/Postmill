@@ -64,6 +64,6 @@ class SubmissionRepository extends ServiceEntityRepository {
             ->getQuery()
             ->execute();
 
-        return \array_diff($images, \array_column($nonRemovable, 'image'));
+        return array_diff($images, array_column($nonRemovable, 'image'));
     }
 }

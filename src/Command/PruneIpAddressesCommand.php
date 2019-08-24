@@ -5,7 +5,6 @@ namespace App\Command;
 use App\Entity\Comment;
 use App\Entity\CommentVote;
 use App\Entity\Message;
-use App\Entity\MessageThread;
 use App\Entity\Submission;
 use App\Entity\SubmissionVote;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,10 +32,7 @@ class PruneIpAddressesCommand extends Command {
         $this->manager = $manager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure() {
+    protected function configure(): void {
         $this
             ->setName('app:prune-ips')
             ->setDescription('Prunes IP addresses associated with some entities')
@@ -49,10 +45,7 @@ class PruneIpAddressesCommand extends Command {
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output): int {
         $io = new SymfonyStyle($input, $output);
 
         if ($input->isInteractive()) {
