@@ -2,13 +2,13 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Contracts\VotableInterface;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Forum;
 use App\Entity\ForumBan;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserFlags;
-use App\Entity\Votable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
@@ -98,10 +98,8 @@ class SubmissionTest extends TestCase {
     /**
      * @dataProvider constructorArgsProvider
      */
-    public function testConstructor(string $title, ?string $url, ?string $body, Forum $forum, User $user, ?string $ip, bool $sticky, string $userFlag): void {
+    public function testConstructor(string $title, ?string $url, ?string $body, Forum $forum, User $user, ?string $ip): void {
         $submission = new Submission($title, $url, $body, $forum, $user, $ip);
-        $submission->setSticky($sticky);
-        $submission->setUserFlag($userFlag);
 
         $this->assertSame($title, $submission->getTitle());
         $this->assertSame($url, $submission->getUrl());
@@ -109,9 +107,7 @@ class SubmissionTest extends TestCase {
         $this->assertSame($forum, $submission->getForum());
         $this->assertSame($user, $submission->getUser());
         $this->assertSame($ip, $submission->getIp());
-        $this->assertSame($sticky, $submission->isSticky());
-        $this->assertSame($userFlag, $submission->getUserFlag());
-        $this->assertSame($submission->getTimestamp()->getTimestamp() + 1800, $submission->getRanking());
+        $this->assertSame(time() + 1800, $submission->getRanking());
         $this->assertCount(1, $submission->getVotes());
         $this->assertSame($ip, $submission->getVotes()->first()->getIp());
         $this->assertSame($user, $submission->getVotes()->first()->getUser('u', 'p'));
@@ -136,7 +132,7 @@ class SubmissionTest extends TestCase {
 
         $this->expectException(BannedFromForumException::class);
 
-        $submission->vote($user, '::1', Votable::VOTE_UP);
+        $submission->vote(VotableInterface::VOTE_UP, $user, '::1');
     }
 
     public function constructorArgsProvider(): iterable {
@@ -144,9 +140,9 @@ class SubmissionTest extends TestCase {
         $user = $this->createMock(User::class);
         $url = 'http://example.com';
 
-        yield ['title', $url, 'body', $forum, $user, '::1', false, UserFlags::FLAG_NONE];
-        yield ['title', null, 'body', $forum, $user, '::1', false, UserFlags::FLAG_NONE];
-        yield ['title', $url, null, $forum, $user, '::1', false, UserFlags::FLAG_NONE];
-        yield ['title', null, null, $forum, $user, null, true, UserFlags::FLAG_ADMIN];
+        yield ['title', $url, 'body', $forum, $user, '::1'];
+        yield ['title', null, 'body', $forum, $user, '::1'];
+        yield ['title', $url, null, $forum, $user, '::1'];
+        yield ['title', null, null, $forum, $user, null];
     }
 }

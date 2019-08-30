@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Contracts\VotableInterface;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Exception\SubmissionLockedException;
+use App\Entity\Traits\VotableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +19,12 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     @ORM\Index(name="comments_search_idx", columns={"search_doc"})
  * })
  */
-class Comment extends Votable {
+class Comment implements VotableInterface {
+    use VotableTrait {
+        vote as private realVote;
+        getNetScore as private getRealNetScore;
+    }
+
     public const MAX_BODY_LENGTH = 10000;
 
     /**
@@ -27,7 +34,7 @@ class Comment extends Votable {
      *
      * @Groups({"comment:read", "abbreviated_relations"})
      *
-     * @var int
+     * @var int|null
      */
     private $id;
 
@@ -155,7 +162,7 @@ class Comment extends Votable {
      *
      * @var int
      */
-    private $netScore;
+    private $netScore = 0;
 
     /**
      * @ORM\Column(type="tsvector", nullable=true)
@@ -176,9 +183,7 @@ class Comment extends Votable {
         string $body,
         User $user,
         Submission $submission,
-        string $userFlag = UserFlags::FLAG_NONE,
-        self $parent = null,
-        $ip = null,
+        ?string $ip,
         \DateTime $timestamp = null
     ) {
         if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
@@ -193,23 +198,18 @@ class Comment extends Votable {
             throw new BannedFromForumException();
         }
 
-        if ($parent) {
-            $this->parent = $parent;
-            $parent->children->add($this);
-        }
-
         $this->body = $body;
-        $this->setUserFlag($userFlag);
         $this->user = $user;
         $this->submission = $submission;
         $this->ip = $user->isTrustedOrAdmin() ? null : $ip;
         $this->timestamp = $timestamp ?: new \DateTime('@'.time());
         $this->children = new ArrayCollection();
         $this->votes = new ArrayCollection();
-        $this->vote($user, $ip, Votable::VOTE_UP);
-        $this->notify();
         $this->notifications = new ArrayCollection();
         $this->mentions = new ArrayCollection();
+        $this->vote(self::VOTE_UP, $user, $ip);
+        $this->notify();
+
         $submission->addComment($this);
     }
 
@@ -257,9 +257,9 @@ class Comment extends Votable {
     public function getChildren(): array {
         $children = $this->children->toArray();
 
-        if ($children) {
-            usort($children, [$this, 'descendingNetScoreCmp']);
-        }
+        usort($children, function (self $a, self $b) {
+            return $b->getNetScore() <=> $a->getNetScore();
+        });
 
         return $children;
     }
@@ -269,6 +269,19 @@ class Comment extends Votable {
      */
     public function getReplyCount(): int {
         return \count($this->children);
+    }
+
+    public function addReply(self $reply): void {
+        if ($reply === $this) {
+            throw new \DomainException('$reply cannot be self');
+        }
+
+        if ($reply->parent) {
+            throw new \DomainException('Cannot reassign parent of comment');
+        }
+
+        $reply->parent = $this;
+        $reply->notify();
     }
 
     public function removeReply(self $reply): void {
@@ -309,18 +322,18 @@ class Comment extends Votable {
         $mentioned->sendNotification(new CommentMention($mentioned, $this));
     }
 
-    protected function createVote(User $user, ?string $ip, int $choice): Vote {
-        return new CommentVote($user, $ip, $choice, $this);
+    protected function createVote(int $choice, User $user, ?string $ip): Vote {
+        return new CommentVote($choice, $user, $ip, $this);
     }
 
-    public function vote(User $user, ?string $ip, int $choice): void {
-        if ($choice !== self::VOTE_RETRACT && $this->submission->getForum()->userIsBanned($user)) {
+    public function vote(int $choice, User $user, ?string $ip): void {
+        if ($choice !== self::VOTE_NONE && $this->submission->getForum()->userIsBanned($user)) {
             throw new BannedFromForumException();
         }
 
-        parent::vote($user, $ip, $choice);
+        $this->realVote($choice, $user, $ip);
 
-        $this->updateNetScore();
+        $this->netScore = $this->getRealNetScore();
     }
 
     public function isSoftDeleted(): bool {
@@ -333,7 +346,7 @@ class Comment extends Votable {
     public function softDelete(): void {
         $this->softDeleted = true;
         $this->body = '';
-        $this->userFlag = 0;
+        $this->userFlag = UserFlags::FLAG_NONE;
         $this->submission->updateCommentCount();
         $this->submission->updateRanking();
         $this->submission->updateLastActive();
@@ -388,9 +401,5 @@ class Comment extends Votable {
 
     public function getNetScore(): int {
         return $this->netScore;
-    }
-
-    private function updateNetScore(): void {
-        $this->netScore = parent::getNetScore();
     }
 }

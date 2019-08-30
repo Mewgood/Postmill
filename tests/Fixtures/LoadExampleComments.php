@@ -5,7 +5,6 @@ namespace App\Tests\Fixtures;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Entity\UserFlags;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,15 +23,11 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
             /** @var Comment|null $parent */
             $parent = $data['parent'] ? $this->getReference('comment-'.$data['parent']) : null;
 
-            $comment = new Comment(
-                $data['body'],
-                $user,
-                $submission,
-                UserFlags::FLAG_NONE,
-                $parent,
-                $data['ip'],
-                $data['timestamp']
-            );
+            $comment = new Comment($data['body'], $user, $submission, $data['ip'], $data['timestamp']);
+
+            if ($parent) {
+                $parent->addReply($comment);
+            }
 
             $this->addReference('comment-'.++$i, $comment);
 

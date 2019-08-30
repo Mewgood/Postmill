@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Tests\Entity;
+namespace App\Tests\Entity\Traits;
 
+use App\Entity\Contracts\VotableInterface;
+use App\Entity\Traits\VotableTrait;
 use App\Entity\User;
-use App\Entity\Votable;
 use App\Entity\Vote;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 
-class VotableTest extends TestCase {
+class VotableTraitTest extends TestCase {
     /**
-     * @var Votable
+     * @var VotableTrait
      */
     private $votable;
 
@@ -28,13 +29,13 @@ class VotableTest extends TestCase {
         $this->assertEquals(0, $votable->getUpvotes());
         $this->assertEquals(0, $votable->getDownvotes());
 
-        $votable->vote($user, null, Votable::VOTE_UP);
+        $votable->vote(VotableInterface::VOTE_UP, $user, null);
 
         $this->assertEquals(1, $votable->getNetScore());
         $this->assertEquals(1, $votable->getUpvotes());
         $this->assertEquals(0, $votable->getDownvotes());
 
-        $votable->vote($user, null, Votable::VOTE_DOWN);
+        $votable->vote(VotableInterface::VOTE_DOWN, $user, null);
 
         $this->assertEquals(-1, $votable->getNetScore());
         $this->assertEquals(0, $votable->getUpvotes());
@@ -44,39 +45,39 @@ class VotableTest extends TestCase {
     public function testVoteCollectionHasCorrectProperties(): void {
         $user = $this->createUser();
 
-        $this->votable->vote($user, null, Votable::VOTE_UP);
-        $this->assertEquals(Votable::USER_UPVOTED, $this->votable->getVotes()->first()->getChoice());
+        $this->votable->vote(VotableInterface::VOTE_UP, $user, null);
+        $this->assertEquals(VotableInterface::VOTE_UP, $this->votable->getVotes()->first()->getChoice());
         $this->assertCount(1, $this->votable->getVotes());
 
-        $this->votable->vote($user, null, Votable::VOTE_DOWN);
-        $this->assertEquals(Votable::USER_DOWNVOTED, $this->votable->getVotes()->first()->getChoice());
+        $this->votable->vote(VotableInterface::VOTE_DOWN, $user, null);
+        $this->assertEquals(VotableInterface::VOTE_DOWN, $this->votable->getVotes()->first()->getChoice());
         $this->assertCount(1, $this->votable->getVotes());
 
-        $this->votable->vote($user, null, Votable::VOTE_RETRACT);
+        $this->votable->vote(VotableInterface::VOTE_NONE, $user, null);
         $this->assertCount(0, $this->votable->getVotes());
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \App\Entity\Exception\BadVoteChoiceException
      */
     public function testCannotGiveIncorrectVote(): void {
         $user = $this->createUser();
 
-        $this->votable->vote($user, null, 69);
+        $this->votable->vote(69, $user, null);
     }
 
     public function testGetUserVote(): void {
         $user1 = $this->createUser();
-        $this->votable->vote($user1, null, Votable::VOTE_UP);
+        $this->votable->vote(VotableInterface::VOTE_UP, $user1, null);
 
         $user2 = $this->createUser();
-        $this->votable->vote($user2, null, Votable::VOTE_DOWN);
+        $this->votable->vote(VotableInterface::VOTE_DOWN, $user2, null);
 
         $user3 = $this->createUser();
 
-        $this->assertEquals(Votable::USER_UPVOTED, $this->votable->getUserChoice($user1));
-        $this->assertEquals(Votable::USER_DOWNVOTED, $this->votable->getUserChoice($user2));
-        $this->assertEquals(Votable::USER_NO_VOTE, $this->votable->getUserChoice($user3));
+        $this->assertEquals(VotableInterface::VOTE_UP, $this->votable->getUserChoice($user1));
+        $this->assertEquals(VotableInterface::VOTE_DOWN, $this->votable->getUserChoice($user2));
+        $this->assertEquals(VotableInterface::VOTE_NONE, $this->votable->getUserChoice($user3));
     }
 
     /**
@@ -84,9 +85,9 @@ class VotableTest extends TestCase {
      */
     public function testAcceptsWellFormedIpAddresses(): void {
         $user = $this->createUser();
-        $this->votable->vote($user, '127.0.4.20', Votable::VOTE_UP);
-        $this->votable->vote($user, '::69', Votable::VOTE_UP);
-        $this->votable->vote($user, null, Votable::VOTE_UP);
+        $this->votable->vote(VotableInterface::VOTE_UP, $user, '127.0.4.20');
+        $this->votable->vote(VotableInterface::VOTE_UP, $user, '::69');
+        $this->votable->vote(VotableInterface::VOTE_UP, $user, null);
     }
 
     /**
@@ -96,7 +97,7 @@ class VotableTest extends TestCase {
     public function testThrowsExceptionOnBadIpAddress(): void {
         $user = $this->createUser();
 
-        $this->votable->vote($user, 'poop', Votable::VOTE_UP);
+        $this->votable->vote(VotableInterface::VOTE_UP, $user, 'poop');
     }
 
     /**
@@ -106,8 +107,10 @@ class VotableTest extends TestCase {
         return $this->createMock(User::class);
     }
 
-    private function createVotable(): Votable {
-        return new class() extends Votable {
+    private function createVotable(): VotableInterface {
+        return new class() implements VotableInterface {
+            use VotableTrait;
+
             private $votes;
 
             public function __construct() {
@@ -118,8 +121,8 @@ class VotableTest extends TestCase {
                 return $this->votes;
             }
 
-            protected function createVote(User $user, ?string $ip, int $choice): Vote {
-                return new class($user, $ip, $choice) extends Vote {
+            protected function createVote(int $choice, User $user, ?string $ip): Vote {
+                return new class($choice, $user, $ip) extends Vote {
                 };
             }
         };

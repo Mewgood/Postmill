@@ -2,48 +2,34 @@
 
 namespace App\Controller;
 
-use App\Entity\Votable;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Contracts\VotableInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class VoteController extends AbstractController {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager) {
-        $this->entityManager = $entityManager;
-    }
-
     /**
      * Vote on a votable entity.
      *
      * @IsGranted("ROLE_USER")
      */
-    public function __invoke(Request $request, $entityClass, $id, $_format): Response {
+    public function __invoke(ObjectManager $em, Request $request, string $entityClass, int $id): Response {
         $this->validateCsrf('vote', $request->request->get('token'));
 
         $choice = $request->request->getInt('choice', null);
 
-        if (!\in_array($choice, Votable::VOTE_CHOICES, true)) {
-            throw new BadRequestHttpException('Bad choice');
-        }
+        $votable = $em->find($entityClass, $id);
 
-        $entity = $this->entityManager->find($entityClass, $id);
-
-        if (!$entity instanceof Votable) {
+        if (!$votable instanceof VotableInterface) {
             throw $this->createNotFoundException('Entity not found');
         }
 
-        $entity->vote($this->getUser(), $request->getClientIp(), $choice);
+        $votable->vote($choice, $this->getUser(), $request->getClientIp());
 
-        $this->entityManager->flush();
+        $em->flush();
 
-        if ($_format === 'json') {
+        if ($request->getRequestFormat() === 'json') {
             return $this->json(['message' => 'successful vote']);
         }
 

@@ -6,25 +6,29 @@ use App\Entity\Comment;
 use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Entity\UserFlags;
 use PHPUnit\Framework\TestCase;
 
 class CommentTest extends TestCase {
     public function testNewTopLevelCommentSendsNotification(): void {
+        /** @var Forum|\PHPUnit\Framework\MockObject\MockObject $forum */
         $forum = $this->createMock(Forum::class);
+
         $submission = new Submission('a', null, null, $forum, new User('u', 'p'), null);
 
-        $comment = new Comment('a', new User('u', 'p'), $submission);
+        $comment = new Comment('a', new User('u', 'p'), $submission, null);
 
         $this->assertCount(0, $comment->getUser()->getNotifications());
         $this->assertCount(1, $submission->getUser()->getNotifications());
     }
 
     public function testNewChildReplySendsNotifications(): void {
+        /** @var Submission|\PHPUnit\Framework\MockObject\MockObject $submission */
         $submission = $this->createMock(Submission::class);
 
-        $parent = new Comment('a', new User('u', 'p'), $submission);
-        $child = new Comment('b', new User('u', 'p'), $submission, UserFlags::FLAG_NONE, $parent);
+        $child = new Comment('b', new User('u', 'p'), $submission, null);
+
+        $parent = new Comment('a', new User('u', 'p'), $submission, null);
+        $parent->addReply($child);
 
         $this->assertCount(0, $child->getUser()->getNotifications());
         $this->assertCount(1, $parent->getUser()->getNotifications());
@@ -33,14 +37,17 @@ class CommentTest extends TestCase {
     public function testDoesNotSendNotificationsWhenReplyingToSelf(): void {
         $user = new User('u', 'p');
 
+        /** @var Submission|\PHPUnit\Framework\MockObject\MockObject $submission */
         $submission = $this->createMock(Submission::class);
 
         $submission
             ->method('getUser')
             ->willReturn($user);
 
-        $parent = new Comment('a', $user, $submission);
-        new Comment('b', $user, $submission, UserFlags::FLAG_NONE, $parent);
+        $parent = new Comment('a', $user, $submission, null);
+        $parent->addReply(
+            new Comment('b', $user, $submission, null)
+        );
 
         $this->assertCount(0, $submission->getUser()->getNotifications());
     }

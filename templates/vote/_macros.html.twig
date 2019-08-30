@@ -1,10 +1,8 @@
 {%- macro vote(entity, route) -%}
   {% with {
-    upvote: constant('App\\Entity\\Votable::VOTE_UP'),
-    downvote: constant('App\\Entity\\Votable::VOTE_DOWN'),
-    retract: constant('App\\Entity\\Votable::VOTE_RETRACT'),
-    upvoted: constant('App\\Entity\\Votable::USER_UPVOTED'),
-    downvoted: constant('App\\Entity\\Votable::USER_DOWNVOTED'),
+    VOTE_NONE: constant('App\\Entity\\Contracts\\VotableInterface::VOTE_NONE'),
+    VOTE_UP: constant('App\\Entity\\Contracts\\VotableInterface::VOTE_UP'),
+    VOTE_DOWN: constant('App\\Entity\\Contracts\\VotableInterface::VOTE_DOWN'),
   } %}
     {{- block('vote') -}}
   {% endwith %}
@@ -17,8 +15,8 @@
   {%- apply spaceless -%}
     <form action="{{ path(route, {id: entity.id}) }}" method="post"
           class="vote
-                {{- user_choice == upvoted ? ' vote--user-upvoted' }}
-                {{- user_choice == downvoted ? ' vote--user-downvoted' }}"
+                {{- user_choice == VOTE_UP ? ' vote--user-upvoted' }}
+                {{- user_choice == VOTE_DOWN ? ' vote--user-downvoted' }}"
           data-ajax-action="{{ path(route, {id: entity.id, _format: 'json'}) }}"
           data-score="{{ entity.netScore }}"
           data-load-prototype="{{ icon('spinner', 'loading', 'icon--spin icon--no-align')|e }}">
@@ -28,17 +26,17 @@
         <input type="hidden" name="token" value="{{ csrf_token('vote') }}">
       {% endif %}
 
-      <button type="submit" name="choice" value="{{ user_choice == upvoted ? retract : upvote }}"
+      <button type="submit" name="choice" value="{{ user_choice == VOTE_UP ? VOTE_NONE : VOTE_UP }}"
               class="unbuttonize vote__button vote__up"
-              title="{{ (user_choice == upvoted ? 'action.retract_upvote' : 'action.upvote')|trans }}">
+              title="{{ (user_choice == VOTE_UP ? 'action.retract_upvote' : 'action.upvote')|trans }}">
         <span aria-hidden="true">{{ icon('up', 'up', 'icon--no-align') }}</span>
       </button>
 
       <span class="vote__net-score">{{ entity.netScore < 0 ? '&minus;' }}{{ entity.netScore|abs }}</span>
 
-      <button type="submit" name="choice" value="{{ user_choice == downvoted ? retract : downvote }}"
+      <button type="submit" name="choice" value="{{ user_choice == VOTE_DOWN ? VOTE_NONE : VOTE_UP }}"
               class="unbuttonize vote__button vote__down"
-              title="{{ (user_choice == downvoted ? 'action.retract_downvote' : 'action.downvote')|trans }}">
+              title="{{ (user_choice == VOTE_DOWN ? 'action.retract_downvote' : 'action.downvote')|trans }}">
         <span aria-hidden="true">{{ icon('down', 'down', 'icon--no-align') }}</span>
       </button>
     </form>

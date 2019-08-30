@@ -53,15 +53,11 @@ class CommentData {
         $this->submission = $submission;
     }
 
-    public function toComment(User $user, Comment $parent = null, $ip = null): Comment {
-        return new Comment(
-            $this->body,
-            $user,
-            $this->submission,
-            $this->userFlag,
-            $parent,
-            $ip
-        );
+    public function toComment(User $user, ?string $ip): Comment {
+        $comment = new Comment($this->body, $user, $this->submission, $ip);
+        $comment->setUserFlag($this->userFlag);
+
+        return $comment;
     }
 
     public function updateComment(Comment $comment, User $editingUser): void {
@@ -85,7 +81,7 @@ class CommentData {
         return $this->body;
     }
 
-    public function setBody($body): void {
+    public function setBody(?string $body): void {
         $this->body = $body;
     }
 

@@ -3,13 +3,13 @@
 namespace App\Message\Handler;
 
 use App\Entity\Comment;
+use App\Entity\Contracts\VotableInterface;
 use App\Entity\ForumSubscription;
 use App\Entity\Message;
 use App\Entity\Moderator;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
-use App\Entity\Votable;
 use App\Event\DeleteSubmissionEvent;
 use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
@@ -236,7 +236,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         foreach ($submissions as $submission) {
             $dispatchAgain = true;
 
-            $submission->vote($user, null, Votable::VOTE_RETRACT);
+            $submission->vote(VotableInterface::VOTE_NONE, $user, null);
         }
 
         $this->entityManager->flush();
@@ -262,7 +262,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         foreach ($comments as $comment) {
             $dispatchAgain = true;
 
-            $comment->vote($user, null, Votable::VOTE_RETRACT);
+            $comment->vote(VotableInterface::VOTE_NONE, $user, null);
         }
 
         $this->entityManager->flush();

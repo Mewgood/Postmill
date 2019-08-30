@@ -25,8 +25,8 @@ class SubmissionVote extends Vote {
      */
     private $submission;
 
-    public function __construct(User $user, ?string $ip, int $choice, Submission $submission) {
-        parent::__construct($user, $ip, $choice);
+    public function __construct(int $choice, User $user, ?string $ip, Submission $submission) {
+        parent::__construct($choice, $user, $ip);
 
         $this->submission = $submission;
     }

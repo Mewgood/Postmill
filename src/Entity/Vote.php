@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Contracts\VotableInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,15 +50,29 @@ abstract class Vote {
     private $ip;
 
     /**
-     * @param bool|int $choice
+     * @param int $choice one of VotableInterface::VOTE_UP or
+     *                    VotableInterface::VOTE_DOWN
      *
      * @throws \InvalidArgumentException if $choice is bad
+     * @throws \InvalidArgumentException if IP address isn't valid
      */
-    public function __construct(User $user, ?string $ip, int $choice) {
-        $this->timestamp = new \DateTime('@'.time());
+    public function __construct(int $choice, User $user, ?string $ip) {
+        if ($choice === VotableInterface::VOTE_NONE) {
+            throw new \InvalidArgumentException('A vote entity cannot have a "none" status');
+        }
+
+        if ($choice !== VotableInterface::VOTE_UP && $choice !== VotableInterface::VOTE_DOWN) {
+            throw new \InvalidArgumentException('Unknown choice');
+        }
+
+        if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
+            throw new \InvalidArgumentException('Bad IP address');
+        }
+
+        $this->upvote = $choice === VotableInterface::VOTE_UP;
         $this->user = $user;
-        $this->setIp($ip); // must be after $this->user is declared
-        $this->setChoice($choice);
+        $this->ip = $user->isTrustedOrAdmin() ? null : $ip;
+        $this->timestamp = new \DateTime('@'.time());
     }
 
     public function getId(): ?int {
@@ -65,26 +80,9 @@ abstract class Vote {
     }
 
     public function getChoice(): int {
-        return $this->upvote ? Votable::USER_UPVOTED : Votable::USER_DOWNVOTED;
-    }
-
-    /**
-     * @param int $choice one of Votable::VOTE_UP or Votable::VOTE_DOWN
-     *
-     * @throws \InvalidArgumentException if $choice isn't a valid parameter
-     */
-    public function setChoice(int $choice): void {
-        if ($choice === Votable::VOTE_UP || $choice === Votable::VOTE_DOWN) {
-            $this->upvote = $choice === Votable::VOTE_UP;
-        } elseif ($choice === Votable::VOTE_RETRACT) {
-            throw new \InvalidArgumentException('A vote entity cannot have a "retracted" status');
-        } else {
-            throw new \InvalidArgumentException('Unknown choice');
-        }
-    }
-
-    public function getTimestamp(): \DateTime {
-        return $this->timestamp;
+        return $this->upvote
+            ? VotableInterface::VOTE_UP
+            : VotableInterface::VOTE_DOWN;
     }
 
     public function getUser(): User {
@@ -95,17 +93,12 @@ abstract class Vote {
         return $this->ip;
     }
 
-    public function setIp(?string $ip): void {
-        if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
-            throw new \InvalidArgumentException('Bad IP address');
-        }
-
-        $this->ip = $this->user->isTrustedOrAdmin() ? null : $ip;
+    public function getTimestamp(): \DateTime {
+        return $this->timestamp;
     }
 
     /**
      * Legacy getter needed for `Selectable` compatibility.
-     *
      *
      * @internal
      */

@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Contracts\VotableInterface;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Exception\SubmissionLockedException;
+use App\Entity\Traits\VotableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -24,7 +26,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     @ORM\Index(name="submissions_image_idx", columns={"image"}),
  * })
  */
-class Submission extends Votable {
+class Submission implements VotableInterface {
+    use VotableTrait {
+        vote as private realVote;
+        getNetScore as private getRealNetScore;
+    }
+
     public const MEDIA_TYPES = [self::MEDIA_URL, self::MEDIA_IMAGE];
     public const MEDIA_URL = 'url';
     public const MEDIA_IMAGE = 'image';
@@ -328,7 +335,7 @@ class Submission extends Votable {
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->mentions = new ArrayCollection();
-        $this->vote($user, $ip, Votable::VOTE_UP);
+        $this->vote(self::VOTE_UP, $user, $ip);
         $this->updateLastActive();
     }
 
@@ -392,9 +399,9 @@ class Submission extends Votable {
 
         $comments = $this->comments->matching($criteria)->toArray();
 
-        if ($comments) {
-            usort($comments, [$this, 'descendingNetScoreCmp']);
-        }
+        usort($comments, function (Comment $a, Comment $b) {
+            return $b->getNetScore() <=> $a->getNetScore();
+        });
 
         return $comments;
     }
@@ -491,12 +498,12 @@ class Submission extends Votable {
         return $this->votes;
     }
 
-    protected function createVote(User $user, ?string $ip, int $choice): Vote {
-        return new SubmissionVote($user, $ip, $choice, $this);
+    protected function createVote(int $choice, User $user, ?string $ip): Vote {
+        return new SubmissionVote($choice, $user, $ip, $this);
     }
 
-    public function vote(User $user, ?string $ip, int $choice): void {
-        if ($choice !== self::VOTE_RETRACT) {
+    public function vote(int $choice, User $user, ?string $ip): void {
+        if ($choice !== self::VOTE_NONE) {
             if ($this->visibility === self::VISIBILITY_DELETED) {
                 throw new SubmissionLockedException();
             }
@@ -506,9 +513,9 @@ class Submission extends Votable {
             }
         }
 
-        parent::vote($user, $ip, $choice);
+        $this->realVote($choice, $user, $ip);
 
-        $this->updateNetScore();
+        $this->netScore = $this->getRealNetScore();
         $this->updateRanking();
     }
 
@@ -610,9 +617,5 @@ class Submission extends Votable {
 
     public function getNetScore(): int {
         return $this->netScore;
-    }
-
-    private function updateNetScore(): void {
-        $this->netScore = parent::getNetScore();
     }
 }

@@ -71,7 +71,7 @@ final class CommentController extends AbstractController {
     /**
      * Render the comment form only (no layout).
      */
-    public function commentForm($forumName, $submissionId, $commentId = null): Response {
+    public function commentForm(string $forumName, int $submissionId, int $commentId = null): Response {
         $routeParams = [
             'forum_name' => $forumName,
             'submission_id' => $submissionId,
@@ -94,7 +94,7 @@ final class CommentController extends AbstractController {
     }
 
     /**
-     * Submit a comment. This is intended for users without JS enabled.
+     * Submit a comment.
      *
      * @IsGranted("ROLE_USER")
      */
@@ -108,7 +108,11 @@ final class CommentController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $reply = $data->toComment($this->getUser(), $comment, $request->getClientIp());
+            $reply = $data->toComment($this->getUser(), $request->getClientIp());
+
+            if ($comment) {
+                $comment->addReply($reply);
+            }
 
             $this->entityManager->persist($reply);
             $this->entityManager->flush();
@@ -250,6 +254,10 @@ final class CommentController extends AbstractController {
         ]);
     }
 
+    /**
+     * @param Submission|int   $submission
+     * @param Comment|int|null $comment
+     */
     private function getFormName($submission, $comment): string {
         $submissionId = $submission instanceof Submission ? $submission->getId() : $submission;
         $commentId = $comment instanceof Comment ? $comment->getId() : $comment;
