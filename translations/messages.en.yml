@@ -457,6 +457,7 @@ nav:
     jump_to_sidebar: Jump to sidebar
     delete_this_account: Delete this account
     site_settings: Site settings
+    global_moderation_log: Global moderation log
 
 number:
     id: '#%number%'

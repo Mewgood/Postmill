@@ -2,7 +2,7 @@
 
 {% block head %}
   {{ include('_includes/meta_pagination.html.twig', {pager: logs}, with_context=false) }}
-{% endblock %}
+{% endblock head %}
 
 {% block html_title 'title.showing_moderation_log_for_forum'|trans({
   '%forum%': '<a href="%s">/f/%s</a>'|format(path('forum', {forum_name: forum.name})|e , forum.name|e)
@@ -13,6 +13,15 @@
   {% from '_macros/time.html.twig' import relative_time %}
   {% from 'forum/_macros.html.twig' import log_line %}
   <h1 class="page-heading">{{ block('html_title') }}</h1>
+
+  <nav>
+    <p>
+      <a href="{{ path('global_moderation_log') }}"
+         class="button button--small button--secondary">
+        {{- 'nav.global_moderation_log'|trans -}}
+      </a>
+    </p>
+  </nav>
 
   {% if logs|length > 0 %}
     <ul class="moderation-log">
@@ -33,4 +42,4 @@
       <small class="fg-muted text-md">{{ 'flash.no_entries_to_display'|trans }}</small>
     </p>
   {% endif %}
-{% endblock %}
+{% endblock body %}

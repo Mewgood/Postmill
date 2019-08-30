@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block head %}
-  {{ include('_includes/meta_pagination.html.twig', {pager: logs}, with_context=false) }}
-{% endblock %}
+  {{ include('_includes/meta_pagination.html.twig', { pager: logs }, with_context=false) }}
+{% endblock head %}
 
 {% block title 'title.global_moderation_log'|trans %}
 
@@ -16,7 +16,7 @@
       {% for entry in logs %}
         <li class="moderation-log__entry moderation-log__entry--{{ entry.action|replace({'_': '-'}) }}">
           <p>
-            <a href="{{ path('forum', {forum_name: entry.forum.name}) }}">/f/{{ entry.forum.name }}</a>
+            <a href="{{ path('moderation_log', { forum_name: entry.forum.name }) }}">/f/{{ entry.forum.name }}</a>
             &mdash;
             {{ log_line(entry) }}
             &mdash;
@@ -26,11 +26,11 @@
       {% endfor %}
     </ul>
 
-    {{ include('_includes/pagination.html.twig', {pager: logs}, with_context=false) }}
+    {{ include('_includes/pagination.html.twig', { pager: logs }, with_context=false) }}
   {% else %}
     <p class="no-entries">
       <small class="fg-muted text-md">{{ 'flash.no_entries_to_display'|trans }}</small>
     </p>
   {% endif %}
-{% endblock %}
+{% endblock body %}
 
