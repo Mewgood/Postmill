@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Contracts\VisibilityInterface;
 use App\Entity\Contracts\VotableInterface;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Exception\SubmissionLockedException;
@@ -26,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     @ORM\Index(name="submissions_image_idx", columns={"image"}),
  * })
  */
-class Submission implements VotableInterface {
+class Submission implements VisibilityInterface, VotableInterface {
     use VotableTrait {
         vote as private realVote;
         getNetScore as private getRealNetScore;
@@ -39,9 +40,6 @@ class Submission implements VotableInterface {
     public const MAX_TITLE_LENGTH = 300;
     public const MAX_URL_LENGTH = 2000;
     public const MAX_BODY_LENGTH = 25000;
-
-    public const VISIBILITY_VISIBLE = 'visible';
-    public const VISIBILITY_DELETED = 'deleted';
 
     public const FRONT_FEATURED = 'featured';
     public const FRONT_SUBSCRIBED = 'subscribed';
@@ -439,7 +437,7 @@ class Submission implements VotableInterface {
 
     public function updateCommentCount(): void {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('softDeleted', false));
+            ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE));
 
         $this->commentCount = \count($this->comments->matching($criteria));
     }
@@ -454,7 +452,7 @@ class Submission implements VotableInterface {
 
     public function updateLastActive(): void {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('softDeleted', false))
+            ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE))
             ->orderBy(['timestamp' => 'DESC'])
             ->setMaxResults(1);
 

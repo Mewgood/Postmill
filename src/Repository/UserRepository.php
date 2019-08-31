@@ -126,8 +126,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $commentsQuery = $this->_em->createQueryBuilder()
             ->select('c')
             ->from(Comment::class, 'c')
-            ->where('c.softDeleted = FALSE')
+            ->where('c.visibility = :visibility')
             ->andWhere('c.user = :user')
+            ->setParameter('visibility', Comment::VISIBILITY_VISIBLE)
             ->setParameter('user', $user);
 
         $adapter = new DoctrineUnionAdapter($submissionsQuery, $commentsQuery);

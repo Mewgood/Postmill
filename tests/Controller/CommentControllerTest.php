@@ -88,7 +88,7 @@ class CommentControllerTest extends WebTestCase {
                     'name' => 'cats',
                 ],
             ],
-            'softDeleted' => false,
+            'visibility' => 'visible',
             'editedAt' => null,
             'userFlag' => 'none',
             'netScore' => 1,

@@ -166,7 +166,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         /** @var Submission[] $submissions */
         $submissions = $this->submissions->findBy([
             'user' => $user,
-            'visibility' => 'visible',
+            'visibility' => Submission::VISIBILITY_VISIBLE,
         ], ['id' => 'DESC'], $this->batchSize);
 
         $dispatchAgain = false;
@@ -191,7 +191,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     public function removeComments(User $user): bool {
         /** @var Comment[] $comments */
         $comments = $this->comments->findBy([
-            'softDeleted' => false,
+            'visibility' => Comment::VISIBILITY_VISIBLE,
             'user' => $user,
         ], ['id' => 'DESC'], $this->batchSize);
 

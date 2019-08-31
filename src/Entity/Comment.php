@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Contracts\VisibilityInterface;
 use App\Entity\Contracts\VotableInterface;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Exception\SubmissionLockedException;
@@ -16,10 +17,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ORM\Table(indexes={
  *     @ORM\Index(name="comments_timestamp_idx", columns={"timestamp"}),
- *     @ORM\Index(name="comments_search_idx", columns={"search_doc"})
+ *     @ORM\Index(name="comments_search_idx", columns={"search_doc"}),
+ *     @ORM\Index(name="comments_visibility_idx", columns={"visibility"}),
  * })
  */
-class Comment implements VotableInterface {
+class Comment implements VisibilityInterface, VotableInterface {
     use VotableTrait {
         vote as private realVote;
         getNetScore as private getRealNetScore;
@@ -99,13 +101,13 @@ class Comment implements VotableInterface {
     private $votes;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(type="text", options={"default": "visible"})
      *
      * @Groups({"comment:read"})
      *
-     * @var bool
+     * @var string
      */
-    private $softDeleted = false;
+    private $visibility = self::VISIBILITY_VISIBLE;
 
     /**
      * @ORM\Column(type="inet", nullable=true)
@@ -336,17 +338,18 @@ class Comment implements VotableInterface {
         $this->netScore = $this->getRealNetScore();
     }
 
-    public function isSoftDeleted(): bool {
-        return $this->softDeleted && $this->body === '';
+    public function getVisibility(): string {
+        return $this->visibility;
     }
 
     /**
      * Delete a comment without deleting its replies.
      */
     public function softDelete(): void {
-        $this->softDeleted = true;
+        $this->visibility = self::VISIBILITY_DELETED;
         $this->body = '';
         $this->userFlag = UserFlags::FLAG_NONE;
+        $this->mentions->clear();
         $this->submission->updateCommentCount();
         $this->submission->updateRanking();
         $this->submission->updateLastActive();

@@ -54,7 +54,8 @@ class CommentRepository extends ServiceEntityRepository {
      */
     public function findRecentPaginated(int $page, int $maxPerPage = 25) {
         $query = $this->createQueryBuilder('c')
-            ->where('c.softDeleted = FALSE')
+            ->where('c.visibility = :visibility')
+            ->setParameter('visibility', Comment::VISIBILITY_VISIBLE)
             ->orderBy('c.id', 'DESC');
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($query, false, false));
@@ -74,7 +75,8 @@ class CommentRepository extends ServiceEntityRepository {
             ->join('c.submission', 's')
             ->where('s.forum = :forum')
             ->setParameter('forum', $forum)
-            ->andWhere('c.softDeleted = FALSE')
+            ->andWhere('c.visibility = :visibility')
+            ->setParameter('visibility', Comment::VISIBILITY_VISIBLE)
             ->orderBy('c.id', 'DESC');
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($query, false, false));

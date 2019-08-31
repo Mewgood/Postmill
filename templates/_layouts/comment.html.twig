@@ -5,7 +5,7 @@
   <article class="comment
                   comment--{{ level > 1 ? 'nested' : 'top-level' }}
                   {{ show_context ? 'comment--with-context' }}
-                  {{ comment.softDeleted ? 'comment--soft-deleted' }}
+                  {{ comment.visibility is constant('App\\Entity\\Comment::VISIBILITY_DELETED') ? 'comment--soft-deleted' }}
                   hideable"
            id="comment_{{ comment.id }}"
            data-level="{{ level }}">
@@ -143,7 +143,7 @@
   {%- from 'user/_macros.html.twig' import user_flag -%}
 
   {% apply spaceless %}
-    {%- if not comment.softDeleted -%}
+    {%- if comment.visibility is not constant('App\\Entity\\Comment::VISIBILITY_DELETED') -%}
       <a href="{{ path('user', { username: comment.user.username }) }}" class="fg-inherit">
         <strong>{{ comment.user.username }}</strong>
       </a>
@@ -152,7 +152,7 @@
     {%- endif -%}
   {% endapply %}
 
-  {% if not comment.softDeleted and comment.user is same as(comment.submission.user) %}
+  {% if comment.visibility is not constant('App\\Entity\\Comment::VISIBILITY_DELETED') and comment.user is same as(comment.submission.user) %}
     <small class="comment__op-text text-sm user-flag"
            title="{{ 'item.op'|trans }}"
            aria-label="{{ 'item.op'|trans }}">

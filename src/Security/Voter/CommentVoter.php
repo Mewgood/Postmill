@@ -62,7 +62,7 @@ final class CommentVoter extends Voter {
     }
 
     private function canSoftDelete(Comment $comment, TokenInterface $token): bool {
-        if ($comment->isSoftDeleted()) {
+        if ($comment->getVisibility() !== Comment::VISIBILITY_VISIBLE) {
             return false;
         }
 
@@ -84,7 +84,7 @@ final class CommentVoter extends Voter {
     }
 
     private function canEdit(Comment $comment, TokenInterface $token): bool {
-        if ($comment->isSoftDeleted()) {
+        if ($comment->getVisibility() !== Comment::VISIBILITY_VISIBLE) {
             return false;
         }
 

@@ -19,7 +19,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
         $client = self::createClient();
         $client->request('GET', $url);
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        self::assertResponseIsSuccessful("URL: $url");
     }
 
     /**
@@ -34,7 +34,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
         ]);
         $client->request('GET', $url);
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        self::assertResponseIsSuccessful("URL: $url");
     }
 
     /**
@@ -43,11 +43,9 @@ class ApplicationAvailabilityTest extends WebTestCase {
      * @param string $url
      */
     public function testCannotAccessPagesThatNeedAuthenticationWhenNotAuthenticated($url): void {
-        $client = self::createClient();
-        $client->request('GET', $url);
+        self::createClient()->request('GET', $url);
 
-        $this->assertTrue($client->getResponse()->isRedirect());
-        $this->assertStringEndsWith('/login', $client->getResponse()->headers->get('Location'));
+        self::assertResponseRedirects('/login', null, "URL: $url");
     }
 
     /**
@@ -61,11 +59,12 @@ class ApplicationAvailabilityTest extends WebTestCase {
         $client->followRedirects();
         $client->request('GET', $url);
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        self::assertResponseIsSuccessful("URL: $url; expected: $expectedLocation");
 
         $this->assertEquals(
             "http://localhost{$expectedLocation}",
-            $client->getCrawler()->getUri()
+            $client->getHistory()->current()->getUri(),
+            "URL: $url; expected: $expectedLocation"
         );
     }
 
@@ -73,7 +72,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
      * Public URLs that should exist when fixtures are loaded into a fresh
      * database.
      */
-    public function publicUrlProvider() {
+    public function publicUrlProvider(): iterable {
         yield ['/'];
         yield ['/hot'];
         yield ['/new'];
@@ -136,7 +135,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/reset_password'];
     }
 
-    public function redirectUrlProvider() {
+    public function redirectUrlProvider(): iterable {
         yield ['/f/news', '/f/NeWs/hot'];
         yield ['/f/news', '/f/news/'];
         yield ['/f/news/new', '/f/NeWs/new'];
@@ -149,7 +148,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
     /**
      * URLs that need authentication to access.
      */
-    public function authUrlProvider() {
+    public function authUrlProvider(): iterable {
         yield ['/subscribed/hot'];
         yield ['/subscribed/new'];
         yield ['/subscribed/active'];
