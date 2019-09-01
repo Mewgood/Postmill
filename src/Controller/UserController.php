@@ -36,45 +36,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 final class UserController extends AbstractController {
     /**
-     * @var SubmissionFinder
-     */
-    private $submissionFinder;
-
-    /**
-     * @var CommentRepository
-     */
-    private $comments;
-
-    /**
-     * @var string
-     */
-    private $defaultLocale;
-
-    public function __construct(
-        SubmissionFinder $submissionFinder,
-        CommentRepository $comments,
-        string $defaultLocale
-    ) {
-        $this->submissionFinder = $submissionFinder;
-        $this->comments = $comments;
-        $this->defaultLocale = $defaultLocale;
-    }
-
-    /**
      * Show the user's profile page.
      */
-    public function userPage(User $user, Request $request, UserRepository $users): Response {
-        $nextUnixTime = $request->query->getInt('next_timestamp');
-
-        if ($nextUnixTime) {
-            $nextTimestamp = new \DateTime('@'.$nextUnixTime);
-        }
-
+    public function userPage(User $user, UserRepository $users): Response {
         $contributions = $users->findContributions($user);
-
-        if ($nextUnixTime && !\count($contributions)) {
-            throw $this->createNotFoundException('No such page');
-        }
 
         return $this->render('user/user.html.twig', [
             'contributions' => $contributions,
@@ -82,11 +47,11 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    public function submissions(User $user): Response {
+    public function submissions(SubmissionFinder $finder, User $user): Response {
         $criteria = (new Criteria(Submission::SORT_NEW))
             ->showUsers($user);
 
-        $submissions = $this->submissionFinder->find($criteria);
+        $submissions = $finder->find($criteria);
 
         return $this->render('user/submissions.html.twig', [
             'submissions' => $submissions,
@@ -94,10 +59,10 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    public function comments(User $user, int $page): Response {
+    public function comments(CommentRepository $repository, User $user, int $page): Response {
         $comments = $user->getPaginatedComments($page);
 
-        $this->comments->hydrate(...$comments);
+        $repository->hydrate(...$comments);
 
         return $this->render('user/comments.html.twig', [
             'comments' => $comments,
@@ -127,11 +92,7 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    public function registration(
-        Request $request,
-        ObjectManager $em,
-        AuthenticationHelper $authenticationHelper
-    ): Response {
+    public function registration(Request $request, ObjectManager $em, AuthenticationHelper $auth): Response {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('front');
         }
@@ -150,7 +111,7 @@ final class UserController extends AbstractController {
 
             $response = $this->redirectToRoute('front');
 
-            $authenticationHelper->login($user, $request, $response, 'main');
+            $auth->login($user, $request, $response, 'main');
 
             $this->addFlash('success', 'flash.user_account_registered');
 
@@ -351,41 +312,17 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function clearNotifications(Request $request, NotificationRepository $nr, ObjectManager $em, string $_format): Response {
+    public function clearNotifications(Request $request, NotificationRepository $repository, ObjectManager $em): Response {
         $this->validateCsrf('clear_notifications', $request->request->get('token'));
 
-        $user = $this->getUser();
-        $max = $request->query->getInt('max', null);
+        $ids = array_filter((array) $request->request->get('id'), function ($id) {
+            return is_numeric($id) && \is_int(+$id);
+        });
 
-        $nr->clearNotifications($user, $max);
+        $repository->clearNotifications($this->getUser(), ...$ids);
         $em->flush();
-
-        if ($_format === 'json') {
-            return $this->json(['message' => 'The notifications were successfully cleared.']);
-        }
 
         $this->addFlash('notice', 'flash.notifications_cleared');
-
-        return $this->redirectToRoute('notifications');
-    }
-
-    /**
-     * @IsGranted("ROLE_USER")
-     */
-    public function clearNotification(Request $request, NotificationRepository $nr, ObjectManager $em, string $_format): Response {
-        $this->validateCsrf('clear_notification', $request->request->get('token'));
-
-        $user = $this->getUser();
-        $notificationId = $request->query->getInt('id', null);
-
-        $nr->clearNotification($user, $notificationId);
-        $em->flush();
-
-        if ($_format === 'json') {
-            return $this->json(['message' => 'The notification was successfully cleared.']);
-        }
-
-        $this->addFlash('notice', 'flash.notification_cleared');
 
         return $this->redirectToRoute('notifications');
     }

@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Tests\WebTestCase;
 
 /**
- * @covers \App\Controller\CommentController
+ * @coversDefaultClass  \App\Controller\CommentController
  */
 class CommentControllerTest extends WebTestCase {
     public function testCommentListing(): void {
@@ -142,6 +142,25 @@ class CommentControllerTest extends WebTestCase {
         $client->submit($crawler->filter('.comment')->selectButton('Delete')->form());
 
         self::assertResponseRedirects($expected, null, "expected: $expected, referrer: $referrer");
+    }
+
+    /**
+     * @covers \App\Controller\UserController::notifications
+     */
+    public function testCanReceiveCommentNotifications(): void {
+        $client = self::createAdminClient();
+        $crawler = $client->request('GET', '/f/cats/3/-/comment/3');
+
+        $form = $crawler->selectButton('reply_to_comment_3[submit]')->form([
+            'reply_to_comment_3[comment]' => 'You will be notified about this comment.',
+        ]);
+
+        $client->submit($form);
+
+        $client = self::createUserClient();
+        $client->request('GET', '/notifications');
+
+        self::assertSelectorTextContains('.comment__body', 'You will be notified about this comment.');
     }
 
     public function selfDeleteReferrerProvider(): iterable {

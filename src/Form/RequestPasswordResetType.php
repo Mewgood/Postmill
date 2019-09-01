@@ -11,20 +11,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class RequestPasswordResetType extends AbstractType {
-    private $bypass;
-
-    /**
-     * @param bool $bypass enable bypass code for unit testing
-     */
-    public function __construct(bool $bypass) {
-        $this->bypass = $bypass;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('email', EmailType::class)
             ->add('verification', CaptchaType::class, [
-                'bypass_code' => $this->bypass ? 'bypass' : null,
                 'label' => 'label.verification',
                 'as_url' => true,
                 'reload' => true,

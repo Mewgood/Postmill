@@ -65,7 +65,7 @@ user_block_list:
 
 block_user:
     controller: App\Controller\UserController::block
-    path: /block/{username}
+    path: /user/{username}/block_user
     methods: [GET, POST]
     requirements: { username: "%username_regex%" }
 
@@ -110,10 +110,8 @@ notifications:
 
 clear_notifications:
     controller: App\Controller\UserController::clearNotifications
-    defaults: { _format: html }
-    path: /clear_notifications.{_format}
+    path: /clear_notifications
     methods: [POST]
-    requirements: { _format: html|json }
 
 user_forum_bans:
     controller: App\Controller\UserController::listForumBans
@@ -121,13 +119,6 @@ user_forum_bans:
     path: /user/{username}/forum_bans/{page}
     methods: [GET]
     requirements: { username: "%username_regex%", page: \d+ }
-
-clear_notification:
-    controller: App\Controller\UserController::clearNotification
-    defaults: { _format: html }
-    path: /clear_notification.{_format}
-    methods: [POST]
-    requirements: { _format: html|json }
 
 hidden_forums:
     controller: App\Controller\UserController::hiddenForums

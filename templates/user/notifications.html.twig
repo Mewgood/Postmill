@@ -15,8 +15,11 @@
   <h1 class="page-heading">{{ block('title') }}</h1>
 
   {% if notifications|length > 0 %}
-    <form action="{{ path('clear_notifications', { max: notifications|first.id }) }}" method="POST" class="form">
+    <form action="{{ path('clear_notifications') }}" method="POST" class="form">
       <input type="hidden" name="token" value="{{ csrf_token('clear_notifications') }}">
+      {% for notification in notifications %}
+        <input type="hidden" name="id[]" value="{{ notification.id }}">
+      {% endfor %}
       <div class="form__row">
         <button type="submit" class="button">{{ 'action.clear_all'|trans }}</button>
       </div>
@@ -83,8 +86,9 @@
 {% endblock notification_submission_mention %}
 
 {% block clear_notification_button %}
-  <form action="{{ path('clear_notification', { id: notification.id }) }}" method="POST">
-    <input type="hidden" name="token" value="{{ csrf_token('clear_notification') }}">
+  <form action="{{ path('clear_notifications') }}" method="POST">
+    <input type="hidden" name="token" value="{{ csrf_token('clear_notifications') }}">
+    <input type="hidden" name="id" value="{{ notification.id }}">
     <button type="submit" class="button button--small clear-notification-button">{{ 'action.clear'|trans }}</button>
   </form>
 {% endblock clear_notification_button %}
