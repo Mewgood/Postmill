@@ -15,14 +15,11 @@ use App\Form\CommentType;
 use App\Form\Model\CommentData;
 use App\Repository\CommentRepository;
 use App\Repository\ForumRepository;
-use App\Utils\Slugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Entity("forum", expr="repository.findOneOrRedirectToCanonical(forum_name, 'forum_name')")
@@ -41,11 +38,6 @@ final class CommentController extends AbstractController {
     private $entityManager;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var ForumRepository
      */
     private $forums;
@@ -53,12 +45,10 @@ final class CommentController extends AbstractController {
     public function __construct(
         CommentRepository $comments,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher,
         ForumRepository $forums
     ) {
         $this->comments = $comments;
         $this->entityManager = $entityManager;
-        $this->eventDispatcher = $eventDispatcher;
         $this->forums = $forums;
     }
 
@@ -117,15 +107,9 @@ final class CommentController extends AbstractController {
             $this->entityManager->persist($reply);
             $this->entityManager->flush();
 
-            $event = new NewCommentEvent($reply);
-            $this->eventDispatcher->dispatch($event);
+            $this->dispatchEvent(new NewCommentEvent($reply));
 
-            return $this->redirectToRoute('comment', [
-                'forum_name' => $forum->getName(),
-                'submission_id' => $submission->getId(),
-                'comment_id' => $reply->getId(),
-                'slug' => Slugger::slugify($submission->getTitle()),
-            ]);
+            return $this->redirect($this->generateCommentUrl($reply));
         }
 
         return $this->render('comment/form_errors.html.twig', [
@@ -161,13 +145,9 @@ final class CommentController extends AbstractController {
 
             $this->entityManager->flush();
 
-            $this->eventDispatcher->dispatch(new EditCommentEvent($before, $comment));
+            $this->dispatchEvent(new EditCommentEvent($before, $comment));
 
-            return $this->redirectToRoute('comment', [
-                'forum_name' => $forum->getName(),
-                'submission_id' => $submission->getId(),
-                'comment_id' => $comment->getId(),
-            ]);
+            return $this->redirect($this->generateCommentUrl($comment));
         }
 
         return $this->render('comment/form_errors.html.twig', [
@@ -193,26 +173,9 @@ final class CommentController extends AbstractController {
 
         $this->logDeletion($forum, $comment);
 
-        $commentId = $comment->getId(); // not available on entity after flush()
-
         $this->entityManager->flush();
 
-        if ($request->headers->has('Referer')) {
-            $commentUrl = $this->generateUrl('comment', [
-                'forum_name' => $forum->getName(),
-                'submission_id' => $submission->getId(),
-                'comment_id' => $commentId,
-            ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-            if (strpos($request->headers->get('Referer'), $commentUrl) === 0) {
-                // redirect to forum since redirect to referrer will 404
-                return $this->redirectToRoute('forum', [
-                    'forum_name' => $forum->getName(),
-                ]);
-            }
-        }
-
-        return $this->redirectAfterAction($comment, $request);
+        return $this->redirectAfterDelete($request);
     }
 
     /**
@@ -230,7 +193,7 @@ final class CommentController extends AbstractController {
 
         $this->entityManager->flush();
 
-        return $this->redirectAfterAction($comment, $request);
+        return $this->redirectAfterDelete($request);
     }
 
     private function logDeletion(Forum $forum, Comment $comment): void {
@@ -242,16 +205,15 @@ final class CommentController extends AbstractController {
         }
     }
 
-    private function redirectAfterAction(Comment $comment, Request $request): Response {
-        if ($request->headers->has('Referer')) {
-            return $this->redirect($request->headers->get('Referer'));
+    private function redirectAfterDelete(Request $request): Response {
+        $url = $request->headers->get('Referer', '');
+        preg_match('!/f/[^/]++/\d+/[^/]++/comment/(\d+)!', $url, $matches);
+
+        if (!$url || $request->attributes->get('comment_id') === ($matches[1] ?? '')) {
+            $url = $this->generateSubmissionUrl($request->attributes->get('submission'));
         }
 
-        return $this->redirectToRoute('submission', [
-            'forum_name' => $comment->getSubmission()->getForum()->getName(),
-            'submission_id' => $comment->getSubmission()->getId(),
-            'slug' => Slugger::slugify($comment->getSubmission()->getTitle()),
-        ]);
+        return $this->redirect($url);
     }
 
     /**

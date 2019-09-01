@@ -66,12 +66,13 @@ class SubmissionControllerTest extends WebTestCase {
 
     public function testDeletingOwnSubmissionWithCommentsResultsInSoftDeletion(): void {
         $client = self::createUserClient();
-        $client->followRedirects();
 
         $crawler = $client->request('GET', '/f/cats/3');
-        $crawler = $client->submit($crawler->selectButton('Delete')->form());
+        $client->submit($crawler->selectButton('Delete')->form());
 
-        $this->assertContains('[deleted]', $crawler->filter('.submission__link')->text());
+        $client->request('GET', '/f/cats/3');
+
+        self::assertSelectorTextContains('.submission__link', '[deleted]');
     }
 
     public function testDeletingOwnSubmissionWithoutCommentsResultsInHardDeletion(): void {
@@ -132,5 +133,24 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertCount(0, $crawler->filter('.submission--sticky'));
         $this->assertCount(0, $crawler->filter('.submission__sticky-icon'));
         $this->assertContains('The submission was unpinned.', $crawler->filter('.alert__text')->text());
+    }
+
+    /**
+     * @dataProvider selfDeleteReferrerProvider
+     */
+    public function testRedirectsProperlyAfterDelete(string $expected, string $referrer): void {
+        $client = self::createUserClient();
+        $crawler = $client->request('GET', $referrer);
+
+        $client->submit($crawler->selectButton('Delete')->form());
+
+        self::assertResponseRedirects($expected, null, "expected: $expected, referrer: $referrer");
+    }
+
+    public function selfDeleteReferrerProvider(): iterable {
+        yield ['http://localhost/', '/'];
+        yield ['http://localhost/f/cats', '/f/cats'];
+        yield ['/f/cats', '/f/cats/3'];
+        yield ['/f/cats', '/f/cats/3/with-slug'];
     }
 }

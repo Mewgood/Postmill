@@ -17,7 +17,6 @@ use App\Form\Model\SubmissionData;
 use App\Form\SubmissionType;
 use App\Message\NewSubmission;
 use App\Repository\CommentRepository;
-use App\Utils\Slugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -25,8 +24,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Entity("forum", expr="repository.findOneOrRedirectToCanonical(forum_name, 'forum_name')")
@@ -44,28 +41,9 @@ final class SubmissionController extends AbstractController {
      */
     private $entityManager;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var MessageBusInterface
-     */
-    private $messageBus;
-
-    public function __construct(
-        CommentRepository $comments,
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher,
-        MessageBusInterface $messageBus
-    ) {
+    public function __construct(CommentRepository $comments, EntityManagerInterface $entityManager) {
         $this->comments = $comments;
         $this->entityManager = $entityManager;
-        $this->messageBus = $messageBus;
-
-        // TODO: let message bus take over submission events
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -106,11 +84,7 @@ final class SubmissionController extends AbstractController {
      * @Entity("submission", expr="repository.find(id)")
      */
     public function shortcut(Submission $submission): Response {
-        return $this->redirectToRoute('submission', [
-            'forum_name' => $submission->getForum()->getName(),
-            'submission_id' => $submission->getId(),
-            'slug' => Slugger::slugify($submission->getTitle()),
-        ]);
+        return $this->redirect($this->generateSubmissionUrl($submission));
     }
 
     /**
@@ -130,15 +104,10 @@ final class SubmissionController extends AbstractController {
             $this->entityManager->persist($submission);
             $this->entityManager->flush();
 
-            $this->eventDispatcher->dispatch(new NewSubmissionEvent($submission));
+            $this->dispatchEvent(new NewSubmissionEvent($submission));
+            $this->dispatchMessage(new NewSubmission($submission));
 
-            $this->messageBus->dispatch(new NewSubmission($submission));
-
-            return $this->redirectToRoute('submission', [
-                'forum_name' => $submission->getForum()->getName(),
-                'submission_id' => $submission->getId(),
-                'slug' => Slugger::slugify($submission->getTitle()),
-            ]);
+            return $this->redirect($this->generateSubmissionUrl($submission));
         }
 
         return $this->render('submission/create.html.twig', [
@@ -162,16 +131,10 @@ final class SubmissionController extends AbstractController {
             $data->updateSubmission($submission, $this->getUser());
 
             $this->entityManager->flush();
-
             $this->addFlash('success', 'flash.submission_edited');
+            $this->dispatchEvent(new EditSubmissionEvent($before, $submission));
 
-            $this->eventDispatcher->dispatch(new EditSubmissionEvent($before, $submission));
-
-            return $this->redirectToRoute('submission', [
-                'forum_name' => $forum->getName(),
-                'submission_id' => $submission->getId(),
-                'slug' => Slugger::slugify($submission->getTitle()),
-            ]);
+            return $this->redirect($this->generateSubmissionUrl($submission));
         }
 
         return $this->render('submission/edit.html.twig', [
@@ -203,10 +166,7 @@ final class SubmissionController extends AbstractController {
             }
 
             $this->entityManager->flush();
-
-            $event = new DeleteSubmissionEvent($submission);
-            $this->eventDispatcher->dispatch($event);
-
+            $this->dispatchEvent(new DeleteSubmissionEvent($submission));
             $this->addFlash('success', 'flash.submission_deleted');
 
             return $this->redirectToRoute('forum', [
@@ -236,17 +196,10 @@ final class SubmissionController extends AbstractController {
         }
 
         $this->entityManager->flush();
-
-        $event = new DeleteSubmissionEvent($submission);
-        $this->eventDispatcher->dispatch($event);
-
+        $this->dispatchEvent(new DeleteSubmissionEvent($submission));
         $this->addFlash('success', 'flash.submission_deleted');
 
-        if ($request->headers->has('Referer')) {
-            return $this->redirect($request->headers->get('Referer'));
-        }
-
-        return $this->redirectToRoute('forum', ['forum_name' => $forum->getName()]);
+        return $this->redirectAfterDelete($request);
     }
 
     /**
@@ -271,11 +224,7 @@ final class SubmissionController extends AbstractController {
             return $this->redirect($request->headers->get('Referer'));
         }
 
-        return $this->redirectToRoute('submission', [
-            'forum_name' => $forum->getName(),
-            'submission_id' => $submission->getId(),
-            'slug' => Slugger::slugify($submission->getTitle()),
-        ]);
+        return $this->redirect($this->generateSubmissionUrl($submission));
     }
 
     /**
@@ -299,10 +248,19 @@ final class SubmissionController extends AbstractController {
             return $this->redirect($request->headers->get('Referer'));
         }
 
-        return $this->redirectToRoute('submission', [
-            'forum_name' => $forum->getName(),
-            'submission_id' => $submission->getId(),
-            'slug' => Slugger::slugify($submission->getTitle()),
-        ]);
+        return $this->redirect($this->generateSubmissionUrl($submission));
+    }
+
+    private function redirectAfterDelete(Request $request): Response {
+        $url = $request->headers->get('Referer', '');
+        preg_match('!/f/[^/]++/(\d+)!', $url, $matches);
+
+        if (!$url || $request->attributes->get('submission_id') === ($matches[1] ?? '')) {
+            $url = $this->generateUrl('forum', [
+                'forum_name' => $request->attributes->get('forum_name'),
+            ]);
+        }
+
+        return $this->redirect($url);
     }
 }

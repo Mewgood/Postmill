@@ -131,4 +131,23 @@ class CommentControllerTest extends WebTestCase {
         $crawler = $client->request('GET', '/f/news/1/-/comment/1');
         $this->assertCount(1, $crawler->filter('.comment--soft-deleted'));
     }
+
+    /**
+     * @dataProvider selfDeleteReferrerProvider
+     */
+    public function testRedirectsProperlyAfterDelete(string $expected, string $referrer): void {
+        $client = self::createUserClient();
+        $crawler = $client->request('GET', $referrer);
+
+        $client->submit($crawler->filter('.comment')->selectButton('Delete')->form());
+
+        self::assertResponseRedirects($expected, null, "expected: $expected, referrer: $referrer");
+    }
+
+    public function selfDeleteReferrerProvider(): iterable {
+        yield ['http://localhost/f/cats/3', '/f/cats/3'];
+        yield ['http://localhost/f/cats/3/with-slug', '/f/cats/3/with-slug'];
+        yield ['/f/cats/3/submission-with-a-body', '/f/cats/3/-/comment/3'];
+        yield ['/f/cats/3/submission-with-a-body', '/f/cats/3/with-slug/comment/3'];
+    }
 }
