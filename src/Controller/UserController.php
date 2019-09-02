@@ -15,6 +15,7 @@ use App\Form\UserBlockType;
 use App\Form\UserFilterType;
 use App\Form\UserSettingsType;
 use App\Form\UserType;
+use App\Mailer\ResetPasswordMailer;
 use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
@@ -30,11 +31,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 /**
  * @Entity("user", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
  */
 final class UserController extends AbstractController {
+    use TargetPathTrait;
+
     /**
      * Show the user's profile page.
      */
@@ -89,6 +94,24 @@ final class UserController extends AbstractController {
             'form' => $form->createView(),
             'page' => $page,
             'users' => $users->findPaginated($page, $criteria),
+        ]);
+    }
+
+    public function login(AuthenticationUtils $helper, ResetPasswordMailer $mailer, Request $request): Response {
+        // store the last visited location if none exists
+        if (!$this->getTargetPath($request->getSession(), 'main')) {
+            $referer = $request->headers->get('Referer');
+
+            if ($referer) {
+                $this->saveTargetPath($request->getSession(), 'main', $referer);
+            }
+        }
+
+        return $this->render('user/login.html.twig', [
+            'can_reset_password' => $mailer->canMail(),
+            'error' => $helper->getLastAuthenticationError(),
+            'last_username' => $helper->getLastUsername(),
+            'remember_me' => $request->getSession()->get('remember_me'),
         ]);
     }
 

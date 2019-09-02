@@ -75,6 +75,11 @@ unblock_user:
     methods: [POST]
     requirements: { id: "%uuid_regex%" }
 
+login:
+    controller: App\Controller\UserController::login
+    path: /login
+    methods: [GET]
+
 registration:
     controller: App\Controller\UserController::registration
     path: /registration
@@ -152,3 +157,10 @@ night_mode_off:
     defaults: { enabled: false }
     methods: [POST]
     path: /night_mode_off
+
+login_check:
+    path: /login_check
+    methods: [POST]
+
+log_out:
+    path: /log_out

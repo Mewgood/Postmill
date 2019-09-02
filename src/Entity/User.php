@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Pagerfanta\Adapter\DoctrineCollectionAdapter;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
-use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -21,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     @ORM\UniqueConstraint(name="users_normalized_username_idx", columns={"normalized_username"}),
  * })
  */
-class User implements UserInterface, EquatableInterface {
+class User implements UserInterface, \Serializable {
     /**
      * User roles, from most privileged to least privileged.
      */
@@ -751,12 +750,15 @@ class User implements UserInterface, EquatableInterface {
         return sprintf('%s@%s', $username, $domain);
     }
 
-    public function isEqualTo(UserInterface $user): bool {
-        return $user instanceof self &&
-            $this->id === $user->id &&
-            $this->username === $user->username &&
-            hash_equals($this->password, $user->password) &&
-            $this->admin === $user->admin &&
-            $this->trusted === $user->trusted;
+    public function serialize(): string {
+        return serialize([$this->id, $this->username, $this->password]);
+    }
+
+    public function unserialize($serialized): void {
+        [
+            $this->id,
+            $this->username,
+            $this->password,
+        ] = @unserialize($serialized, ['allowed_classes' => false]);
     }
 }

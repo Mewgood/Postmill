@@ -1,0 +1,13 @@
+parameters:
+    markdown_cache_time: 86400
+
+framework:
+    cache:
+        pools:
+            cache.markdown:
+                adapter: cache.app
+                default_lifetime: "%markdown_cache_time%"
+                public: true
+            cache.ratelimit:
+                adapter: cache.app
+                public: true

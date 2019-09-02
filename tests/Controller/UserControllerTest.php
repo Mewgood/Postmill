@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Tests\WebTestCase;
 
 /**
@@ -231,5 +232,32 @@ class UserControllerTest extends WebTestCase {
         $client->submit($crawler->selectButton('Unblock')->form());
         $client->followRedirect();
         self::assertSelectorNotExists('main tbody tr td');
+    }
+
+    public function testUserIsLoggedOutOnChange(): void {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/login');
+        $client->submit($crawler->selectButton('Log in')->form([
+            '_username' => 'emma',
+            '_password' => 'goodshit',
+        ]));
+
+        $client->followRedirect();
+        self::assertSelectorExists('body.user-logged-in');
+
+        $this->changeUser();
+
+        $client->request('GET', '/');
+        self::assertSelectorExists('body.user-anonymous');
+    }
+
+    private function changeUser(): void {
+        /** @noinspection MissingService */
+        $em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $user = $em->find(User::class, '1');
+        $user->setUsername('not_emma');
+        $em->persist($user);
+        $em->flush();
     }
 }
