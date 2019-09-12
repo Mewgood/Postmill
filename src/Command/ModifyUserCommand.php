@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Form\Model\UserData;
+use App\DataObject\UserData;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -78,7 +78,7 @@ class ModifyUserCommand extends Command {
             return 1;
         }
 
-        $data = UserData::fromUser($user);
+        $data = new UserData($user);
 
         if ($input->getOption('username') !== null) {
             $data->setUsername($input->getOption('username'));

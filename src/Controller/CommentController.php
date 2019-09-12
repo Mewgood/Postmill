@@ -4,6 +4,7 @@
 
 namespace App\Controller;
 
+use App\DataObject\CommentData;
 use App\Entity\Comment;
 use App\Entity\Forum;
 use App\Entity\ForumLogCommentDeletion;
@@ -12,7 +13,6 @@ use App\Entity\User;
 use App\Event\EditCommentEvent;
 use App\Event\NewCommentEvent;
 use App\Form\CommentType;
-use App\Form\Model\CommentData;
 use App\Repository\CommentRepository;
 use App\Repository\ForumRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -90,7 +90,8 @@ final class CommentController extends AbstractController {
      */
     public function comment(Forum $forum, Submission $submission, ?Comment $comment, Request $request): Response {
         $name = $this->getFormName($submission, $comment);
-        $data = new CommentData($submission);
+        $data = new CommentData($comment);
+        $data->setSubmission($submission);
 
         $form = $this->createNamedForm($name, CommentType::class, $data, [
             'forum' => $forum,
@@ -134,7 +135,7 @@ final class CommentController extends AbstractController {
      * @IsGranted("edit", subject="comment", statusCode=403)
      */
     public function editComment(Forum $forum, Submission $submission, Comment $comment, Request $request): Response {
-        $data = CommentData::createFromComment($comment);
+        $data = new CommentData($comment);
 
         $form = $this->createForm(CommentType::class, $data, ['forum' => $forum]);
         $form->handleRequest($request);

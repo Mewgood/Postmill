@@ -37,6 +37,7 @@ class SubmissionControllerTest extends WebTestCase {
             'title' => 'A submission with a URL and body',
             'body' => 'This is a body.',
             'timestamp' => '2017-03-03T03:03:00+00:00',
+            'renderedBody' => "<p>This is a body.</p>\n",
         ], json_decode($client->getResponse()->getContent(), true));
     }
 

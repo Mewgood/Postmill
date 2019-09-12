@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
@@ -93,16 +92,12 @@ class Submission implements VisibilityInterface, VotableInterface {
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id()
      *
-     * @Groups({"submission:read", "abbreviated_relations"})
-     *
      * @var int|null
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Groups({"submission:read"})
      *
      * @var string
      */
@@ -111,8 +106,6 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"submission:read"})
-     *
      * @var string|null
      */
     private $url;
@@ -120,16 +113,12 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"submission:read"})
-     *
      * @var string|null
      */
     private $body;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Groups({"submission:read"})
      *
      * @var string
      */
@@ -147,16 +136,12 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="integer")
      *
-     * @Groups({"submission:read"})
-     *
      * @var int
      */
     private $commentCount = 0;
 
     /**
      * @ORM\Column(type="datetimetz")
-     *
-     * @Groups({"submission:read"})
      *
      * @var \DateTime
      */
@@ -165,16 +150,12 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="datetimetz")
      *
-     * @Groups({"submission:read"})
-     *
      * @var \DateTime
      */
     private $lastActive;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Groups({"submission:read"})
      *
      * @var string
      */
@@ -184,8 +165,6 @@ class Submission implements VisibilityInterface, VotableInterface {
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="Forum", inversedBy="submissions")
      *
-     * @Groups({"submission:read", "abbreviated_relations"})
-     *
      * @var Forum
      */
     private $forum;
@@ -193,8 +172,6 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="User", inversedBy="submissions")
-     *
-     * @Groups({"submission:read"})
      *
      * @var User
      */
@@ -232,8 +209,6 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="boolean")
      *
-     * @Groups({"submission:read"})
-     *
      * @var bool
      */
     private $sticky = false;
@@ -248,16 +223,12 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="datetimetz", nullable=true)
      *
-     * @Groups({"submission:read"})
-     *
      * @var \DateTime|null
      */
     private $editedAt;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"submission:read"})
      *
      * @var bool
      */
@@ -266,8 +237,6 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="text")
      *
-     * @Groups("submission:read")
-     *
      * @var string
      */
     private $userFlag = UserFlags::FLAG_NONE;
@@ -275,15 +244,12 @@ class Submission implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @Groups({"submission:read"})
-     *
      * @var bool
      */
     private $locked = false;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"submission:read"})
      *
      * @var int
      */
@@ -295,16 +261,6 @@ class Submission implements VisibilityInterface, VotableInterface {
      * @var string
      */
     private $searchDoc;
-
-    /**
-     * @Groups({"submission:read"})
-     */
-    protected $upvotes;
-
-    /**
-     * @Groups({"submission:read"})
-     */
-    protected $downvotes;
 
     public function __construct(
         string $title,

@@ -27,6 +27,7 @@ services:
             $secret: "%env(APP_SECRET)%"
             $siteName: '@=service("App\\Repository\\SiteRepository").getCurrentSiteName()'
             $uploadRoot: "%env(resolve:UPLOAD_ROOT)%"
+            bool $enableExperimentalRestApi: "%env(bool:ENABLE_EXPERIMENTAL_REST_API)%"
         public: false
 
     # makes classes in src/ available to be used as services

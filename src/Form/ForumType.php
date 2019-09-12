@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\ForumCategory;
-use App\Form\Model\ForumData;
+use App\DataObject\ForumData;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
 use Doctrine\ORM\EntityRepository;
@@ -33,9 +33,9 @@ final class ForumType extends AbstractType {
             $builder->add('email', HoneypotType::class);
         }
 
-        /* @var ForumData $data */
+        /* @var \App\DataObject\ForumData $data */
         $data = $builder->getData();
-        $editing = $data && $data->getEntityId();
+        $editing = $data && $data->getId();
 
         $builder
             ->add('name', TextType::class)
@@ -75,9 +75,9 @@ final class ForumType extends AbstractType {
             'label_format' => 'forum_form.%name%',
             'honeypot' => true,
             'validation_groups' => function (FormInterface $form) {
-                $editing = $form->getData() && $form->getData()->getEntityId();
+                $editing = $form->getData() && $form->getData()->getId();
 
-                return $editing ? ['edit'] : ['create'];
+                return $editing ? ['update'] : ['create'];
             },
         ]);
 

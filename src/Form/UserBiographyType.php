@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Form\Model\UserData;
+use App\DataObject\UserData;
 use App\Form\Type\MarkdownType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

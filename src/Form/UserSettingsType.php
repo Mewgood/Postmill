@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
+use App\DataObject\UserData;
 use App\Entity\Submission;
-use App\Form\Model\UserData;
 use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

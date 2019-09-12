@@ -2,7 +2,7 @@
 
 namespace App\Form\EventListener;
 
-use App\Form\Model\UserData;
+use App\DataObject\UserData;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

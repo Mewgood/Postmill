@@ -10,8 +10,6 @@ use App\Entity\Traits\VotableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -34,8 +32,6 @@ class Comment implements VisibilityInterface, VotableInterface {
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id()
      *
-     * @Groups({"comment:read", "abbreviated_relations"})
-     *
      * @var int|null
      */
     private $id;
@@ -43,16 +39,12 @@ class Comment implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="text")
      *
-     * @Groups({"comment:read"})
-     *
      * @var string
      */
     private $body;
 
     /**
      * @ORM\Column(type="datetimetz")
-     *
-     * @Groups({"comment:read"})
      *
      * @var \DateTime
      */
@@ -62,8 +54,6 @@ class Comment implements VisibilityInterface, VotableInterface {
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
      *
-     * @Groups({"comment:read"})
-     *
      * @var User
      */
     private $user;
@@ -71,8 +61,6 @@ class Comment implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="Submission", inversedBy="comments")
-     *
-     * @Groups({"comment:read"})
      *
      * @var Submission
      */
@@ -103,8 +91,6 @@ class Comment implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="text", options={"default": "visible"})
      *
-     * @Groups({"comment:read"})
-     *
      * @var string
      */
     private $visibility = self::VISIBILITY_VISIBLE;
@@ -119,8 +105,6 @@ class Comment implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="datetimetz", nullable=true)
      *
-     * @Groups({"comment:read"})
-     *
      * @var \DateTime|null
      */
     private $editedAt;
@@ -128,16 +112,12 @@ class Comment implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @Groups({"comment:read"})
-     *
      * @var bool
      */
     private $moderated = false;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Groups("comment:read")
      *
      * @var string
      */
@@ -160,8 +140,6 @@ class Comment implements VisibilityInterface, VotableInterface {
     /**
      * @ORM\Column(type="integer")
      *
-     * @Groups({"comment:read"})
-     *
      * @var int
      */
     private $netScore = 0;
@@ -170,16 +148,6 @@ class Comment implements VisibilityInterface, VotableInterface {
      * @ORM\Column(type="tsvector", nullable=true)
      */
     private $searchDoc;
-
-    /**
-     * @Groups({"comment:read"})
-     */
-    protected $upvotes;
-
-    /**
-     * @Groups({"comment:read"})
-     */
-    protected $downvotes;
 
     public function __construct(
         string $body,
@@ -244,14 +212,6 @@ class Comment implements VisibilityInterface, VotableInterface {
     }
 
     /**
-     * @Groups({"comment:read"})
-     * @SerializedName("parent")
-     */
-    public function getParentId(): ?int {
-        return $this->parent ? $this->parent->id : null;
-    }
-
-    /**
      * Get replies, ordered by descending net score.
      *
      * @return Comment[]
@@ -266,9 +226,6 @@ class Comment implements VisibilityInterface, VotableInterface {
         return $children;
     }
 
-    /**
-     * @Groups({"comment:read"})
-     */
     public function getReplyCount(): int {
         return \count($this->children);
     }
@@ -404,5 +361,16 @@ class Comment implements VisibilityInterface, VotableInterface {
 
     public function getNetScore(): int {
         return $this->netScore;
+    }
+
+    public function getMarkdownFields(): iterable {
+        yield 'body';
+    }
+
+    public function getMarkdownContext(): array {
+        return [
+            'context' => 'comment',
+            'comment' => $this,
+        ];
     }
 }

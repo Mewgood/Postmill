@@ -11,7 +11,6 @@ use Pagerfanta\Adapter\DoctrineCollectionAdapter;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -35,16 +34,12 @@ class User implements UserInterface, \Serializable {
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id()
      *
-     * @Groups({"abbreviated_relations"})
-     *
      * @var int|null
      */
     private $id;
 
     /**
      * @ORM\Column(type="text", unique=true)
-     *
-     * @Groups({"abbreviated_relations"})
      *
      * @var string
      */

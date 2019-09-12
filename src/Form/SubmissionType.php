@@ -2,10 +2,10 @@
 
 namespace App\Form;
 
+use App\DataObject\SubmissionData;
 use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Form\EventListener\SubmissionImageListener;
-use App\Form\Model\SubmissionData;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
 use App\Form\Type\UserFlagType;
@@ -48,7 +48,7 @@ final class SubmissionType extends AbstractType {
 
         /** @var SubmissionData $data */
         $data = $builder->getData();
-        $editing = $data->getEntityId() !== null;
+        $editing = $data->getId() !== null;
 
         $builder
             ->add('title', TextareaType::class, [
@@ -129,7 +129,7 @@ final class SubmissionType extends AbstractType {
     private function getValidationGroups(FormInterface $form): array {
         $groups = ['Default'];
         $trusted = $this->authorizationChecker->isGranted('ROLE_TRUSTED_USER');
-        $editing = $form->getData() && $form->getData()->getEntityId();
+        $editing = $form->getData() && $form->getData()->getId();
 
         if (!$editing) {
             $groups[] = 'create';

@@ -10,6 +10,7 @@ abstract class WebTestCase extends BaseWebTestCase {
         return self::createClient([], [
             'PHP_AUTH_USER' => 'emma',
             'PHP_AUTH_PW' => 'goodshit',
+            'HTTP_X_EXPERIMENTAL_API' => 1,
         ]);
     }
 
@@ -17,6 +18,7 @@ abstract class WebTestCase extends BaseWebTestCase {
         return self::createClient([], [
             'PHP_AUTH_USER' => 'zach',
             'PHP_AUTH_PW' => 'example2',
+            'HTTP_X_EXPERIMENTAL_API' => 1,
         ]);
     }
 }

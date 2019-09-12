@@ -1,8 +1,8 @@
 security:
     # speed up unit tests
     encoders:
+        App\DataObject\UserData: plaintext
         App\Entity\User: plaintext
-        App\Form\Model\UserData: plaintext
 
     firewalls:
         main:

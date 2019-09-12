@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Tests\Form\Model;
+namespace App\Tests\DataObject;
 
+use App\DataObject\CommentData;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Form\Model\CommentData;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
@@ -25,7 +26,7 @@ class CommentDataTest extends TestCase {
 
     protected function setUp(): void {
         $this->comment = $this->getMockBuilder(Comment::class)
-            ->setMethods(['getSubmission', 'getUser'])
+            ->setMethods(['getSubmission', 'getTimestamp', 'getVotes', 'getUser', 'getReplyCount'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -37,11 +38,23 @@ class CommentDataTest extends TestCase {
             ->method('getUser')
             ->willReturn($this->createMock(User::class));
 
+        $this->comment
+            ->method('getTimestamp')
+            ->willReturn(new \DateTime('@'.time()));
+
+        $this->comment
+            ->method('getVotes')
+            ->willReturn(new ArrayCollection());
+
+        $this->comment
+            ->method('getReplyCount')
+            ->willReturn(0);
+
         $this->comment->setBody('foo');
     }
 
     public function testUpdate(): void {
-        $data = CommentData::createFromComment($this->comment);
+        $data = new CommentData($this->comment);
         $data->setBody('bar');
         $data->updateComment($this->comment, $this->comment->getUser());
 

@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
+use App\DataObject\UserData;
 use App\Form\EventListener\PasswordEncodingSubscriber;
-use App\Form\Model\UserData;
 use App\Form\Type\HoneypotType;
 use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Symfony\Component\Form\AbstractType;
@@ -33,7 +33,7 @@ final class UserType extends AbstractType {
             $builder->add('phone', HoneypotType::class);
         }
 
-        $editing = $builder->getData() && $builder->getData()->getEntityId();
+        $editing = $builder->getData() && $builder->getData()->getId();
 
         $builder
             ->add('username', TextType::class, [
@@ -67,7 +67,7 @@ final class UserType extends AbstractType {
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options): void {
-        if ($form->getData() && $form->getData()->getEntityId()) {
+        if ($form->getData() && $form->getData()->getId()) {
             // don't auto-complete the password fields when editing the user
             $view['password']['first']->vars['attr']['autocomplete'] = 'new-password';
             $view['password']['second']->vars['attr']['autocomplete'] = 'new-password';
@@ -80,7 +80,7 @@ final class UserType extends AbstractType {
             'honeypot' => true,
             'label_format' => 'user_form.%name%',
             'validation_groups' => function (FormInterface $form) {
-                if ($form->getData()->getEntityId() !== null) {
+                if ($form->getData()->getId() !== null) {
                     $groups[] = 'edit';
                 } else {
                     $groups[] = 'registration';

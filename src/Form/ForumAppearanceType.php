@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Form\Model\ForumData;
+use App\DataObject\ForumData;
 use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

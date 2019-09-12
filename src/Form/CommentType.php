@@ -2,9 +2,9 @@
 
 namespace App\Form;
 
+use App\DataObject\CommentData;
 use App\Entity\Comment;
 use App\Entity\Forum;
-use App\Form\Model\CommentData;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
 use App\Form\Type\UserFlagType;
@@ -29,7 +29,7 @@ final class CommentType extends AbstractType {
             'forum' => $options['forum'],
         ]);
 
-        $editing = $builder->getData() && $builder->getData()->getEntityId();
+        $editing = $builder->getData() && $builder->getData()->getId();
 
         $builder->add('submit', SubmitType::class, [
             'label' => $editing ? 'action.save' : 'action.post',
@@ -45,8 +45,8 @@ final class CommentType extends AbstractType {
             'validation_groups' => function (FormInterface $form) {
                 $groups = ['Default'];
 
-                if ($form->getData() && $form->getData()->getEntityId()) {
-                    $groups[] = 'edit';
+                if ($form->getData() && $form->getData()->getId()) {
+                    $groups[] = 'update';
                 } else {
                     $groups[] = 'create';
                 }

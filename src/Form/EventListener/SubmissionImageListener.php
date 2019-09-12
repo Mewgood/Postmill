@@ -2,9 +2,9 @@
 
 namespace App\Form\EventListener;
 
+use App\DataObject\SubmissionData;
 use App\Entity\Submission;
 use App\Flysystem\SubmissionImageManager;
-use App\Form\Model\SubmissionData;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\FormEvents;
@@ -39,19 +39,13 @@ final class SubmissionImageListener implements EventSubscriberInterface {
 
         $upload = $data->getUploadedImage();
 
-        if (
-            $upload === null ||
-            $data->getImage() !== null ||
-            $data->getMediaType() !== Submission::MEDIA_IMAGE
-        ) {
-            return;
+        if ($upload && !$data->getImage() && $data->getMediaType() === Submission::MEDIA_IMAGE) {
+            $source = $upload->getPathname();
+            $filename = $this->imageHelper->getFileName($source);
+
+            $this->imageHelper->store($source, $filename);
+
+            $data->setImage($filename);
         }
-
-        $source = $upload->getPathname();
-        $filename = $this->imageHelper->getFileName($source);
-
-        $this->imageHelper->store($source, $filename);
-
-        $data->setImage($filename);
     }
 }

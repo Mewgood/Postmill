@@ -10,7 +10,7 @@ class LoadExampleUsers extends AbstractFixture {
     public function load(ObjectManager $manager): void {
         foreach ($this->provideUsers() as $data) {
             // use plaintext passwords in fixtures to speed up tests
-            $user = new User($data['username'], $data['password']);
+            $user = new User($data['username'], $data['password'], new \DateTime($data['created']));
             $user->setAdmin($data['admin']);
             $user->setEmail($data['email']);
 
@@ -26,6 +26,7 @@ class LoadExampleUsers extends AbstractFixture {
         yield [
             'username' => 'emma',
             'password' => 'goodshit',
+            'created' => '2017-01-01T12:12:12+00:00',
             'email' => 'emma@example.com',
             'admin' => true,
         ];
@@ -33,6 +34,7 @@ class LoadExampleUsers extends AbstractFixture {
         yield [
             'username' => 'zach',
             'password' => 'example2',
+            'created' => '2017-01-02T12:12:12+00:00',
             'email' => 'zach@example.com',
             'admin' => false,
         ];
@@ -40,6 +42,7 @@ class LoadExampleUsers extends AbstractFixture {
         yield [
             'username' => 'third',
             'password' => 'example3',
+            'created' => '2017-01-03T12:12:12+00:00',
             'email' => 'third@example.net',
             'admin' => false,
         ];

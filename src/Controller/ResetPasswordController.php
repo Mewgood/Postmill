@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\DataObject\UserData;
 use App\Entity\User;
-use App\Form\Model\UserData;
 use App\Form\RequestPasswordResetType;
 use App\Form\UserType;
 use App\Mailer\ResetPasswordMailer;
@@ -62,7 +62,7 @@ final class ResetPasswordController extends AbstractController {
             throw $this->createNotFoundException('The link has expired');
         }
 
-        $data = UserData::fromUser($user);
+        $data = new UserData($user);
 
         $form = $this->createForm(UserType::class, $data);
         $form->handleRequest($request);

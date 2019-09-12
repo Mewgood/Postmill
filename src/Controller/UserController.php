@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
+use App\DataObject\UserData;
 use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
 use App\Form\ConfirmDeletionType;
 use App\Form\Model\UserBlockData;
-use App\Form\Model\UserData;
 use App\Form\Model\UserFilterData;
 use App\Form\UserBiographyType;
 use App\Form\UserBlockType;
@@ -152,7 +152,7 @@ final class UserController extends AbstractController {
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
     public function editUser(ObjectManager $em, User $user, Request $request): Response {
-        $data = UserData::fromUser($user);
+        $data = new UserData($user);
 
         $form = $this->createForm(UserType::class, $data);
         $form->handleRequest($request);
@@ -209,7 +209,7 @@ final class UserController extends AbstractController {
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
     public function userSettings(ObjectManager $em, User $user, Request $request): Response {
-        $data = UserData::fromUser($user);
+        $data = new UserData($user);
 
         $form = $this->createForm(UserSettingsType::class, $data);
         $form->handleRequest($request);
@@ -235,7 +235,7 @@ final class UserController extends AbstractController {
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
     public function editBiography(ObjectManager $em, User $user, Request $request): Response {
-        $data = UserData::fromUser($user);
+        $data = new UserData($user);
 
         $form = $this->createForm(UserBiographyType::class, $data);
         $form->handleRequest($request);

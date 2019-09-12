@@ -1,4 +1,4 @@
-# uncomment this should we ever decide to use annotations for routing
-#controllers:
-#    resource: ../../src/Controller/
-#    type: annotation
+api:
+    resource: ../../src/Controller/Api
+    type: annotation
+    prefix: /api

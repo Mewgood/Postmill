@@ -84,7 +84,7 @@ class CommentControllerTest extends WebTestCase {
             'submission' => [
                 'id' => 3,
                 'forum' => [
-                    'id' => '1',
+                    'id' => 1,
                     'name' => 'cats',
                 ],
             ],
@@ -94,8 +94,9 @@ class CommentControllerTest extends WebTestCase {
             'netScore' => 1,
             'upvotes' => 1,
             'downvotes' => 0,
-            'parent' => null,
+            'parentId' => null,
             'replyCount' => 0,
+            'renderedBody' => "<p>YET ANOTHER BORING COMMENT.</p>\n",
         ], json_decode($client->getResponse()->getContent(), true));
     }
 

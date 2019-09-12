@@ -8,14 +8,21 @@ use App\Utils\Slugger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseAbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @method \App\Entity\User|null getUser()
+ */
 abstract class AbstractController extends BaseAbstractController {
     public static function getSubscribedServices(): array {
         return [
             'event_dispatcher' => EventDispatcherInterface::class,
+            'validator' => ValidatorInterface::class,
         ] + parent::getSubscribedServices();
     }
 
@@ -72,5 +79,59 @@ abstract class AbstractController extends BaseAbstractController {
             'slug' => Slugger::slugify($comment->getSubmission()->getTitle()),
             'comment_id' => $comment->getId(),
         ]);
+    }
+
+    protected function apiCreate(string $type, array $options, callable $handler): Response {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        assert($request !== null);
+
+        /** @var \Symfony\Component\Serializer\Serializer $serializer */
+        $serializer = $this->container->get('serializer');
+
+        $data = $serializer->deserialize($request->getContent(), $type, 'json', [
+            'groups' => $options['denormalization_groups'] ?? [],
+        ]);
+
+        $validator = $this->container->get('validator');
+        $errors = $validator->validate($data, null, $options['validation_groups'] ?? null);
+
+        if (\count($errors) > 0) {
+            return $this->json($errors, 400, ['Content-Type' => 'application/problem+json']);
+        }
+
+        return new Response($serializer->serialize($handler($data), 'json', [
+            'groups' => $options['normalization_groups'] ?? [],
+        ]), 201);
+    }
+
+    protected function apiUpdate($data, string $type, array $options, callable $handler): Response {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        assert($request !== null);
+
+        /** @var \Symfony\Component\Serializer\Serializer $serializer */
+        $serializer = $this->container->get('serializer');
+
+        $serializer->deserialize($request->getContent(), $type, 'json', [
+            'groups' => $options['denormalization_groups'] ?? [],
+            'object_to_populate' => $data,
+        ]);
+
+        $validator = $this->container->get('validator');
+        $errors = $validator->validate($data, null, $options['validation_groups'] ?? null);
+
+        if (\count($errors) > 0) {
+            return $this->json($errors, 400, ['Content-Type' => 'application/problem+json']);
+        }
+
+        $handler($data);
+
+        return $this->createEmptyResponse();
+    }
+
+    protected function createEmptyResponse(): Response {
+        $response = new Response('', 204);
+        $response->headers->remove('Content-Type');
+
+        return $response;
     }
 }

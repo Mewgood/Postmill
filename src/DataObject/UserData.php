@@ -1,28 +1,36 @@
 <?php
 
-namespace App\Form\Model;
+namespace App\DataObject;
 
 use App\Entity\Submission;
 use App\Entity\Theme;
 use App\Entity\User;
+use App\Serializer\Contracts\NormalizeMarkdownInterface;
 use App\Validator\Constraints\Unique;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Unique("normalizedUsername", idFields={"entityId": "id"}, errorPath="username",
+ * @Unique("normalizedUsername", idFields={"id"}, errorPath="username",
  *     entityClass="App\Entity\User", groups={"registration", "edit"})
  */
-class UserData implements UserInterface {
+class UserData implements UserInterface, NormalizeMarkdownInterface {
+    private $user;
+
     /**
+     * @Groups({"user:read", "abbreviated_relations"})
+     *
      * @var int|null
      */
-    private $entityId;
+    private $id;
 
     /**
      * @Assert\Length(min=3, max=25, groups={"registration", "edit"})
      * @Assert\NotBlank(groups={"registration", "edit"})
      * @Assert\Regex("/^\w+$/", groups={"registration", "edit"})
+     *
+     * @Groups({"user:read", "abbreviated_relations"})
      *
      * @var string|null
      */
@@ -53,11 +61,22 @@ class UserData implements UserInterface {
     private $email;
 
     /**
+     * @Groups({"user:read"})
+     *
+     * @var \DateTime|null
+     */
+    private $created;
+
+    /**
+     * @Groups("user:preferences")
+     *
      * @var string|null
      */
     private $locale;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var \DateTimeZone
      */
     private $timezone;
@@ -65,6 +84,8 @@ class UserData implements UserInterface {
     /**
      * @Assert\Choice(Submission::FRONT_PAGE_OPTIONS, groups={"settings"}, strict=true)
      * @Assert\NotBlank(groups={"settings"})
+     *
+     * @Groups("user:preferences")
      *
      * @var string|null
      */
@@ -74,21 +95,29 @@ class UserData implements UserInterface {
      * @Assert\Choice({Submission::SORT_ACTIVE, Submission::SORT_HOT, Submission::SORT_NEW}, groups={"settings"}, strict=true)
      * @Assert\NotBlank(groups={"settings"})
      *
+     * @Groups("user:preferences")
+     *
      * @var string|null
      */
     private $frontPageSortMode;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var bool|null
      */
     private $showCustomStylesheets;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var Theme|null
      */
     private $preferredTheme;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var bool|null
      */
     private $openExternalLinksInNewTab;
@@ -96,36 +125,50 @@ class UserData implements UserInterface {
     /**
      * @Assert\Length(max=300, groups={"edit_biography"})
      *
+     * @Groups({"user:read"})
+     *
      * @var string|null
      */
     private $biography;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var bool|null
      */
     private $autoFetchSubmissionTitles;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var bool|null
      */
     private $enablePostPreviews;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var bool|null
      */
     private $showThumbnails;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var bool|null
      */
     private $allowPrivateMessages;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var bool|null
      */
     private $notifyOnReply;
 
     /**
+     * @Groups("user:preferences")
+     *
      * @var bool|null
      */
     private $notifyOnMentions;
@@ -133,35 +176,43 @@ class UserData implements UserInterface {
     /**
      * @Assert\Length(max=200, groups={"settings"})
      *
+     * @Groups("user:preferences")
+     *
      * @var string|null
      */
     private $preferredFonts;
 
+    /**
+     * @Groups({"user:read"})
+     *
+     * @var bool
+     */
     private $admin = false;
 
-    public static function fromUser(User $user): self {
-        $self = new self();
-        $self->entityId = $user->getId();
-        $self->username = $user->getUsername();
-        $self->email = $user->getEmail();
-        $self->locale = $user->getLocale();
-        $self->timezone = $user->getTimezone();
-        $self->frontPage = $user->getFrontPage();
-        $self->frontPageSortMode = $user->getFrontPageSortMode();
-        $self->showCustomStylesheets = $user->isShowCustomStylesheets();
-        $self->preferredTheme = $user->getPreferredTheme();
-        $self->openExternalLinksInNewTab = $user->openExternalLinksInNewTab();
-        $self->biography = $user->getBiography();
-        $self->autoFetchSubmissionTitles = $user->autoFetchSubmissionTitles();
-        $self->enablePostPreviews = $user->enablePostPreviews();
-        $self->showThumbnails = $user->showThumbnails();
-        $self->allowPrivateMessages = $user->allowPrivateMessages();
-        $self->notifyOnReply = $user->getNotifyOnReply();
-        $self->notifyOnMentions = $user->getNotifyOnMentions();
-        $self->preferredFonts = $user->getPreferredFonts();
-        $self->admin = $user->isAdmin();
-
-        return $self;
+    public function __construct(User $user = null) {
+        if ($user) {
+            $this->user = $user;
+            $this->id = $user->getId();
+            $this->username = $user->getUsername();
+            $this->email = $user->getEmail();
+            $this->created = $user->getCreated();
+            $this->admin = $user->isAdmin();
+            $this->locale = $user->getLocale();
+            $this->timezone = $user->getTimezone();
+            $this->frontPage = $user->getFrontPage();
+            $this->frontPageSortMode = $user->getFrontPageSortMode();
+            $this->showCustomStylesheets = $user->isShowCustomStylesheets();
+            $this->preferredTheme = $user->getPreferredTheme();
+            $this->openExternalLinksInNewTab = $user->openExternalLinksInNewTab();
+            $this->biography = $user->getBiography();
+            $this->autoFetchSubmissionTitles = $user->autoFetchSubmissionTitles();
+            $this->enablePostPreviews = $user->enablePostPreviews();
+            $this->showThumbnails = $user->showThumbnails();
+            $this->allowPrivateMessages = $user->allowPrivateMessages();
+            $this->notifyOnReply = $user->getNotifyOnReply();
+            $this->notifyOnMentions = $user->getNotifyOnMentions();
+            $this->preferredFonts = $user->getPreferredFonts();
+        }
     }
 
     public function updateUser(User $user): void {
@@ -222,8 +273,8 @@ class UserData implements UserInterface {
         return $user;
     }
 
-    public function getEntityId(): ?int {
-        return $this->entityId;
+    public function getId(): ?int {
+        return $this->id;
     }
 
     public function getUsername(): ?string {
@@ -261,6 +312,10 @@ class UserData implements UserInterface {
 
     public function setEmail(?string $email): void {
         $this->email = $email;
+    }
+
+    public function getCreated(): ?\DateTime {
+        return $this->created;
     }
 
     public function getLocale() {
@@ -401,5 +456,16 @@ class UserData implements UserInterface {
 
     public function eraseCredentials(): void {
         $this->plainPassword = null;
+    }
+
+    public function getMarkdownFields(): iterable {
+        yield 'biography';
+    }
+
+    public function getMarkdownContext(): array {
+        return [
+            'context' => 'user_biography',
+            'user' => $this->user,
+        ];
     }
 }

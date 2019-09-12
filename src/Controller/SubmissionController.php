@@ -4,6 +4,7 @@
 
 namespace App\Controller;
 
+use App\DataObject\SubmissionData;
 use App\Entity\Comment;
 use App\Entity\Forum;
 use App\Entity\ForumLogSubmissionDeletion;
@@ -13,7 +14,6 @@ use App\Event\DeleteSubmissionEvent;
 use App\Event\EditSubmissionEvent;
 use App\Event\NewSubmissionEvent;
 use App\Form\DeleteReasonType;
-use App\Form\Model\SubmissionData;
 use App\Form\SubmissionType;
 use App\Message\NewSubmission;
 use App\Repository\CommentRepository;
@@ -93,7 +93,8 @@ final class SubmissionController extends AbstractController {
      * @IsGranted("ROLE_USER")
      */
     public function submit(Request $request, ?Forum $forum): Response {
-        $data = new SubmissionData($forum);
+        $data = new SubmissionData();
+        $data->setForum($forum);
 
         $form = $this->createForm(SubmissionType::class, $data);
         $form->handleRequest($request);
@@ -121,7 +122,7 @@ final class SubmissionController extends AbstractController {
      * @IsGranted("edit", subject="submission", statusCode=403)
      */
     public function editSubmission(Forum $forum, Submission $submission, Request $request): Response {
-        $data = SubmissionData::createFromSubmission($submission);
+        $data = new SubmissionData($submission);
 
         $form = $this->createForm(SubmissionType::class, $data);
         $form->handleRequest($request);

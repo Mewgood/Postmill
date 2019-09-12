@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DataObject\ForumData;
 use App\Entity\Forum;
 use App\Entity\Moderator;
 use App\Entity\User;
@@ -10,7 +11,6 @@ use App\Form\ForumAppearanceType;
 use App\Form\ForumBanType;
 use App\Form\ForumType;
 use App\Form\Model\ForumBanData;
-use App\Form\Model\ForumData;
 use App\Form\Model\ModeratorData;
 use App\Form\ModeratorType;
 use App\Repository\CommentRepository;
@@ -111,7 +111,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("moderator", subject="forum", statusCode=403)
      */
     public function editForum(Request $request, Forum $forum, ObjectManager $em): Response {
-        $data = ForumData::createFromForum($forum);
+        $data = new ForumData($forum);
 
         $form = $this->createForm(ForumType::class, $data);
         $form->handleRequest($request);
@@ -283,7 +283,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("moderator", subject="forum", statusCode=403)
      */
     public function appearance(Forum $forum, Request $request, ObjectManager $em): Response {
-        $data = ForumData::createFromForum($forum);
+        $data = new ForumData($forum);
 
         $form = $this->createForm(ForumAppearanceType::class, $data);
         $form->handleRequest($request);
