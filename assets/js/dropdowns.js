@@ -6,14 +6,18 @@ const KEY_END = 35;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
 
-const FOCUSABLE_ELEMENTS = `> .dropdown__toggle,
-> .dropdown__menu a[href],
-> .dropdown__menu button:not([disabled]),
-> .dropdown__menu input:not([type="hidden"]):not([disabled])`;
+const FOCUSABLE_ELEMENTS = [
+    '> .dropdown__toggle',
+    '> .dropdown__menu a[href]',
+    '> .dropdown__menu button:not([disabled])',
+    '> .dropdown__menu input:not([type="hidden"]):not([disabled])',
+].join(', ');
 
-const MENU_ACTIONS = `.dropdown__menu a[href],
-.dropdown__menu button[type="submit"],
-.dropdown__menu button:not([type])`;
+const MENU_ACTIONS = [
+    '.dropdown__menu a[href]',
+    '.dropdown__menu button[type="submit"]',
+    '.dropdown__menu button:not([type])',
+].join(', ');
 
 function toggle($dropdown) {
     const $toClose = $dropdown.add($dropdown.parents('.dropdown--expanded'));
@@ -71,19 +75,15 @@ function globalKeyDownHandler(event) {
         break;
     case KEY_DOWN:
         moveInList($dropdown, 1);
-
         break;
     case KEY_UP:
         moveInList($dropdown, -1);
-
         break;
     case KEY_HOME:
         moveInList($dropdown, Infinity);
-
         break;
     case KEY_END:
         moveInList($dropdown, -Infinity);
-
         break;
     default:
         return;
@@ -96,25 +96,27 @@ function globalKeyDownHandler(event) {
 
 $('.dropdown__toggle').attr('aria-haspopup', true).attr('aria-expanded', false);
 
-$(document).on('keydown', globalKeyDownHandler);
+$(document)
+    .on('keydown', globalKeyDownHandler)
 
-// close the menu upon clicking a link or button or similar inside it
-$(document).on('click', MENU_ACTIONS, () => {
-    event.stopPropagation();
+    // close the menu upon clicking a link or button or similar inside it
+    .on('click', MENU_ACTIONS, event => {
+        event.stopPropagation();
 
-    toggle($('.dropdown--expanded'));
-});
+        toggle($('.dropdown--expanded'));
+    })
 
-// prevent closing the menu when clicking on things in it that aren't buttons or
-// links or anything
-$(document).on('click', '.dropdown__menu', event => event.stopPropagation());
+    // prevent closing the menu when clicking on things in it that aren't
+    // buttons or links or anything
+    .on('click', '.dropdown__menu', event => event.stopPropagation())
 
-// make the toggles work
-$(document).on('click', '.dropdown__toggle', function (event) {
-    event.stopPropagation();
+    // make the toggles work
+    .on('click', '.dropdown__toggle', function (event) {
+        event.stopPropagation();
 
-    toggle($(this).parent('.dropdown'));
-});
+        toggle($(this).parent('.dropdown'));
+    })
 
-// close the menu when clicking elsewhere on a page
-$(document).on('click', () => toggle($('.dropdown--expanded')));
+    // close the menu when clicking elsewhere on a page
+    .on('click', () => toggle($('.dropdown--expanded')));
+
