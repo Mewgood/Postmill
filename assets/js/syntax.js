@@ -7,7 +7,7 @@ const languageAliases = {
 };
 
 $('code[class^="language-"]').each(async function () {
-    const nightMode = $('body').hasClass('night-mode');
+    const nightMode = $('html').hasClass('dark-mode');
 
     let language = this.className.replace(/.*language-(\S+).*/, '$1');
 

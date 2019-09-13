@@ -93,9 +93,13 @@ final class AppExtension extends AbstractExtension {
                     $name = $this->themesConfig['_default'];
                 }
 
-                $config = $this->themesConfig[strtolower($name)];
+                $config = $this->themesConfig[strtolower($name)]['entrypoint'];
 
-                return $config['entrypoint'][$nightMode ? 'night' : 'day'] ?? $config['entrypoint'];
+                if (\is_array($config)) {
+                    throw new \RuntimeException('object entrypoints are no longer supported');
+                }
+
+                return $config;
             }),
             new TwigFunction('upload_url', function (string $path) {
                 $path = rtrim($this->uploadRoot, '/').'/'.$path;

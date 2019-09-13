@@ -6,6 +6,7 @@ import './dropdowns';
 import './fetch_titles';
 import './forms';
 import './markdown';
+import './night-mode';
 import './relative-time';
 import './remaining';
 import './select2';

@@ -148,15 +148,19 @@ unhide_forum:
 
 night_mode_on:
     controller: App\Controller\UserController::toggleNightMode
-    defaults: { enabled: true }
+    defaults: { enabled: true, _format: html }
     methods: [POST]
-    path: /night_mode_on
+    path: /night_mode_on.{_format}
+    requirements: { _format: html|json }
+    options: { expose: true }
 
 night_mode_off:
     controller: App\Controller\UserController::toggleNightMode
-    defaults: { enabled: false }
+    defaults: { enabled: false, _format: html }
     methods: [POST]
-    path: /night_mode_off
+    path: /night_mode_off.{_format}
+    requirements: { _format: html|json }
+    options: { expose: true }
 
 login_check:
     path: /login_check

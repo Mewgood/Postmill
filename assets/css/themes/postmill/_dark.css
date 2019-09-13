@@ -1,8 +1,6 @@
-/*! https://postmill.xyz/ */
-
 @import '../_modern-night';
 
-:root {
+.dark-mode:root {
   --link: #faa;
   --primary: #c00;
   --primary-alt: #a00;

@@ -2,37 +2,22 @@
     "_default": "postmill",
     "postmill": {
         "name": "Postmill",
-        "entrypoint": {
-            "day": "themes/postmill/day",
-            "night": "themes/postmill/night"
-        }
+        "entrypoint": "themes/postmill"
     },
     "postmill-classic": {
         "name": "Postmill Classic",
-        "entrypoint": {
-            "day": "themes/postmill-classic/day",
-            "night": "themes/postmill-classic/night"
-        }
+        "entrypoint": "themes/postmill-classic"
     },
     "c4c": {
         "name": "c4c",
-        "entrypoint": {
-            "day": "themes/c4c/day",
-            "night": "themes/c4c/night"
-        }
+        "entrypoint": "themes/c4c"
     },
     "jst": {
         "name": "jstpst",
-        "entrypoint": {
-            "day": "themes/jst/day",
-            "night": "themes/jst/night"
-        }
+        "entrypoint": "themes/jst"
     },
     "forest": {
         "name": "Forest",
-        "entrypoint": {
-            "day": "themes/forest/day",
-            "night": "themes/forest/night"
-        }
+        "entrypoint": "themes/forest"
     }
 }

@@ -1,5 +1,5 @@
 /* base for day-time 'modern' theme derivatives */
-:root {
+.light-mode:root {
   --primary-fg: #fff;
   --accent: var(--bg-grey);
   --accent-alt: #dedede;

@@ -1,6 +1,8 @@
 {% use '_layouts/site_nav.html.twig' %}
 <!DOCTYPE html>
-<html class="no-js" lang="{{ app.request.locale|replace({'_': '-'}) }}" prefix="og: http://ogp.me/ns#">
+<html class="no-js {{ (app.user.nightMode ?? false) ? 'dark-mode' : 'light-mode' }}"
+      lang="{{ app.request.locale|replace({'_': '-'}) }}"
+      prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
     <title>{% block title %}{{ site_name() }}{% endblock %}</title>
@@ -36,7 +38,7 @@
     {% block head '' %}
   </head>
 
-  <body class="{{ app.user ? 'user-logged-in' : 'user-anonymous' }} {{ (app.user.nightMode ?? false) ? 'night-mode' }}">
+  <body class="{{ app.user ? 'user-logged-in' : 'user-anonymous' }} ">
     {% block site_alerts %}
       <div class="site-alerts">
         {%- if app.request.previousSession -%}

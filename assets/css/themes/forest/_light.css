@@ -1,8 +1,6 @@
-/*! https://postmill.xyz/ */
-
 @import '../_modern';
 
-:root {
+.light-mode:root {
   --primary: #0a0;
   --primary-alt: #070;
   --primary-bright: #3a3;

@@ -25,21 +25,23 @@ Encore
     .createSharedEntry('vendor', './assets/js/vendor.js');
 
 (function addStyleEntrypoints(directory, prefix) {
-    fs.readdirSync(directory, { withFileTypes: true }).forEach((file) => {
-        if (file.name[0] !== '_') {
-            const filePath = directory + '/' + file.name;
+    fs.readdirSync(directory, { withFileTypes: true })
+        .filter(file => !file.name.startsWith('_'))
+        .forEach(file => {
+            const filePath = `${directory}/${file.name}`;
 
-            if (file.isFile() && /\.(le|c)ss$/i.test(file.name)) {
-                const entryName = prefix + file.name.replace(/\..+?$/, '');
+            if (file.isFile() && prefix && /^index\.(le|c)ss$/i.test(file.name)) {
+                Encore.addStyleEntry(prefix.replace(/\/$/, ''), filePath);
+            } else if (file.isFile() && /\.(le|c)ss$/i.test(file.name)) {
+                const entryName = file.name.replace(/\..+?$/, '');
 
-                Encore.addStyleEntry(entryName, filePath);
+                Encore.addStyleEntry(prefix + entryName, filePath);
             } else if (file.isDirectory()) {
                 const newPrefix = prefix + file.name + '/';
 
                 addStyleEntrypoints(filePath, newPrefix);
             }
-        }
-    });
+        });
 })(__dirname + '/assets/css', '');
 
 module.exports = Encore.getWebpackConfig();

@@ -1,6 +1,4 @@
-/*! https://postmill.xyz/ */
-
-:root {
+.dark-mode:root {
   --link: #faa;
   --submission-link: #fff;
   --submission-link-visited: var(--text-muted);
@@ -46,6 +44,6 @@
   --notification: #f60;
 }
 
-.site-content > .body {
+.dark-mode:root .site-content > .body {
   margin-top: 0 !important;
 }

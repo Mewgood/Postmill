@@ -1,7 +1,4 @@
-/*! https://postmill.xyz/ */
-/* web design is my passion */
-
-:root {
+.dark-mode:root {
   --link: var(--primary);
   --submission-link: var(--link);
   --submission-link-visited: var(--text);

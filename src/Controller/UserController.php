@@ -422,6 +422,10 @@ final class UserController extends AbstractController {
         $this->getUser()->setNightMode($enabled);
         $em->flush();
 
+        if ($request->getRequestFormat() === 'json') {
+            return $this->json(['night_mode' => $enabled]);
+        }
+
         if ($request->headers->has('Referer')) {
             return $this->redirect($request->headers->get('Referer'));
         }
