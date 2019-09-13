@@ -6,6 +6,8 @@ use App\Controller\AbstractController;
 use App\DataObject\SubmissionData;
 use App\Entity\Submission;
 use App\Event\DeleteSubmissionEvent;
+use App\SubmissionFinder\Criteria;
+use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +19,42 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/submissions", defaults={"_format": "json"})
  */
 final class SubmissionController extends AbstractController {
+    /**
+     * @Route("", methods={"GET"})
+     */
+    public function list(Request $request, SubmissionFinder $finder): Response {
+        \assert($this->getUser() !== null);
+
+        $sortBy = $request->query->get('sortBy', $this->getUser()->getFrontPageSortMode());
+
+        if (!\in_array($sortBy, Submission::SORT_OPTIONS, true)) {
+            return $this->json(['message' => 'unknown sort mode', 400]);
+        }
+
+        $criteria = new Criteria($sortBy, $this->getUser());
+
+        switch ($request->query->get('filter', $this->getUser()->getFrontPage())) {
+        case Submission::FRONT_FEATURED:
+            $criteria->showFeatured()->excludeHiddenForums();
+            break;
+        case Submission::FRONT_SUBSCRIBED:
+            $criteria->showSubscribed();
+            break;
+        case Submission::FRONT_MODERATED:
+            $criteria->showModerated();
+            break;
+        case Submission::FRONT_ALL:
+            $criteria->excludeHiddenForums();
+            break;
+        default:
+            return $this->json(['message' => 'unknown filter mode', 400]);
+        }
+
+        return $this->json($finder->find($criteria), 200, [], [
+            'groups' => ['submission:read', 'abbreviated_relations'],
+        ]);
+    }
+
     /**
      * @Route("/{id}", methods={"GET"})
      */

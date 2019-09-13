@@ -8,6 +8,21 @@ use App\Tests\WebTestCase;
  * @covers \App\Controller\Api\SubmissionController
  */
 class SubmissionControllerTest extends WebTestCase {
+    public function testListSubmissions(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/api/submissions');
+
+        self::assertResponseStatusCodeSame(200);
+
+        $this->assertArraySubset([
+            'entries' => [
+                ['id' => 3],
+                ['id' => 2],
+                ['id' => 1],
+            ]
+        ], json_decode($client->getResponse()->getContent(), true));
+    }
+
     public function testGetSubmission(): void {
         $client = self::createUserClient();
         $client->request('GET', '/api/submissions/3');
