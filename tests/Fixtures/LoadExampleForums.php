@@ -24,7 +24,7 @@ class LoadExampleForums extends AbstractFixture implements DependentFixtureInter
 
             foreach ($data['moderators'] as $username) {
                 /* @noinspection PhpParamsInspection */
-                new Moderator($forum, $this->getReference('user-'.$username));
+                new Moderator($forum, $this->getReference('user-'.$username), $data['created']);
             }
 
             foreach ($data['subscribers'] as $username) {

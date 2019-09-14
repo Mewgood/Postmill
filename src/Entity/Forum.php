@@ -151,7 +151,7 @@ class Forum {
         $this->logEntries = new ArrayCollection();
 
         if ($user) {
-            $this->addModerator(new Moderator($this, $user));
+            $this->addModerator(new Moderator($this, $user, $this->created));
             $this->subscribe($user);
         }
     }

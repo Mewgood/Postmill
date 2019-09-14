@@ -87,4 +87,24 @@ class UserControllerTest extends WebTestCase {
             ]
         ], json_decode($client->getResponse()->getContent(), true));
     }
+
+    public function testUserModeratorList(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/api/users/2/moderator_of');
+
+        self::assertResponseStatusCodeSame(200);
+
+        $this->assertEquals([
+            'entries' => [
+                [
+                    'forum' => ['id' => 1, 'name' => 'cats'],
+                    'since' => '2017-04-20T13:12:00+00:00',
+                ],
+                [
+                    'forum' => ['id' => 2, 'name' => 'news'],
+                    'since' => '2017-01-01T00:00:00+00:00',
+                ]
+            ]
+        ], json_decode($client->getResponse()->getContent(), true));
+    }
 }

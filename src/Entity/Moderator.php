@@ -44,11 +44,11 @@ class Moderator {
      */
     private $timestamp;
 
-    public function __construct(Forum $forum, User $user) {
+    public function __construct(Forum $forum, User $user, \DateTime $timestamp = null) {
         $this->id = Uuid::uuid4();
         $this->forum = $forum;
         $this->user = $user;
-        $this->timestamp = new \DateTime('@'.time());
+        $this->timestamp = $timestamp ?? new \DateTime('@'.time());
         $forum->getModerators()->add($this);
         $user->getModeratorTokens()->add($this);
     }

@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Controller\AbstractController;
+use App\DataObject\ModeratorData;
 use App\DataObject\UserData;
 use App\Entity\Submission;
 use App\Entity\User;
@@ -71,6 +72,20 @@ final class UserController extends AbstractController {
 
         return $this->json($finder->find($criteria), 200, [], [
             'groups' => ['submission:read', 'abbreviated_relations'],
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/moderator_of", methods={"GET"})
+     */
+    public function readModeratedForums(User $user): Response {
+        // TODO: pagination
+        return $this->json([
+            'entries' => $user->getModeratorTokens()->map(function ($token) {
+                return new ModeratorData($token);
+            })
+        ], 200, [], [
+            'groups' => ['moderator:user-side', 'abbreviated_relations'],
         ]);
     }
 }
