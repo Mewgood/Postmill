@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/forums", defaults={"_format": "json"})
+ * @IsGranted("ROLE_USER")
+ * @Route("/forums", defaults={"_format": "json"}, requirements={"id": "%number_regex%"})
  */
 class ForumController extends AbstractController {
     /**

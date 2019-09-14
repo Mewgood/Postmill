@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("ROLE_USER")
- * @Route("/comments", defaults={"_format": "json"})
+ * @Route("/comments", defaults={"_format": "json"}, requirements={"id": "%number_regex%"})
  */
 final class CommentController extends AbstractController {
     /**

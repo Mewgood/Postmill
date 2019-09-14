@@ -16,11 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("ROLE_USER")
- * @Route("/users", defaults={"_format": "json"})
+ * @Route("/users", defaults={"_format": "json"}, requirements={"id": "%number_regex%"})
  */
 final class UserController extends AbstractController {
     /**
-     * @Route("/{id}", methods={"GET"}, requirements={"id": "%number_regex%"})
+     * @Route("/{id}", methods={"GET"})
      */
     public function read(User $user): Response {
         return $this->json($user, 200, [], [

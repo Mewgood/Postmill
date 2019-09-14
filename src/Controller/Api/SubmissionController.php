@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("ROLE_USER")
- * @Route("/submissions", defaults={"_format": "json"})
+ * @Route("/submissions", defaults={"_format": "json"}, requirements={"id": "%number_regex%"})
  */
 final class SubmissionController extends AbstractController {
     /**
