@@ -18,15 +18,10 @@ class MarkdownInitEventTest extends TestCase {
      */
     private $event;
 
-    private static $context = [
-        'some_context' => 'foo',
-        'other_context' => 'bar',
-    ];
-
     protected function setUp(): void {
         $this->environment = $this->createMock(ConfigurableEnvironmentInterface::class);
 
-        $this->event = new MarkdownInitEvent($this->environment, self::$context);
+        $this->event = new MarkdownInitEvent($this->environment);
     }
 
     public function testPurifierConfig(): void {
@@ -43,6 +38,5 @@ class MarkdownInitEventTest extends TestCase {
 
     public function testConstructorArgumentGetters(): void {
         $this->assertSame($this->environment, $this->event->getEnvironment());
-        $this->assertSame(self::$context, $this->event->getContext());
     }
 }

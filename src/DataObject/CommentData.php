@@ -19,11 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CommentData implements NormalizeMarkdownInterface {
     /**
-     * @var Comment|null
-     */
-    private $comment;
-
-    /**
      * @Groups({"comment:read", "abbreviated_relations"})
      *
      * @var int|null
@@ -127,7 +122,6 @@ class CommentData implements NormalizeMarkdownInterface {
 
     public function __construct(Comment $comment = null) {
         if ($comment) {
-            $this->comment = $comment;
             $this->id = $comment->getId();
             $this->body = $comment->getBody();
             $this->timestamp = $comment->getTimestamp();
@@ -189,7 +183,7 @@ class CommentData implements NormalizeMarkdownInterface {
         return $this->submission;
     }
 
-    public function setSubmission(?Submission $submission) {
+    public function setSubmission(?Submission $submission): void {
         $this->submission = $submission;
     }
 
@@ -235,12 +229,5 @@ class CommentData implements NormalizeMarkdownInterface {
 
     public function getMarkdownFields(): iterable {
         yield 'body';
-    }
-
-    public function getMarkdownContext(): array {
-        return [
-            'context' => 'comment',
-            'comment' => $this->comment,
-        ];
     }
 }

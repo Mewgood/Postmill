@@ -6,14 +6,8 @@ use App\Event\MarkdownCacheEvent;
 use PHPUnit\Framework\TestCase;
 
 class MarkdownCacheEventTest extends TestCase {
-    public function testContext(): void {
-        $event = new MarkdownCacheEvent(['some' => 'context']);
-
-        $this->assertEquals(['some' => 'context'], $event->getContext());
-    }
-
     public function testCacheKeyGeneration(): void {
-        $event = new MarkdownCacheEvent([]);
+        $event = new MarkdownCacheEvent();
         $event->addToCacheKey('foo', 'bar');
 
         $this->assertSame(
@@ -23,12 +17,12 @@ class MarkdownCacheEventTest extends TestCase {
     }
 
     public function testOrderOfAddingKeysDoesNotMatter(): void {
-        $event1 = new MarkdownCacheEvent([]);
+        $event1 = new MarkdownCacheEvent();
         $event1->addToCacheKey('a', '1');
         $event1->addToCacheKey('b', '2');
         $event1->addToCacheKey('c', '3');
 
-        $event2 = new MarkdownCacheEvent([]);
+        $event2 = new MarkdownCacheEvent();
         $event2->addToCacheKey('b', '2');
         $event2->addToCacheKey('c', '3');
         $event2->addToCacheKey('a', '1');

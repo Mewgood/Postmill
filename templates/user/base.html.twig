@@ -19,7 +19,7 @@
     </p>
 
     {% if user.biography is not empty %}
-      <div class="user-bio__biography">{{ user.biography|cached_markdown({ context: 'user_biography', user: user })|raw }}</div>
+      <div class="user-bio__biography">{{ user.biography|cached_markdown|raw }}</div>
     {% endif %}
   </section>
 

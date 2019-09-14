@@ -41,7 +41,7 @@ class MentionsListener implements EventSubscriberInterface {
      */
     private $users;
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array {
         return [
             NewCommentEvent::class => ['onNewComment'],
             NewSubmissionEvent::class => ['onNewSubmission'],
@@ -69,10 +69,7 @@ class MentionsListener implements EventSubscriberInterface {
             return;
         }
 
-        $html = $this->converter->convertToHtml($submission->getBody(), [
-            'context' => 'submission',
-            'submission' => $submission,
-        ]);
+        $html = $this->converter->convertToHtml($submission->getBody());
 
         $users = $this->getUsersToNotify($html);
 
@@ -86,10 +83,7 @@ class MentionsListener implements EventSubscriberInterface {
     public function onNewComment(NewCommentEvent $event): void {
         $comment = $event->getComment();
 
-        $html = $this->converter->convertToHtml($comment->getBody(), [
-            'context' => 'comment',
-            'comment' => $comment,
-        ]);
+        $html = $this->converter->convertToHtml($comment->getBody());
 
         $users = $this->getUsersToNotify($html);
 

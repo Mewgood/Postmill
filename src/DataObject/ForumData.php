@@ -18,11 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ForumData implements NormalizeMarkdownInterface {
     /**
-     * @var Forum|null
-     */
-    private $forum;
-
-    /**
      * @Groups({"forum:read", "abbreviated_relations"})
      *
      * @var int|null
@@ -99,7 +94,6 @@ class ForumData implements NormalizeMarkdownInterface {
 
     public function __construct(Forum $forum = null) {
         if ($forum) {
-            $this->forum = $forum;
             $this->id = $forum->getId();
             $this->setName($forum->getName());
             $this->title = $forum->getTitle();
@@ -207,12 +201,5 @@ class ForumData implements NormalizeMarkdownInterface {
 
     public function getMarkdownFields(): iterable {
         yield 'sidebar';
-    }
-
-    public function getMarkdownContext(): array {
-        return [
-            'context' => 'forum',
-            'forum' => $this->forum,
-        ];
     }
 }

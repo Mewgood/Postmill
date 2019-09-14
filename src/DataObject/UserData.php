@@ -16,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     entityClass="App\Entity\User", groups={"registration", "edit"})
  */
 class UserData implements UserInterface, NormalizeMarkdownInterface {
-    private $user;
-
     /**
      * @Groups({"user:read", "abbreviated_relations"})
      *
@@ -191,7 +189,6 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
 
     public function __construct(User $user = null) {
         if ($user) {
-            $this->user = $user;
             $this->id = $user->getId();
             $this->username = $user->getUsername();
             $this->email = $user->getEmail();
@@ -460,12 +457,5 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
 
     public function getMarkdownFields(): iterable {
         yield 'biography';
-    }
-
-    public function getMarkdownContext(): array {
-        return [
-            'context' => 'user_biography',
-            'user' => $this->user,
-        ];
     }
 }

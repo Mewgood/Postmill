@@ -362,15 +362,4 @@ class Comment implements VisibilityInterface, VotableInterface {
     public function getNetScore(): int {
         return $this->netScore;
     }
-
-    public function getMarkdownFields(): iterable {
-        yield 'body';
-    }
-
-    public function getMarkdownContext(): array {
-        return [
-            'context' => 'comment',
-            'comment' => $this,
-        ];
-    }
 }

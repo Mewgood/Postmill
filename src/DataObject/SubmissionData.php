@@ -19,11 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SubmissionData implements NormalizeMarkdownInterface {
     /**
-     * @var Submission|null
-     */
-    private $submission;
-
-    /**
      * @Groups({"submission:read", "abbreviated_relations"})
      *
      * @var int|null
@@ -189,7 +184,6 @@ class SubmissionData implements NormalizeMarkdownInterface {
 
     public function __construct(Submission $submission = null) {
         if ($submission) {
-            $this->submission = $submission;
             $this->id = $submission->getId();
             $this->title = $submission->getTitle();
             $this->url = $submission->getUrl();
@@ -377,12 +371,5 @@ class SubmissionData implements NormalizeMarkdownInterface {
 
     public function getMarkdownFields(): iterable {
         yield 'body';
-    }
-
-    public function getMarkdownContext(): array {
-        return [
-            'context' => 'submission',
-            'submission' => $this->submission,
-        ];
     }
 }

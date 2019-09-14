@@ -8,9 +8,4 @@ interface NormalizeMarkdownInterface {
      * output.
      */
     public function getMarkdownFields(): iterable;
-
-    /**
-     * Data to pass to `MarkdownConverter::convert()`'s second parameter.
-     */
-    public function getMarkdownContext(): array;
 }

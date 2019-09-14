@@ -31,9 +31,9 @@ class MarkdownConverter {
         $this->cacheItemPool = $cacheItemPool;
     }
 
-    public function convertToHtml(string $markdown, array $context = []): string {
+    public function convertToHtml(string $markdown): string {
         $environment = Environment::createCommonMarkEnvironment();
-        $event = new MarkdownInitEvent($environment, $context);
+        $event = new MarkdownInitEvent($environment);
 
         $this->dispatcher->dispatch($event);
 
@@ -48,8 +48,8 @@ class MarkdownConverter {
         return $html;
     }
 
-    public function convertToHtmlCached(string $markdown, array $context = []): string {
-        $event = new MarkdownCacheEvent($context);
+    public function convertToHtmlCached(string $markdown): string {
+        $event = new MarkdownCacheEvent();
 
         $this->dispatcher->dispatch($event);
 
@@ -62,7 +62,7 @@ class MarkdownConverter {
         $cacheItem = $this->cacheItemPool->getItem($key);
 
         if (!$cacheItem->isHit()) {
-            $cacheItem->set($this->convertToHtml($markdown, $context));
+            $cacheItem->set($this->convertToHtml($markdown));
 
             $this->cacheItemPool->saveDeferred($cacheItem);
         }

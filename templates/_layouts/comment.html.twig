@@ -80,7 +80,7 @@
           {%- if raw_body is not null -%}
             {{ raw_body|raw }}
           {%- elseif comment.body is not null -%}
-            {{ comment.body|cached_markdown({ context: 'comment', comment: comment })|raw }}
+            {{ comment.body|cached_markdown|raw }}
           {%- endif -%}
         </div>
 

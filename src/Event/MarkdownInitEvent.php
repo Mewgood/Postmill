@@ -11,27 +11,14 @@ final class MarkdownInitEvent extends Event {
      */
     private $environment;
 
-    /**
-     * @var string[]
-     */
-    private $context;
-
     private $htmlPurifierConfig = [];
 
-    public function __construct(ConfigurableEnvironmentInterface $environment, array $context) {
+    public function __construct(ConfigurableEnvironmentInterface $environment) {
         $this->environment = $environment;
-        $this->context = $context;
     }
 
     public function getEnvironment(): ConfigurableEnvironmentInterface {
         return $this->environment;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getContext(): array {
-        return $this->context;
     }
 
     public function getHtmlPurifierConfig(): array {

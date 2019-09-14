@@ -36,10 +36,7 @@ class MarkdownNormalizer implements ContextAwareNormalizerInterface, NormalizerA
 
             if (\array_key_exists($rawKey, $data)) {
                 if (isset($data[$rawKey])) {
-                    $data[$renderedKey] = $this->converter->convertToHtmlCached(
-                        $data[$rawKey],
-                        $object->getMarkdownContext()
-                    );
+                    $data[$renderedKey] = $this->converter->convertToHtmlCached($data[$rawKey]);
                 } else {
                     $data[$renderedKey] = null;
                 }

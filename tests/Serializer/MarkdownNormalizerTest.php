@@ -30,20 +30,16 @@ class MarkdownNormalizerTest extends TestCase {
     }
 
     public function testCanNormalizeMarkdownFields(): void {
-        $entity = new class() implements NormalizeMarkdownInterface {
-            public function getMarkdownFields(): iterable {
-                return [
-                    'header',
-                    'body' => 'foo',
-                    'footer',
-                    'nonexistent',
-                ];
-            }
-
-            public function getMarkdownContext(): array {
-                return ['some' => 'context'];
-            }
-        };
+        $entity = $this->createMock(NormalizeMarkdownInterface::class);
+        $entity
+            ->expects($this->once())
+            ->method('getMarkdownFields')
+            ->willReturn([
+                'header',
+                'body' => 'foo',
+                'footer',
+                'nonexistent',
+            ]);
 
         /** @var MarkdownConverter|\PHPUnit\Framework\MockObject\MockObject $converter */
         $converter = $this->createMock(MarkdownConverter::class);

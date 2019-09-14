@@ -41,7 +41,7 @@
 
     {% if forum.sidebar is not empty %}
       <div class="forum-sidebar-content break-text">
-        {{- forum.sidebar|cached_markdown({ context: 'forum_sidebar', forum: forum })|raw -}}
+        {{- forum.sidebar|cached_markdown|raw -}}
       </div>
 
       <hr>

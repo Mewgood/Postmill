@@ -14,7 +14,7 @@
   <section class="sidebar__section sidebar-card">
     <h2 class="sidebar__title">/c/{{ category.name }}</h2>
 
-    {{ category.sidebar|cached_markdown({ context: 'forum_category', category: category })|raw }}
+    {{ category.sidebar|cached_markdown|raw }}
 
     {% if is_granted('ROLE_ADMIN') %}
       <nav>

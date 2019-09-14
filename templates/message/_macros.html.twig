@@ -20,7 +20,7 @@
     </h1>
 
     <div class="message__body">
-      {{- message.body|cached_markdown({ context: 'message', message: message })|raw -}}
+      {{- message.body|cached_markdown|raw -}}
     </div>
 
     {% if is_granted('delete', message) %}
