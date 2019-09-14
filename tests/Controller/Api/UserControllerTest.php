@@ -73,4 +73,18 @@ class UserControllerTest extends WebTestCase {
             'preferredFonts' => 'DejaVu Sans Mono, monospace',
         ], json_decode($client->getResponse()->getContent(), true));
     }
+
+    public function testUserSubmissions(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/api/users/1/submissions');
+
+        self::assertResponseStatusCodeSame(200);
+
+        $this->assertArraySubset([
+            'entries' => [
+                ['id' => 2],
+                ['id' => 1],
+            ]
+        ], json_decode($client->getResponse()->getContent(), true));
+    }
 }

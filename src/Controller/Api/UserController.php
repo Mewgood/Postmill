@@ -4,7 +4,10 @@ namespace App\Controller\Api;
 
 use App\Controller\AbstractController;
 use App\DataObject\UserData;
+use App\Entity\Submission;
 use App\Entity\User;
+use App\SubmissionFinder\Criteria;
+use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,5 +60,17 @@ final class UserController extends AbstractController {
 
             $em->flush();
         });
+    }
+
+    /**
+     * @Route("/{id}/submissions", methods={"GET"})
+     */
+    public function readSubmissions(User $user, SubmissionFinder $finder): Response {
+        $criteria = (new Criteria(Submission::SORT_NEW, $this->getUser()))
+            ->showUsers($user);
+
+        return $this->json($finder->find($criteria), 200, [], [
+            'groups' => ['submission:read', 'abbreviated_relations'],
+        ]);
     }
 }
