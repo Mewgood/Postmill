@@ -4,12 +4,13 @@ namespace App\Flysystem;
 
 use Aws\S3\S3Client;
 use League\Flysystem\Adapter\Local;
+use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;
 
 final class DsnAwareFilesystemFactory {
     public static function createFilesystem(string $dsn, array $options = []): Filesystem {
-        $parts = parse_url($dsn);
+        $parts = parse_url($dsn) ?: ['scheme' => preg_replace('/\W.*/', '', $dsn)];
         $parts += [
             'scheme' => null,
             'user' => null,
@@ -31,6 +32,10 @@ final class DsnAwareFilesystemFactory {
 
             $adapter = new Local($path);
 
+            break;
+
+        case 'null':
+            $adapter = new NullAdapter();
             break;
 
         case 's3':

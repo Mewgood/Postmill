@@ -28,6 +28,27 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertEquals("<p>This is a test submission</p>\n<p>a new line</p>\n", $crawler->filter('.submission__body')->html());
     }
 
+    public function testCanCreateSubmissionWithImage(): void {
+        $client = self::createAdminClient();
+        $client->followRedirects();
+
+        $crawler = $client->request('GET', '/submit');
+
+        $form = $crawler->selectButton('Create submission')->form([
+            'submission[title]' => 'Submission with image',
+            'submission[mediaType]' => 'image',
+            'submission[forum]' => '2',
+        ]);
+        $form['submission[image]']->upload(__DIR__.'/../Resources/120px-12-Color-SVG.svg.png');
+
+        $crawler = $client->submit($form);
+
+        $this->assertEquals(
+            'http://localhost/submission_images/a91d6c2201d32b8c39bff1143a5b29e74b740248c5d65810ddcbfa16228d49e9.png',
+            $crawler->filter('.submission__link')->attr('href')
+        );
+    }
+
     public function testSubmissionJson(): void {
         $client = self::createClient();
         $client->request('GET', '/f/news/1.json');
