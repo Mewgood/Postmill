@@ -47,8 +47,8 @@ class MarkdownNormalizerTest extends TestCase {
             ->expects($this->exactly(2))
             ->method('convertToHtmlCached')
             ->withConsecutive(
-                $this->equalTo('The header'),
-                $this->equalTo('The body')
+                [$this->equalTo('The header')],
+                [$this->equalTo('The body')]
             )
             ->willReturnOnConsecutiveCalls(
                 'rendered header',
