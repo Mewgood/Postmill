@@ -58,8 +58,7 @@ final class ForumController extends AbstractController {
     }
 
     public function multi(ForumRepository $fr, string $names, string $sortBy): Response {
-        $names = preg_split('/[^\w]+/', $names, -1, PREG_SPLIT_NO_EMPTY);
-        $names = array_map(Forum::class.'::normalizeName', $names);
+        $names = array_map(Forum::class.'::normalizeName', explode('+', $names));
         $forums = $fr->findByNormalizedName($names);
 
         if (!$forums) {
@@ -192,7 +191,7 @@ final class ForumController extends AbstractController {
         return $this->redirectToRoute('forum', ['forum_name' => $forum->getName()]);
     }
 
-    public function list(ForumRepository $repository, int $page = 1, string $sortBy): Response {
+    public function list(ForumRepository $repository, int $page, string $sortBy): Response {
         return $this->render('forum/list.html.twig', [
             'forums' => $repository->findForumsByPage($page, $sortBy),
             'sortBy' => $sortBy,

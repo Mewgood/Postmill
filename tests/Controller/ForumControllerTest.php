@@ -3,42 +3,93 @@
 namespace App\Tests\Controller;
 
 use App\Entity\ForumBan;
+use App\Tests\WebTestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * @covers \App\Controller\ForumController
  */
 class ForumControllerTest extends WebTestCase {
-    public function testCanSubscribeToForumFromForumView(): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => 'emma',
-            'PHP_AUTH_PW' => 'goodshit',
-        ]);
-        $client->followRedirects();
+    public function testCanCreateForum(): void {
+        $client = self::createUserClient();
+        $crawler = $client->request('GET', '/create_forum');
 
-        $crawler = $client->request('GET', '/f/news');
+        $client->submit($crawler->selectButton('Create forum')->form([
+            'forum[name]' => 'dogs',
+            'forum[title]' => 'dogs & puppies',
+            'forum[description]' => 'the doggo forum',
+            'forum[sidebar]' => 'rules: post pups',
+        ]));
 
-        $form = $crawler->filter('.subscribe-button--subscribe')->form();
-        $crawler = $client->submit($form);
+        self::assertResponseRedirects('/f/dogs');
 
-        $this->assertContains(
-            'Unsubscribe',
-            $crawler->filter('.subscribe-button--unsubscribe')->text()
-        );
+        $crawler = $client->followRedirect();
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('main h1', '/f/dogs');
+        self::assertSelectorTextContains('.forum-title', 'dogs & puppies');
+        self::assertSelectorTextContains('.forum-sidebar-content p', 'rules: post pups');
+        $this->assertEquals('the doggo forum', $crawler->filter('meta[name="description"]')->attr('content'));
     }
 
-    public function testCanSubscribeToForumFromForumList(): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => 'emma',
-            'PHP_AUTH_PW' => 'goodshit',
-        ]);
-        $client->followRedirects();
+    public function testCanEditForum(): void {
+        $client = self::createAdminClient();
+        $crawler = $client->request('GET', '/f/cats/edit');
 
+        $client->submit($crawler->selectButton('Save changes')->form([
+            'forum[name]' => 'kittens',
+        ]));
+
+        self::assertResponseRedirects('/f/kittens/edit');
+        $client->followRedirect();
+
+        self::assertResponseIsSuccessful();
+    }
+
+    public function testCanDeleteForum(): void {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/login');
+        $client->submit($crawler->selectButton('Log in')->form([
+            '_username' => 'emma',
+            '_password' => 'goodshit',
+        ]));
+
+        $crawler = $client->request('GET', '/f/cats/delete');
+        $client->submit($crawler->selectButton('Delete forum')->form([
+            'confirm_deletion[name]' => 'cats',
+            'confirm_deletion[confirm]' => true,
+        ]));
+
+        self::assertResponseRedirects('/');
+
+        $client->request('GET', '/f/cats');
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testCanSubscribeAndUnsubscribeToForumFromForumView(): void {
+        $client = self::createAdminClient();
+        $crawler = $client->request('GET', '/f/news');
+
+        $client->submit($crawler->selectButton('Subscribe')->form());
+        self::assertResponseRedirects('http://localhost/f/news');
+
+        $crawler = $client->followRedirect();
+        self::assertSelectorExists('.subscribe-button--unsubscribe');
+
+        $client->submit($crawler->selectButton('Unsubscribe')->form());
+        self::assertResponseRedirects('http://localhost/f/news');
+
+        $client->followRedirect();
+        self::assertSelectorExists('.subscribe-button--subscribe');
+    }
+
+    public function testCanSubscribeAndUnsubscribeToForumFromForumList(): void {
+        $client = self::createAdminClient();
         $crawler = $client->request('GET', '/forums');
 
-        $form = $crawler->filter('.subscribe-button--subscribe')->form();
-        $crawler = $client->submit($form);
+        $client->submit($crawler->filter('.subscribe-button--subscribe')->form());
+        self::assertResponseRedirects('http://localhost/forums');
+
+        $crawler = $client->followRedirect();
 
         $this->assertCount(2, $crawler->filter('.subscribe-button--unsubscribe'));
     }
@@ -49,35 +100,96 @@ class ForumControllerTest extends WebTestCase {
     public function testCanBanUser(): void {
         ClockMock::register(ForumBan::class);
 
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => 'zach',
-            'PHP_AUTH_PW' => 'example2',
-        ]);
+        $client = self::createUserClient();
+        $crawler = $client->request('GET', '/f/news/ban/zach');
 
-        $crawler = $client->request('GET', '/f/news')->filter('.submission');
-        $crawler = $client->click($crawler->filter('a[href*="/ban/"]')->link());
-
-        $form = $crawler->selectButton('Ban')->form([
+        $client->submit($crawler->selectButton('Ban')->form([
             'forum_ban[reason]' => 'troll',
-            'forum_ban[expiryTime][date]' => '3017-07-07 07:07:07',
+            'forum_ban[expiryTime][date]' => '3017-07-07',
             'forum_ban[expiryTime][time]' => '12:00',
-        ]);
+        ]));
 
-        $client->followRedirects();
+        self::assertResponseRedirects('/f/news/bans');
+        $client->followRedirect();
 
-        $crawler = $client->submit($form)->filter('.body tbody tr')->children();
+        $nowFormatted = \IntlDateFormatter::create('en',
+            \IntlDateFormatter::SHORT,
+            \IntlDateFormatter::NONE,
+            date_default_timezone_get()
+        )->format(time());
 
-        $this->assertContains('emma', $crawler->eq(0)->text());
-        $this->assertContains('troll', $crawler->eq(1)->text());
-        $this->assertContains(
-            \IntlDateFormatter::create(
-                'en',
-                \IntlDateFormatter::SHORT,
-                \IntlDateFormatter::NONE,
-                date_default_timezone_get()
-            )->format(time()),
-            $crawler->eq(2)->text()
-        );
-        $this->assertContains('7/7/17, 12:00 PM', $crawler->eq(3)->text());
+        self::assertSelectorTextContains('main tbody tr td:nth-child(1)', 'zach');
+        self::assertSelectorTextContains('main tbody tr td:nth-child(2)', 'troll');
+        self::assertSelectorTextContains('main tbody tr td:nth-child(3)', $nowFormatted);
+        self::assertSelectorTextContains('main tbody tr td:nth-child(4)', '7/7/17, 12:00 PM');
+    }
+
+    public function testCanAddModerator(): void {
+        $client = self::createAdminClient();
+        $crawler = $client->request('GET', '/f/cats/add_moderator');
+
+        $client->submit($crawler->selectButton('Add as moderator')->form([
+            'moderator[user]' => 'third',
+        ]));
+
+        self::assertResponseRedirects('/f/cats/moderators');
+
+        $client->followRedirect();
+        self::assertSelectorTextContains('main tbody tr:nth-child(3) td:first-child', 'third');
+    }
+
+    public function testCannotAddExistingModerator(): void {
+        $client = self::createAdminClient();
+        $crawler = $client->request('GET', '/f/cats/add_moderator');
+
+        $client->submit($crawler->selectButton('Add as moderator')->form([
+            'moderator[user]' => 'zach',
+        ]));
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('.form-error-list');
+    }
+
+    public function testCanRemoveModerator(): void {
+        $client = self::createAdminClient();
+        $crawler = $client->request('GET', '/f/cats/moderators');
+
+        $client->submit($crawler->filter('main tbody tr:nth-child(2)')->selectButton('Remove')->form());
+
+        self::assertResponseRedirects('/f/cats/moderators');
+
+        $client->followRedirect();
+        self::assertSelectorNotExists('main tbody tr:nth-child(2)');
+    }
+
+    public function testMultiForumView(): void {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/f/cats+news');
+
+        self::assertResponseIsSuccessful();
+        $this->assertCount(3, $crawler->filter('.submission'));
+    }
+
+    public function testMultiForumViewAcceptsSomeMissingForums(): void {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/f/cats+nope');
+
+        self::assertResponseIsSuccessful();
+        $this->assertCount(2, $crawler->filter('.submission'));
+    }
+
+    public function testMultiForumView404sOnNoForums(): void {
+        $client = self::createClient();
+        $client->request('GET', '/f/nope+nah');
+
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testCommentListing(): void {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/f/cats/comments');
+
+        $this->assertCount(1, $crawler->filter('.comment'));
+        self::assertSelectorTextContains('.comment__body p', 'YET ANOTHER BORING COMMENT.');
     }
 }
