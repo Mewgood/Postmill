@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserContributionsPage implements PageInterface {
     /**
-     * @Assert\NotBlank()
-     * @Assert\DateTime(format=\DateTime::RFC3339)
+     * @Assert\NotBlank(groups={"pager"})
+     * @Assert\DateTime(format=\DateTime::RFC3339, groups={"pager"})
      *
      * @Groups({"pager"})
      */

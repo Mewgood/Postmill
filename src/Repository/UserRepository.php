@@ -5,7 +5,8 @@ namespace App\Repository;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Pagination\Adapter\DoctrineUnionAdapter;
+use App\Pagination\Adapter\DoctrineAdapter;
+use App\Pagination\Adapter\UnionAdapter;
 use App\Pagination\DTO\UserContributionsPage;
 use App\Pagination\Pager;
 use App\Pagination\Paginator;
@@ -118,7 +119,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $submissionsQuery = $this->_em->createQueryBuilder()
             ->select('s')
             ->from(Submission::class, 's')
-            ->where('s.user = :user')
+            ->andWhere('s.user = :user')
             ->andWhere('s.visibility = :visibility')
             ->setParameter('user', $user)
             ->setParameter('visibility', Submission::VISIBILITY_VISIBLE);
@@ -126,15 +127,17 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $commentsQuery = $this->_em->createQueryBuilder()
             ->select('c')
             ->from(Comment::class, 'c')
-            ->where('c.visibility = :visibility')
             ->andWhere('c.user = :user')
-            ->setParameter('visibility', Comment::VISIBILITY_VISIBLE)
-            ->setParameter('user', $user);
+            ->andWhere('c.visibility = :visibility')
+            ->setParameter('user', $user)
+            ->setParameter('visibility', Comment::VISIBILITY_VISIBLE);
 
-        $adapter = new DoctrineUnionAdapter($submissionsQuery, $commentsQuery);
-        $pageClass = UserContributionsPage::class;
+        $adapter = new UnionAdapter(
+            new DoctrineAdapter($submissionsQuery),
+            new DoctrineAdapter($commentsQuery)
+        );
 
-        $pager = $this->paginator->paginate($adapter, 25, $pageClass);
+        $pager = $this->paginator->paginate($adapter, 25, UserContributionsPage::class);
 
         $this->hydrateContributions($pager);
 
