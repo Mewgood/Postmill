@@ -14,20 +14,15 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
         $i = 0;
 
         foreach ($this->provideComments() as $data) {
-            /** @var Submission $submission */
-            $submission = $this->getReference('submission-'.$data['submission']);
-
             /** @var User $user */
             $user = $this->getReference('user-'.$data['user']);
 
-            /** @var Comment|null $parent */
-            $parent = $data['parent'] ? $this->getReference('comment-'.$data['parent']) : null;
+            /** @var Submission|Comment $parent */
+            $parent = !empty($data['parent'])
+                ? $this->getReference('comment-'.$data['parent'])
+                : $this->getReference('submission-'.$data['submission']);
 
-            $comment = new Comment($data['body'], $user, $submission, $data['ip'], $data['timestamp']);
-
-            if ($parent) {
-                $parent->addReply($comment);
-            }
+            $comment = new Comment($data['body'], $user, $parent, $data['ip'], $data['timestamp']);
 
             $this->addReference('comment-'.++$i, $comment);
 
@@ -41,7 +36,6 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
         yield [
             'body' => "This is a comment body. It is quite neat.\n\n*markdown*",
             'submission' => 1,
-            'parent' => null,
             'user' => 'emma',
             'timestamp' => new \DateTime('2017-05-01 12:00'),
             'ip' => '8.8.4.4',
@@ -49,7 +43,6 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
 
         yield [
             'body' => 'This is a reply to the previous comment.',
-            'submission' => 1,
             'parent' => 1,
             'user' => 'zach',
             'timestamp' => new \DateTime('2017-05-02 14:00'),
@@ -59,7 +52,6 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
         yield [
             'body' => 'YET ANOTHER BORING COMMENT.',
             'submission' => 3,
-            'parent' => null,
             'user' => 'zach',
             'timestamp' => new \DateTime('2017-05-03 01:00'),
             'ip' => '255.241.124.124',

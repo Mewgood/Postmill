@@ -25,10 +25,8 @@ class CommentTest extends TestCase {
         /** @var Submission|\PHPUnit\Framework\MockObject\MockObject $submission */
         $submission = $this->createMock(Submission::class);
 
-        $child = new Comment('b', new User('u', 'p'), $submission, null);
-
         $parent = new Comment('a', new User('u', 'p'), $submission, null);
-        $parent->addReply($child);
+        $child = new Comment('b', new User('u', 'p'), $parent, null);
 
         $this->assertCount(0, $child->getUser()->getNotifications());
         $this->assertCount(1, $parent->getUser()->getNotifications());
@@ -45,9 +43,7 @@ class CommentTest extends TestCase {
             ->willReturn($user);
 
         $parent = new Comment('a', $user, $submission, null);
-        $parent->addReply(
-            new Comment('b', $user, $submission, null)
-        );
+        new Comment('b', $user, $parent, null);
 
         $this->assertCount(0, $submission->getUser()->getNotifications());
     }

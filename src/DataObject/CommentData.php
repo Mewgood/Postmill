@@ -139,8 +139,11 @@ class CommentData implements NormalizeMarkdownInterface {
         }
     }
 
-    public function toComment(User $user, ?string $ip): Comment {
-        $comment = new Comment($this->body, $user, $this->submission, $ip);
+    /**
+     * @param Submission|Comment $parent
+     */
+    public function toComment($parent, User $user, ?string $ip): Comment {
+        $comment = new Comment($this->body, $user, $parent, $ip);
         $comment->setUserFlag($this->userFlag);
 
         return $comment;

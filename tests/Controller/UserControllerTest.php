@@ -164,11 +164,11 @@ class UserControllerTest extends WebTestCase {
 
         $crawler = $client->request('GET', '/notifications');
         $buttons = $crawler->filter('.clear-notification-button');
-        $this->assertCount(3, $buttons);
+        $this->assertCount(2, $buttons);
 
         $crawler = $client->submit($buttons->first()->form());
         $buttons = $crawler->filter('.clear-notification-button');
-        $this->assertCount(2, $buttons);
+        $this->assertCount(1, $buttons);
     }
 
     public function testCanClearAllNotificationsOnPage(): void {

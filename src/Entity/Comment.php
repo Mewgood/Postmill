@@ -149,15 +149,21 @@ class Comment implements VisibilityInterface, VotableInterface {
      */
     private $searchDoc;
 
-    public function __construct(
-        string $body,
-        User $user,
-        Submission $submission,
-        ?string $ip,
-        \DateTime $timestamp = null
-    ) {
+    /**
+     * @param Submission|Comment $parent
+     */
+    public function __construct(string $body, User $user, $parent, ?string $ip, \DateTime $timestamp = null) {
         if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
             throw new \InvalidArgumentException('Invalid IP address');
+        }
+
+        if ($parent instanceof Submission) {
+            $submission = $parent;
+            $parent = null;
+        } elseif ($parent instanceof self) {
+            $submission = $parent->getSubmission();
+        } else {
+            throw new \InvalidArgumentException('$parent must be Submission or Comment');
         }
 
         if ($submission->isLocked() && !$user->isAdmin()) {
@@ -171,6 +177,7 @@ class Comment implements VisibilityInterface, VotableInterface {
         $this->body = $body;
         $this->user = $user;
         $this->submission = $submission;
+        $this->parent = $parent;
         $this->ip = $user->isTrustedOrAdmin() ? null : $ip;
         $this->timestamp = $timestamp ?: new \DateTime('@'.time());
         $this->children = new ArrayCollection();
@@ -179,6 +186,10 @@ class Comment implements VisibilityInterface, VotableInterface {
         $this->mentions = new ArrayCollection();
         $this->vote(self::VOTE_UP, $user, $ip);
         $this->notify();
+
+        if ($parent) {
+            $parent->children->add($this);
+        }
 
         $submission->addComment($this);
     }
@@ -228,19 +239,6 @@ class Comment implements VisibilityInterface, VotableInterface {
 
     public function getReplyCount(): int {
         return \count($this->children);
-    }
-
-    public function addReply(self $reply): void {
-        if ($reply === $this) {
-            throw new \DomainException('$reply cannot be self');
-        }
-
-        if ($reply->parent) {
-            throw new \DomainException('Cannot reassign parent of comment');
-        }
-
-        $reply->parent = $this;
-        $reply->notify();
     }
 
     public function removeReply(self $reply): void {

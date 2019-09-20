@@ -99,11 +99,7 @@ final class CommentController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $reply = $data->toComment($this->getUser(), $request->getClientIp());
-
-            if ($comment) {
-                $comment->addReply($reply);
-            }
+            $reply = $data->toComment($comment ?? $submission, $this->getUser(), $request->getClientIp());
 
             $this->entityManager->persist($reply);
             $this->entityManager->flush();
