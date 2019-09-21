@@ -52,9 +52,9 @@ final class CommentController extends AbstractController {
         $this->forums = $forums;
     }
 
-    public function list(int $page): Response {
+    public function list(): Response {
         return $this->render('comment/list.html.twig', [
-            'comments' => $this->comments->findRecentPaginated($page),
+            'comments' => $this->comments->findPaginated(),
         ]);
     }
 

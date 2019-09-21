@@ -439,17 +439,6 @@ class User implements UserInterface, \Serializable {
         return $this->comments;
     }
 
-    /**
-     * @return Pagerfanta|Comment[]
-     */
-    public function getPaginatedComments(int $page, int $maxPerPage = 25): Pagerfanta {
-        $comments = new Pagerfanta(new DoctrineCollectionAdapter($this->comments));
-        $comments->setMaxPerPage($maxPerPage);
-        $comments->setCurrentPage($page);
-
-        return $comments;
-    }
-
     public function getCommentVotes(): Collection {
         return $this->commentVotes;
     }

@@ -25,10 +25,8 @@ delete_forum:
 
 forum_comments:
     controller: App\Controller\ForumController::comments
-    defaults: { page: 1 }
-    path: /f/{forum_name}/comments/{page}
+    path: /f/{forum_name}/comments
     methods: [GET]
-    requirements: { page: \d+ }
 
 forum_appearance:
     controller: App\Controller\ForumController::appearance

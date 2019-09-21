@@ -5,10 +5,14 @@ namespace App\Repository;
 use App\Entity\Comment;
 use App\Entity\Forum;
 use App\Entity\Submission;
+use App\Entity\User;
+use App\Pagination\Adapter\DoctrineAdapter;
+use App\Pagination\DTO\CommentPage;
+use App\Pagination\Pager;
+use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -18,18 +22,23 @@ class CommentRepository extends ServiceEntityRepository {
      */
     private $authorizationChecker;
 
+    /**
+     * @var Paginator
+     */
+    private $paginator;
+
     public function __construct(
         ManagerRegistry $registry,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        Paginator $paginator
     ) {
         parent::__construct($registry, Comment::class);
 
         $this->authorizationChecker = $authorizationChecker;
+        $this->paginator = $paginator;
     }
 
     /**
-     * @return Comment
-     *
      * @throws NotFoundHttpException if no such comment
      */
     public function findOneBySubmissionAndIdOr404(
@@ -50,42 +59,40 @@ class CommentRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pagerfanta|Comment[]
+     * @return Pager|Comment[]
      */
-    public function findRecentPaginated(int $page, int $maxPerPage = 25) {
-        $query = $this->createQueryBuilder('c')
+    public function findPaginated(callable $queryModifier = null): Pager {
+        $qb = $this->createQueryBuilder('c')
             ->where('c.visibility = :visibility')
-            ->setParameter('visibility', Comment::VISIBILITY_VISIBLE)
-            ->orderBy('c.id', 'DESC');
+            ->setParameter('visibility', Comment::VISIBILITY_VISIBLE);
 
-        $pager = new Pagerfanta(new DoctrineORMAdapter($query, false, false));
-        $pager->setMaxPerPage($maxPerPage);
-        $pager->setCurrentPage($page);
+        if ($queryModifier) {
+            $queryModifier($qb);
+        }
 
+        $pager = $this->paginator->paginate(new DoctrineAdapter($qb), 25, CommentPage::class);
         $this->hydrate(...$pager);
 
         return $pager;
     }
 
     /**
-     * @return Pagerfanta|Comment[]
+     * @return Pager|Comment[]
      */
-    public function findRecentPaginatedInForum(Forum $forum, int $page, int $maxPerPage = 25) {
-        $query = $this->createQueryBuilder('c')
-            ->join('c.submission', 's')
-            ->where('s.forum = :forum')
-            ->setParameter('forum', $forum)
-            ->andWhere('c.visibility = :visibility')
-            ->setParameter('visibility', Comment::VISIBILITY_VISIBLE)
-            ->orderBy('c.id', 'DESC');
+    public function findPaginatedByForum(Forum $forum): Pager {
+        return $this->findPaginated(function (QueryBuilder $qb) use ($forum) {
+            $qb->join('c.submission', 's', 'WITH', 's.forum = :forum');
+            $qb->setParameter('forum', $forum);
+        });
+    }
 
-        $pager = new Pagerfanta(new DoctrineORMAdapter($query, false, false));
-        $pager->setMaxPerPage($maxPerPage);
-        $pager->setCurrentPage($page);
-
-        $this->hydrate(...$pager);
-
-        return $pager;
+    /**
+     * @return Pager|Comment[]
+     */
+    public function findPaginatedByUser(User $user): Pager {
+        return $this->findPaginated(function (QueryBuilder $qb) use ($user) {
+            $qb->andWhere('c.user = :user')->setParameter('user', $user);
+        });
     }
 
     public function hydrate(Comment ...$comments): void {

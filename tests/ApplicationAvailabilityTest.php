@@ -118,6 +118,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/f/news/most_commented.atom'];
         yield ['/f/news/1/-/comment/1'];
         yield ['/f/news/bans'];
+        yield ['/f/news/comments'];
         yield ['/f/news/moderation_log'];
         yield ['/forums'];
         yield ['/forums/by_name'];
@@ -128,10 +129,13 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/forums/by_title/1'];
         yield ['/forums/by_subscribers/1'];
         yield ['/forums/by_submissions/1'];
+        yield ['/comments'];
         yield ['/wiki'];
         yield ['/login'];
         yield ['/registration'];
         yield ['/user/emma'];
+        yield ['/user/emma/submissions'];
+        yield ['/user/emma/comments'];
         yield ['/reset_password'];
     }
 

@@ -64,10 +64,8 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    public function comments(CommentRepository $repository, User $user, int $page): Response {
-        $comments = $user->getPaginatedComments($page);
-
-        $repository->hydrate(...$comments);
+    public function comments(CommentRepository $repository, User $user): Response {
+        $comments = $repository->findPaginatedByUser($user);
 
         return $this->render('user/comments.html.twig', [
             'comments' => $comments,

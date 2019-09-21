@@ -10,21 +10,24 @@
 {% block title 'title.notifications'|trans %}
 
 {% block body %}
-  {{ include('user/_inbox_nav.html.twig', {active: 'notifications'}, with_context=false) }}
 
-  <h1 class="page-heading">{{ block('title') }}</h1>
+  <header class="nav nav--guttered">
+    <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {% if notifications|length > 0 %}
-    <form action="{{ path('clear_notifications') }}" method="POST" class="form">
-      <input type="hidden" name="token" value="{{ csrf_token('clear_notifications') }}">
-      {% for notification in notifications %}
-        <input type="hidden" name="id[]" value="{{ notification.id }}">
-      {% endfor %}
-      <div class="form__row">
+    {{ include('user/_inbox_nav.html.twig', {active: 'notifications'}, with_context=false) }}
+
+    {% if notifications|length > 0 %}
+      <form action="{{ path('clear_notifications') }}" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('clear_notifications') }}">
+        {% for notification in notifications %}
+          <input type="hidden" name="id[]" value="{{ notification.id }}">
+        {% endfor %}
         <button type="submit" class="button">{{ 'action.clear_all'|trans }}</button>
-      </div>
-    </form>
-  {% else %}
+      </form>
+    {% endif %}
+  </header>
+
+  {% if notifications is empty %}
     <p class="no-entries">
       <small class="fg-muted text-md">{{ 'flash.no_entries_to_display'|trans }}</small>
     </p>

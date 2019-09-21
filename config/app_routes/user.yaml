@@ -13,17 +13,15 @@ user_shortcut:
 
 user_submissions:
     controller: App\Controller\UserController::submissions
-    defaults: { page: 1 }
     path: /user/{username}/submissions
     methods: [GET]
     requirements: { username: "%username_regex%" }
 
 user_comments:
     controller: App\Controller\UserController::comments
-    defaults: { page: 1 }
-    path: /user/{username}/comments/{page}
+    path: /user/{username}/comments
     methods: [GET]
-    requirements: { username: "%username_regex%", page: \d+ }
+    requirements: { username: "%username_regex%" }
 
 users:
     controller: App\Controller\UserController::list

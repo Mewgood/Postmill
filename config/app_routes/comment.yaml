@@ -42,10 +42,8 @@ softdelete_comment:
 
 comment_list:
     controller: App\Controller\CommentController::list
-    defaults: { page: 1 }
-    path: /comments/{page}
+    path: /comments
     methods: [GET]
-    requirements: { page: \d+ }
 
 comment_vote:
     controller: App\Controller\VoteController

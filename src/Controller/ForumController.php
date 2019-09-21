@@ -159,9 +159,9 @@ final class ForumController extends AbstractController {
         ]);
     }
 
-    public function comments(CommentRepository $comments, Forum $forum, int $page): Response {
+    public function comments(CommentRepository $comments, Forum $forum): Response {
         return $this->render('forum/comments.html.twig', [
-            'comments' => $comments->findRecentPaginatedInForum($forum, $page),
+            'comments' => $comments->findPaginatedByForum($forum),
             'forum' => $forum,
         ]);
     }
