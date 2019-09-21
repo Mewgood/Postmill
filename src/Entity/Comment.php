@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ORM\Table(indexes={
+ *     @ORM\Index(name="comments_timestamp_id_idx", columns={"timestamp", "id"}),
  *     @ORM\Index(name="comments_timestamp_idx", columns={"timestamp"}),
  *     @ORM\Index(name="comments_search_idx", columns={"search_doc"}),
  *     @ORM\Index(name="comments_visibility_idx", columns={"visibility"}),
