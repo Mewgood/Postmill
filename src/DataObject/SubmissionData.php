@@ -240,7 +240,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
         $submission->setBody($this->body);
         $submission->setEditedAt($this->editedAt);
         $submission->setUserFlag($this->userFlag);
-        $submission->setModerated(true);
+        $submission->setModerated($this->moderated);
         $submission->setSticky($this->sticky);
         $submission->setLocked($this->locked);
     }
