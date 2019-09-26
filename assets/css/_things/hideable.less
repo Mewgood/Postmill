@@ -29,7 +29,10 @@
     text-decoration: underline;
   }
 
-  &__indicator::after {
+  // double selectors for increased specificity - needed for recursive hideables
+  // to work.
+  &__checkbox&__checkbox:not(:checked) ~ &__indicator::after,
+  &__checkbox&__checkbox:not(:checked) ~ * &__indicator::after {
     content: attr(data-unhide-text) ' +';
   }
 
