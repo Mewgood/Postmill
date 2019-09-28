@@ -47,6 +47,7 @@ class CommentControllerTest extends WebTestCase {
                     'id' => 2,
                     'username' => 'zach',
                 ],
+                'slug' => 'submission-with-a-body',
             ],
             'parentId' => null,
             'replyCount' => 0,

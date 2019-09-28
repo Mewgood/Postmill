@@ -56,6 +56,7 @@ class SubmissionControllerTest extends WebTestCase {
             'moderated' => false,
             'userFlag' => 'none',
             'locked' => false,
+            'slug' => 'submission-with-a-body',
             'renderedBody' => "<p>I'm bad at making stuff up.</p>\n",
             'thumbnail_1x' => null,
             'thumbnail_2x' => null,

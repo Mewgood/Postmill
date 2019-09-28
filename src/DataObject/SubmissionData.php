@@ -7,6 +7,7 @@ use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserFlags;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
+use App\Utils\Slugger;
 use App\Validator\Constraints\NotForumBanned;
 use App\Validator\Constraints\RateLimit;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -255,6 +256,13 @@ class SubmissionData implements NormalizeMarkdownInterface {
 
     public function setTitle(?string $title): void {
         $this->title = $title;
+    }
+
+    /**
+     * @Groups({"submission:read", "abbreviated_relations"})
+     */
+    public function getSlug(): ?string {
+        return isset($this->title) ? Slugger::slugify($this->title) : null;
     }
 
     public function getUrl(): ?string {
