@@ -26,7 +26,7 @@ final class SubmissionDataNormalizer implements ContextAwareNormalizerInterface,
         $context[self::NORMALIZED_MARKER][spl_object_id($object)] = true;
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('submission:read', $context['groups'] ?? [], true)) {
+        if (isset($data['image'])) {
             $image = $object->getImage();
 
             foreach (['1x', '2x'] as $size) {

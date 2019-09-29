@@ -4,6 +4,9 @@ namespace App\Tests\Controller\Api;
 
 use App\Tests\WebTestCase;
 
+/**
+ * @covers \App\Controller\Api\UserController
+ */
 class UserControllerTest extends WebTestCase {
     public function testGetUser(): void {
         $client = self::createUserClient();
