@@ -26,7 +26,7 @@ final class SubmissionDataNormalizer implements ContextAwareNormalizerInterface,
         $context[self::NORMALIZED_MARKER][spl_object_id($object)] = true;
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (isset($data['image'])) {
+        if (\array_key_exists('image', $data)) {
             $image = $object->getImage();
 
             foreach (['1x', '2x'] as $size) {
