@@ -26,7 +26,7 @@ class CommentDataTest extends TestCase {
 
     protected function setUp(): void {
         $this->comment = $this->getMockBuilder(Comment::class)
-            ->setMethods(['getSubmission', 'getTimestamp', 'getVotes', 'getUser', 'getReplyCount'])
+            ->setMethods(['getSubmission', 'getTimestamp', 'getVotes', 'getUser', 'getReplyCount', 'getChildren'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -49,6 +49,10 @@ class CommentDataTest extends TestCase {
         $this->comment
             ->method('getReplyCount')
             ->willReturn(0);
+
+        $this->comment
+            ->method('getChildren')
+            ->willReturn([]);
 
         $this->comment->setBody('foo');
     }

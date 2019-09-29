@@ -4,11 +4,16 @@ namespace App\Serializer;
 
 use App\DataObject\UserData;
 use App\Entity\User;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface {
+final class UserNormalizer implements
+    NormalizerInterface,
+    NormalizerAwareInterface,
+    CacheableSupportsMethodInterface
+{
     use NormalizerAwareTrait;
 
     public function normalize($object, $format = null, array $context = []): array {
@@ -19,5 +24,9 @@ class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface {
 
     public function supportsNormalization($data, $format = null): bool {
         return $data instanceof User;
+    }
+
+    public function hasCacheableSupportsMethod(): bool {
+        return true;
     }
 }

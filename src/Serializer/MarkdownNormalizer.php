@@ -25,7 +25,7 @@ class MarkdownNormalizer implements ContextAwareNormalizerInterface, NormalizerA
     public function normalize($object, $format = null, array $context = []): array {
         \assert($object instanceof NormalizeMarkdownInterface);
 
-        $context[self::NORMALIZED_MARKER] = true;
+        $context[self::NORMALIZED_MARKER][spl_object_id($object)] = true;
         $data = $this->normalizer->normalize($object, $format, $context);
 
         foreach ($object->getMarkdownFields() as $rawKey => $renderedKey) {
@@ -47,6 +47,7 @@ class MarkdownNormalizer implements ContextAwareNormalizerInterface, NormalizerA
     }
 
     public function supportsNormalization($data, $format = null, array $context = []): bool {
-        return $data instanceof NormalizeMarkdownInterface && empty($context[self::NORMALIZED_MARKER]);
+        return $data instanceof NormalizeMarkdownInterface &&
+            empty($context[self::NORMALIZED_MARKER][spl_object_id($data)]);
     }
 }

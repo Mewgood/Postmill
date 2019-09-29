@@ -116,4 +116,13 @@ final class SubmissionController extends AbstractController {
 
         return $this->createEmptyResponse();
     }
+
+    /**
+     * @Route("/{id}/comments", methods={"GET"})
+     */
+    public function comments(Submission $submission): Response {
+        return $this->json($submission->getTopLevelComments(), 200, [], [
+            'groups' => ['comment:read', 'comment:nested', 'abbreviated_relations'],
+        ]);
+    }
 }

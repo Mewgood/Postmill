@@ -4,28 +4,29 @@ namespace App\Serializer;
 
 use App\DataObject\CommentData;
 use App\Entity\Comment;
-use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CommentNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface{
+final class CommentNormalizer implements
+    NormalizerInterface,
+    NormalizerAwareInterface,
+    CacheableSupportsMethodInterface
+{
     use NormalizerAwareTrait;
 
-    public const NORMALIZED_MARKER = 'comment_normalized';
-
-    public function supportsNormalization($data, $format = null, array $context = []) {
-        return ($data instanceof Comment || $data instanceof CommentData) &&
-            empty($context[self::NORMALIZED_MARKER]);
-    }
-
-
     public function normalize($object, $format = null, array $context = []): array {
-        if ($object instanceof Comment) {
-            $object = new CommentData($object);
-        }
-
-        $context[self::NORMALIZED_MARKER] = true;
+        $object = new CommentData($object);
 
         return $this->normalizer->normalize($object, $format, $context);
+    }
+
+    public function supportsNormalization($data, $format = null): bool {
+        return $data instanceof Comment;
+    }
+
+    public function hasCacheableSupportsMethod(): bool {
+        return true;
     }
 }

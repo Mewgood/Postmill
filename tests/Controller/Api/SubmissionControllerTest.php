@@ -135,4 +135,79 @@ class SubmissionControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(403);
     }
+
+    public function testCanReadSubmissionComments(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/api/submissions/1/comments');
+
+        self::assertResponseStatusCodeSame(200);
+
+        $this->assertEquals([
+            [
+                'id' => 1,
+                'body' => "This is a comment body. It is quite neat.\n\n*markdown*",
+                'timestamp' => '2017-05-01T12:00:00+00:00',
+                'user' => [
+                    'id' => 1,
+                    'username' => 'emma',
+                ],
+                'submission' => [
+                    'id' => 1,
+                    'forum' => [
+                        'id' => 2,
+                        'name' => 'news',
+                    ],
+                    'user' => [
+                        'id' => 1,
+                        'username' => 'emma',
+                    ],
+                    'slug' => 'a-submission-with-a-url-and-body',
+                ],
+                'parentId' => null,
+                'replies' => [
+                    [
+                        'id' => 2,
+                        'body' => 'This is a reply to the previous comment.',
+                        'timestamp' => '2017-05-02T14:00:00+00:00',
+                        'user' => [
+                            'id' => 2,
+                            'username' => 'zach',
+                        ],
+                        'submission' => [
+                            'id' => 1,
+                            'forum' => [
+                                'id' => 2,
+                                'name' => 'news',
+                            ],
+                            'user' => [
+                                'id' => 1,
+                                'username' => 'emma',
+                            ],
+                            'slug' => 'a-submission-with-a-url-and-body',
+                        ],
+                        'parentId' => 1,
+                        'replies' => [],
+                        'replyCount' => 0,
+                        'visibility' => 'visible',
+                        'editedAt' => null,
+                        'moderated' => false,
+                        'userFlag' => 'none',
+                        'netScore' => 1,
+                        'upvotes' => 1,
+                        'downvotes' => 0,
+                        'renderedBody' => "<p>This is a reply to the previous comment.</p>\n"
+                    ],
+                ],
+                'replyCount' => 1,
+                'visibility' => 'visible',
+                'editedAt' => null,
+                'moderated' => false,
+                'userFlag' => 'none',
+                'netScore' => 1,
+                'upvotes' => 1,
+                'downvotes' => 0,
+                'renderedBody' => "<p>This is a comment body. It is quite neat.</p>\n<p><em>markdown</em></p>\n",
+            ],
+        ], json_decode($client->getResponse()->getContent(), true));
+    }
 }

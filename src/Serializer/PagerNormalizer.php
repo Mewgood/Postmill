@@ -3,11 +3,16 @@
 namespace App\Serializer;
 
 use App\Pagination\Pager;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PagerNormalizer implements NormalizerInterface, NormalizerAwareInterface {
+final class PagerNormalizer implements
+    NormalizerInterface,
+    NormalizerAwareInterface,
+    CacheableSupportsMethodInterface
+{
     use NormalizerAwareTrait;
 
     public function normalize($object, $format = null, array $context = []): array {
@@ -25,5 +30,9 @@ class PagerNormalizer implements NormalizerInterface, NormalizerAwareInterface {
 
     public function supportsNormalization($data, $format = null): bool {
         return $data instanceof Pager;
+    }
+
+    public function hasCacheableSupportsMethod(): bool {
+        return true;
     }
 }

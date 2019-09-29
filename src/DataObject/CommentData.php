@@ -65,6 +65,13 @@ class CommentData implements NormalizeMarkdownInterface {
     private $parentId;
 
     /**
+     * @Groups("comment:nested")
+     *
+     * @var Comment[]
+     */
+    private $replies = [];
+
+    /**
      * @Groups("comment:read")
      *
      * @var int|null
@@ -128,6 +135,7 @@ class CommentData implements NormalizeMarkdownInterface {
             $this->user = $comment->getUser();
             $this->submission = $comment->getSubmission();
             $this->parentId = $comment->getParent() ? $comment->getParent()->getId() : null;
+            $this->replies = $comment->getChildren();
             $this->replyCount = $comment->getReplyCount();
             $this->visibility = $comment->getVisibility();
             $this->editedAt = $comment->getEditedAt();
@@ -192,6 +200,10 @@ class CommentData implements NormalizeMarkdownInterface {
 
     public function getParentId(): ?int {
         return $this->parentId;
+    }
+
+    public function getReplies(): array {
+        return $this->replies;
     }
 
     public function getReplyCount(): int {

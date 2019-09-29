@@ -25,7 +25,9 @@ class MarkdownNormalizerTest extends TestCase {
         $data = $this->createMock(NormalizeMarkdownInterface::class);
 
         $this->assertFalse($normalizer->supportsNormalization($data, null, [
-            MarkdownNormalizer::NORMALIZED_MARKER => true,
+            MarkdownNormalizer::NORMALIZED_MARKER => [
+                spl_object_id($data) => true,
+            ],
         ]));
     }
 
@@ -63,7 +65,7 @@ class MarkdownNormalizerTest extends TestCase {
             ->with(
                 $this->equalTo($entity),
                 $this->isNull(),
-                $this->equalTo([MarkdownNormalizer::NORMALIZED_MARKER => true])
+                $this->equalTo([MarkdownNormalizer::NORMALIZED_MARKER => [spl_object_id($entity) => true]])
             )
             ->willReturn([
                 'header' => 'The header',
