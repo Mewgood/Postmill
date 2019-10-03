@@ -1,4 +1,5 @@
 {% extends 'user/base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert %}
 
 {% block site_nav_user_menu_active 'block_list' %}
 {% block title 'title.block_list'|trans %}
@@ -6,9 +7,7 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {% embed '_layouts/alert.html.twig' with { type: 'info' } %}
-    {% block alert_paragraph 'help.block_users'|trans %}
-  {% endembed %}
+  {{ alert('help.block_users'|trans, 'info') }}
 
   {% embed '_layouts/table_pagination.html.twig' with { items: blocks } %}
     {% block header %}

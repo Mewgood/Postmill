@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% from '_macros/alert.html.twig' import alert %}
 {% from '_macros/form.html.twig' import checkbox %}
 
 {% block site_nav_active 'login' %}
@@ -12,10 +13,7 @@
     is_granted('IS_AUTHENTICATED_REMEMBERED') and
     not is_granted('IS_AUTHENTICATED_FULLY')
   %}
-    {% embed '_layouts/alert.html.twig' %}
-      {% block alert_attributes 'role="alert"' %}
-      {% block alert_paragraph 'flash.you_must_reauthenticate'|trans %}
-    {% endembed %}
+    {{ alert('flash.you_must_reauthenticate'|trans, 'notice', true) }}
   {% endif %}
 
   <form action="{{ path('login_check') }}" method="POST" class="form form--login">

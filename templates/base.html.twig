@@ -1,4 +1,5 @@
 {% use '_layouts/site_nav.html.twig' %}
+{% from '_macros/alert.html.twig' import alert_classes, alert_icon %}
 <!DOCTYPE html>
 <html class="no-js {{ (app.user.nightMode ?? false) ? 'dark-mode' : 'light-mode' }}"
       lang="{{ app.request.locale|replace({'_': '-'}) }}"
@@ -16,6 +17,11 @@
     {% cspscript %}
       <script>
         document.documentElement.classList.replace('no-js', 'js');
+        window.addEventListener('DOMContentLoaded', function () {
+            if (!window.$ || !window.Translator || !window.Routing) {
+                document.documentElement.classList.replace('js', 'no-js');
+            }
+        });
       </script>
     {% endcspscript %}
 
@@ -44,17 +50,15 @@
         {%- if app.request.previousSession -%}
           {%- for type, notices in app.flashes -%}
             {%- for notice in notices -%}
-              {% embed '_layouts/alert.html.twig' with { notice: notice, type: type } only %}
-                {% block alert_classes 'site-alerts__alert' %}
-                {% block alert_text %}
-                  <p>
-                    {{- notice|trans ~}}
-                    <button class="site-alerts__dismiss unbuttonize"
-                            aria-label="{{ 'action.dismiss'|trans }}"></button>
-                  </p>
-                {% endblock alert_text %}
-                {% block alert_attributes 'role="alert"' %}
-              {% endembed %}
+              <div class="{{ alert_classes(type) }} site-alerts__alert" role="alert">
+                {{ alert_icon(type) }}
+                <div class="alert__text">
+                  <p>{{ notice|trans }}</p>
+                </div>
+                <button class="site-alerts__dismiss unbuttonize">
+                  <span class="hidden">{{ 'action.dismiss'|trans }}</span>
+                </button>
+              </div>
             {%- endfor -%}
           {%- endfor -%}
         {%- endif -%}
@@ -106,15 +110,6 @@
       {% endif %}
 
       {{ encore_entry_script_tags('main') }}
-
-      {# restore no-js if scripts failed to load #}
-      {% cspscript %}
-        <script>
-          if (!window.$ || !window.Translator || !window.Routing) {
-            document.documentElement.classList.replace('js', 'no-js');
-          }
-        </script>
-      {% endcspscript %}
     {% endblock javascripts %}
   </body>
 </html>

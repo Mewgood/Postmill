@@ -1,13 +1,12 @@
 {% extends 'front/_base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert %}
 
 {% block listing 'featured' %}
 
 {% block front_alerts %}
   {% if is_granted('ROLE_USER') %}
     {% if app.user.frontPage == 'subscribed' and app.user.subscriptions|length == 0 %}
-      {% embed '_layouts/alert.html.twig' %}
-        {% block alert_paragraph 'front.no_subscriptions'|trans %}
-      {% endembed %}
+      {{ alert('front.no_subscriptions'|trans) }}
     {% endif %}
   {% endif %}
 {% endblock front_alerts %}

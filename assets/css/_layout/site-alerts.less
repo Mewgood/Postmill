@@ -7,24 +7,28 @@
 
   &__alert {
     box-shadow: 1px 1px 2px var(--border);
+    position: relative;
 
-    &:focus-within {
-      box-shadow: 1px 1px 2px 1px var(--border);
+    .js & {
+      animation: site-alerts-slide 0.5s ease-in;
+    }
+
+    .no-js & {
+      animation: site-alerts-slide-no-js 10s ease-in forwards;
     }
   }
 
-  .js &__alert {
-    animation: site-alerts-slide 0.5s ease-in;
-    cursor: pointer;
-  }
+  &__dismiss {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 
-  .no-js &__alert {
-    animation: site-alerts-slide-no-js 10s ease-in;
-    transform: translateX(calc(-100% - 1rem));
-  }
-
-  .no-js &__dismiss {
-    display: none;
+    .no-js & {
+      display: none;
+    }
   }
 }
 
@@ -40,7 +44,7 @@
 
 @keyframes site-alerts-slide-no-js {
   0%, 100% {
-    transform: translateX(calc(-100% - 1rem));
+    transform: translateX(calc(-100% - 1rem - 2px));
   }
 
   5%, 95% {

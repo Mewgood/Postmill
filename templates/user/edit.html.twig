@@ -1,4 +1,5 @@
 {% extends 'user/base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert %}
 {% from '_macros/icon.html.twig' import icon %}
 
 {% block title 'edit_user.title'|trans({'%username%': user.username}) %}
@@ -9,9 +10,7 @@
   <h1 class="page-heading break-text">{{ block('title') }}</h1>
 
   {% if app.user != user %}
-    {% embed '_layouts/alert.html.twig' with { type: 'warn' } %}
-      {% block alert_paragraph 'flash.editing_credentials_of_other_user'|trans %}
-    {% endembed %}
+    {{ alert('flash.editing_credentials_of_other_user'|trans, 'warn') }}
   {% endif %}
 
   <fieldset class="fieldset">

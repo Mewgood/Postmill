@@ -1,12 +1,11 @@
 {% extends 'front/_base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert %}
 
 {% block listing 'moderated' %}
 
 {% block body %}
   {% if forums is empty %}
-    {% embed '_layouts/alert.html.twig' %}
-      {% block alert_paragraph 'flash.no_moderated_forums'|trans %}
-    {% endembed %}
+    {{ alert('flash.no_moderated_forums'|trans) }}
   {% endif %}
 
   {{ parent() }}

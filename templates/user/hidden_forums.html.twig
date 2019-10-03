@@ -1,4 +1,5 @@
 {% extends 'user/base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert_classes, alert_icon %}
 
 {% block title 'title.hidden_forums'|trans %}
 
@@ -11,12 +12,13 @@
 {% block body %}
   <h1 class="page-heading">{{ 'title.hidden_forums'|trans }}</h1>
 
-  {% embed '_layouts/alert.html.twig' with { type: 'info' } %}
-    {% block alert_text %}
+  <div class="{{ alert_classes('info') }}">
+    {{ alert_icon('info') }}
+    <div class="alert__text">
       <p>{{ 'help.hidden_forums'|trans }}</p>
       <p>{{ 'help.hidden_forums_no_comment_hiding'|trans }}</p>
-    {% endblock alert_text %}
-  {% endembed %}
+    </div>
+  </div>
 
   {% embed '_layouts/table_pagination.html.twig' with { items: forums } %}
     {% block header %}

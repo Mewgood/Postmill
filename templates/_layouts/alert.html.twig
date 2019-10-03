@@ -1,28 +1,37 @@
-{% set colors = {
-  error: 'red',
-  warn: 'orange',
-  info: 'yellow',
-  success: 'green',
-  notice: 'blue',
-} %}
-{% set icons = {
-  error: 'cancel-circled',
-  warn: 'attention',
-  info: 'help-circled',
-  notice: 'info-circled',
-  success: 'ok-circled',
-} %}
-{% set type = type ?? 'notice' %}
-{% from '_macros/icon.html.twig' import icon %}
-<div class="alert bg-{{ colors[type] }} {% block alert_classes '' %}"
-     {% block alert_attributes '' %}>
-  <div class="alert__icon fg-{{ colors[type] }}" aria-hidden="true">
-    {{ icon(icons[type]) }}
+{% block alert %}
+  <div class="{{ block('alert_classes') }}"{{ loud ? ' role="alert"' }}>
+    {{- block('alert_icon') -}}
+    <div class="alert__text">
+      <p>{{ text }}</p>
+    </div>
   </div>
+{% endblock alert %}
 
-  <div class="alert__text">
-    {% block alert_text %}
-      <p>{% block alert_paragraph '' %}</p>
-    {% endblock alert_text %}
+{% block alert_classes -%}
+  alert bg-{{ {
+    error: 'red',
+    warn: 'orange',
+    info: 'yellow',
+    success: 'green',
+    notice: 'blue',
+  }[type] }}
+{%- endblock alert_classes %}
+
+{% block alert_icon -%}
+  {% from '_macros/icon.html.twig' import icon -%}
+  <div class="alert__icon fg-{{ {
+    error: 'red',
+    warn: 'orange',
+    info: 'yellow',
+    success: 'green',
+    notice: 'blue',
+  }[type] }}" aria-hidden="true">
+    {{- icon({
+      error: 'cancel-circled',
+      warn: 'attention',
+      info: 'help-circled',
+      notice: 'info-circled',
+      success: 'ok-circled',
+    }[type]) -}}
   </div>
-</div>
+{%- endblock alert_icon %}

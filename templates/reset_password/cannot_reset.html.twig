@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert %}
 
 {% block title 'flash.no_password_resets'|trans %}
 
 {% block body %}
-  {% embed '_layouts/alert.html.twig' with { type: 'error' } %}
-    {% block alert_classes 'no-margin' %}
-    {% block alert_paragraph 'flash.no_password_resets'|trans %}
-  {% endembed %}
+  {{ alert('flash.no_password_resets'|trans, 'error') }}
 {% endblock %}

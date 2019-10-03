@@ -16,11 +16,14 @@
 {% endmacro comment %}
 
 {% macro comment_form(submission, parent) %}
+  {% from '_macros/alert.html.twig' import alert_classes, alert_icon %}
   {% if submission.locked and not is_granted('ROLE_ADMIN') %}
-    {% embed '_layouts/alert.html.twig' %}
-      {% block alert_classes 'submission-locked-notice' %}
-      {% block alert_paragraph 'flash.submission_is_locked'|trans %}
-    {% endembed %}
+    <div class="{{ alert_classes() }} submission-locked-notice">
+      {{ alert_icon() }}
+      <div class="alert__text">
+        <p>{{ 'flash.submission_is_locked'|trans }}</p>
+      </div>
+    </div>
   {% elseif is_granted('ROLE_USER') %}
     {{ render(controller('App\\Controller\\CommentController::commentForm', {
       forumName: submission.forum.name,
@@ -28,17 +31,22 @@
       commentId: parent.id ?? null
     })) }}
   {% else %}
-    {% embed '_layouts/alert.html.twig' %}
-      {% block alert_paragraph 'comments.not_logged_in'|trans({
-        '%login_link%': '<a href="%s">%s</a>'|format(
-          path('login'),
-          'comments.not_logged_in_login_link_label'|trans
-        ),
-        '%register_link%': '<a href="%s">%s</a>'|format(
-          path('registration'),
-          'comments.not_logged_in_register_link_label'|trans
-        ),
-      })|raw %}
-    {% endembed %}
+    <div class="{{ alert_classes() }}">
+      {{ alert_icon() }}
+      <div class="alert__text">
+        <p>
+          {{- 'comments.not_logged_in'|trans({
+            '%login_link%': '<a href="%s">%s</a>'|format(
+              path('login'),
+              'comments.not_logged_in_login_link_label'|trans
+            ),
+            '%register_link%': '<a href="%s">%s</a>'|format(
+              path('registration'),
+              'comments.not_logged_in_register_link_label'|trans
+            ),
+          })|raw -}}
+        </p>
+      </div>
+    </div>
   {% endif %}
 {% endmacro comment_form %}

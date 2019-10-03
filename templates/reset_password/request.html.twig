@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert %}
 {% from '_macros/form.html.twig' import button_row %}
 
 {% block title 'request_password_reset.title'|trans %}
@@ -6,13 +7,8 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {% embed '_layouts/alert.html.twig' %}
-    {% block alert_paragraph 'request_password_reset.no_confirmation_notice'|trans %}
-  {% endembed %}
-
-  {% embed '_layouts/alert.html.twig' %}
-    {% block alert_paragraph 'request_password_reset.multiple_accounts_notice'|trans %}
-  {% endembed %}
+  {{ alert('request_password_reset.no_confirmation_notice'|trans) }}
+  {{ alert('request_password_reset.multiple_accounts_notice'|trans) }}
 
   {{ form_start(form) }}
     {{ form_rest(form) }}
