@@ -1,32 +1,53 @@
-// extension of .button
 .subscribe-button {
   background: transparent;
-  overflow: hidden;
+  border: none;
+  border-radius: 0;
   padding: 0;
+
+  &__label,
+  &__subscriber-count {
+    background: var(--bg);
+    border: solid 1px var(--fg-border);
+    color: var(--fg);
+    padding: var(--padding-v) var(--padding-h);
+    transition: background-color .3s, border-color .3s, color .3s;
+  }
+
+  &__label {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    margin-right: 2px;
+  }
+
+  &__subscriber-count {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    min-width: 8ch;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &--unsubscribe {
+    --bg: transparent;
+    --fg: var(--primary);
+    --fg-border: var(--primary);
+  }
 
   &:not(.button--small) {
     --font-size: 1rem;
+  }
+
+  &:focus,
+  &:hover {
+    --fg: var(--fg-active);
+    --fg-border: transparent;
   }
 
   &__inner {
     display: flex;
   }
 
-  &__label {
-    background: var(--bg);
-    margin-right: 1px;
-    padding: var(--padding-v) var(--padding-h);
-  }
-
   &__dummy-label {
     display: block;
     height: 0;
     visibility: hidden;
-  }
-
-  &__subscriber-count {
-    background: var(--bg);
-    min-width: 8ch;
-    padding: var(--padding-v) 0;
   }
 }
