@@ -109,9 +109,8 @@ final class CommentController extends AbstractController {
             return $this->redirect($this->generateCommentUrl($reply));
         }
 
-        return $this->render('comment/form_errors.html.twig', [
+        return $this->render('comment/create.html.twig', [
             'comment' => $comment,
-            'editing' => false,
             'form' => $form->createView(),
             'forum' => $forum,
             'submission' => $submission,
@@ -147,8 +146,7 @@ final class CommentController extends AbstractController {
             return $this->redirect($this->generateCommentUrl($comment));
         }
 
-        return $this->render('comment/form_errors.html.twig', [
-            'editing' => true,
+        return $this->render('comment/edit.html.twig', [
             'form' => $form->createView(),
             'forum' => $forum,
             'submission' => $submission,

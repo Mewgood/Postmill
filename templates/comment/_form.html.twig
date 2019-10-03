@@ -1,3 +1,5 @@
+{% from '_macros/form.html.twig' import button_row %}
+
 {{ form_start(form, {attr: {class: 'comment-form'}}) }}
   {{ form_errors(form) }}
 
@@ -10,5 +12,5 @@
     {{ form_row(form.userFlag) }}
   {% endif %}
 
-  {{ form_row(form.submit) }}
+  {{ button_row(editing ? 'action.save'|trans : 'action.post'|trans) }}
 {{ form_end(form) }}

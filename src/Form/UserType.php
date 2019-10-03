@@ -10,7 +10,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -58,10 +57,6 @@ final class UserType extends AbstractType {
                 'reload' => true,
             ]);
         }
-
-        $builder->add('submit', SubmitType::class, [
-            'label' => 'user_form.'.($editing ? 'save' : 'register'),
-        ]);
 
         $builder->addEventSubscriber(new PasswordEncodingSubscriber($this->encoder));
     }

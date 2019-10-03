@@ -9,17 +9,5 @@
     })|raw }}
   </h1>
 
-  {{ include('forum/_form.html.twig', {form: form}, with_context=false) }}
-{% endblock %}
-
-{% block javascripts %}
-  {{ parent() }}
-
-  {% cspscript %}
-    <script>
-      $('.delete-forum').click(function () {
-        return confirm(Translator.trans('forum_form.confirm_delete'));
-      });
-    </script>
-  {% endcspscript %}
-{% endblock %}
+  {{ include('forum/_form.html.twig', { editing: true, form: form }, with_context=false) }}
+{% endblock body %}

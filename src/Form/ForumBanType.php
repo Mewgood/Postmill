@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Form\Model\ForumBanData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -25,10 +24,6 @@ class ForumBanType extends AbstractType {
                 'required' => false,
             ]);
         }
-
-        $builder->add('ban', SubmitType::class, [
-            'label' => $options['intent'] === 'ban' ? 'action.ban' : 'action.unban',
-        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void {

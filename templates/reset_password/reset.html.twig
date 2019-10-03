@@ -5,6 +5,6 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {% include 'user/_form.html.twig' %}
+  {{ include('user/_form.html.twig', { editing: true, form: form }, with_context=false) }}
 {% endblock %}
 

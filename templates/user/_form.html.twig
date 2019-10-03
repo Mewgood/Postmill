@@ -1,3 +1,5 @@
+{% from '_macros/form.html.twig' import button_row %}
+
 {{ form_start(form) }}
   {{ form_row(form.username) }}
 
@@ -16,5 +18,5 @@
     {{ form_row(form.verification) }}
   {% endif %}
 
-  {{ form_row(form.submit) }}
+  {{ button_row(editing ? 'user_form.save'|trans : 'user_form.register'|trans) }}
 {{ form_end(form) }}

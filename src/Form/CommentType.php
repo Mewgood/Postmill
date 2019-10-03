@@ -9,7 +9,6 @@ use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
 use App\Form\Type\UserFlagType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,12 +26,6 @@ final class CommentType extends AbstractType {
 
         $builder->add('userFlag', UserFlagType::class, [
             'forum' => $options['forum'],
-        ]);
-
-        $editing = $builder->getData() && $builder->getData()->getId();
-
-        $builder->add('submit', SubmitType::class, [
-            'label' => $editing ? 'action.save' : 'action.post',
         ]);
     }
 

@@ -1,3 +1,5 @@
+{% from '_macros/form.html.twig' import button_row -%}
+
 {{ form_start(form, {attr: {class: (app.user.autoFetchSubmissionTitles ?? true) ? 'auto-fetch-submission-titles'}}) }}
   {{ form_errors(form) }}
 
@@ -49,7 +51,5 @@
     {{ form_row(form.userFlag) }}
   {% endif %}
 
-  <div class="form__row form__button-row">
-    {{ form_widget(form.submit) }}
-  </div>
+  {{ button_row(editing ? 'submission_form.edit'|trans : 'submission_form.create'|trans, {}, { class: 'no-margin' }) }}
 {{ form_end(form) }}

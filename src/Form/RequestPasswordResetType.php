@@ -6,7 +6,6 @@ use App\Form\Model\RequestPasswordReset;
 use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,7 +18,7 @@ final class RequestPasswordResetType extends AbstractType {
                 'as_url' => true,
                 'reload' => true,
             ])
-            ->add('submit', SubmitType::class);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void {

@@ -40,9 +40,8 @@
       {% endblock row %}
 
       {% block footer %}
-        <div class="form__row form__button-row no-margin">
-          <button class="button">{{ 'action.compare'|trans }}</button>
-        </div>
+        {% from '_macros/form.html.twig' import button_row %}
+        {{ button_row('action.compare'|trans) }}
       {% endblock footer %}
     {% endembed %}
   </form>

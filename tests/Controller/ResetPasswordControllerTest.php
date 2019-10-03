@@ -73,7 +73,7 @@ class ResetPasswordControllerTest extends WebTestCase {
         $client = static::createClient();
         $crawler = $client->request('GET', $url);
 
-        $form = $crawler->selectButton('user[submit]')->form([
+        $form = $crawler->selectButton('Save')->form([
             'user[password][first]' => 'badshit1',
             'user[password][second]' => 'badshit1',
         ]);

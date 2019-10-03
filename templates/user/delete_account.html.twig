@@ -1,4 +1,5 @@
 {% extends 'user/base.html.twig' %}
+{% from '_macros/form.html.twig' import button_row %}
 
 {% block title 'title.delete_account'|trans %}
 
@@ -26,8 +27,6 @@
 
     {{ form_row(form.confirm, { label: 'label.delete_account_confirmation'|trans }) }}
 
-    <div class="form__row form__button-row">
-      <button type="submit" class="button">{{ 'action.delete_account'|trans }}</button>
-    </div>
+    {{ button_row('action.delete_account'|trans) }}
   {{ form_end(form) }}
 {% endblock body %}

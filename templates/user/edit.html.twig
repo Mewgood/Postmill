@@ -17,7 +17,7 @@
   <fieldset class="fieldset">
     <legend>{{ 'heading.credentials'|trans }}</legend>
 
-    {{ include('user/_form.html.twig', { form: form }, with_context=false) }}
+    {{ include('user/_form.html.twig', { editing: true, form: form }, with_context=false) }}
   </fieldset>
 
   <fieldset class="fieldset">

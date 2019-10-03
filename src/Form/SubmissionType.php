@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -106,10 +105,6 @@ final class SubmissionType extends AbstractType {
 
         $builder->add('userFlag', UserFlagType::class, [
             'forum' => $options['forum'] ?? null,
-        ]);
-
-        $builder->add('submit', SubmitType::class, [
-            'label' => 'submission_form.'.($editing ? 'edit' : 'create'),
         ]);
     }
 

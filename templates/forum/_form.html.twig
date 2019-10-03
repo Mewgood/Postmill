@@ -1,3 +1,5 @@
+{% from '_macros/form.html.twig' import button_row %}
+
 {{ form_start(form) }}
   {{ form_row(form.name) }}
   {{ form_row(form.title) }}
@@ -11,7 +13,5 @@
     {{ form_row(form.featured) }}
   {% endif %}
 
-  <div class="form__row form__button-row">
-    {{ form_widget(form.submit) }}
-  </div>
+  {{ button_row(editing ? 'forum_form.save'|trans : 'forum_form.create'|trans) }}
 {{ form_end(form) }}

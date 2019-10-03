@@ -176,7 +176,7 @@ class SubmissionControllerTest extends WebTestCase {
         $client = self::createAdminClient();
         $crawler = $client->request('GET', '/f/cats/3');
 
-        $form = $crawler->selectButton('reply_to_submission_3[submit]')->form([
+        $form = $crawler->selectButton('Post')->form([
             'reply_to_submission_3[comment]' => 'You will be notified about this comment.',
         ]);
 

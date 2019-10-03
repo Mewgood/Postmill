@@ -152,7 +152,7 @@ class CommentControllerTest extends WebTestCase {
         $client = self::createAdminClient();
         $crawler = $client->request('GET', '/f/cats/3/-/comment/3');
 
-        $form = $crawler->selectButton('reply_to_comment_3[submit]')->form([
+        $form = $crawler->selectButton('Post')->form([
             'reply_to_comment_3[comment]' => 'You will be notified about this comment.',
         ]);
 

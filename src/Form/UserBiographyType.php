@@ -5,7 +5,6 @@ namespace App\Form;
 use App\DataObject\UserData;
 use App\Form\Type\MarkdownType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,9 +15,7 @@ class UserBiographyType extends AbstractType {
                 'label' => 'label.biography',
                 'required' => false,
             ])
-            ->add('save', SubmitType::class, [
-                'label' => 'label.save_settings',
-            ]);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void {

@@ -1,10 +1,8 @@
+{% from '_macros/form.html.twig' import button_row %}
 {{ form_start(form) }}
   {{ form_row(form.name) }}
   {{ form_row(form.title) }}
   {{ form_row(form.description) }}
   {{ form_row(form.sidebar, { attr: { rows: 8 } }) }}
-
-  <div class="form__row form__button-row">
-    <button class="button">{{ (editing ? 'action.edit' : 'action.create')|trans }}</button>
-  </div>
+  {{ button_row(editing ? 'action.save'|trans : 'action.create'|trans) }}
 {{ form_end(form) }}

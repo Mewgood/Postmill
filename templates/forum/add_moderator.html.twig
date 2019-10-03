@@ -1,11 +1,14 @@
 {% extends 'forum/base.html.twig' %}
+{% from '_macros/form.html.twig' import button_row %}
 
-{% block title %}
-  {{ 'add_moderator.title'|trans({'%forum%': forum.name}) }}
-{% endblock %}
+{% block title 'add_moderator.title'|trans({'%forum%': forum.name}) %}
 
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {{ form(form) }}
-{% endblock %}
+  {{ form_start(form) }}
+    {{ form_row(form.user) }}
+
+    {{ button_row('moderator_form.submit'|trans) }}
+  {{ form_end(form) }}
+{% endblock body %}

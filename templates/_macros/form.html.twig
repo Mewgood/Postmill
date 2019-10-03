@@ -24,3 +24,15 @@
     <span class="unstylable-widget__circle" aria-hidden="true"></span>
   </span>
 {%- endmacro radio -%}
+
+{% macro button_row(label, attr={}) %}
+  <div class="form__row form__button-row">
+    <button class="{{ ('button '~(attr.class ?? ''))|trim }}"
+      {{~ attr
+        |filter((v, k) => k not in ['class'])
+        |map((v, k) => v is same as(true) ? k : v is same as(false) or v is null ? '' : '%s="%s"'|format(k, v|e('html_attr')))
+        |join(' ')|raw }}>
+      {{- label -}}
+    </button>
+  </div>
+{% endmacro button_row %}

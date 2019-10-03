@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% from '_macros/form.html.twig' import button_row %}
 {% from 'user/_macros.html.twig' import user_link %}
 
 {% block title block('html_title')|striptags %}
@@ -17,8 +18,7 @@
     {{ form_row(form.expiresAt) }}
     {{ form_row(form.ban_ip) }}
     {{ form_row(form.ips) }}
-
-    <button class="button">{{ 'action.ban'|trans }}</button>
+    {{ button_row('action.ban'|trans) }}
   {{ form_end(form) }}
 {% endblock %}
 

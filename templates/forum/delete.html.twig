@@ -1,4 +1,5 @@
 {% extends 'forum/base.html.twig' %}
+{% from '_macros/form.html.twig' import button_row %}
 
 {% block title 'title.delete_forum'|trans({'%forum%': '/f/%s'|format(forum.name)}) %}
 
@@ -20,8 +21,6 @@
 
     {{ form_row(form.confirm, { label: 'label.delete_forum_confirmation'|trans }) }}
 
-    <div class="form__row form__button-row">
-      <button class="button">{{ 'action.delete_forum'|trans }}</button>
-    </div>
+    {{ button_row('action.delete_forum'|trans) }}
   {{ form_end(form) }}
 {% endblock %}

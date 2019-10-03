@@ -1,7 +1,7 @@
+{% from '_macros/form.html.twig' import button_row %}
+
 {{ form_start(form) }}
   {{ form_row(form.body, {attr: {rows: 6}}) }}
 
-  <div class="form__row form__button-row">
-    <button class="button">{{ 'message_form.send'|trans }}</button>
-  </div>
+  {{ button_row('message_form.send'|trans) }}
 {{ form_end(form) }}

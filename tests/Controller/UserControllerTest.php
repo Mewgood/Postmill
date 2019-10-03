@@ -14,7 +14,7 @@ class UserControllerTest extends WebTestCase {
         $client->followRedirects();
         $crawler = $client->request('GET', '/registration');
 
-        $client->submit($crawler->selectButton('user[submit]')->form([
+        $client->submit($crawler->selectButton('Register')->form([
             'user[username]' => 'shrek',
             'user[password][first]' => 'donkeykong123',
             'user[password][second]' => 'donkeykong123',
@@ -32,7 +32,7 @@ class UserControllerTest extends WebTestCase {
 
         $password = str_repeat('a', 73);
 
-        $client->submit($crawler->selectButton('user[submit]')->form([
+        $client->submit($crawler->selectButton('Register')->form([
             'user[username]' => 'random4',
             'user[password][first]' => $password,
             'user[password][second]' => $password,
@@ -88,7 +88,7 @@ class UserControllerTest extends WebTestCase {
         $client = self::createUserClient();
         $crawler = $client->request('GET', '/user/zach/edit_biography');
 
-        $form = $crawler->selectButton('Save settings')->form([
+        $form = $crawler->selectButton('Save')->form([
             'user_biography[biography]' => 'tortilla enthusiast',
         ]);
 
