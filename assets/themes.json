@@ -19,5 +19,9 @@
     "forest": {
         "name": "Forest",
         "entrypoint": "themes/forest"
+    },
+    "raddle": {
+        "name": "Raddle",
+        "entrypoint": "themes/raddle"
     }
 }

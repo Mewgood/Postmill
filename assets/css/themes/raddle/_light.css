@@ -1,0 +1,10 @@
+@import '../_modern';
+
+.light-mode:root {
+  --link: #666;
+  --primary: #000;
+  --primary-alt: #222;
+  --primary-bright: #444;
+  --primary-alpha: #c002;
+  --notification: #c0c;
+}
