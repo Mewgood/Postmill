@@ -1,22 +1,23 @@
 import $ from 'jquery';
 import routing from 'fosjsrouting';
+import { ok } from './lib/http';
 
 $('.auto-fetch-submission-titles .fetch-title').blur(function () {
     const $receiver = $('.receive-title');
     const url = $(this).val().trim();
 
     if ($receiver.val().trim() === '' && /^https?:\/\//.test(url)) {
-        $.ajax({
-            url: routing.generate('fetch_title'),
+        fetch(routing.generate('fetch_title'), {
             method: 'POST',
-            dataType: 'json',
-            data: { url: url },
-        }).done(data => {
-            if ($receiver.val().trim() === '') {
-                $('.receive-title').val(data.title);
-            }
-        }).fail(err => {
-            console && console.log(err);
-        });
+            body: new URLSearchParams({ url }),
+            credentials: 'same-origin',
+        })
+            .then(response => ok(response))
+            .then(response => response.json())
+            .then(data => {
+                if ($receiver.val().trim() === '') {
+                    $('.receive-title').val(data.title);
+                }
+            });
     }
 });

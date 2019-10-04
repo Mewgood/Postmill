@@ -51,3 +51,4 @@ comment_vote:
     path: /cv/{id}.{_format}
     methods: [POST]
     requirements: { _format: html|json, id: "%number_regex%" }
+    options: { expose: true }

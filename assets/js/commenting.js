@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import translator from 'bazinga-translator';
+import { ok } from './lib/http';
 
 // load comment forms via ajax
 
@@ -24,13 +25,16 @@ $('.comment__reply-link').click(function (event) {
         // opacity indicates loading
         $(this).css('opacity', '0.5');
 
-        $.ajax({url: url, dataType: 'html'}).done(data => {
-            $parent.append(data);
-        }).fail(() => {
-            const error = translator.trans('comments.form_load_error');
-            $parent.append(`<p class="comment-error">${error}</p>`);
-        }).always(() => {
-            $(this).css('opacity', 'unset');
-        });
+        fetch(url)
+            .then(response => ok(response))
+            .then(response => response.text())
+            .then(formHtml => $parent.append(formHtml))
+            .catch(e => {
+                const error = translator.trans('comments.form_load_error');
+                $parent.append(`<p class="comment-error">${error}</p>`);
+
+                throw e;
+            })
+            .finally(() => $(this).css('opacity', 'unset'));
     }
 });

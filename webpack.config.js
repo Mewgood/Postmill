@@ -9,6 +9,9 @@ Encore
         'bazinga-translator': 'Translator',
         'fosjsrouting': 'Routing',
     })
+    .addAliases({
+        'jquery$': 'jquery/dist/jquery.slim',
+    })
     .cleanupOutputBeforeBuild()
     .copyFiles({
         from: './assets/icons',

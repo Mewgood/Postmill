@@ -1,5 +1,7 @@
 import $ from 'jquery';
+import router from 'fosjsrouting';
 import translator from 'bazinga-translator';
+import { ok } from './lib/http';
 
 /**
  * Get the current vote selection (-1: downvoted, 0: not voted on, 1: upvoted).
@@ -67,37 +69,43 @@ function getDownButtonTitle(choice) {
  * @param {boolean} isUp
  */
 function vote($form, isUp) {
-    const url = $form.data('ajax-action');
+    const url = router.generate($form.data('route'), {
+        id: $form.data('id'),
+        _format: 'json',
+    });
+
     const choice = getNewChoice($form, isUp);
 
-    const data = {
-        choice: choice,
-        token: $form.find('input[name=token]').val(),
-    };
+    const data = new FormData($form[0]);
+    data.append('choice', choice);
 
     $form.removeClass('vote--failed');
     $form.find('.vote__net-score').html($form.data('load-prototype'));
 
-    $.post(url, data).done(() => {
-        const newScore = getNewScore($form, isUp, $form.data('score'));
+    fetch(url, {
+        method: 'POST',
+        body: data,
+        credentials: 'same-origin',
+    })
+        .then(response => ok(response))
+        .then(() => {
+            const newScore = getNewScore($form, isUp, $form.data('score'));
 
-        $form
-            .toggleClass(isUp ? 'vote--user-upvoted' : 'vote--user-downvoted')
-            .removeClass(isUp ? 'vote--user-downvoted' : 'vote--user-upvoted')
-            .data('score', newScore)
-            .find('.vote__net-score').text(newScore);
+            $form
+                .toggleClass(isUp ? 'vote--user-upvoted' : 'vote--user-downvoted')
+                .removeClass(isUp ? 'vote--user-downvoted' : 'vote--user-upvoted')
+                .data('score', newScore)
+                .find('.vote__net-score').text(newScore);
 
-        // update title attributes
-        $form.find('.vote__up').attr('title', getUpButtonTitle(choice));
-        $form.find('.vote__down').attr('title', getDownButtonTitle(choice));
-    }).fail((xhr, textStatus, err) => {
-        $form
-            .addClass('vote--failed')
-            .find('.vote__net-score')
-            .text($form.data('score'));
-
-        console && console.log('Failed to vote', textStatus, err);
-    });
+            // update title attributes
+            $form.find('.vote__up').attr('title', getUpButtonTitle(choice));
+            $form.find('.vote__down').attr('title', getDownButtonTitle(choice));
+        }).catch(() => {
+            $form
+                .addClass('vote--failed')
+                .find('.vote__net-score')
+                .text($form.data('score'));
+        });
 }
 
 $(document)

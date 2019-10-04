@@ -17,7 +17,8 @@
           class="vote
                 {{- user_choice == VOTE_UP ? ' vote--user-upvoted' }}
                 {{- user_choice == VOTE_DOWN ? ' vote--user-downvoted' }}"
-          data-ajax-action="{{ path(route, {id: entity.id, _format: 'json'}) }}"
+          data-route="{{ route }}"
+          data-id="{{ entity.id }}"
           data-score="{{ entity.netScore }}"
           data-load-prototype="{{ icon('spinner', 'loading', 'icon--spin icon--no-align')|e }}">
 

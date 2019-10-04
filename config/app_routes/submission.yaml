@@ -97,3 +97,4 @@ submission_vote:
     path: /sv/{id}.{_format}
     methods: [POST]
     requirements: { _format: html|json }
+    options: { expose: true }

@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import router from 'fosjsrouting';
+import { ok } from './lib/http';
 
 $(document).on('submit', '.subscribe-form', function (event) {
     const $form = $(this);
@@ -16,25 +17,28 @@ $(document).on('submit', '.subscribe-form', function (event) {
 
     $button.prop('disabled', true);
 
-    $.ajax({
-        url: router.generate(subscribe ? 'subscribe' : 'unsubscribe', {
-            forum_name: forum,
-            _format: 'json',
-        }),
-        method: 'POST',
-        data: $form.serialize(),
-        dataType: 'json',
-    }).done(() => {
-        const proto = $button.data('toggle-prototype');
-
-        $button
-            .removeClass(`subscribe-button--${subscribe ? '' : 'un'}subscribe`)
-            .addClass(`subscribe-button--${!subscribe ? '' : 'un'}subscribe`)
-            .data('toggle-prototype', $button.html())
-            .html(proto);
-    }).always(() => {
-        $button
-            .prop('disabled', false)
-            .blur();
+    const url = router.generate(subscribe ? 'subscribe' : 'unsubscribe', {
+        forum_name: forum,
+        _format: 'json',
     });
+
+    fetch(url, {
+        method: 'POST',
+        body: new FormData($form[0]),
+        credentials: 'same-origin',
+    })
+        .then(response => ok(response))
+        .then(() => {
+            const proto = $button.data('toggle-prototype');
+
+            $button
+                .toggleClass('subscribe-button--subscribe subscribe-button--unsubscribe')
+                .data('toggle-prototype', $button.html())
+                .html(proto);
+        })
+        .finally(() => (
+            $button
+                .prop('disabled', false)
+                .blur()
+        ));
 });

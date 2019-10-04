@@ -48,8 +48,11 @@
             }
         },
         {
-            "files": ["assets/js/**.js"],
-            "parser": "babel-eslint"
+            "files": ["assets/js/**/*.js"],
+            "parser": "babel-eslint",
+            "parserOptions": {
+                "sourceType": "module"
+            }
         }
     ]
 }
