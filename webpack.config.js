@@ -3,6 +3,10 @@
 const Encore = require('@symfony/webpack-encore');
 const fs = require('fs');
 
+if (!Encore.isRuntimeEnvironmentConfigured()) {
+    Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
+}
+
 Encore
     .addEntry('main', './assets/js/main.js')
     .addExternals({
@@ -28,8 +32,14 @@ Encore
     .createSharedEntry('vendor', './assets/js/vendor.js');
 
 (function addStyleEntrypoints(directory, prefix) {
-    fs.readdirSync(directory, { withFileTypes: true })
-        .filter(file => !file.name.startsWith('_'))
+    fs.readdirSync(directory)
+        .filter(name => !name.startsWith('_'))
+        .map(name => ({ name, stat: fs.statSync(`${directory}/${name}`) }))
+        .map(file => ({
+            name: file.name,
+            isFile: () => file.stat.isFile(),
+            isDirectory: () => file.stat.isDirectory(),
+        }))
         .forEach(file => {
             const filePath = `${directory}/${file.name}`;
 
