@@ -172,28 +172,22 @@
 {%- endblock button_widget -%}
 
 {%- block captcha_widget -%}
-  {%- apply spaceless -%}
-    <div>
-      {%- if not reload -%}
-        <img src="{{ captcha_code }}" alt="" title="captcha" width="{{ captcha_width }}" height="{{ captcha_height }}">
-      {%- else -%}
-        <a class="captcha_reload" href="#" id="reload_{{ image_id }}">
-          <img src="{{ captcha_code }}" alt="" title="{{ 'Renew'|trans({}, 'gregwar_captcha') }}" width="{{ captcha_width }}" height="{{ captcha_height }}">
-        </a>
-        {% cspscript %}
-          <script>
-            (function (linkId) {
-              document.getElementById(linkId).addEventListener('click', function () {
-                var img = this.getElementsByTagName('img')[0];
-                img.src = '{{ captcha_code|e('js') }}?n=' + (new Date()).getTime();
-              });
-            })('reload_{{ image_id|e('js') }}');
-          </script>
-        {% endcspscript %}
-      {%- endif -%}
-    </div>
-    {{- form_widget(form) -}}
-  {%- endapply -%}
+  {%- set image -%}
+    <img src="{{ captcha_code }}"
+         width="{{ captcha_width }}"
+         height="{{ captcha_height }}"
+         alt=""
+         class="block"
+         aria-label="{{ 'label.verification_image'|trans }}">
+  {%- endset -%}
+  {%- if reload -%}
+    <button class="unbuttonize js-captcha-reload" type="button" disabled>
+      {{- image -}}
+    </button>
+  {%- else -%}
+    {{- image -}}
+  {%- endif -%}
+  {{- form_widget(form) -}}
 {%- endblock captcha_widget -%}
 
 {% block datetime_widget %}

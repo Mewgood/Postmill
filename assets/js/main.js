@@ -1,4 +1,5 @@
 import './alerts';
+import './captcha';
 import './comment-count';
 import './commenting';
 import './delete';
