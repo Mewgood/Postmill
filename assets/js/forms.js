@@ -1,5 +1,16 @@
 import $ from 'jquery';
 
+// warn when navigating away from a page where the user has entered data into
+// certain form fields.
+
+const FIELDS = [
+    'textarea',
+    'input:not([type])',
+    'input[type="text"]',
+    'input[type="url"]',
+    'input[type="file"]',
+].join(', ');
+
 const widgetsChanged = new Set();
 let hasBeforeUnloadListener = false;
 
@@ -33,9 +44,9 @@ function changeHandler(event) {
 }
 
 $(document)
-    .on('change', '.form', changeHandler)
-    .on('input', '.form', changeHandler)
-    .on('submit', '.form', event => {
+    .on('change', FIELDS, changeHandler)
+    .on('input', FIELDS, changeHandler)
+    .on('submit', FIELDS, event => {
         if (!event.isPropagationStopped()) {
             $(window).off('beforeunload', beforeUnloadHandler);
 
