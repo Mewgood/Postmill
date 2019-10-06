@@ -30,7 +30,7 @@ final class VoteController extends AbstractController {
         $em->flush();
 
         if ($request->getRequestFormat() === 'json') {
-            return $this->json(['message' => 'successful vote']);
+            return $this->json(['netScore' => $votable->getNetScore()]);
         }
 
         if (!$request->headers->has('Referer')) {

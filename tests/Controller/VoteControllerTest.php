@@ -37,7 +37,7 @@ class VoteControllerTest extends WebTestCase {
         self::assertResponseStatusCodeSame(200);
         $this->assertJson($client->getResponse()->getContent());
         $this->assertEquals([
-            'message' => 'successful vote',
+            'netScore' => 0,
         ], json_decode($client->getResponse()->getContent(), true));
 
         $client->request('GET', '/f/cats/3');

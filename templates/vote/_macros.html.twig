@@ -35,7 +35,7 @@
 
       <span class="vote__net-score">{{ entity.netScore < 0 ? '&minus;' }}{{ entity.netScore|abs }}</span>
 
-      <button type="submit" name="choice" value="{{ user_choice == VOTE_DOWN ? VOTE_NONE : VOTE_UP }}"
+      <button type="submit" name="choice" value="{{ user_choice == VOTE_DOWN ? VOTE_NONE : VOTE_DOWN }}"
               class="unbuttonize vote__button vote__down"
               title="{{ (user_choice == VOTE_DOWN ? 'action.retract_downvote' : 'action.downvote')|trans }}">
         <span aria-hidden="true">{{ icon('down', 'down', 'icon--no-align') }}</span>
