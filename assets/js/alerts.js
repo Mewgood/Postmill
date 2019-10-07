@@ -1,12 +1,12 @@
-import $ from 'jquery';
+document.querySelectorAll('.site-alerts__alert').forEach(alertEl => {
+    const dismissEl = alertEl.querySelector('.site-alerts__dismiss');
 
-$(document).on('click', '.site-alerts__dismiss', function () {
-    const $alert = $(this).parents('.site-alerts__alert');
-
-    $alert
-        .removeClass('site-alerts__alert')
-        .each((i, el) => el.offsetWidth)
-        .addClass('site-alerts__alert')
-        .css('animation-direction', 'reverse')
-        .one('animationend', () => $alert.remove());
+    dismissEl.onclick = () => {
+        dismissEl.onclick = null;
+        alertEl.classList.remove('site-alerts__alert');
+        alertEl.offsetWidth;
+        alertEl.classList.add('site-alerts__alert');
+        alertEl.style.animationDirection = 'reverse';
+        alertEl.onanimationend = () => alertEl.parentNode.removeChild(alertEl);
+    };
 });
