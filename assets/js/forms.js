@@ -9,7 +9,7 @@ const FIELDS = [
     'input[type="text"]',
     'input[type="url"]',
     'input[type="file"]',
-].join(', ');
+].map(f => '.form ' + f).join(', ');
 
 const widgetsChanged = new Set();
 let hasBeforeUnloadListener = false;
