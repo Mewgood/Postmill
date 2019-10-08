@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% from '_macros/icon.html.twig' import icon %}
 
 {% block site_nav_active app.user is same as(user) ? 'user' %}
 {% block user_toolbox_active app.request.attributes.get('_route') %}
@@ -12,7 +13,7 @@
     </h1>
 
     <p>
-      <small class="fg-muted text-md">{{ 'user.registered'|trans({
+      <small class="fg-muted text-sm">{{ 'user.registered'|trans({
         '%timestamp%': relative_time(user.created, { time_format: 'none', natural: true })
       })|raw }}
       </small>
@@ -20,6 +21,16 @@
 
     {% if user.biography is not empty %}
       <div class="user-bio__biography">{{ user.biography|cached_markdown|raw }}</div>
+    {% endif %}
+
+    {% if user is same as(app.user) %}
+      <p>
+        <a href="{{ path('edit_biography', { username: user.username }) }}"
+           class="button button--small button--secondary">
+          {{- icon('pencil') }}
+          {{ 'nav.edit_biography'|trans -}}
+        </a>
+      </p>
     {% endif %}
   </section>
 
@@ -78,7 +89,7 @@
     },
     ('nav.edit_biography'|trans): {
       route: 'edit_biography',
-      condition: is_granted('ROLE_USER') and user is same as(app.user)
+      condition: is_granted('edit_user', user) and user is not same as(app.user)
     },
     ('nav.hidden_forums'|trans): {
       route: 'hidden_forums',
