@@ -23,13 +23,14 @@ Encore
         pattern: /\.svg$/i,
     })
     .enableLessLoader()
+    .enablePostCssLoader()
     .enableSingleRuntimeChunk()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning()
     .enableIntegrityHashes()
     .setOutputPath('public/build/')
     .setPublicPath('/build')
-    .createSharedEntry('vendor', './assets/js/vendor.js');
+    .splitEntryChunks();
 
 (function addStyleEntrypoints(directory, prefix) {
     fs.readdirSync(directory)

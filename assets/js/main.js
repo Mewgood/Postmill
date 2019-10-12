@@ -1,3 +1,6 @@
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
 import './alerts';
 import './captcha';
 import './comment-count';

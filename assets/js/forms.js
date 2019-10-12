@@ -46,7 +46,7 @@ function changeHandler(event) {
 $(document)
     .on('change', FIELDS, changeHandler)
     .on('input', FIELDS, changeHandler)
-    .on('submit', FIELDS, event => {
+    .on('submit', '.form', event => {
         if (!event.isPropagationStopped()) {
             $(window).off('beforeunload', beforeUnloadHandler);
 

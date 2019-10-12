@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import routing from 'fosjsrouting';
 import translator from 'bazinga-translator';
 import $ from 'jquery';

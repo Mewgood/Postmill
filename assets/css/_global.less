@@ -106,7 +106,8 @@ pre, code, kbd {
   font-size: var(--mono-font-size, 1em);
 }
 
-pre {
+pre code {
+  display: block;
   overflow-x: auto;
 }
 
@@ -117,9 +118,4 @@ hr {
 
 summary {
   cursor: pointer;
-}
-
-.dark-mode:root .select2-container {
-  // Temporary fix for select2 being bad on dark pages.
-  color: #000;
 }
