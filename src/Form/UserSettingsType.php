@@ -104,7 +104,13 @@ final class UserSettingsType extends AbstractType {
             ->add('showCustomStylesheets', CheckboxType::class, [
                 'label' => 'label.let_forums_override_preferred_theme',
                 'required' => false,
-            ]);
+            ])
+            ->add('poppersEnabled', CheckboxType::class, [
+                'help' => 'help.poppers_enabled',
+                'label' => 'label.poppers_enabled',
+                'required' => false,
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void {

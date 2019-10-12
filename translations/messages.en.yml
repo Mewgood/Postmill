@@ -246,6 +246,7 @@ help:
     preferred_fonts_aliases: 'Aliased font names: '
     markdown_allowed: Markdown allowed.
     allow_private_messages: If disabled, only admins, co-moderators, and moderators of forums you've recently participated in will be able to send you private messages.
+    poppers_enabled: Poppers are small panels that display info and buttons when you hover over certain things (e.g. usernames). They are only available when using a mouse.
 
 inbox:
     message_reply_head: 'Re: %title%'
@@ -359,6 +360,7 @@ label:
     trusted_users: Trusted users
     everyone: Everyone
     verification_image: Verification image
+    poppers_enabled: Enable poppers
 
 log:
     comment_deletion: '%user% deleted comment by %author% in "%submission%"'

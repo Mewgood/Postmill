@@ -293,6 +293,13 @@ class User implements UserInterface, \Serializable {
     private $notifyOnMentions = true;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @var bool
+     */
+    private $poppersEnabled = true;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @var string|null
@@ -698,6 +705,14 @@ class User implements UserInterface, \Serializable {
 
     public function setPreferredFonts(?string $preferredFonts): void {
         $this->preferredFonts = $preferredFonts;
+    }
+
+    public function isPoppersEnabled(): bool {
+        return $this->poppersEnabled;
+    }
+
+    public function setPoppersEnabled(bool $poppersEnabled): void {
+        $this->poppersEnabled = $poppersEnabled;
     }
 
     /**

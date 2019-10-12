@@ -51,6 +51,7 @@ class UserControllerTest extends WebTestCase {
             'notifyOnMentions' => true,
             'preferredFonts' => null,
             'timezone' => 'UTC',
+            'poppersEnabled' => true,
         ], json_decode($client->getResponse()->getContent(), true));
     }
 

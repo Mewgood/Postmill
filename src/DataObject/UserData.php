@@ -181,6 +181,13 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
     private $preferredFonts;
 
     /**
+     * @Groups("user:preferences")
+     *
+     * @var bool|null
+     */
+    private $poppersEnabled;
+
+    /**
      * @Groups({"user:read"})
      *
      * @var bool
@@ -209,6 +216,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
             $this->notifyOnReply = $user->getNotifyOnReply();
             $this->notifyOnMentions = $user->getNotifyOnMentions();
             $this->preferredFonts = $user->getPreferredFonts();
+            $this->poppersEnabled = $user->isPoppersEnabled();
         }
     }
 
@@ -235,6 +243,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $user->setNotifyOnReply($this->notifyOnReply);
         $user->setNotifyOnMentions($this->notifyOnMentions);
         $user->setPreferredFonts($this->preferredFonts);
+        $user->setPoppersEnabled($this->poppersEnabled);
         $user->setAdmin($this->admin);
     }
 
@@ -259,6 +268,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
             'notifyOnReply',
             'notifyOnMentions',
             'preferredFonts',
+            'poppersEnabled',
         ];
 
         foreach ($settings as $setting) {
@@ -433,6 +443,14 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
 
     public function setPreferredFonts(?string $preferredFonts): void {
         $this->preferredFonts = $preferredFonts;
+    }
+
+    public function isPoppersEnabled(): ?bool {
+        return $this->poppersEnabled;
+    }
+
+    public function setPoppersEnabled(?bool $poppersEnabled): void {
+        $this->poppersEnabled = $poppersEnabled;
     }
 
     public function isAdmin(): bool {

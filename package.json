@@ -17,6 +17,7 @@
         "lodash": "^4.17.11",
         "normalize.css": "^8.0.1",
         "select2": "^4.0.7",
+        "tippy.js": "^5.0.2",
         "typeface-roboto": "0.0.54",
         "typeface-roboto-mono": "0.0.54",
         "typeface-ubuntu": "^0.0.65"

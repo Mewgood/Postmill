@@ -44,7 +44,8 @@
     {% block head '' %}
   </head>
 
-  <body class="{{ app.user ? 'user-logged-in' : 'user-anonymous' }} ">
+  <body class="{{ app.user ? 'user-logged-in' : 'user-anonymous' }}
+               {{~ (app.user.poppersEnabled ?? true) ? 'js-poppers-enabled' }}">
     {% block site_alerts %}
       <div class="site-alerts">
         {%- if app.request.previousSession -%}

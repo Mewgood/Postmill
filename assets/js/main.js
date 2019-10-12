@@ -13,4 +13,5 @@ import './remaining';
 import './select2';
 import './subscribe';
 import './syntax';
+import './user-popper';
 import './vote';

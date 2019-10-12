@@ -1,57 +1,60 @@
-import $ from 'jquery';
 import { distanceInWords, distanceInWordsToNow, isBefore } from 'date-fns';
-import Translator from 'bazinga-translator';
+import translator from 'bazinga-translator';
 
-function makeTimesRelative(locale) {
-    $('.js-relative-time[datetime]').each(function () {
-        const isoTime = $(this).attr('datetime');
+/**
+ * @param {ParentNode} el
+ */
+export function makeTimesRelative(el) {
+    loadDateFnsLocale().then(locale => {
+        el.querySelectorAll('.js-relative-time').forEach(el => {
+            el.innerText = distanceInWordsToNow(el.dateTime, {
+                addSuffix: true,
+                locale,
+            });
+        });
 
-        $(this).text(distanceInWordsToNow(isoTime, {
-            addSuffix: true,
-            locale: locale,
-        }));
-    });
+        el.querySelectorAll('.js-relative-time-diff').forEach(el => {
+            const timeA = el.dateTime;
+            const timeB = el.getAttribute('data-compare-to');
 
-    $('.js-relative-time-diff[datetime][data-compare-to]').each(function () {
-        const timeA = $(this).attr('datetime');
-        const timeB = $(this).data('compare-to');
+            const relativeTime = distanceInWords(timeA, timeB, { locale });
 
-        const relativeTime = distanceInWords(timeA, timeB, { locale: locale });
+            const format = isBefore(timeB, timeA)
+                ? 'time.later_format'
+                : 'time.earlier_format';
 
-        const format = isBefore(timeB, timeA)
-            ? 'time.later_format'
-            : 'time.earlier_format';
-
-        $(this).text(Translator.trans(format, { relative_time: relativeTime }));
-    });
-}
-
-function loadLocaleAndMakeTimesRelative(lang) {
-    import(`date-fns/locale/${lang}/index.js`).then(locale => {
-        makeTimesRelative(locale);
-    }).catch(error => {
-        const i = lang.indexOf('-');
-
-        if (i !== -1) {
-            const newLang = lang.substring(0, i);
-
-            console && console.log(`Couldn't load ${lang}; trying ${newLang}`);
-
-            loadLocaleAndMakeTimesRelative(newLang);
-        } else {
-            console && console.log(error.toString());
-
-            // give up and just do english
-            makeTimesRelative();
-        }
+            el.innerText = translator.trans(format, {
+                relative_time: relativeTime,
+            });
+        });
     });
 }
 
-const locale = $(':root').attr('lang');
+/**
+ * @param {string} lang
+ *
+ * @returns {Promise<null|object>}
+ */
+function loadDateFnsLocale(lang = document.documentElement.lang || 'en') {
+    if (lang === 'en') {
+        return Promise.resolve(null);
+    }
 
-if (!locale || locale === 'en') {
-    // english is the default, always-loaded locale
-    makeTimesRelative();
-} else {
-    loadLocaleAndMakeTimesRelative(locale);
+    return import(`date-fns/locale/${lang}/index.js`)
+        .then(locale => locale)
+        .catch(() => {
+            const i = lang.indexOf('-');
+
+            if (i !== -1) {
+                const newLang = lang.substring(0, i);
+
+                console.info(`Couldn't load ${lang}; trying ${newLang}`);
+
+                return loadDateFnsLocale(newLang);
+            }
+
+            throw new Error(`Couldn't load ${lang}`);
+        });
 }
+
+makeTimesRelative(document.body);
