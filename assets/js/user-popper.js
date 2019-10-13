@@ -46,6 +46,7 @@ const elements = [...document.querySelectorAll(TARGETS)].filter(el => (
 
 tippy(elements, {
     content: '…',
+    delay: 250,
     flipOnUpdate: true,
     interactive: true,
     theme: 'postmill',
