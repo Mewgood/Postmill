@@ -1,28 +1,54 @@
 import { debounce } from 'lodash-es';
 import routing from 'fosjsrouting';
 import translator from 'bazinga-translator';
-import $ from 'jquery';
+import { escapeHtml, parseHtml } from './lib/html';
 import { ok } from './lib/http';
+import { highlightRoot } from './syntax';
 
-function createPreview() {
-    const $input = $(this);
+const DEBOUNCE_RATE = 600;
 
+function makePreview(renderedHtml) {
+    const preview = parseHtml(`
+        <h3 class="markdown-preview__title">
+            ${escapeHtml(translator.trans('markdown_type.preview'))}
+        </h3>
+        <div class="markdown-preview__inner">${renderedHtml}</div>
+    `);
+
+    highlightRoot(preview);
+
+    return preview;
+}
+
+function handleInput(el) {
     fetch(routing.generate('markdown_preview'), {
         method: 'POST',
         headers: { 'Content-Type': 'text/html; charset=UTF-8' },
         credentials: 'same-origin',
-        body: $input.val(),
+        body: el.value,
     })
         .then(response => ok(response))
         .then(response => response.text())
-        .then(content => {
-            const html = content.length > 0
-                ? `<h3 class="markdown-preview__title">${translator.trans('markdown_type.preview')}</h3>
-                  <div class="markdown-preview__inner">${content}</div>`
-                : '';
+        .then(renderedHtml => {
+            const target = document.getElementById(el.id + '_preview');
+            target.innerHTML = '';
 
-            $('#' + $input.attr('id') + '_preview').html(html);
+            if (renderedHtml.trim().length > 0) {
+                target.append(makePreview(renderedHtml));
+            }
         });
 }
 
-$(() => $(document).on('input', '.js-markdown-preview', debounce(createPreview, 600)));
+const inputHandlerMap = new WeakMap();
+
+addEventListener('input', event => {
+    const el = event.target.closest('.js-markdown-preview');
+
+    if (el && !inputHandlerMap.has(el)) {
+        inputHandlerMap.set(el, debounce(() => handleInput(el), DEBOUNCE_RATE));
+    }
+
+    if (el) {
+        inputHandlerMap.get(el)();
+    }
+});

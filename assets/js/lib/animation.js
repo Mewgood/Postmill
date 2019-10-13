@@ -17,7 +17,7 @@ export function fadeOutAndRemove(el) {
 
     el.onanimationend = () => {
         if (el.parentNode.contains(el)) {
-            el.parentNode.removeChild(el);
+            el.remove();
             cancelFadeOut(el);
         }
     };

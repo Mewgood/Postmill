@@ -1,10 +1,14 @@
-import $ from 'jquery';
+document.querySelectorAll('.select2').forEach(async el => {
+    const { default: $ } = await import('jquery');
 
-$('.select2').each(async function () {
+    if (!window.$) {
+        window.$ = window.jQuery = $;
+    }
+
     await Promise.all([
         import('select2'),
         import('select2/dist/css/select2.css'),
     ]);
 
-    $(this).select2();
+    $(el).select2();
 });

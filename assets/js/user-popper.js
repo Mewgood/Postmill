@@ -39,11 +39,10 @@ function fetchPopperHtml(username) {
         });
 }
 
-const elements = Array.from(document.querySelectorAll(TARGETS))
-    .filter(el => (
-        el.origin === location.origin &&
-        el.href.match(/\//g).length - (BASE_URL.match(/\//g) || []).length === 4
-    ));
+const elements = [...document.querySelectorAll(TARGETS)].filter(el => (
+    el.origin === location.origin &&
+    el.href.match(/\//g).length - (BASE_URL.match(/\//g) || []).length === 4
+));
 
 tippy(elements, {
     content: '…',

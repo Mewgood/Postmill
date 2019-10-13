@@ -1,17 +1,11 @@
-import $ from 'jquery';
-
-const KEY_ESC = 27;
-const KEY_HOME = 36;
-const KEY_END = 35;
-const KEY_UP = 38;
-const KEY_DOWN = 40;
+// Make dropdown menus accessible and triggered on click
 
 const FOCUSABLE_ELEMENTS = [
-    '> .dropdown__toggle',
-    '> .dropdown__menu a[href]',
-    '> .dropdown__menu button:not([disabled])',
-    '> .dropdown__menu input:not([type="hidden"]):not([disabled])',
-].join(', ');
+    '.dropdown__toggle',
+    '.dropdown__menu a[href]',
+    '.dropdown__menu button:not([disabled])',
+    '.dropdown__menu input:not([type="hidden"]):not([disabled])',
+].map(v => '.dropdown--expanded > ' + v).join(', ');
 
 const MENU_ACTIONS = [
     '.dropdown__menu a[href]',
@@ -19,104 +13,98 @@ const MENU_ACTIONS = [
     '.dropdown__menu button:not([type])',
 ].join(', ');
 
-function toggle($dropdown) {
-    const $toClose = $dropdown.add($dropdown.parents('.dropdown--expanded'));
+function toggle(dropdownEl) {
+    [...document.querySelectorAll('.dropdown--expanded')]
+        .filter(v => !v.contains(dropdownEl))
+        .concat(dropdownEl)
+        .forEach(dropdownEl => {
+            const expanded = dropdownEl.classList.toggle('dropdown--expanded');
+            const toggleEl = dropdownEl.querySelector('.dropdown__toggle');
 
-    // close all open dropdowns that are not self or a parent of self
-    toggleAttributes($('.dropdown--expanded').not($toClose));
-
-    // toggle the current dropdown
-    toggleAttributes($dropdown);
+            toggleEl.setAttribute('aria-expanded', expanded);
+        });
 }
 
-function toggleAttributes($dropdowns) {
-    $dropdowns.each(function (i, el) {
-        const $dropdown = $(el);
-        const expanded = !$dropdown.hasClass('dropdown--expanded');
-
-        $dropdown
-            .toggleClass('dropdown--expanded')
-            .find('.dropdown__toggle')
-            .attr('aria-expanded', expanded);
-    });
+function getFocusableElements() {
+    return [...document.querySelectorAll(FOCUSABLE_ELEMENTS)]
+        .filter(el => el.offsetWidth > 0 && el.offsetHeight > 0);
 }
 
-function moveInList($dropdown, amount) {
-    const $elements = $dropdown.find(FOCUSABLE_ELEMENTS);
-    let i = $elements.index($(':focus')) + amount;
+function moveInDropdown(amount) {
+    const elements = getFocusableElements();
+    let i = elements.findIndex(el => el === document.activeElement) + amount;
 
-    if (i >= $elements.length) {
+    if (i >= elements.length) {
         i = 0;
     } else if (i < 0) {
-        i = $elements.length - 1;
+        i = elements.length - 1;
     }
 
-    $elements.get(i).focus();
+    elements[i].focus();
 }
 
-function globalKeyDownHandler(event) {
-    if (event.metaKey || event.ctrlKey || event.altKey) {
+function handleKeyDown(event) {
+    const dropdownEl = document.querySelector('.dropdown--expanded');
+
+    if (!dropdownEl || event.metaKey || event.ctrlKey || event.altKey) {
         return;
     }
 
-    const $dropdown = $('.dropdown--expanded');
-
-    if ($dropdown.length === 0) {
-        return;
-    }
-
-    switch (event.which) {
-    case KEY_ESC:
-        toggle($dropdown);
-
-        // give focus back to toggle
-        $dropdown.find('> .dropdown__toggle').first().focus();
-
-        break;
-    case KEY_DOWN:
-        moveInList($dropdown, 1);
-        break;
-    case KEY_UP:
-        moveInList($dropdown, -1);
-        break;
-    case KEY_HOME:
-        moveInList($dropdown, Infinity);
-        break;
-    case KEY_END:
-        moveInList($dropdown, -Infinity);
-        break;
-    default:
+    if (event.key === 'Escape' || event.key === 'Esc') {
+        toggle(dropdownEl);
+        dropdownEl.querySelector('.dropdown__toggle').focus();
+    } else if (event.shiftKey && event.key === 'Tab') {
+        moveInDropdown(-1);
+    } else if (event.key === 'Tab') {
+        moveInDropdown(1);
+    } else if (event.key === 'ArrowUp' || event.key === 'Up') {
+        moveInDropdown(-1);
+    } else if (event.key === 'ArrowDown' || event.key === 'Down') {
+        moveInDropdown(1);
+    } else if (event.key === 'Home') {
+        moveInDropdown(Infinity);
+    } else if (event.key === 'End') {
+        moveInDropdown(-Infinity);
+    } else {
         return;
     }
 
     event.preventDefault();
 }
 
-// init
+document.querySelectorAll('.dropdown__toggle').forEach(el => {
+    el.setAttribute('aria-haspopup', 'true');
+    el.setAttribute('aria-expanded', 'false');
+});
 
-$('.dropdown__toggle').attr('aria-haspopup', true).attr('aria-expanded', false);
+addEventListener('keydown', handleKeyDown);
 
-$(document)
-    .on('keydown', globalKeyDownHandler)
+addEventListener('click', event => {
+    if (event.target.closest(MENU_ACTIONS)) {
+        event.stopImmediatePropagation();
 
-    // close the menu upon clicking a link or button or similar inside it
-    .on('click', MENU_ACTIONS, event => {
-        event.stopPropagation();
+        // close the menu upon clicking a link or button or similar inside it
+        document.querySelectorAll('.dropdown--expanded').forEach(toggle);
+    }
+});
 
-        toggle($('.dropdown--expanded'));
-    })
+addEventListener('click', event => {
+    const toggleEl = event.target.closest('.dropdown__toggle');
 
-    // prevent closing the menu when clicking on things in it that aren't
-    // buttons or links or anything
-    .on('click', '.dropdown__menu', event => event.stopPropagation())
+    if (toggleEl) {
+        event.stopImmediatePropagation();
 
-    // make the toggles work
-    .on('click', '.dropdown__toggle', function (event) {
-        event.stopPropagation();
+        toggle(toggleEl.closest('.dropdown'));
+    }
+});
 
-        toggle($(this).parent('.dropdown'));
-    })
+addEventListener('click', event => {
+    if (event.target.closest('.dropdown__menu')) {
+        // prevent closing the menu when clicking inside
+        event.stopImmediatePropagation();
+    }
+});
 
-    // close the menu when clicking elsewhere on a page
-    .on('click', () => toggle($('.dropdown--expanded')));
-
+addEventListener('click', () => {
+    document.querySelectorAll('.dropdown--expanded').forEach(toggle);
+});

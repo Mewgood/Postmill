@@ -1,17 +1,24 @@
-import $ from 'jquery';
 import Router from 'fosjsrouting';
 
-$(document).on('submit', '.js-night-mode-form', function (event) {
-    event.preventDefault();
+function toggleNightMode(formEl) {
+    document.documentElement.classList.toggle('light-mode');
+    const isDark = document.documentElement.classList.toggle('dark-mode');
 
-    const $root = $(':root');
-    $root.toggleClass('dark-mode light-mode');
-
-    const route = $root.hasClass('dark-mode') ? 'night_mode_on' : 'night_mode_off';
+    const route = isDark ? 'night_mode_on' : 'night_mode_off';
 
     fetch(Router.generate(route, { _format: 'json' }), {
-        body: new FormData(this),
+        body: new FormData(formEl),
         method: 'POST',
         credentials: 'same-origin',
     });
+}
+
+addEventListener('submit', event => {
+    const formEl = event.target.closest('.js-night-mode-form');
+
+    if (formEl) {
+        event.preventDefault();
+
+        toggleNightMode(formEl);
+    }
 });

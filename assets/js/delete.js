@@ -1,18 +1,18 @@
-import $ from 'jquery';
+// Confirm before deleting things.
+
 import translator from 'bazinga-translator';
 
-$('.js-confirm-comment-delete').click(function () {
-    return confirm(translator.trans('prompt.confirm_comment_delete'));
-});
+function bindMessage(selector, message) {
+    const translated = translator.trans(message);
 
-$('.js-confirm-message-delete').click(function () {
-    return confirm(translator.trans('prompt.confirm_message_delete'));
-});
+    addEventListener('click', event => {
+        if (event.target.closest(selector) && !confirm(translated)) {
+            event.preventDefault();
+        }
+    });
+}
 
-$('.js-confirm-submission-delete').click(function () {
-    return confirm(translator.trans('prompt.confirm_submission_delete'));
-});
-
-$('.js-confirm-wiki-delete').click(function () {
-    return confirm(translator.trans('prompt.confirm_wiki_delete'));
-});
+bindMessage('.js-confirm-comment-delete', 'prompt.confirm_comment_delete');
+bindMessage('.js-confirm-message-delete', 'prompt.confirm_message_delete');
+bindMessage('.js-confirm-submission-delete', 'prompt.confirm_submission_delete');
+bindMessage('.js-confirm-wiki-delete', 'prompt.confirm_wiki_delete');

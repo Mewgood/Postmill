@@ -1,38 +1,28 @@
-import $ from 'jquery';
+// Add text next to submission comments link showing how many new comments have
+// appeared since last visit.
+
 import translator from 'bazinga-translator';
+import { formatNumber } from './lib/intl';
 
-$('.js-display-new-comments[data-submission-id][data-comment-count]')
-    .each(function (i, el) {
-        const $el = $(el);
-        const submissionId = $el.data('submission-id');
-        const lastCount = localStorage.getItem(`comments-${submissionId}`);
+document.querySelectorAll('.js-display-new-comments').forEach(el => {
+    const submissionId = el.getAttribute('data-submission-id');
+    const currentCount = el.getAttribute('data-comment-count');
+    const lastCount = localStorage.getItem(`comments-${submissionId}`);
+    const newComments = Math.max(currentCount - lastCount, 0);
 
-        if (lastCount === null) {
-            return;
-        }
+    if (lastCount === null || newComments === 0) {
+        return;
+    }
 
-        const currentCount = $el.data('comment-count');
-        const newComments = Math.max(currentCount - lastCount, 0);
-        const lang = $('html').attr('lang');
+    el.append(' ', translator.transChoice('submissions.new_comments',
+        newComments,
+        { count: formatNumber(newComments) }
+    ));
+});
 
-        if (newComments === 0) {
-            return;
-        }
+document.querySelectorAll('.js-update-comment-count').forEach(el => {
+    const submissionId = el.getAttribute('data-submission-id');
+    const commentCount = el.getAttribute('data-comment-count');
 
-        const number = newComments.toLocaleString(lang);
-
-        $el.before(' ');
-        $el.text(translator.transChoice('submissions.new_comments',
-            newComments,
-            { count: number }
-        ));
-    });
-
-$('.js-update-comment-count[data-submission-id][data-comment-count]')
-    .each(function (i, el) {
-        const $el = $(el);
-        const submissionId = $el.data('submission-id');
-        const commentCount = $el.data('comment-count');
-
-        localStorage.setItem(`comments-${submissionId}`, commentCount);
-    });
+    localStorage.setItem(`comments-${submissionId}`, commentCount);
+});

@@ -1,20 +1,20 @@
-import $ from 'jquery';
-window.$ = window.jQuery = $;
-
 import './alerts';
 import './captcha';
 import './comment-count';
 import './commenting';
 import './delete';
 import './dropdowns';
-import './fetch_titles';
-import './forms';
+import './fetch-titles';
 import './markdown';
 import './night-mode';
-import './relative-time';
+import { makeTimesRelative } from './relative-time';
 import './remaining';
 import './select2';
 import './subscribe';
-import './syntax';
+import { highlightRoot } from './syntax';
+import './unload-forms';
 import './user-popper';
 import './vote';
+
+highlightRoot(document.body);
+makeTimesRelative(document.body);

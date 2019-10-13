@@ -1,33 +1,27 @@
 {% macro subscribe_button(forum, subscribed, inline) %}
-  {%- set subscriber_count = subscriber_count ?? forum.subscriptions|length -%}
-  {%- from '_macros/icon.html.twig' import icon -%}
-  {%- from _self import subscribe_button, _subscribe_button_inner -%}
+  {%- set subscriber_count = forum.subscriptions|length -%}
   <button class="button {{ inline ? 'button--small inline' }} subscribe-button subscribe-button--{{ subscribed ? 'un' }}subscribe"
-          data-toggle-prototype="{{ _subscribe_button_inner(not subscribed, subscriber_count + (subscribed ? -1 : 1))|e }}">
-    {{- _subscribe_button_inner(subscribed, subscriber_count) -}}
-  </button>
-{%- endmacro %}
-
-{% macro _subscribe_button_inner(subscribed, subscriber_count) %}
-  <span class="subscribe-button__inner">
+          data-subscriber-count="{{ subscriber_count }}">
     <span class="subscribe-button__label">
-      {{ (subscribed ? 'forum.unsubscribe' : 'forum.subscribe')|trans }}
+      <span class="subscribe-button__label-text">
+        {{- subscribed ? 'forum.unsubscribe'|trans : 'forum.subscribe'|trans -}}
+      </span>
 
       {# dummy label to keep width consistent regardless of subscription state #}
       <span class="subscribe-button__dummy-label" aria-hidden="true">
-        {{ (subscribed ? 'forum.subscribe' : 'forum.unsubscribe')|trans }}
+        {{- subscribed ? 'forum.subscribe'|trans : 'forum.unsubscribe'|trans -}}
       </span>
     </span>
 
     <b class="subscribe-button__subscriber-count"
-          aria-label="{{ 'forum.subscriber_count'|trans({
-            '%count%': subscriber_count,
-            '%formatted_count%': subscriber_count|localizednumber,
-          }) }}">
+       aria-label="{{ 'forum.subscriber_count'|trans({
+         '%count%': subscriber_count,
+         '%formatted_count%': subscriber_count|localizednumber,
+       }) }}">
       {{- subscriber_count|localizednumber -}}
     </b>
-  </span>
-{% endmacro %}
+  </button>
+{%- endmacro %}
 
 {%- macro log_line(entry) -%}
   {%- from _self import _log_submission_deletion as submission_deletion,

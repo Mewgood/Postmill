@@ -1,17 +1,20 @@
-import $ from 'jquery';
-import GraphemeSplitter from 'grapheme-splitter';
 import translator from 'bazinga-translator';
 
 let splitter;
 
-function inputHandler() {
+async function handleInput(el) {
+    if (!el.value.length) {
+        return;
+    }
+
+    const { default: GraphemeSplitter } = await import('grapheme-splitter');
+
     if (!splitter) {
         splitter = new GraphemeSplitter();
     }
 
-    const $this = $(this);
-    const characterCount = splitter.countGraphemes($this.val());
-    const maxCharacters = $this.data('max-characters');
+    const characterCount = splitter.countGraphemes(el.value);
+    const maxCharacters = el.getAttribute('data-max-characters');
 
     if (characterCount > maxCharacters) {
         const message = translator.trans('flash.too_many_characters', {
@@ -19,12 +22,16 @@ function inputHandler() {
             max: maxCharacters,
         });
 
-        this.setCustomValidity(message);
+        el.setCustomValidity(message);
     } else {
-        this.setCustomValidity('');
+        el.setCustomValidity('');
     }
 }
 
-$('[data-max-characters]')
-    .each(inputHandler)
-    .on('input', inputHandler);
+addEventListener('input', event => {
+    const el = event.target.closest('[data-max-characters]');
+
+    if (el) {
+        handleInput(el);
+    }
+});

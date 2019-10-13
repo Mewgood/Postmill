@@ -56,5 +56,3 @@ function loadDateFnsLocale(lang = document.documentElement.lang || 'en') {
             throw new Error(`Couldn't load ${lang}`);
         });
 }
-
-makeTimesRelative(document.body);

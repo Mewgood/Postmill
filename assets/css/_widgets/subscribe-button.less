@@ -2,7 +2,12 @@
   background: transparent;
   border: none;
   border-radius: 0;
+  display: flex;
   padding: 0;
+
+  &.inline {
+    display: inline-flex;
+  }
 
   &__label,
   &__subscriber-count {
@@ -39,10 +44,6 @@
   &:hover {
     --fg: var(--fg-active);
     --fg-border: transparent;
-  }
-
-  &__inner {
-    display: flex;
   }
 
   &__dummy-label {

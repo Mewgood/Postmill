@@ -1,40 +1,52 @@
-import $ from 'jquery';
-import translator from 'bazinga-translator';
-import { ok } from './lib/http';
-
 // load comment forms via ajax
 
-// hide open forms (they're initially visible for non-js users)
-$('.comment .comment-form').hide();
+import translator from 'bazinga-translator';
+import { ok } from './lib/http';
+import { escapeHtml, parseHtml } from './lib/html';
 
-$('.comment__reply-link').click(function (event) {
-    event.preventDefault();
+function createErrorMessage(e) {
+    return parseHtml(`
+        <p class="comment__error fg-red" title="${escapeHtml(String(e))}">
+            <strong>${escapeHtml(translator.trans('comments.form_load_error'))}</strong>
+        </p>
+    `);
+}
 
-    const $parent = $(this).closest('.comment__main');
-    const $existingForm = $parent.find('> .comment-form');
+function handleClick(replyLinkEl) {
+    const parentEl = replyLinkEl.closest('.comment__main');
+    const formEl = parentEl.querySelector('.comment-form');
 
-    // remove existing error messages
-    $parent.find('> .comment-error').remove();
+    if (formEl) {
+        formEl.style.display = formEl.style.display ? null : 'none';
 
-    if ($existingForm.length > 0) {
-        // the form already exists, so just hide/unhide it as necessary
-        $existingForm.toggle();
-    } else {
-        const url = $(this).data('form-url');
+        return;
+    }
 
-        // opacity indicates loading
-        $(this).css('opacity', '0.5');
+    parentEl.querySelectorAll('.comment__error').forEach(el => el.remove());
 
-        fetch(url)
-            .then(response => ok(response))
-            .then(response => response.text())
-            .then(formHtml => $parent.append(formHtml))
-            .catch(e => {
-                const error = translator.trans('comments.form_load_error');
-                $parent.append(`<p class="comment-error">${error}</p>`);
+    replyLinkEl.classList.add('comment__reply-link-disabled');
 
-                throw e;
-            })
-            .finally(() => $(this).css('opacity', 'unset'));
+    fetch(replyLinkEl.getAttribute('data-form-url'))
+        .then(response => ok(response))
+        .then(response => response.text())
+        .then(formHtml => parentEl.append(parseHtml(formHtml)))
+        .catch(e => parentEl.append(createErrorMessage(e)))
+        .finally(() => {
+            replyLinkEl.classList.remove('comment__reply-link-disabled');
+        });
+}
+
+document.querySelectorAll('.comment .comment-form').forEach(el => {
+    // hide open forms (they're initially visible for non-js users)
+    el.style.display = 'none';
+});
+
+addEventListener('click', event => {
+    const el = event.target.closest('.comment__reply-link');
+
+    if (el) {
+        event.preventDefault();
+
+        handleClick(el);
     }
 });

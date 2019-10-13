@@ -23,14 +23,6 @@ class Vote {
         } else {
             this.userChoice = VOTE_NONE;
         }
-
-        this.el.addEventListener('submit', event => event.preventDefault());
-        this.el.querySelectorAll('.vote__button')
-            .forEach(buttonEl => buttonEl.addEventListener('click', () => {
-                const choice = Number(buttonEl.value);
-
-                this.vote(choice);
-            }));
     }
 
     get url() {
@@ -41,6 +33,12 @@ class Vote {
     }
 
     vote(choice) {
+        choice = Number(choice);
+
+        if (this.status === STATUS_LOADING) {
+            return;
+        }
+
         this.status = STATUS_LOADING;
         this.userChoice = choice;
         this.updateView();
@@ -115,4 +113,24 @@ class Vote {
     }
 }
 
-document.querySelectorAll('.user-logged-in .vote').forEach(el => new Vote(el));
+const voteObjectMap = new WeakMap();
+
+addEventListener('submit', event => {
+    if (event.target.closest('.vote')) {
+        event.preventDefault();
+    }
+});
+
+addEventListener('click', event => {
+    const el = event.target.closest('.user-logged-in .vote__button');
+
+    if (el) {
+        const formEl = el.closest('.vote');
+
+        if (!voteObjectMap.has(formEl)) {
+            voteObjectMap.set(el, new Vote(formEl));
+        }
+
+        voteObjectMap.get(el).vote(el.value);
+    }
+});
