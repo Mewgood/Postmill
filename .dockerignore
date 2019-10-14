@@ -1,4 +1,5 @@
 /.*
+!/.babelrc
 !/.env
 
 # IDEA/PhpStorm

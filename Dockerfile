@@ -9,7 +9,7 @@ FROM node:10-alpine AS postmill_assets
 WORKDIR /app
 
 COPY assets assets/
-COPY package.json yarn.lock webpack.config.js ./
+COPY .babelrc package.json postcss.config.js yarn.lock webpack.config.js ./
 
 RUN set -eux; \
     yarn; \
