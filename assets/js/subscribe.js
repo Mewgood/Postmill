@@ -88,15 +88,18 @@ class SubscribeButton {
 const subscribeObjectMap = new WeakMap();
 
 addEventListener('click', event => {
-    const el = event.target.closest('.subscribe-form');
+    const buttonEl = event.target.closest('.subscribe-button');
 
-    if (el) {
+    if (buttonEl) {
         event.preventDefault();
+        buttonEl.blur();
 
-        if (!subscribeObjectMap.has(el)) {
-            subscribeObjectMap.set(el, new SubscribeButton(el));
+        const formEl = buttonEl.closest('.subscribe-form');
+
+        if (!subscribeObjectMap.has(formEl)) {
+            subscribeObjectMap.set(formEl, new SubscribeButton(formEl));
         }
 
-        subscribeObjectMap.get(el).handleSubmit();
+        subscribeObjectMap.get(formEl).handleSubmit();
     }
 });
