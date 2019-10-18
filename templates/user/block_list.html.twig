@@ -30,7 +30,7 @@
       <td>{{ item.comment }}</td>
 
       <td class="table__shrink">
-        <form action="{{ path('unblock_user', {id: item.id}) }}" method="post">
+        <form action="{{ path('unblock_user', { username : item.blocked.username }) }}" method="post">
           <input type="hidden" name="token" value="{{ csrf_token('unblock') }}">
           <button class="button button--small inline">{{ 'action.unblock'|trans }}</button>
         </form>

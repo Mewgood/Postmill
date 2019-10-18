@@ -2,8 +2,6 @@
 
 namespace App\Form\Model;
 
-use App\Entity\User;
-use App\Entity\UserBlock;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UserBlockData {
@@ -13,10 +11,6 @@ class UserBlockData {
      * @var string|null
      */
     private $comment;
-
-    public function toBlock(User $blocker, User $blocked): UserBlock {
-        return new UserBlock($blocker, $blocked, $this->comment);
-    }
 
     public function getComment(): ?string {
         return $this->comment;

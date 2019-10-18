@@ -215,7 +215,7 @@ class User implements UserInterface, \Serializable {
     private $preferredTheme;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserBlock", mappedBy="blocker")
+     * @ORM\OneToMany(targetEntity="UserBlock", mappedBy="blocker", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"timestamp": "DESC"})
      *
      * @var UserBlock[]|Collection|Selectable
@@ -598,17 +598,32 @@ class User implements UserInterface, \Serializable {
         return $pager;
     }
 
-    public function addBlock(UserBlock $block): void {
-        if (!$this->blocks->contains($block)) {
-            $this->blocks->add($block);
-        }
-    }
-
     public function isBlocking(self $user): bool {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('blocked', $user));
 
         return \count($this->blocks->matching($criteria)) > 0;
+    }
+
+    public function block(self $user, string $comment = null): void {
+        if ($user === $this) {
+            throw new \DomainException('Cannot block self');
+        }
+
+        if (!$this->isBlocking($user)) {
+            $this->blocks->add(new UserBlock($this, $user, $comment));
+        }
+    }
+
+    public function unblock(self $user): void {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('blocked', $user));
+
+        $block = $this->blocks->matching($criteria)->first() ?: null;
+
+        if ($block) {
+            $this->blocks->removeElement($block);
+        }
     }
 
     public function getFrontPage(): string {

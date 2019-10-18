@@ -267,15 +267,11 @@ final class UserController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Entity("blockee", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
+     * @Security("not user.isBlocking(blockee)", statusCode=403)
+     * @Security("user !== blockee", statusCode=403)
      */
     public function block(User $blockee, Request $request, ObjectManager $em): Response {
-        /* @var User $blocker */
-        $blocker = $this->getUser();
-
-        if ($blocker->isBlocking($blockee)) {
-            throw $this->createNotFoundException('The user is already blocked');
-        }
+        \assert($this->getUser() instanceof User);
 
         $data = new UserBlockData();
 
@@ -283,15 +279,14 @@ final class UserController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $block = $data->toBlock($blocker, $blockee);
+            $this->getUser()->block($blockee, $data->getComment());
 
-            $em->persist($block);
             $em->flush();
 
             $this->addFlash('success', 'flash.user_blocked');
 
             return $this->redirectToRoute('user_block_list', [
-                'username' => $blocker->getUsername(),
+                'username' => $this->getUser()->getUsername(),
             ]);
         }
 
@@ -303,15 +298,20 @@ final class UserController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Security("user === block.getBlocker()", statusCode=403)
      */
-    public function unblock(UserBlock $block, ObjectManager $em, Request $request): Response {
+    public function unblock(User $user, ObjectManager $em, Request $request): Response {
         $this->validateCsrf('unblock', $request->request->get('token'));
 
-        $em->remove($block);
+        \assert($this->getUser() instanceof User);
+        $this->getUser()->unblock($user);
+
         $em->flush();
 
         $this->addFlash('success', 'flash.user_unblocked');
+
+        if ($request->headers->has('Referer')) {
+            return $this->redirect($request->headers->get('Referer'));
+        }
 
         return $this->redirectToRoute('user_block_list', [
             'username' => $this->getUser()->getUsername(),

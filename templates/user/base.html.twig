@@ -32,6 +32,18 @@
         </a>
       </p>
     {% endif %}
+
+    {% if is_granted('ROLE_USER') and app.user.blocking(user) %}
+      <form action="{{ path('unblock_user', { username: user.username }) }}" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('unblock') }}">
+
+        <p>
+          <button class="button button--secondary">
+            {{- 'action.unblock'|trans -}}
+          </button>
+        </p>
+      </form>
+    {% endif  %}
   </section>
 
   {% set active_ban = user.activeBan %}

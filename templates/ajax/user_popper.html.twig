@@ -26,18 +26,20 @@
 
   {% if is_granted('ROLE_USER') and user is not same as(app.user) %}
     <li>
-      {% if not app.user.isBlocking(user) %}
+      {% if not app.user.blocking(user) %}
         <a href="{{ path('block_user', { username: user.username }) }}"
            class="button button--secondary button--small"
            tabindex="-1">
           {{- 'nav.block_user'|trans -}}
         </a>
       {% else %}
-        <a href="{{ path('unblock_user', { username: user.username }) }}"
-           class="button button--secondary button--small"
-           tabindex="-1">
-          {{- 'action.unblock'|trans -}}
-        </a>
+        <form action="{{ path('unblock_user', { username: user.username }) }}"
+              method="POST">
+          <input type="hidden" name="token" value="{{ csrf_token('unblock') }}">
+          <button class="button button--secondary button--small" tabindex="-1">
+            {{- 'action.unblock'|trans -}}
+          </button>
+        </form>
       {% endif %}
     </li>
 

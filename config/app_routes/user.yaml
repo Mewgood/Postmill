@@ -69,9 +69,9 @@ block_user:
 
 unblock_user:
     controller: App\Controller\UserController::unblock
-    path: /unblock/{id}
+    path: /user/{username}/unblock_user
     methods: [POST]
-    requirements: { id: "%uuid_regex%" }
+    requirements: { username: "%username_regex%" }
 
 login:
     controller: App\Controller\UserController::login
