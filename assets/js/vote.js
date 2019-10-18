@@ -1,6 +1,6 @@
 import router from 'fosjsrouting';
 import translator from 'bazinga-translator';
-import { ok } from './lib/http';
+import { fetch, ok } from './lib/http';
 
 const VOTE_UP = 1;
 const VOTE_NONE = 0;
@@ -49,7 +49,6 @@ class Vote {
         fetch(this.url, {
             method: 'POST',
             body: data,
-            credentials: 'same-origin',
         })
             .then(response => ok(response))
             .then(response => response.json())

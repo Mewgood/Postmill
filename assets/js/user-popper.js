@@ -1,7 +1,7 @@
 import tippy from 'tippy.js';
 import router from 'fosjsrouting';
 import { makeTimesRelative } from './relative-time';
-import { ok } from './lib/http';
+import { fetch, ok } from './lib/http';
 
 const BASE_URL = router.getBaseUrl();
 
@@ -29,7 +29,7 @@ function fetchPopperHtml(username) {
 
     const url = router.generate('user_popper', { username });
 
-    return fetch(url, { credentials: 'same-origin' })
+    return fetch(url)
         .then(response => ok(response))
         .then(response => response.text())
         .then(html => {

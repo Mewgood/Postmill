@@ -1,6 +1,6 @@
 import router from 'fosjsrouting';
 import translator from 'bazinga-translator';
-import { ok } from './lib/http';
+import { fetch, ok } from './lib/http';
 import { formatNumber } from './lib/intl';
 
 const REAL_LABEL = '.subscribe-button__label-text';
@@ -39,7 +39,6 @@ class SubscribeButton {
         fetch(this.submitUrl, {
             method: 'POST',
             body: new FormData(this.formEl),
-            credentials: 'same-origin',
         })
             .then(response => ok(response))
             .then(() => {

@@ -1,5 +1,5 @@
 import routing from 'fosjsrouting';
-import { ok } from './lib/http';
+import { fetch, ok } from './lib/http';
 
 const FETCH_SELECTOR = '.auto-fetch-submission-titles .fetch-title';
 
@@ -11,7 +11,6 @@ function handleBlur(el) {
         fetch(routing.generate('fetch_title'), {
             method: 'POST',
             body: new URLSearchParams({ url }),
-            credentials: 'same-origin',
         })
             .then(response => ok(response))
             .then(response => response.json())

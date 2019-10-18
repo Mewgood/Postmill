@@ -1,7 +1,7 @@
 // load comment forms via ajax
 
 import translator from 'bazinga-translator';
-import { ok } from './lib/http';
+import { fetch, ok } from './lib/http';
 import { escapeHtml, parseHtml } from './lib/html';
 
 function createErrorMessage(e) {

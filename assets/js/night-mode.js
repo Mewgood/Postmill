@@ -1,4 +1,5 @@
 import Router from 'fosjsrouting';
+import { fetch } from './lib/http';
 
 function toggleNightMode(formEl) {
     document.documentElement.classList.toggle('light-mode');
@@ -9,7 +10,6 @@ function toggleNightMode(formEl) {
     fetch(Router.generate(route, { _format: 'json' }), {
         body: new FormData(formEl),
         method: 'POST',
-        credentials: 'same-origin',
     });
 }
 

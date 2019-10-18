@@ -2,7 +2,7 @@ import { debounce } from 'lodash-es';
 import routing from 'fosjsrouting';
 import translator from 'bazinga-translator';
 import { escapeHtml, parseHtml } from './lib/html';
-import { ok } from './lib/http';
+import { fetch, ok } from './lib/http';
 import { highlightRoot } from './syntax';
 
 const DEBOUNCE_RATE = 600;
@@ -23,9 +23,8 @@ function makePreview(renderedHtml) {
 function handleInput(el) {
     fetch(routing.generate('markdown_preview'), {
         method: 'POST',
-        headers: { 'Content-Type': 'text/html; charset=UTF-8' },
-        credentials: 'same-origin',
         body: el.value,
+        headers: { 'Content-Type': 'text/html; charset=UTF-8' },
     })
         .then(response => ok(response))
         .then(response => response.text())
