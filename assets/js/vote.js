@@ -116,7 +116,7 @@ class Vote {
 const voteObjectMap = new WeakMap();
 
 addEventListener('submit', event => {
-    if (event.target.closest('.vote')) {
+    if (event.target.closest('.user-logged-in .vote')) {
         event.preventDefault();
     }
 });
