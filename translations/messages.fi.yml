@@ -1,289 +1,214 @@
-action:
-    upvote: Ylä-ääni
-    downvote: Alaääni
-    retract_upvote: Peru ylä-ääni
-    retract_downvote: Peru alaääni
-    ban: Banni
-    save: Tallenna
+action.ban: Banni
+action.delete: Poista
+action.downvote: Alaääni
+action.edit: Muokkaa
+action.log_in: Kirjaudu
+action.log_out: Kirjaudu ulos
+action.retract_downvote: Peru alaääni
+action.retract_upvote: Peru ylä-ääni
+action.save: Tallenna
+action.save_changes: Tallenna muutokset
+action.send: Lähetä
+action.sign_up: Rekisteröidy
+action.subscribe: Tilaa
+action.unsubscribe: Poista tilaus
+action.upvote: Ylä-ääni
 
-add_moderator:
-    title: Lisää moderaattori foorumille %forum%
+add_moderator.title: Lisää moderaattori foorumille %forum%
 
-ban_add:
-    title: Bannaa IP-osoite
+ban_add.title: Bannaa IP-osoite
 
-ban_list:
-    title: Bannit
-    ip: IP-osoite
-    timestamp: Aika
-    banned_by: Bannaaja
-    reason: Syy
-    user: Käyttäjä
-    user_none: ei ole
-    expires: Päättyy
-    expires_never: ei ikinä
-    remove: Poista banneja
+ban_list.banned_by: Bannaaja
+ban_list.expires: Päättyy
+ban_list.expires_never: ei ikinä
+ban_list.reason: Syy
+ban_list.remove: Poista banneja
+ban_list.timestamp: Aika
+ban_list.user: Käyttäjä
+ban_list.user_none: ei ole
 
-banned:
-    title: Bannattu
-    message: Olet saanut porttikiellon.
+banned.message: Olet saanut porttikiellon.
+banned.title: Bannattu
 
-comments:
-    comments: Kommentit
-    delete: Poista
-    delete_thread: Poista vastausten kanssa
-    edit: Muokkaa
-    permalink: Pysyvä linkki
-    parent: Isäntä
-    reply: Vastaa
-    admin_ban: IP-bannaa
-    form_load_error: Virhe ladattaessa lomaketta. Yritä uudelleen.
-    info: '%user% kirjoitti %timestamp%'
-    not_logged_in: Sinun täytyy %login_link% tai %register_link% kommentoidaksesi.
-    not_logged_in_login_link_label: kirjautua
-    not_logged_in_register_link_label: rekisteröityä
-    viewing_thread: Tarkastellaan yhden kommentin lankaa.
-    thread_return: Näytä kaikki kommentit
-    return_to_forum: ← Palaa foorumille %forum%
-    edit_info: (muokattu %edited_at%)
-    moderator_info: (moderaattori muokkasi %edited_at%)
+comments.comments: Kommentit
+comments.delete_thread: Poista vastausten kanssa
+comments.edit_info: (muokattu %edited_at%)
+comments.form_load_error: Virhe ladattaessa lomaketta. Yritä uudelleen.
+comments.info: '%user% kirjoitti %timestamp%'
+comments.moderator_info: (moderaattori muokkasi %edited_at%)
+comments.not_logged_in: Sinun täytyy %login_link% tai %register_link% kommentoidaksesi.
+comments.not_logged_in_login_link_label: kirjautua
+comments.not_logged_in_register_link_label: rekisteröityä
+comments.parent: Isäntä
+comments.permalink: Pysyvä linkki
+comments.reply: Vastaa
+comments.return_to_forum: ← Palaa foorumille %forum%
+comments.thread_return: Näytä kaikki kommentit
+comments.viewing_thread: Tarkastellaan yhden kommentin lankaa.
 
-comment_form:
-    comment: Kommentoi
-    edit_title: Muokataan kommenttia
-    create_title: Lisätään kommentti
+comment_form.create_title: Lisätään kommentti
+comment_form.edit_title: Muokataan kommenttia
 
-compose_message:
-    title: Kirjoitetaan viestiä käyttäjälle %username%
+compose_message.title: Kirjoitetaan viestiä käyttäjälle %username%
 
+create_forum.create_new_forum: Aloita uusi foorumi
 
-create_forum:
-    create_new_forum: Aloita uusi foorumi
+edit_forum.title: Muokataan foorumia %forum%
 
-edit_forum:
-    title: Muokataan foorumia %forum%
+edit_user.title: Muokataan käyttäjää %username%
 
-edit_user:
-    title: Muokataan käyttäjää %username%
+flash.ban_added: IP-osoite on bannattu.
+flash.forum_deleted: Foorumi ja kaikki sen sisältö on poistettu.
+flash.forum_moderator_added: Käyttäjä on ylennetty moderaattoriksi.
+flash.forum_updated: Muutokset tallennettu.
+flash.no_messages: Ei näytettäviä viestejä.
+flash.reset_password_email_sent: Nollaussähköpostiviesti on lähetetty antamaasi osoitteeseen.
+flash.submission_deleted: Lisäys poistettu.
+flash.submission_edited: Lisäystä muokattu.
+flash.user_password_updated: Salasanasi on päivitetty.
+flash.user_settings_updated: Käyttäjän asetukset päivitetty.
 
-flash:
-    ban_added: IP-osoite on bannattu.
-    forum_deleted: Foorumi ja kaikki sen sisältö on poistettu.
-    forum_updated: Muutokset tallennettu.
-    forum_moderator_added: Käyttäjä on ylennetty moderaattoriksi.
-    reset_password_email_sent: Nollaussähköpostiviesti on lähetetty antamaasi osoitteeseen.
-    submission_deleted: Lisäys poistettu.
-    submission_edited: Lisäystä muokattu.
-    user_password_updated: Salasanasi on päivitetty.
-    user_settings_updated: Käyttäjän asetukset päivitetty.
-    no_messages: Ei näytettäviä viestejä.
+forum.add_as_moderator: Lisää moderaattori
+forum.add_moderator: Lisää moderaattori
+forum.create: Aloita foorumi
+forum.edit: Muokkaa foorumia
+forum.moderators: Moderaattorit
+forum.subscriber_count: '{0} Ei tilaajia|{1} %formatted_count% tilaaja|[1,Inf[ %formatted_count% tilaajaa'
 
-forum:
-    moderators: Moderaattorit
-    manage: Muokkaa
-    edit: Muokkaa foorumia
-    subscribe: Tilaa
-    unsubscribe: Poista tilaus
-    subscriber_count: '{0} Ei tilaajia|{1} %formatted_count% tilaaja|[1,Inf[ %formatted_count% tilaajaa'
-    add_moderator: Lisää moderaattori
+forum.delete: Poista foorumi
+forum_form.featured: Näytä etusivulla
 
+forum_list.category_view: Kategorianäkymä
+forum_list.list_view: Listanäkymä
+forum_list.page_title: Foorumilista
+forum_list.submission_count: Lisäyksiä
+forum_list.subscribers: Tilaajat
+forum_list.uncategorized: Kategorisoimattomat
 
-forum_form:
-    name: Nimi
-    title: Otsikko
-    description: Kuvaus
-    category: Kategoria
-    create: Aloita foorumi
-    save: Tallenna muutokset
-    delete: Poista foorumi
-    confirm_delete: Haluatko varmasti poistaa foorumin ja kaiken sen sisällön?
-    featured: Näytä etusivulla
-    uncategorized_placeholder: (ei kategorisoitu)
+forum_moderators.last_seen: Paikalla viimeksi
+forum_moderators.since: Ajasta
+forum_moderators.title: Foorumin /%forum_name% moderaattorit
 
-forum_list:
-    name: Nimi
-    title: Otsikko
-    subscribers: Tilaajat
-    page_title: Foorumilista
-    create_forum: Aloita foorumi
-    submission_count: Lisäyksiä
-    list_view: Listanäkymä
-    category_view: Kategorianäkymä
-    uncategorized: Kategorisoimattomat
+front.all: Kaikki
+front.featured: Suositellut
+front.featured_forums: Suositellut foorumit
+front.no_forums: Ei näytettäviä suositeltuja foorumeita.
+front.no_subscriptions: Et ole tilannut yhtään foorumia. Näytetään sen sijaan suositellut.
+front.subscribed: Tilatut
+front.subscribed_forums: Tilatut foorumit
 
-forum_moderators:
-    title: Foorumin /%forum_name% moderaattorit
-    username: Käyttäjänimi
-    since: Ajasta
-    last_seen: Paikalla viimeksi
+inbox.message_reply_head: 'VS: %title%'
 
-front:
-    subscribed_forums: Tilatut foorumit
-    no_subscriptions: Et ole tilannut yhtään foorumia. Näytetään sen sijaan suositellut.
-    featured_forums: Suositellut foorumit
-    no_forums: Ei näytettäviä suositeltuja foorumeita.
-    all: Kaikki
-    featured: Suositellut
-    subscribed: Tilatut
+label.body: Sisältö
+label.category: Kategoria
+label.comment: Kommentoi
+label.description: Kuvaus
+label.email_address: Sähköpostiosoite
+label.forum: Foorumi
+label.from: Käyttäjältä
+label.ip_address: IP-osoite
+label.language: Kieli
+label.message: Viesti
+label.name: Nimi
+label.new_password: Uusi salasana
+label.password: Salasana
+label.reason_for_banning: Bannauksen syy
+label.repeat_new_password: Uusi salasana uudelleen
+label.repeat_password: Salasana uudelleen
+label.replies: Vastaukset
+label.sent: Lähetetty
+label.title: Otsikko
+label.to: Käyttäjälle
+label.toolbox: Työkalut
+label.url: URL
+label.user_associated_with_ip: IP-osoitteeseen liittyvä käyttäjä
+label.username: Käyttäjänimi
+label.verification: Varmistus
 
-inbox:
-    message_reply_head: 'VS: %title%'
+login.reset_password: Nollaa salasana?
 
-label:
-    title: Otsikko
-    replies: Vastaukset
-    from: Käyttäjältä
-    to: Käyttäjälle
-    sent: Lähetetty
-    toolbox: Työkalut
-    ip_address: IP-osoite
-    reason_for_banning: Bannauksen syy
-    user_associated_with_ip: IP-osoitteeseen liittyvä käyttäjä
-    body: Sisältö
+markdown.help: Syntaksin viite
 
-login_form:
-    log_in: Kirjaudu
-    username: Käyttäjänimi
-    password: Salasana
-    reset_password: Nollaa salasana?
+nav.forums: Foorumit
+nav.messages: Viestit
+nav.my_account: Tunnukseni
+nav.next: Seuraava
+nav.previous: Edellinen
+nav.profile: Profiili
+nav.submit: Lisää
+nav.user_settings: Käyttäjäasetukset
+nav.wiki: Wiki
 
-markdown_type:
-    help: Syntaksin viite
+placeholder.deleted: '[poistettu]'
+placeholder.uncategorized: (ei kategorisoitu)
 
-message_form:
-    title: Otsikko
-    message: Viesti
-    send: Lähetä
-    reply: Vastaa
+request_password_reset.multiple_accounts_notice: Jos sinulla on monta käyttäjätunnusta samalla sähköpostiosoitteella, saat yhden sähköpostin käyttäjätunnusta kohti.
+request_password_reset.no_confirmation_notice: Jos et saa sähköpostia, antamasi osoite on luultavasti väärä. Yksityisyyssyistä emme kerro, onko antamasi sähköpostiosoitteen omistaja Radditin käyttäjä.
+request_password_reset.title: Pyydä linkki salasanan nollaukseen
 
-moderator_form:
-    user: Käyttäjänimi
-    submit: Lisää moderaattori
+request_password_reset_form.submit: Lähetä
 
-nav:
-    submit: Lisää
-    log_in: Kirjaudu
-    log_out: Kirjaudu ulos
-    profile: Profiili
-    register: Rekisteröidy
-    my_account: Tunnukseni
-    user_settings: Käyttäjäasetukset
-    forums: Foorumit
-    messages: Viestit
-    wiki: Wiki
-    next: Seuraava
-    previous: Edellinen
+reset_password.email_subject: '%site_name% - Nollaa käyttäjän %username% salasana'
+# this should be kept at 76 columns --------------------------------------------
+reset_password.email_body: |
+    Joku pyysi, että %site_name%-tunnuksesi salasana nollataan. Nollataksesi
+    salasanan, napsauta alla olevaa linkkiä:
 
-placeholder:
-    deleted: '[poistettu]'
+    %reset_link%
 
-request_password_reset:
-    title: Pyydä linkki salasanan nollaukseen
-    multiple_accounts_notice: >
-        Jos sinulla on monta käyttäjätunnusta samalla sähköpostiosoitteella, saat yhden sähköpostin käyttäjätunnusta kohti.
-    no_confirmation_notice: >
-        Jos et saa sähköpostia, antamasi osoite on luultavasti väärä. Yksityisyyssyistä emme kerro, onko antamasi sähköpostiosoitteen omistaja Radditin käyttäjä.
+    Jos et pyytänyt salasanan nollausta, voit turvallisesti jättää viestin
+    huomiotta. Linkkiä ei voi käyttää enää 24 tunnin kuluttua.
+reset_password.title: Nollataan salasanaa
 
-request_password_reset_form:
-    email: Sähköpostiosoite
-    submit: Lähetä
+site_footer.app: Käytössä %app% %version%
+site_footer.version: '%version% (%branch%)'
 
-reset_password:
-    email_subject: '%site_name% - Nollaa käyttäjän %username% salasana'
+submission_form.create: Lisää
+submission_form.edit: Muokkaa lisäystä
 
-    # this should be kept at 76 columns --------------------------------------------
-    email_body: |
-        Joku pyysi, että %site_name%-tunnuksesi salasana nollataan. Nollataksesi
-        salasanan, napsauta alla olevaa linkkiä:
+submission.comments: '{0} Ei kommentteja|{1} %count% kommentti|[1,Inf[ %count% kommenttia'
+submission.edit_info: (muokattu %edited_at%)
+submission.info_with_forum_name: "%submitter% lisäsi %timestamp% foorumilla %forum%"
+submission.info_without_forum_name: "%submitter% lisäsi %timestamp%"
+submission.moderator_info: (moderaattori muokkasi %edited_at%)
+submission.sort_by_controversial: Kiistellyt
+submission.sort_by_hot: Kuumat
+submission.sort_by_new: Uudet
+submission.sort_by_top: Parhaat
+submission.total_votes: '{1} %count% piste|[0,Inf[ %count% pistettä'
+submission.vote_stats: (+%up%, −%down%)
 
-        %reset_link%
+time.earlier_format: '%relative_time% sitten'
+time.later_format: '%relative_time% myöhemmin'
+time.on_timestamp: aikana %timestamp%
 
-        Jos et pyytänyt salasanan nollausta, voit turvallisesti jättää viestin huomiotta.
-        Linkkiä ei voi käyttää enää 24 tunnin kuluttua.
+title.messages: Viestit
 
-    title: Nollataan salasanaa
+user.comments: Kommentit
+user.email_optional: Sähköpostiosoite on vapaaehtoinen. Käytämme sitä vain salasanojen nollaamiseen ja kaksivaiheistodennuskoodien lähettämiseen.
+user.message: Lähetä viesti
+user.moderates: '%username% on moderaattori foorumeilla:'
+user.password_rules: Vähintään 8 merkkiä; enintään 72 bcrypt-algoritmin rajoitusten takia.
+user.registered: Rekisteröity %timestamp%
+user.submissions: Lisäykset
+user.username_rules: Sallitut merkit ovat A-Z, a-z, 0-9 ja alaviiva.
 
-site_footer:
-    version: Käytössä %app% %version% (%branch%)
+user_settings.title: Muokataan käyttäjän %username% asetuksia
 
-submission_form:
-    title: Otsikko
-    url: URL
-    body: Sisältö
-    forum: Foorumi
-    sticky: Kiinnitä
-    create: Lisää
-    edit: Muokkaa lisäystä
-    delete: Poista lisäys
-    confirm_delete: Oletko varma, että haluat poistaa lisäyksen?
-
-submissions:
-    comments: '{0} Ei kommentteja|{1} %count% kommentti|[1,Inf[ %count% kommenttia'
-    edit: Muokkaa
-    info_with_forum_name: "%submitter% lisäsi %timestamp% foorumilla %forum%"
-    info_without_forum_name: "%submitter% lisäsi %timestamp%"
-    sort_by_hot: Kuumat
-    sort_by_new: Uudet
-    sort_by_top: Parhaat
-    sort_by_controversial: Kiistellyt
-    total_votes: '{1} %count% piste|[0,Inf[ %count% pistettä'
-    vote_stats: (+%up%, −%down%)
-    ip_ban: IP-bannaa
-    edit_info: (muokattu %edited_at%)
-    moderator_info: (moderaattori muokkasi %edited_at%)
-
-time:
-    on_timestamp: aikana %timestamp%
-    earlier_format: '%relative_time% sitten'
-    later_format: '%relative_time% myöhemmin'
-
-title:
-    messages: Viestit
-
-user:
-    submissions: Lisäykset
-    comments: Kommentit
-    moderates: '%username% on moderaattori foorumeilla:'
-    username_rules: Sallitut merkit ovat A-Z, a-z, 0-9 ja alaviiva.
-    password_rules: Vähintään 8 merkkiä; enintään 72 bcrypt-algoritmin rajoitusten takia.
-    email_optional: Sähköpostiosoite on vapaaehtoinen. Käytämme sitä vain salasanojen nollaamiseen ja kaksivaiheistodennuskoodien lähettämiseen.
-    message: Lähetä viesti
-    registered: Rekisteröity %timestamp%
-
-user_form:
-    username: Käyttäjänimi
-    password: Salasana
-    repeat_password: Salasana uudelleen
-    new_password: Uusi salasana
-    repeat_new_password: Uusi salasana uudelleen
-    email: Sähköpostiosoite
-    register: Rekisteröidy
-    verification: Varmistus
-    save: Tallenna muutokset
-
-user_settings:
-    title: Muokataan käyttäjän %username% asetuksia
-
-user_settings_form:
-    locale: Kieli
-    save: Tallenna muutokset
-
-wiki:
-    not_found_title: Sivua ei löytynyt
-    not_found_message: Pyydettyä sivua ei löytynyt.
-    create_this_page: Tee sivu
-    editing_title: Muokataan "%path%"
-    create_title: Tehdään "%path%"
-    history_title: Näytetään sivun "%path%" historiaa
-    revision_time: Tarkistettu
-    user: Käyttäjä
-    id_label: ID
-    locked_notice: Sivu on lukittu. Vain ylläpitäjät voivat muokata sitä.
-    page_title: Sivun otsikko
-    path: Polku
-    all_pages: Kaikki sivut
-    page_history: Sivun historia
-    edit_page: Muokkaa sivua
-    toolbox: Työkalut
-    navigation: Navigointi
-    last_edited: Viimeksi muokattu käyttäjän %username% toimesta %timestamp%
+wiki.all_pages: Kaikki sivut
+wiki.create_this_page: Tee sivu
+wiki.create_title: Tehdään "%path%"
+wiki.edit_page: Muokkaa sivua
+wiki.editing_title: Muokataan "%path%"
+wiki.history_title: Näytetään sivun "%path%" historiaa
+wiki.id_label: ID
+wiki.last_edited: Viimeksi muokattu käyttäjän %username% toimesta %timestamp%
+wiki.locked_notice: Sivu on lukittu. Vain ylläpitäjät voivat muokata sitä.
+wiki.navigation: Navigointi
+wiki.not_found_message: Pyydettyä sivua ei löytynyt.
+wiki.not_found_title: Sivua ei löytynyt
+wiki.page_history: Sivun historia
+wiki.page_title: Sivun otsikko
+wiki.path: Polku
+wiki.revision_time: Tarkistettu
+wiki.user: Käyttäjä

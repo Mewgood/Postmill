@@ -12,7 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class RequestPasswordResetType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'label' => 'label.email_address',
+            ])
             ->add('verification', CaptchaType::class, [
                 'label' => 'label.verification',
                 'as_url' => true,

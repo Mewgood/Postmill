@@ -34,7 +34,7 @@
 
 {% macro submission_sort(current) %}
   {% from _self import _submission_sort_items, _tab_button %}
-  {% set current_label = 'submissions.sort_by_%s'|format(current)|trans %}
+  {% set current_label = 'submission.sort_by_%s'|format(current)|trans %}
   <li class="dropdown">
     {{ _tab_button(current_label, 'label.sort_by_mode', '%mode%', 'sort') }}
 
@@ -51,7 +51,7 @@
     <li>
       <a href="{{ path(attr.get('_route'), (attr.get('_route_params') ?? [])|merge({sortBy: type, t: time})) }}"
          class="no-wrap menu-item {{ type == current ? 'menu-item--active' }}">
-        {{- ('submissions.sort_by_'~type)|trans -}}
+        {{- ('submission.sort_by_'~type)|trans -}}
       </a>
     </li>
   {% endfor %}
@@ -92,7 +92,7 @@
   {% endif %}
   {% if app.request.query.has('t') or sort_by not in ['active', 'hot', 'new'] %}
     {% set attr = app.request.attributes %}
-    {% set current_label = 'submissions.time_%s'|format(current)|trans %}
+    {% set current_label = 'submission.time_%s'|format(current)|trans %}
     <li class="dropdown">
       {{ _tab_button(current_label, 'label.from_time', '%time%', 'clock') }}
 
@@ -101,7 +101,7 @@
           <li>
             <a href="{{ path(attr.get('_route'), (attr.get('_route_params') ?? [])|merge({t: time})) }}"
                class="no-wrap menu-item {{ time == current ? 'menu-item--active' }}">
-              {{- ('submissions.time_'~time)|trans -}}
+              {{- ('submission.time_'~time)|trans -}}
             </a>
           </li>
         {% endfor %}

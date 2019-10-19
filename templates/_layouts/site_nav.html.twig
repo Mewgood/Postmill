@@ -128,12 +128,12 @@
 {% block site_nav_user_menu_logged_out %}
   <li>
     <a href="{{ path('login') }}" class="site-nav__link {{ active == 'login' ? 'site-nav__link--active' }}">
-      {{- 'nav.log_in'|trans -}}
+      {{- 'action.log_in'|trans -}}
     </a>
   </li>
   <li>
     <a href="{{ path('registration') }}" class="site-nav__link {{ active == 'registration' ? 'site-nav__link--active' }}">
-      {{- 'nav.register'|trans -}}
+      {{- 'action.sign_up'|trans -}}
     </a>
   </li>
 {% endblock site_nav_user_menu_logged_out %}
@@ -240,7 +240,7 @@
     <form action="{{ logout_path() }}" method="POST">
       <button class="menu-item unbuttonize">
         {{ icon('logout') }}
-        {{ 'nav.log_out'|trans }}
+        {{ 'action.log_out'|trans }}
       </button>
     </form>
   </li>

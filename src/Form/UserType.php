@@ -36,23 +36,26 @@ final class UserType extends AbstractType {
 
         $builder
             ->add('username', TextType::class, [
+                'label' => 'label.username',
                 'help' => 'user.username_rules',
             ])
             ->add('password', RepeatedType::class, [
                 'help' => 'user.password_rules',
                 'property_path' => 'plainPassword',
                 'required' => !$editing,
-                'first_options' => ['label' => $editing ? 'user_form.new_password' : 'user_form.password'],
-                'second_options' => ['label' => $editing ? 'user_form.repeat_new_password' : 'user_form.repeat_password'],
+                'first_options' => ['label' => $editing ? 'label.new_password' : 'label.password'],
+                'second_options' => ['label' => $editing ? 'label.repeat_new_password' : 'label.repeat_password'],
                 'type' => PasswordType::class,
             ])
             ->add('email', EmailType::class, [
+                'label' => 'label.email_address',
                 'help' => 'user.email_optional',
                 'required' => false,
             ]);
 
         if (!$editing) {
             $builder->add('verification', CaptchaType::class, [
+                'label' => 'label.verification',
                 'as_url' => true,
                 'reload' => true,
             ]);
@@ -73,7 +76,6 @@ final class UserType extends AbstractType {
         $resolver->setDefaults([
             'data_class' => UserData::class,
             'honeypot' => true,
-            'label_format' => 'user_form.%name%',
             'validation_groups' => function (FormInterface $form) {
                 if ($form->getData()->getId() !== null) {
                     $groups[] = 'edit';

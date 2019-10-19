@@ -136,7 +136,7 @@
       <form action="{{ path(user.trusted ? 'mark_user_untrusted' : 'mark_user_trusted', {username: user.username}) }}" method="post" class="form">
         <input type="hidden" name="token" value="{{ csrf_token('mark_trusted') }}">
         <div class="form__row">
-          <button class="button button--secondary">{{ (not user.trusted ? 'action.mark_as_trusted' : 'action.mark_as_untrusted')|trans }}</button>
+          <button class="button button--secondary">{{ (not user.trusted ? 'user.mark_as_trusted' : 'user.mark_as_untrusted')|trans }}</button>
         </div>
       </form>
     </section>

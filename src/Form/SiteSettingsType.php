@@ -12,9 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class SiteSettingsType extends AbstractType {
     private const ROLES = [
-        'label.admins' => 'ROLE_ADMIN',
-        'label.trusted_users' => 'ROLE_TRUSTED_USER',
-        'label.everyone' => 'ROLE_USER',
+        'role.admins' => 'ROLE_ADMIN',
+        'role.trusted_users' => 'ROLE_TRUSTED_USER',
+        'role.everyone' => 'ROLE_USER',
     ];
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {

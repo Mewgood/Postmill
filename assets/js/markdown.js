@@ -10,7 +10,7 @@ const DEBOUNCE_RATE = 600;
 function makePreview(renderedHtml) {
     const preview = parseHtml(`
         <h3 class="markdown-preview__title">
-            ${escapeHtml(translator.trans('markdown_type.preview'))}
+            ${escapeHtml(translator.trans('markdown.preview'))}
         </h3>
         <div class="markdown-preview__inner">${renderedHtml}</div>
     `);

@@ -36,14 +36,14 @@
 
             {% if submission.sticky %}
               <span class="submission__sticky-icon"
-                    title="{{ 'This submission is pinned'|trans }}">
+                    title="{{ 'submission.pinned'|trans }}">
                 {{- icon('pin') -}}
               </span>
             {% endif %}
 
             {% if submission.locked %}
               <span class="submission__locked-icon"
-                    title="{{ 'This submission is locked'|trans }}">
+                    title="{{ 'submission.locked'|trans }}">
                 {{- icon('lock') -}}
               </span>
             {% endif %}
@@ -59,7 +59,7 @@
 
           <p class="submission__info">
             <span class="text-sm fg-muted">
-              {{ (show_forum_name ? 'submissions.info_with_forum_name' : 'submissions.info_without_forum_name')|trans({
+              {{ (show_forum_name ? 'submission.info_with_forum_name' : 'submission.info_without_forum_name')|trans({
                 '%submitter%': block('submission_info_submitter'),
                 '%timestamp%': relative_time(submission.timestamp, {
                   natural: true,
@@ -70,7 +70,7 @@
 
               {% if submission.editedAt %}
                 <span class="submission__info-edited-at {{ submission.moderated ? 'submission__info-moderated' }}">
-                  {{ (submission.moderated ? 'submissions.moderator_info' : 'submissions.edit_info')|trans({
+                  {{ (submission.moderated ? 'submission.moderator_info' : 'submission.edit_info')|trans({
                     '%edited_at%': relative_time_diff(submission.editedAt, submission.timestamp, { natural: true })
                   })|raw }}
                 </span>
@@ -171,7 +171,7 @@
     {% apply spaceless %}
       <a href="{{ path('submission', { forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify }) }}"
          class="text-sm">
-        <strong>{{ 'submissions.comments'|trans({ '%count%': submission.commentCount }) }}</strong>
+        <strong>{{ 'submission.comments'|trans({ '%count%': submission.commentCount }) }}</strong>
       </a>
     {% endapply %}
 
@@ -219,7 +219,7 @@
       <a href="{{ path('edit_submission', {forum_name: submission.forum.name, submission_id: submission.id}) }}"
          class="{{ nav_link_classes }}">
         {{- 'menu-item' in nav_link_classes ? icon('pencil') }}
-        {{ 'submissions.edit'|trans -}}
+        {{ 'action.edit'|trans -}}
       </a>
     </li>
   {% endif %}

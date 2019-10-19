@@ -22,7 +22,9 @@ class ModeratorType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
-            ->add('user', TextType::class)
+            ->add('user', TextType::class, [
+                'label' => 'label.username',
+            ])
         ;
 
         $builder->get('user')->addModelTransformer(
@@ -33,7 +35,6 @@ class ModeratorType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => ModeratorData::class,
-            'label_format' => 'moderator_form.%name%',
         ]);
     }
 }

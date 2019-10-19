@@ -12,7 +12,7 @@ final class MessageType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('body', TextareaType::class, [
-                'label' => 'message_form.message',
+                'label' => 'label.message',
             ]);
     }
 

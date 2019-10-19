@@ -51,16 +51,19 @@ final class SubmissionType extends AbstractType {
 
         $builder
             ->add('title', TextareaType::class, [
+                'label' => 'label.title',
                 'max_chars' => Submission::MAX_TITLE_LENGTH,
             ])
 
             ->add('body', MarkdownType::class, [
+                'label' => 'label.body',
                 'max_chars' => Submission::MAX_BODY_LENGTH,
                 'required' => false,
             ]);
 
         if (!$editing || $data->getMediaType() === Submission::MEDIA_URL) {
             $builder->add('url', UrlType::class, [
+                'label' => 'label.url',
                 // TODO: indicate that this check must be 8-bit
                 'max_chars' => Submission::MAX_URL_LENGTH,
                 'required' => false,
@@ -71,7 +74,7 @@ final class SubmissionType extends AbstractType {
             $builder
                 ->add('mediaType', ChoiceType::class, [
                     'choices' => [
-                        'submission_form.url' => Submission::MEDIA_URL,
+                        'label.url' => Submission::MEDIA_URL,
                         'label.image' => Submission::MEDIA_IMAGE,
                     ],
                     'choice_name' => function ($key) {
@@ -94,6 +97,7 @@ final class SubmissionType extends AbstractType {
             $builder->add('forum', EntityType::class, [
                 'class' => Forum::class,
                 'choice_label' => 'name',
+                'label' => 'label.forum',
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('f')
                         ->orderBy('f.name', 'ASC');
@@ -111,7 +115,6 @@ final class SubmissionType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => SubmissionData::class,
-            'label_format' => 'submission_form.%name%',
             'honeypot' => true,
             'validation_groups' => function (FormInterface $form) {
                 return $this->getValidationGroups($form);

@@ -33,9 +33,14 @@ final class ForumType extends AbstractType {
         }
 
         $builder
-            ->add('name', TextType::class)
-            ->add('title', TextType::class)
+            ->add('name', TextType::class, [
+                'label' => 'label.name',
+            ])
+            ->add('title', TextType::class, [
+                'label' => 'label.title',
+            ])
             ->add('description', TextareaType::class, [
+                'label' => 'label.description',
                 'help' => 'help.forum_description',
             ])
             ->add('sidebar', MarkdownType::class, [
@@ -44,17 +49,19 @@ final class ForumType extends AbstractType {
             ->add('category', EntityType::class, [
                 'class' => ForumCategory::class,
                 'choice_label' => 'name',
+                'label' => 'label.category',
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('fc')
                         ->orderBy('fc.name', 'ASC');
                 },
                 'required' => false,
-                'placeholder' => 'forum_form.uncategorized_placeholder',
+                'placeholder' => 'placeholder.uncategorized',
             ])
         ;
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             $builder->add('featured', CheckboxType::class, [
+                'label' => 'forum_form.featured',
                 'required' => false,
             ]);
         }
@@ -63,7 +70,6 @@ final class ForumType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => ForumData::class,
-            'label_format' => 'forum_form.%name%',
             'honeypot' => true,
             'validation_groups' => function (FormInterface $form) {
                 $editing = $form->getData() && $form->getData()->getId();

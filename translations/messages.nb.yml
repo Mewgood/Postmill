@@ -1,276 +1,542 @@
-action:
-    upvote: Stem opp
-    downvote: Stem ned
-    retract_upvote: Fjern oppstemning
-    retract_downvote: Fjern nedstemning
-    ban: Utesteng
+action.add: Legg til
+action.ban: Utesteng
+action.block: Blokker
+action.clear: Rydd bort
+action.clear_all: Rydd bort alle
+action.compare: Sammenligne
+action.create: Opprett
+action.delete: Slett
+action.delete_account: Slett brukerkonto
+action.dismiss: Avvis
+action.downvote: Stem ned
+action.edit: Rediger
+action.filter: Filtrer
+action.global_ban: Utesteng globalt
+action.go_to_home_page: Tilbake til forsiden
+action.hide: Skjul
+action.lock: Lås
+action.log_in: Logg inn
+action.log_out: Logg ut
+action.pin: Klistre
+action.post: Send
+action.purge: Skrubb
+action.remove: Fjern
+action.retract_downvote: Fjern nedstemning
+action.retract_upvote: Fjern oppstemning
+action.save: Lagre
+action.save_changes: Lagre endringer
+action.search: Søk
+action.send: Send
+action.sign_up: Registrer
+action.subscribe: Abonnere
+action.subscribe_via_rss: Abonnere via RSS
+action.unban: Fjern utestengelse
+action.unblock: Avblokker
+action.unhide: Vis
+action.unlock: Åpne
+action.unpin: Ta ned
+action.unsubscribe: Avabonnere
+action.upvote: Stem opp
 
-add_moderator:
-    title: Legg til moderator for %forum%
+add_moderator.title: Legg til moderator for %forum%
 
-ban_add:
-    title: Utesteng en IP-adresse
+ban_add.title: Utesteng en IP-adresse
 
-ban_list:
-    title: Utestengelser
-    ip: IP-adresse
-    timestamp: Tid
-    banned_by: Utestengt av
-    reason: Årsak
-    user: Bruker
-    user_none: ingen
-    expires: Løper ut
-    expires_never: aldri
-    remove: Fjern utestengelser
+ban_list.banned_by: Utestengt av
+ban_list.expires: Løper ut
+ban_list.expires_never: aldri
+ban_list.reason: Årsak
+ban_list.remove: Fjern utestengelser
+ban_list.timestamp: Tid
+ban_list.user: Bruker
+ban_list.user_none: ingen
 
-banned:
-    title: Utestengt
-    message: Du har blitt utestengt!
+banned.message: Du har blitt utestengt!
+banned.title: Utestengt
 
-comments:
-    comments: Kommentarer
-    delete: Slett
-    delete_thread: Slett med svar
-    edit: Rediger
-    permalink: Permalenke
-    parent: Forelder
-    reply: Svar
-    form_load_error: En nettverksfeil oppstod. Vennligst prøv på nytt.
-    info: '%user% skrev %timestamp%'
-    not_logged_in: Du må %login_link% eller %register_link% for å kommentere.
-    not_logged_in_login_link_label: logge inn
-    not_logged_in_register_link_label: registrere deg
-    viewing_thread: Viser en enkelt kommentartråd.
-    thread_return: Vis alle kommentarer
-    return_to_forum: ← Gå tilbake til %forum%
-    admin_ban: Utesteng IP
-    edit_info: (redigert %edited_at%)
-    moderator_info: (redigert av en moderator %edited_at%)
+comments.comments: Kommentarer
+comments.context.comment_reply: Reply to comment by %comment_author% in %submission_title% by %submission_author%
+comments.context.top_level_reply: Reply to %submission_title% by %submission_author%
+comments.delete_thread: Slett med svar
+comments.edit_info: (redigert %edited_at%)
+comments.form_load_error: En nettverksfeil oppstod. Vennligst prøv på nytt.
+comments.info: '%user% skrev %timestamp%'
+comments.linear: Lineær
+comments.moderator_info: (redigert av en moderator %edited_at%)
+comments.nested: Trådet
+comments.not_logged_in: Du må %login_link% eller %register_link% for å kommentere.
+comments.not_logged_in_login_link_label: logge inn
+comments.not_logged_in_register_link_label: registrere deg
+comments.parent: Forelder
+comments.permalink: Permalenke
+comments.reply: Svar
+comments.replying_to_comment: Svarer til %user% (%id%)
+comments.return_to_forum: ← Gå tilbake til %forum%
+comments.thread_return: Vis alle kommentarer
+comments.viewing_thread: Viser en enkelt kommentartråd.
 
-comment_form:
-    comment: Kommentar
-    edit_title: Redigerer en kommentar
-    create_title: Poster en kommentar
+comment_form.edit_title: Redigerer en kommentar
+comment_form.create_title: Poster en kommentar
 
-compose_message:
-    title: Komponerer en melding til %username%
+compose_message.title: Komponerer en melding til %username%
 
-create_forum:
-    create_new_forum: Opprett nytt forum
+content.empty: Det er ingenting her…
 
-edit_forum:
-    title: Redigerer %forum%
+create_forum.create_new_forum: Opprett nytt forum
 
-edit_user:
-    title: Redigerer brukerkontoen %username%
+delete_account.comments: Fjerning av kommentarer.
+delete_account.lead: 'Sletting av brukerkonto innebærer følgende:'
+delete_account.messages: Fjerning av sendte meldinger.
+delete_account.metadata: Gjør det umulig å logge inn, endrer brukernavnet, tilbakestiller preferanser og fjerner diverse annen data tilknyttet kontoen.
+delete_account.submissions: Fjerning av innlegg.
+delete_account.votes: Trekker tilbake stemmer på alle innlegg og kommentarer.
 
-flash:
-    ban_added: IP-adressen ble utestengt.
-    forum_deleted: Forumet og all dets innhold har blitt slettet.
-    forum_updated: Endringene har blitt lagret.
-    forum_moderator_added: Brukeren har blitt lagt til som moderator.
-    user_account_registered: Din konto har blitt registrert.
-    reset_password_email_sent: En epost har blitt sendt til adressen du oppga.
-    submission_deleted: Innlegget ble slettet.
-    submission_edited: Innlegget ble endret.
-    user_password_updated: Passordet ditt ble oppdatert.
-    user_settings_updated: Innstillingene har blitt oppdatert.
-    no_messages: Det finnes ingen meldinger å vise.
+edit_forum.title: Redigerer %forum%
 
-forum:
-    moderators: Moderatorer
-    manage: Administrasjon
-    edit: Rediger forum
-    subscribe: Abonnere
-    unsubscribe: Avabonnere
-    subscriber_count: '{0} Ingen abonnenter|{1} %formatted_count% abonnent|[1,Inf[ %formatted_count% abonnenter'
-    add_moderator: Legg til moderator
+edit_user.title: Redigerer brukerkontoen %username%
 
-forum_form:
-    name: Navn
-    title: Tittel
-    description: Beskrivelse
-    category: Kategori
-    create: Opprett forum
-    save: Lagre endringer
-    delete: Slett forum
-    confirm_delete: Er du sikker på at du vil slette dette forumet og all dets innhold?
-    featured: Vis på forside
-    uncategorized_placeholder: (ukategorisert)
+flash.account_deletion_in_progress: Kontoen blir nå slettet.
+flash.ban_added: IP-adressen ble utestengt.
+flash.delete_account_warning: Med en gang har slettet kontoen din, vil du aldri kunne få den tilbake!
+flash.delete_someone_elses_account_warning: Du holder på å slette noen andre sin konto! Med en gang du gjør dette, vil de aldri kunne få kontoen sin tilbake!
+flash.editing_biography_of_other_user: You are editing the biography of another user.
+flash.editing_credentials_of_other_user: You are editing the credentials of another user. This can prevent them from logging in.
+flash.forum_deleted: Forumet og all dets innhold har blitt slettet.
+flash.forum_moderator_added: Brukeren har blitt lagt til som moderator.
+flash.forum_updated: Endringene har blitt lagret.
+flash.no_cookies_verification: Laster ikke bildet riktig? Sørg for at du ikke blokkerer informasjonskapsler («cookies») og prøv på nytt.
+flash.no_entries_to_display: Det er ingenting å vise.
+flash.no_messages: Det finnes ingen meldinger å vise.
+flash.no_moderated_forums: Du modererer ingen fora.
+flash.no_password_resets: Tilbakestilling av passord har blitt deaktivert av administratoren.
+flash.notification_cleared: Notifikasjonen ble fjernet.
+flash.notifications_cleared: Notifikasjonene dine har blitt fjernet.
+flash.page_locked: Siden ble låst.
+flash.page_unlocked: Siden ble låst opp.
+flash.purge_submission_warning: Innlegget og all dets kommentarer vil bli fjernet.
+flash.reset_password_email_sent: En epost har blitt sendt til adressen du oppga.
+flash.site_settings_saved: Innstillingene har blitt lagret.
+flash.submission_deleted: Innlegget ble slettet.
+flash.submission_edited: Innlegget ble endret.
+flash.submission_is_locked: Innlegget er låst. Du kan ikke poste nye kommentarer.
+flash.submission_locked: Innlegget ble låst.
+flash.submission_pinned: Innlegget ble klistret.
+flash.submission_unlocked: Innlegget ble låst opp.
+flash.submission_unpinned: Innlegget ble tatt ned.
+flash.too_many_characters: Du skrev inn for mange tegn (maks %max%, %count% skrevet inn)
+flash.user_account_registered: Din konto har blitt registrert.
+flash.user_biography_updated: Biografien ble oppdatert.
+flash.user_blocked: Brukeren ble blokkert.
+flash.user_marked_trusted: Brukeren ble market som pålitelig.
+flash.user_marked_untrusted: Pålitelighetsmarkøren ble fjernet.
+flash.user_password_updated: Passordet ditt ble oppdatert.
+flash.user_settings_updated: Innstillingene har blitt oppdatert.
+flash.user_unblocked: Brukeren ble avblokkert.
+flash.user_unmodded: Brukeren ble fjernet som moderator.
+flash.user_was_banned: Brukeren ble utestengt.
+flash.user_was_unbanned: Utestengelsen ble fjernet.
+flash.wiki_page_deleted: Wikisiden ble slettet.
+flash.you_must_reauthenticate: Du må autentisere på nytt for å få tilgang til denne siden.
 
-forum_list:
-    name: Navn
-    title: Tittel
-    subscribers: Abonnenter
-    page_title: Liste over fora
-    create_forum: Opprett forum
-    submission_count: Innlegg
-    list_view: Listevisning
-    category_view: Kategorivisning
-    uncategorized: Ukategorisert
+forum.add_as_moderator: Legg til som moderator
+forum.add_moderator: Legg til moderator
+forum.create: Opprett forum
+forum.created_on: Opprettet %timestamp%
+forum.delete: Slett forum
+forum.edit: Rediger forum
+forum.moderators: Moderatorer
+forum.submission_count: '{0} Ingen innlegg|[1,Inf[ %formatted_count% innlegg'
+forum.subscriber_count: '{0} Ingen abonnenter|{1} %formatted_count% abonnent|]1,Inf[ %formatted_count% abonnenter'
 
-forum_moderators:
-    title: Moderatorer for /%forum_name%
-    username: Brukernavn
-    since: Siden
-    last_seen: Sist sett
+forum_form.featured: Vis på forsiden
 
-front:
-    subscribed_forums: Dine abonnementer
-    no_subscriptions: Du har ikke abonnert på noen fora. Viser utvalgte fora istedenfor.
-    featured_forums: Utvalgte fora
-    no_forums: Det er ingen utvalgte fora å vise frem
-    all: Alle
-    featured: Utvalgte
-    subscribed: Abonnert
+forum_list.category_view: Kategorivisning
+forum_list.list_view: Listevisning
+forum_list.page_title: Liste over fora
+forum_list.submission_count: Innlegg
+forum_list.subscribers: Abonnenter
+forum_list.uncategorized: Ukategorisert
 
-inbox:
-    message_reply_head: 'Sv: %title%'
+forum_moderators.last_seen: Sist sett
+forum_moderators.since: Siden
+forum_moderators.title: Moderatorer for /%forum_name%
 
-label:
-    title: Tittel
-    replies: Svar
-    from: Fra
-    to: Til
-    sent: Sendt
-    toolbox: Verktøy
-    ip_address: IP-adresse
-    reason_for_banning: Årsak for utestengelse
-    user_associated_with_ip: Bruker assosiert med IP
+front.all: Alle
+front.all_forums: Alle fora
+front.featured: På forsiden
+front.featured_forums: Utvalgte fora
+front.moderated_forums: Modererte fora
+front.no_forums: Det er ingen utvalgte fora å vise frem
+front.no_subscriptions: Du har ikke abonnert på noen fora. Viser utvalgte fora istedenfor.
+front.subscribed: Abonnert
+front.subscribed_forums: Dine abonnementer
 
-login_form:
-    log_in: Logg inn
-    username: Brukernavn
-    password: Passord
-    reset_password: Glemt passord?
+heading.category: 'Kategori: %category%'
+heading.credentials: Legitimasjon
+heading.delete_account: Slett konto
+heading.forums_you_moderate: Fora du modererer
+heading.hide_this_forum: Skjul dette forumet
+heading.message_reply: "%sender% svarte %timestamp%"
+heading.message_thread: "%sender% skrev til %receiver% %timestamp%"
+heading.multi_forum_view: Multifora-visning
+heading.notifications: Notifikasjoner
+heading.privacy: Personvern
+heading.search: Søk
+heading.search_results: '{0} Ingen resultater for %query%|{1} Ett resultat for %query%:|]1,Inf[ %count% resultater for %query%:'
+heading.this_user_is_banned: Denne brukeren er utestengt!
+heading.user_roles: Brukerroller
+heading.you_were_mentioned: Du var nevnt av %user%
 
-markdown_type:
-    help: Hjelp med formatering
+help.allow_private_messages: Om deaktivert, så vil kun administratorer, dine med-moderatorer og moderatorer av fora du nylig har deltatt i kunne sende deg private meldinger.
+help.block_users: Å blokkere brukere forhindrer dem i å sende deg private meldinger, og du vil heller ikke bli varslet når de svarer deg.
+help.delete_forum_warning: All innhold på dette forumet vil bli permanent slettet!
+help.forum_description: En kort beskrivelse av dette forumet. Søkemotorer vil vise dette i sine resultarer.
+help.forum_is_featured: Dette forumet vises på forsiden.
+help.forum_is_hidden: Du har valgt å skjule dette forumet.
+help.hidden_forums: Ved å markere fora som skjulte, vil du ikke se innlegg fra disse når du ser på listene av «utvalgte» og «alle» innlegg. Du kan fortsatt abonnere på og moderere fora du velger å skjule.
+help.hidden_forums_no_comment_hiding: Kommentarer postet i skjulte fora vil fortsatt vises i listen av nye kommentarer.
+help.notify_on_mentions: Bli varslet når noen nevner deg ved å linke til profilsiden din.
+help.notify_on_reply: Bli varslet når noen svarer på dine innlegg og kommentarer.
+help.poppers_enabled: «Poppere» er små paneler som viser info og knapper når du beveger muspekeren over visse ting (f.eks. brukernavn).
+help.preferred_fonts: Kommaseparert liste over skrifttypene du foretrekker. Dette kan være skrifttyper du har tilgjengelig lokalt, eller noen av skrifttypene nedenfor.
+help.preferred_fonts_aliases: 'Aliaserte skrifttyper: '
+help.preferred_fonts_served: 'Skrifttyper levert av serveren (tilgjengelige overalt): '
+help.required_field: Dette feltet er påkrevd.
+help.will_appear_in_the_url: Vil vises i webadressen.
 
-message_form:
-    title: Tittel
-    message: Melding
-    send: Send
-    reply: Svar
+inbox.message_reply_head: 'Sv: %title%'
 
-moderator_form:
-    user: Brukernavn
-    submit: Legg til som moderator
+item.op: Opprinnelig avsender
+item.op_abbr: OP
+item.short_url: 'Kort lenke: '
 
-nav:
-    submit: Nytt innlegg
-    log_in: Logg inn
-    log_out: Logg ut
-    profile: Profil
-    register: Registrér
-    my_account: Min brukerkonto
-    user_settings: Brukerinnstillinger
-    forums: Forumliste
-    messages: Meldinger
-    next: Neste
-    previous: Forrige
+label.action: Handling
+label.admin: Administrator
+label.all: Alle
+label.allow_private_messages: Tillat private meldinger
+label.any: Hvilke som helst
+label.appearance: Utseende
+label.author: Forfatter
+label.auto_fetch_submission_titles: Hent innleggstitler automatisk
+label.ban: Utestenger
+label.ban_ip_addresses: Utesteng IP-adress(er)?
+label.banned: Utestengt
+label.banned_by: Utestengt av
+label.bans: Utestengelser
+label.biography: Biografi
+label.blocked: Blokkert
+label.body: Tekst
+label.category: Kategori
+label.comment: Kommentar
+label.comment_votes: Kommentarstemmer
+label.comment_votes_short: KS
+label.comments: Kommentarer
+label.comments_short: K
+label.compare: Sammenlign
+label.confirm_forum_name: Bekreft forumnavn
+label.confirm_username: Bekreft brukernavn
+label.creation_date: Opprettet
+label.date: Dato
+label.default: Forhåndsvalgt
+label.delete_account_confirmation: Jeg forstår at det ikke er mulig å gjenopprette denne kontoen når den er borte.
+label.delete_forum_confirmation: Jeg forstår at det ikke er mulig å hente data fra dette forumet når det er borte.
+label.description: Beskrivelse
+label.email_address: Epost-adresse
+label.expires: Utløper
+label.featured: Utvalgt
+label.filter_by: Filtrer på
+label.filter_on_mode: 'Filtrer på: %mode%'
+label.forum: Forum
+label.forums_count: '{0} Ingen fora|{1} %count% forum|]1,Inf[ %count% fora'
+label.forums_in_this_category: Fora i denne kategorien
+label.from: Fra
+label.from_time: 'Fra: %time%'
+label.front_page: Forside
+label.general: Generelt
+label.id: ID
+label.image: Bilde
+label.ip_address: IP-adresse
+label.ip_addresses: IP-adresser
+label.language: Språk
+label.last_message: Siste melding
+label.last_revised: Sist revidert
+label.let_forums_override_preferred_theme: La fora overstyre mitt valgte tema
+label.media_type: Mediatype
+label.message: Melding
+label.moderated: Moderert
+label.moderates: Modererer
+label.name: Navn
+label.never: Aldri
+label.new_password: Nytt passord
+label.none: Ingen
+label.notify_on_mentions: Varsle på nevnelser
+label.notify_on_reply: Varsle på svar
+label.open_external_links_in_new_tab: Åpne eksterne lenker i ny fane
+label.order_by: Sorter på
+label.overview: Oversikt
+label.participants: Deltakere
+label.password: Passord
+label.permissions: Tillatelser
+label.poppers_enabled: Aktiver «poppers»
+label.posting: Deltakelse
+label.preferred_fonts: Foretrukne skrifttyper
+label.preferred_theme: Foretrukket tema
+label.reason: Årsak
+label.reason_for_banning: Årsak for utestengelse
+label.recent_changes: Nye endringer
+label.registration_date: Registreringsdato
+label.repeat_new_password: Nytt passord (gjenta)
+label.repeat_password: Passord (gjenta)
+label.replies: Svar
+label.role: Rolle
+label.search_query: Søkeord
+label.sent: Sendt
+label.show_post_previews: Vis forhåndsvisninger
+label.show_thumbnails: Vis miniatyrbilder
+label.sidebar: Sidelinje
+label.sort_by: Sorter på
+label.sort_by_mode: 'Sort by: %mode%'
+label.source_code: Source code
+label.submission_votes: Submission votes
+label.submission_votes_short: SV
+label.submissions: Submissions
+label.submissions_short: S
+label.subscribed: Subscribed
+label.suggested_theme: Suggested theme
+label.timezone: Time zone
+label.title: Tittel
+label.to: Til
+label.toolbox: Verktøy
+label.trusted: Pålitelig
+label.unban: Fjern utestengelse
+label.unban_associated_ips: Fjern brukerutestengelser assosiert med IP-utestengelser
+label.upload_image: Last opp bilde
+label.url: Lenke
+label.user_associated_with_ip: Bruker assosiert med IP
+label.username: Brukernavn
+label.verification: Verifikasjon
+label.verification_image: Verifikasjonsbilde
 
-placeholder:
-    deleted: '[slettet]'
+log.ban: '%user% utestengte %banned% (utløper: %expires%). Årsak: "%reason%"'
+log.comment_deletion: '%user% slettet en kommentar fra %author% i "%submission%"'
+log.submission_deletion: '%user% slettet innlegget "%title%" fra %author%'
+log.submission_deletion_with_reason: '%user% slettet innlegget "%title%" fra %author%. Årsak: "%reason%"'
+log.submission_lock: '%user% låste innlegget "%title%" fra %author%'
+log.submission_unlock: '%user% åpnet innlegget "%title%" fra %author%'
+log.unban: '%user% fjernet utestengelsen av %banned%. Årsak: "%reason%"'
 
-request_password_reset:
-    title: Be om nullstilling av passord
-    multiple_accounts_notice: >
-        Hvis du har flere kontoer registrert på én epost-adresse, vil du motta
-        én epost pr. konto.
-    no_confirmation_notice: >
-        Adressen du oppga er sikkert ugyldig hvis du aldri mottar en epost. Av
-        personvernsgrunner vil vi aldri bekrefte hvorvidt en brukerkonto med den
-        oppgitte epost-adressen faktisk eksisterer eller ei.
+login.remember_me: Husk meg
+login.reset_password: Glemt passord?
 
-request_password_reset_form:
-    email: Epost-adresse
-    submit: Send
+markdown.allowed: Markdown tillatt.
+markdown.another_paragraph: Enda et avsnitt
+markdown.blockquote: Blokksitat
+markdown.break: linjeskift
+markdown.code_block: Kodeblokk
+markdown.emphasis: Kursiv
+markdown.forum: forum
+markdown.heading: Overskrift %count%
+markdown.help: Hjelp med formatering
+markdown.horizontal_rule: Horisontal linje
+markdown.inline_code: Kode på linje
+markdown.line: linje
+markdown.link: Lenke
+markdown.list_item: Listeelement
+markdown.paragraph: Avsnitt
+markdown.preview: Forhåndsvis
+markdown.strikethrough: Gjennomstreking
+markdown.strong_emphasis: Fet tekst
+markdown.user: bruker
+markdown.wiki_page: wikiside
 
-reset_password:
-    email_subject: '%site_name% - Nullstill passord for %username%'
+nav.actions: Handlinger
+nav.add_ban: Utesteng
+nav.appearance: Utseende
+nav.ban_history: Utestengelseshistorikk
+nav.bans: Utestengelser
+nav.block_list: Blokkliste
+nav.block_user: Blokker bruker
+nav.comments: Kommentarer
+nav.dark_mode: Mørk modus
+nav.delete_forum: Slett forum
+nav.delete_this_account: Slett denne kontoen
+nav.edit_biography: Rediger biografi
+nav.filter_results: Filtrer resultater
+nav.forum_bans: Utestengelser fra fora
+nav.forum_categories: Forumkategorier
+nav.forums: Forumliste
+nav.global_moderation_log: Global moderasjonslogg
+nav.hidden_forums: Skjulte fora
+nav.home: Hjem
+nav.ip_bans: IP-utestengelser
+nav.jump_to_main_content: Hopp til hovedinnhold
+nav.jump_to_sidebar: Hopp til sidelinjen
+nav.light_mode: Lys modus
+nav.logged_in_as_user: Logget inn som %user%
+nav.messages: Meldinger
+nav.moderated: Moderert
+nav.moderation_log: Moderasjonslogg
+nav.my_account: Min brukerkonto
+nav.new_category: Ny kategori
+nav.next: Neste
+nav.notifications: Notifikasjoner
+nav.notifications_count: 'Notifikasjoner (%count%)'
+nav.places: Steder
+nav.previous: Forrige
+nav.profile: Profil
+nav.search: Søk
+nav.site_settings: Globale innstillinger
+nav.submissions: Innlegg
+nav.submit: Nytt innlegg
+nav.user: Bruker
+nav.user_bans: Brukerutestengelser
+nav.user_settings: Innstillinger
+nav.users: Brukere
+nav.wiki: Wiki
 
-    # this should be kept at 76 columns --------------------------------------------
-    email_body: |
-        Noen ba om å nullstille passordet for %site_name%-kontoen din. For å
-        nullstille passordet ditt, klikk på lenken nedenfor:
+number.id: 'nr. '
 
-        %reset_link%
+placeholder.choose_one: Velg én…
+placeholder.default: (forhåndsvalgt)
+placeholder.deleted: '[slettet]'
+placeholder.repeat: (repeter)
+placeholder.uncategorized: (ukategorisert)
 
-        Du kan trygt ignorere denne meldingen om du ikke ba om å nullstille
-        passordet ditt. Lenken vil utløpe om 24 timer.
+prompt.confirm_comment_delete: Er du sikker på at du vil slette denne kommentaren?
+prompt.confirm_message_delete: Er du sikker på at du vil slette denne meldigen?
+prompt.confirm_submission_delete: Er du sikker på at du vil slette dette innlegget?
+prompt.confirm_wiki_delete: Er du sikker på at du vil slette denne wiki-siden? Den vil gå tapt for alltid.
 
-    title: Nullstille passord
+request_password_reset.title: Be om nullstilling av passord
+request_password_reset.multiple_accounts_notice: Hvis du har flere kontoer registrert på samme epost-adresse, vil du motta én epost pr. konto.
+request_password_reset.no_confirmation_notice: Adressen du oppga er sikkert ugyldig hvis du aldri mottar en epost. Av personvernsgrunner vil vi aldri bekrefte hvorvidt en brukerkonto med den oppgitte epost-adressen faktisk eksisterer eller ei.
 
-site_footer:
-    version: Kjører %app% %version% (%branch%)
+request_password_reset_form.submit: Send
 
-submission_form:
-    title: Tittel
-    url: Lenke
-    body: Tekst
-    forum: Forum
-    sticky: Klistre øverst
-    create: Send innlegg
-    edit: Rediger innlegg
-    delete: Slett innlegg
-    confirm_delete: Er du sikker på at du vil slette dette innlegget?
+reset_password.email_subject: '%site_name% - Nullstill passord for %username%'
+# this should be kept at 76 columns --------------------------------------------
+reset_password.email_body: |
+    Noen ba om å nullstille passordet for %site_name%-kontoen din. For å
+    nullstille passordet ditt, klikk på lenken nedenfor:
 
-submissions:
-    comments: '{0} Ingen kommentarer|{1} %count% kommentar|[1,Inf[ %count% kommentarer'
-    edit: Rediger
-    info_with_forum_name: Sendt inn av %submitter% %timestamp% til %forum%
-    info_without_forum_name: Sendt inn av %submitter% %timestamp%
-    sort_by_hot: Populært
-    sort_by_new: Nytt
-    sort_by_top: Topp
-    sort_by_controversial: Kontroversielt
-    total_votes: '{1} %count% stemme|[0,Inf[ %count% stemmer'
-    vote_stats: (+%up%, −%down%)
-    ip_ban: Utesteng IP
-    edit_info: (redigert %edited_at%)
-    moderator_info: (redigert av en moderator %edited_at%)
+    %reset_link%
 
-time:
-    on_timestamp: '%timestamp%'
-    earlier_format: '%relative_time% tidligere'
-    later_format: '%relative_time% senere'
+    Du kan trygt ignorere denne meldingen om du ikke ba om å nullstille
+    passordet ditt. Lenken vil utløpe om 24 timer.
+reset_password.title: Nullstille passord
 
-title:
-    messages: Meldinger
+role.admins: Administratorer
+role.everyone: Alle
+role.trusted_users: Pålitelige brukere
 
-user:
-    submissions: Innlegg
-    comments: Kommentarer
-    moderates: '%username% er en moderator i:'
-    username_rules: Tillatte tegn er A-Z, a-z, 0-9 og understrek.
-    password_rules: Minst 8 tegn; opptil 72 på grunn av begrensninger med bcrypt-algoritmen.
-    email_optional: Å oppgi en epost-adresse er valgfritt. Den vil kun bli brukt til nullstilling av passord.
-    message: Send melding
-    registered: Registrert %timestamp%
+site_footer.app: Kjører %app% %version%
+site_footer.version: '%version% (%branch%)'
 
-user_flag:
-    post_as_label: Post som
-    none_label: (ingen)
-    admin: admin
-    admin_label: Administrator
-    moderator: moderator
-    moderator_label: Moderator
+site_settings.site_name: Navn på nettstedet
+site_settings.wiki_enabled: Åpne wikien
+site_settings.forum_create_role: Hvem kan opprette nye fora?
+site_settings.image_upload_role: Hvem kan laste opp bilder?
+site_settings.wiki_edit_role: hvem kan redigere wikien?
 
-user_form:
-    username: Brukernavn
-    password: Passord
-    repeat_password: Passord (gjenta)
-    new_password: Nytt passord
-    repeat_new_password: Nytt passord (gjenta)
-    email: Epost
-    register: Registrer
-    verification: Verifikasjon
-    save: Lagre endringer
+submission_form.create: Send innlegg
+submission_form.edit: Rediger innlegg
 
-user_settings:
-    title: Redigerer innstillinger for %username%
+submission.comments: '{0} Ingen kommentarer|{1} %count% kommentar|[1,Inf[ %count% kommentarer'
+submission.edit_info: (redigert %edited_at%)
+submission.info_with_forum_name: Sendt inn av %submitter% %timestamp% til %forum%
+submission.info_without_forum_name: Sendt inn av %submitter% %timestamp%
+submission.locked: Dette innlegget er låst
+submission.moderator_info: (redigert av en moderator %edited_at%)
+submission.new_comments: '(%count% nye)'
+submission.pinned: Dette innlegget er klistret til toppen
+submission.sort_by_active: Aktiv
+submission.sort_by_controversial: Kontroversielt
+submission.sort_by_hot: Populært
+submission.sort_by_most_commented: Mest kommentert
+submission.sort_by_new: Nytt
+submission.sort_by_top: Topp
+submission.time_all: All tid
+submission.time_day: Siste døgn
+submission.time_month: Siste måned
+submission.time_week: Siste uke
+submission.time_year: Siste året
+submission.total_votes: '{1} %count% stemme|[0,Inf[ %count% stemmer'
+submission.vote_stats: (+%up%, −%down%)
 
-user_settings_form:
-    locale: Språk
-    save: Lagre endringer
+time.at_relative_time: 'for %relative_time%'
+time.earlier_format: '%relative_time% tidligere'
+time.later_format: '%relative_time% senere'
+time.on_timestamp: '%timestamp%'
+
+title.active_global_user_bans: Aktive, globale brukerutestengelser
+title.ban_user: Utestenger %user%
+title.banning_user_from_forum: Utesetenger %user% fra %forum%
+title.bans_in_forum: Utestengelser fra %forum%
+title.block_list: Blokkliste
+title.blocking_user: Blokkerer %user%
+title.create_forum_category: Opprett forumkategori
+title.create_submission: Nytt innlegg
+title.delete_account: Slett brukerkonto
+title.delete_forum: Slett forum %forum%
+title.delete_submission: Slett innlegg
+title.editing_biography_for_user: Redigerer biografien for %user%
+title.editing_forum: Endrer forum %forum%
+title.editing_forum_category: 'Endrer forumkategori: %category%'
+title.editing_submission: Redigerer innlegget %title%
+title.forum_appearance: Utseende for %forum%
+title.global_moderation_log: Global moderasjonslogg
+title.hidden_forums: Skjulte fora
+title.ip_bans: Utestengte IP-adresser
+title.list_of_users: 'Oversikt over brukere, side %page%'
+title.manage_forum_categories: Behandle forumkategorier
+title.messages: Meldinger
+title.notifications: Notifikasjoner
+title.purge_submission: Skrubb innlegg
+title.recent_comments: Nye kommentarer
+title.recent_comments_forum: Nye kommentarer i %forum%
+title.showing_ban_history_for_user_in_forum: Viser utestengelseshistorikk for %user% i %forum%
+title.showing_moderation_log_for_forum: Viser moderasjonslogg for %forum%
+title.showing_revision: 'Viser revisjon %revision% av side %path%'
+title.site_settings: Globale innstillinger
+title.unban_user: Fjerner utestengelse for %user%
+title.unbanning_user_from_forum: Fjerner utestengelse for %user% i %forum%
+title.user_forum_bans: "%user%'s utestengelser i fora"
+title.wiki_diff: Viser forskjellen mellom %from% og %to%
+
+user.comments: Kommentarer
+user.email_optional: Å oppgi en epost-adresse er valgfritt. Den vil kun bli brukt til nullstilling av passord.
+user.mark_as_trusted: Marker som pålitelig
+user.mark_as_untrusted: Fjern pålitelighet
+user.message: Send melding
+user.moderates: '%username% er en moderator i:'
+user.password_rules: Minst 8 tegn; opptil 72 på grunn av begrensninger med bcrypt-algoritmen.
+user.registered: Registrert %timestamp%
+user.submissions: Innlegg
+user.username_rules: Tillatte tegn er A-Z, a-z, 0-9 og understrek.
+
+user_flag.admin: admin
+user_flag.admin_label: Administrator
+user_flag.moderator: moderator
+user_flag.moderator_label: Moderator
+user_flag.none_label: (ingen)
+user_flag.post_as_label: Post som
+
+user_settings.title: Redigerer innstillinger for %username%
+
+wiki.all_pages: Alle sider
+wiki.create_this_page: Opprett denne siden
+wiki.create_title: Oppretter "%path%"
+wiki.edit_page: Rediger siden
+wiki.editing_title: Redigerer "%path%"
+wiki.history_title: Viser historikken til "%path%"
+wiki.id_label: ID
+wiki.last_edited: Sist redigert av %username% %timestamp%
+wiki.locked_notice: Siden er låst. Kun administratorer kan endre den.
+wiki.navigation: Navigasjon
+wiki.not_found_message: Den forespurte siden var ikke funnet.
+wiki.not_found_title: Side ikke funnet
+wiki.page_history: Sidehistorikk
+wiki.page_title: Sidetittel
+wiki.path: Sti
+wiki.revision_time: Revidert
+wiki.user: Bruker

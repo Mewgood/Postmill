@@ -10,10 +10,10 @@
 
 {% block _markdown_help %}
   <input type="checkbox" class="hideable__checkbox" id="{{ id~'_markdown_help' }}">
-  <span class="fg-muted text-sm">{{ 'help.markdown_allowed'|trans }}</span>
+  <span class="fg-muted text-sm">{{ 'markdown.allowed'|trans }}</span>
 
   <label class="hideable__toggle no-underline text-sm" for="{{ id~'_markdown_help' }}">
-    <span class="no-underline__exempt">{{- 'markdown_type.help'|trans }}</span>
+    <span class="no-underline__exempt">{{- 'markdown.help'|trans }}</span>
     <span class="hideable__indicator" role="presentation"></span>
   </label>
 
@@ -22,143 +22,142 @@
       <tbody>
         <tr>
           <td>
-            <p>{{ 'markdown_type.paragraph'|trans }}</p>
-            <p class="no-margin">{{ 'markdown_type.another_paragraph'|trans }}</p>
+            <p>{{ 'markdown.paragraph'|trans }}</p>
+            <p class="no-margin">{{ 'markdown.another_paragraph'|trans }}</p>
           </td>
           <td>
             <kbd>
-              {{ 'markdown_type.paragraph'|trans }}<br>
+              {{ 'markdown.paragraph'|trans }}<br>
               <br>
-              {{ 'markdown_type.another_paragraph'|trans }}
+              {{ 'markdown.another_paragraph'|trans }}
             </kbd>
           </td>
         </tr>
         <tr>
           <td>
-            {{ 'markdown_type.line'|trans }}<br>
-            {{ 'markdown_type.break'|trans }}
+            {{ 'markdown.line'|trans }}<br>
+            {{ 'markdown.break'|trans }}
           </td>
           <td>
             <kbd>
-              {{ 'markdown_type.line'|trans }} \<br>
-              {{ 'markdown_type.break'|trans }}
+              {{ 'markdown.line'|trans }} \<br>
+              {{ 'markdown.break'|trans }}
             </kbd>
           </td>
         </tr>
         <tr>
-          <td><em>{{ 'markdown_type.emphasis'|trans }}</em></td>
-          <td><kbd>*{{ 'markdown_type.emphasis'|trans }}*</kbd></td>
+          <td><em>{{ 'markdown.emphasis'|trans }}</em></td>
+          <td><kbd>*{{ 'markdown.emphasis'|trans }}*</kbd></td>
         </tr>
         <tr>
-          <td><strong>{{ 'markdown_type.strong_emphasis'|trans }}</strong></td>
-          <td><kbd>**{{ 'markdown_type.strong_emphasis'|trans }}**</kbd></td>
+          <td><strong>{{ 'markdown.strong_emphasis'|trans }}</strong></td>
+          <td><kbd>**{{ 'markdown.strong_emphasis'|trans }}**</kbd></td>
         </tr>
         <tr>
-          <td><del>{{ 'markdown_type.strikethrough'|trans }}</del></td>
-          <td><kbd>~~{{ 'markdown_type.strikethrough'|trans }}~~</kbd></td>
+          <td><del>{{ 'markdown.strikethrough'|trans }}</del></td>
+          <td><kbd>~~{{ 'markdown.strikethrough'|trans }}~~</kbd></td>
         </tr>
         <tr>
           <td>
-            <h1>{{ 'markdown_type.heading_1'|trans }}</h1>
-            <h2>{{ 'markdown_type.heading_2'|trans }}</h2>
-            <h3>{{ 'markdown_type.heading_3'|trans }}</h3>
-            <h4>{{ 'markdown_type.heading_4'|trans }}</h4>
-            <h5>{{ 'markdown_type.heading_5'|trans }}</h5>
-            <h6 class="no-margin">{{ 'markdown_type.heading_6'|trans }}</h6>
+            {% for i in 1..6 %}
+              <h{{ i }}{{ loop.last ? ' class="no-margin"' }}>
+                {{ 'markdown.heading'|trans({ '%count%': i }) }}
+              </h{{ i }}>
+            {% endfor %}
           </td>
           <td>
             <kbd>
-              {{ 'markdown_type.heading_1'|trans }}<br>
+              {{ 'markdown.heading'|trans({ '%count%': 1 }) }}<br>
               ===<br>
               <br>
-              {{ 'markdown_type.heading_2'|trans }}<br>
+              {{ 'markdown.heading'|trans({ '%count%': 2 }) }}<br>
               ---<br>
               <br>
-              ### {{ 'markdown_type.heading_3'|trans }}<br>
-              #### {{ 'markdown_type.heading_4'|trans }}<br>
-              ##### {{ 'markdown_type.heading_5'|trans }}<br>
-              ###### {{ 'markdown_type.heading_6'|trans }}
+              ### {{ 'markdown.heading'|trans({ '%count%': 3 }) }}<br>
+              #### {{ 'markdown.heading'|trans({ '%count%': 4 }) }}<br>
+              ##### {{ 'markdown.heading'|trans({ '%count%': 5 }) }}<br>
+              ###### {{ 'markdown.heading'|trans({ '%count%': 6 }) }}
             </kbd>
           </td>
         </tr>
         <tr>
           <td>
             <ul class="no-margin">
-              <li>{{ 'markdown_type.list_item'|trans }}</li>
-              <li>{{ 'markdown_type.list_item'|trans }}</li>
+              <li>{{ 'markdown.list_item'|trans }}</li>
+              <li>{{ 'markdown.list_item'|trans }}</li>
             </ul>
           </td>
           <td>
             <kbd>
-              * {{ 'markdown_type.list_item'|trans }}<br>
-              * {{ 'markdown_type.list_item'|trans }}<br>
+              * {{ 'markdown.list_item'|trans }}<br>
+              * {{ 'markdown.list_item'|trans }}<br>
             </kbd>
           </td>
         </tr>
         <tr>
           <td>
             <ol class="no-margin">
-              <li>{{ 'markdown_type.list_item'|trans }}</li>
-              <li>{{ 'markdown_type.list_item'|trans }}</li>
+              <li>{{ 'markdown.list_item'|trans }}</li>
+              <li>{{ 'markdown.list_item'|trans }}</li>
             </ol>
           </td>
           <td>
             <kbd>
-              1. {{ 'markdown_type.list_item'|trans }}<br>
-              2. {{ 'markdown_type.list_item'|trans }}<br>
+              1. {{ 'markdown.list_item'|trans }}<br>
+              2. {{ 'markdown.list_item'|trans }}<br>
             </kbd>
           </td>
         </tr>
         <tr>
           <td>
-            <a href="#" tabindex="-1">{{ 'markdown_type.link'|trans }}</a><br>
-            <a href="#" tabindex="-1">/f/{{ 'markdown_type.forum'|trans }}</a><br>
-            <a href="#" tabindex="-1">/u/{{ 'markdown_type.user'|trans }}</a><br>
-            <a href="#" tabindex="-1">/w/{{ 'markdown_type.wiki_page'|trans }}</a>
+            <a href="#" tabindex="-1">{{ 'markdown.link'|trans }}</a><br>
+            <a href="#" tabindex="-1">/f/{{ 'markdown.forum'|trans }}</a><br>
+            <a href="#" tabindex="-1">/u/{{ 'markdown.user'|trans }}</a><br>
+            <a href="#" tabindex="-1">/w/{{ 'markdown.wiki_page'|trans }}</a>
           </td>
           <td>
             <kbd>
-              [{{ 'markdown_type.link'|trans }}](http://example.com)<br>
-              /f/{{ 'markdown_type.forum'|trans }}<br>
-              /u/{{ 'markdown_type.user'|trans }}<br>
-              /w/{{ 'markdown_type.wiki_page'|trans }}
+              [{{ 'markdown.link'|trans }}](http://example.com)<br>
+              /f/{{ 'markdown.forum'|trans }}<br>
+              /u/{{ 'markdown.user'|trans }}<br>
+              /w/{{ 'markdown.wiki_page'|trans }}
             </kbd>
           </td>
         </tr>
         <tr>
           <td>
             <blockquote>
-              <p>{{ 'markdown_type.blockquote'|trans }}</p>
-              <p class="no-margin">{{ 'markdown_type.another_paragraph'|trans }}</p>
+              <p>{{ 'markdown.blockquote'|trans }}</p>
+              <p class="no-margin">{{ 'markdown.another_paragraph'|trans }}</p>
             </blockquote>
           </td>
           <td>
             <kbd>
-              &gt; {{ 'markdown_type.blockquote'|trans }}<br>
+              &gt; {{ 'markdown.blockquote'|trans }}<br>
               &gt;<br>
-              &gt; {{ 'markdown_type.another_paragraph'|trans }}
+              &gt; {{ 'markdown.another_paragraph'|trans }}
             </kbd>
           </td>
         </tr>
         <tr>
-          <td>{{ 'markdown_type.horizontal_rule'|trans }}<hr></td>
+          <td>{{ 'markdown.horizontal_rule'|trans }}<hr></td>
           <td>
             <kbd>
-              {{ 'markdown_type.horizontal_rule'|trans }}<br>
+              {{ 'markdown.horizontal_rule'|trans }}<br>
               <br>
               ---
             </kbd>
           </td>
         </tr>
         <tr>
-          <td><code>{{ 'markdown_type.inline_code'|trans }}</code></td>
-          <td><kbd>`{{ 'markdown_type.inline_code'|trans }}`</kbd></td>
+          <td><code>{{ 'markdown.inline_code'|trans }}</code></td>
+          <td><kbd>`{{ 'markdown.inline_code'|trans }}`</kbd></td>
         </tr>
         <tr>
           <td>
             <code>
               <span class="fg-blue">&lt;</span><span class="fg-orange">div</span><span class="fg-blue">&gt;</span><br>
-              &nbsp;&nbsp;<span class="fg-text">{{ 'markdown_type.code_block'|trans }}</span><br>
+              &nbsp;&nbsp;<span class="fg-text">{{ 'markdown.code_block'|trans }}</span><br>
               <span class="fg-blue">&lt;/</span><span class="fg-orange">div</span><span class="fg-blue">&gt;</span><br>
             </code>
           </td>
@@ -166,7 +165,7 @@
             <kbd>
               ~~~html<br>
               &lt;div&gt;<br>
-              &nbsp;&nbsp;{{ 'markdown_type.code_block'|trans }}<br>
+              &nbsp;&nbsp;{{ 'markdown.code_block'|trans }}<br>
               &lt;/div&gt;<br>
               ~~~
             </kbd>

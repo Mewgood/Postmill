@@ -68,12 +68,12 @@ class SubscribeButton {
         }
 
         this.buttonEl.querySelector(REAL_LABEL).innerText = this.subscribed
-            ? translator.trans('forum.unsubscribe')
-            : translator.trans('forum.subscribe');
+            ? translator.trans('action.unsubscribe')
+            : translator.trans('action.subscribe');
 
         this.buttonEl.querySelector(FAKE_LABEL).innerText = this.subscribed
-            ? translator.trans('forum.subscribe')
-            : translator.trans('forum.unsubscribe');
+            ? translator.trans('action.subscribe')
+            : translator.trans('action.unsubscribe');
 
         const countEl = this.buttonEl.querySelector(COUNT_LABEL);
         countEl.innerText = formatNumber(this.subscriberCount);

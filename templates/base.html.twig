@@ -9,7 +9,7 @@
     <title>{% block title %}{{ site_name() }}{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="postmill {{ app_version() }}">
+    <meta name="generator" content="Postmill {{ app_version() }}">
 
     <link rel="apple-touch-icon-precomposed" href="{{ asset('apple-touch-icon-precomposed.png') }}">
     <link rel="search" type="application/opensearchdescription+xml" href="{{ path('opensearch_description') }}" title="{{ site_name() }}">
@@ -81,13 +81,18 @@
     {% endblock site_main %}
 
     {% block site_footer %}
+      {% set version = app_version() and app_branch() ? 'site_footer.version'|trans({
+        '%branch%': app_branch(),
+        '%version%': app_version(),
+      }) %}
       <footer class="site-footer">
         <p>
-          <span class="fg-muted text-xs">{{ 'site_footer.version'|trans({
-            '%branch%': app_branch(),
-            '%version%': app_version(),
-            '%app%': '<a href="https://postmill.xyz/">Postmill</a>',
-          })|raw }}</span>
+          <span class="fg-muted text-xs">
+            {{- 'site_footer.app'|trans({
+              '%app%': '<a href="https://postmill.xyz/">Postmill</a>',
+              '%version%': version,
+            })|raw -}}
+          </span>
         </p>
       </footer>
     {% endblock site_footer %}

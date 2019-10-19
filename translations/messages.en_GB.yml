@@ -1,2 +1,1 @@
-number:
-    id: 'No. %number%'
+number.id: '№ %number%'

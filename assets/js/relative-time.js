@@ -7,9 +7,13 @@ import translator from 'bazinga-translator';
 export function makeTimesRelative(el) {
     loadDateFnsLocale().then(locale => {
         el.querySelectorAll('.js-relative-time').forEach(el => {
-            el.innerText = distanceInWordsToNow(el.dateTime, {
+            const relativeTime = distanceInWordsToNow(el.dateTime, {
                 addSuffix: true,
                 locale,
+            });
+
+            el.innerText = translator.trans('time.at_relative_time', {
+                relative_time: relativeTime,
             });
         });
 

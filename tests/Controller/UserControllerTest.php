@@ -14,7 +14,7 @@ class UserControllerTest extends WebTestCase {
         $client->followRedirects();
         $crawler = $client->request('GET', '/registration');
 
-        $client->submit($crawler->selectButton('Register')->form([
+        $client->submit($crawler->selectButton('Sign up')->form([
             'user[username]' => 'shrek',
             'user[password][first]' => 'donkeykong123',
             'user[password][second]' => 'donkeykong123',
@@ -32,7 +32,7 @@ class UserControllerTest extends WebTestCase {
 
         $password = str_repeat('a', 73);
 
-        $client->submit($crawler->selectButton('Register')->form([
+        $client->submit($crawler->selectButton('Sign up')->form([
             'user[username]' => 'random4',
             'user[password][first]' => $password,
             'user[password][second]' => $password,

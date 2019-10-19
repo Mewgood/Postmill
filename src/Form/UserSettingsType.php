@@ -30,6 +30,7 @@ final class UserSettingsType extends AbstractType {
             ->add('locale', ChoiceType::class, [
                 'choices' => $this->buildLocaleChoices(),
                 'choice_translation_domain' => false,
+                'label' => 'label.language',
             ])
             ->add('timezone', TimezoneType::class, [
                 'input' => 'datetimezone',
@@ -54,9 +55,9 @@ final class UserSettingsType extends AbstractType {
                 ])
                 ->add('sortBy', ChoiceType::class, [
                     'choices' => [
-                        'submissions.sort_by_hot' => Submission::SORT_HOT,
-                        'submissions.sort_by_new' => Submission::SORT_NEW,
-                        'submissions.sort_by_active' => Submission::SORT_ACTIVE,
+                        'submission.sort_by_hot' => Submission::SORT_HOT,
+                        'submission.sort_by_new' => Submission::SORT_NEW,
+                        'submission.sort_by_active' => Submission::SORT_ACTIVE,
                     ],
                     'error_bubbling' => true,
                     'label' => 'label.sort_by',
@@ -116,7 +117,6 @@ final class UserSettingsType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => UserData::class,
-            'label_format' => 'user_settings_form.%name%',
             'validation_groups' => ['settings'],
         ]);
     }

@@ -20,6 +20,7 @@ final class CommentType extends AbstractType {
         }
 
         $builder->add('comment', MarkdownType::class, [
+            'label' => 'label.comment',
             'max_chars' => Comment::MAX_BODY_LENGTH,
             'property_path' => 'body',
         ]);
@@ -34,7 +35,6 @@ final class CommentType extends AbstractType {
             'data_class' => CommentData::class,
             'forum' => null, // for UserFlagTrait
             'honeypot' => true,
-            'label_format' => 'comment_form.%name%',
             'validation_groups' => function (FormInterface $form) {
                 $groups = ['Default'];
 

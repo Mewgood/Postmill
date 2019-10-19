@@ -20,7 +20,7 @@
 {% macro create_forum() %}
   {% if is_granted('create_forum') %}
     <p role="navigation">
-      <a href="{{ path('create_forum') }}" class="button">{{ 'forum_list.create_forum'|trans }}</a>
+      <a href="{{ path('create_forum') }}" class="button">{{ 'forum.create'|trans }}</a>
     </p>
   {% endif %}
 {% endmacro create_forum %}

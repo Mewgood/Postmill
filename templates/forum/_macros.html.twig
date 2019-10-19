@@ -4,12 +4,12 @@
           data-subscriber-count="{{ subscriber_count }}">
     <span class="subscribe-button__label">
       <span class="subscribe-button__label-text">
-        {{- subscribed ? 'forum.unsubscribe'|trans : 'forum.subscribe'|trans -}}
+        {{- subscribed ? 'action.unsubscribe'|trans : 'action.subscribe'|trans -}}
       </span>
 
       {# dummy label to keep width consistent regardless of subscription state #}
       <span class="subscribe-button__dummy-label" aria-hidden="true">
-        {{- subscribed ? 'forum.subscribe'|trans : 'forum.unsubscribe'|trans -}}
+        {{- subscribed ? 'action.subscribe'|trans : 'action.unsubscribe'|trans -}}
       </span>
     </span>
 

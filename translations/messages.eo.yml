@@ -1,589 +1,484 @@
-action:
-    mark_as_trusted: Marki uzanton kiel konfidulo
-    mark_as_untrusted: Marki uzanton kiel malkonfidulo
-    upvote: Porvoĉdoni
-    downvote: Kontraŭvoĉdoni
-    retract_upvote: Repreni porvoĉdonon
-    retract_downvote: Repreni kontraŭvoĉdonon
-    edit: Redakti
-    go_to_home_page: Iri al hejmpaĝo
-    ban: Forbari
-    unban: Malforbari
-    block: Bloki
-    unblock: Malbloki
-    lock: Ŝlosi
-    unlock: Malŝlosi
-    delete: Forigi
-    remove: Formovi
-    global_ban: Mallokan forbaron
-    filter: Filtri
-    create: Krei
-    compare: Kompari
-    add: Aldoni
-    post: Afiŝi
-    save: Konservi
-    search: Serĉi
-    hide: Kaŝi
-    unhide: Malkaŝi
-    clear: Forigi
-    clear_all: Forigi ĉion
-    dismiss: Forgesi
-    pin: Kejli
-    unpin: Malkejli
-    purge: Viŝi
+action.add: Aldoni
+action.ban: Forbari
+action.block: Bloki
+action.clear: Forigi
+action.clear_all: Forigi ĉion
+action.compare: Kompari
+action.create: Krei
+action.delete: Forigi
+action.dismiss: Forgesi
+action.downvote: Kontraŭvoĉdoni
+action.edit: Redakti
+action.filter: Filtri
+action.global_ban: Mallokan forbaron
+action.go_to_home_page: Iri al hejmpaĝo
+action.hide: Kaŝi
+action.lock: Ŝlosi
+action.log_in: Saluti
+action.log_out: Adiaŭi
+action.pin: Kejli
+action.post: Afiŝi
+action.purge: Viŝi
+action.remove: Formovi
+action.retract_downvote: Repreni kontraŭvoĉdonon
+action.retract_upvote: Repreni porvoĉdonon
+action.save: Konservi
+action.save_changes: Konservi ŝanĝojn
+action.search: Serĉi
+action.send: Sendi
+action.sign_up: Registri
+action.subscribe: Aboni
+action.unban: Malforbari
+action.unblock: Malbloki
+action.unhide: Malkaŝi
+action.unlock: Malŝlosi
+action.unpin: Malkejli
+action.unsubscribe: Malaboni
+action.upvote: Porvoĉdoni
 
-add_moderator:
-    title: Aldoni kontrolanton al %forum%
+add_moderator.title: Aldoni kontrolanton al %forum%
 
-ban_add:
-    title: Forbari IP-adreson
+ban_add.title: Forbari IP-adreson
 
-ban_list:
-    title: Forbaroj
-    ip: IP-adreso
-    timestamp: Tempo
-    banned_by: Forbarita de
-    reason: Kialo
-    user: Uzanto
-    user_none: nenio
-    expires: Finiĝos
-    expires_never: neniam
-    remove: Forigi forbarojn
+ban_list.banned_by: Forbarita de
+ban_list.expires: Finiĝos
+ban_list.expires_never: neniam
+ban_list.reason: Kialo
+ban_list.remove: Forigi forbarojn
+ban_list.timestamp: Tempo
+ban_list.user: Uzanto
+ban_list.user_none: nenio
 
-banned:
-    title: Forbaris
-    message: Vi estas forbarita!
+banned.message: Vi estas forbarita!
+banned.title: Forbaris
 
-comments:
-    comments: Komentoj
-    delete: Forigi
-    delete_thread: Forigi kun respondoj
-    edit: Redakti
-    permalink: Konstanta ligilo
-    parent: Gepatra afiŝo
-    reply: Respondi
-    admin_ban: IP-forbaro
-    form_load_error: Eraro pri enlego de formo. Bonvolu denove provi.
-    info: '%user% skribis %timestamp%'
-    not_logged_in: Vi devas %login_link% aŭ %register_link% por komenti.
-    not_logged_in_login_link_label: saluti
-    not_logged_in_register_link_label: registriĝi
-    viewing_thread: Vidi unu komentan fadenon.
-    thread_return: Vidi ĉiujn komentojn
-    return_to_forum: ← Reveni al %forum%
-    edit_info: (redaktita je %edited_at%)
-    moderator_info: (kontrolanto redaktis je %edited_at%)
-    context.top_level_reply: Respondita al %submission_title% de %submission_author%
-    context.comment_reply: Respondi komenton de %comment_author% en %submission_title% de %submission_author%
+comments.comments: Komentoj
+comments.context.comment_reply: Respondi komenton de %comment_author% en %submission_title% de %submission_author%
+comments.context.top_level_reply: Respondita al %submission_title% de %submission_author%
+comments.delete_thread: Forigi kun respondoj
+comments.edit_info: (redaktita je %edited_at%)
+comments.form_load_error: Eraro pri enlego de formo. Bonvolu denove provi.
+comments.info: '%user% skribis %timestamp%'
+comments.moderator_info: (kontrolanto redaktis je %edited_at%)
+comments.not_logged_in: Vi devas %login_link% aŭ %register_link% por komenti.
+comments.not_logged_in_login_link_label: saluti
+comments.not_logged_in_register_link_label: registriĝi
+comments.parent: Gepatra afiŝo
+comments.permalink: Konstanta ligilo
+comments.reply: Respondi
+comments.return_to_forum: ← Reveni al %forum%
+comments.thread_return: Vidi ĉiujn komentojn
+comments.viewing_thread: Vidi unu komentan fadenon.
 
-comment_form:
-    comment: Komento
-    edit_title: Redaktas komenton
-    create_title: Skribas komenton
+comment_form.create_title: Skribas komenton
+comment_form.edit_title: Redaktas komenton
 
-compose_message:
-    title: Kreas mesaĝon por %username%
+compose_message.title: Kreas mesaĝon por %username%
 
-content:
-    empty: Nenio estas ĉi tie...
+content.empty: Nenio estas ĉi tie...
 
-create_forum:
-    create_new_forum: Kreas novan diskutejon
+create_forum.create_new_forum: Kreas novan diskutejon
 
-edit_forum:
-    title: Redaktas %forum%
+edit_forum.title: Redaktas %forum%
 
-edit_user:
-    title: Redaktas uzanton %username%
+edit_user.title: Redaktas uzanton %username%
 
-flash:
-    ban_added: La IP adreso estas forbarita.
-    forum_deleted: La diskutejo kaj ties enhavo foriĝis.
-    forum_updated: La redaktoj konserviĝis.
-    forum_moderator_added: La uzanto fariĝis kontrolanto
-    notification_cleared: La avizo estis sukcese vakigita.
-    reset_password_email_sent: Restariga retletero sendiĝis al la adreso, kiun vi specifis.
-    submission_deleted: La afiŝo foriĝis.
-    user_account_registered: Via konto estis ĵus registrita.
-    submission_edited: La afiŝo redaktiĝis.
-    user_password_updated: Via pasvorto ĝisdatiĝis.
-    user_settings_updated: Uzanto-agordoj ĝisdatigis.
-    user_marked_trusted: La uzanto estis markita kiel konfidulo.
-    user_marked_untrusted: La uzanto estis markita kiel malkonfidulo.
-    user_was_banned: La uzanto estis forbarita.
-    user_was_unbanned: La uzanto estis malforbarita.
-    user_blocked: La uzanto estis blokita.
-    user_unblocked: La uzanto estis malblokita.
-    no_messages: Sen mesaĝoj montreblaj.
-    submission_locked: La afiŝo estis ŝlosita.
-    submission_unlocked: La afiŝo estis malŝlosita.
-    submission_is_locked: La afiŝo estas ŝlosita. Vi ne povas afiŝi novajn komentojn.
-    no_moderated_forums: Vi ne moderigas neniun diskutejon.
-    user_biography_updated: La biografio estis ĝisdatita.
-    user_unmodded: La uzanto estis malmoderiĝita.
-    no_entries_to_display: Ne estas afiŝoj por montri.
-    page_locked: La paĝo estis ŝlosita.
-    page_unlocked: La paĝo estis malŝlosita.
-    no_cookies_verification: Ĉu la bildo ne ŝarĝas korekte? Bonvolu kontroli, ke vi ne estas barinta kuketojn kaj reprovi.
-    no_password_resets: Pasvortaj restarigoj estis malebligitaj de la administranto.
-    wiki_page_deleted: La vikia paĝo estis ĵus forigita
-    editing_credentials_of_other_user: Vi redaktas la ensalutilojn de alia uzulo. Ĉi tio povas malebligi al ili ensaluti.
-    notifications_cleared: Viaj sciigoj ĵus estis forigitaj.
-    you_must_reauthenticate: Vi devas reensaluti por aliri al ĉi tiu paĝo.
-    submission_pinned: La afiŝo estis kejlita.
-    submission_unpinned: La afiŝo estis malkejlita.
-    purge_submission_warning: La afiŝo kaj ĉiuj siaj komentoj estos daŭre forigitaj.
+flash.ban_added: La IP adreso estas forbarita.
+flash.editing_credentials_of_other_user: Vi redaktas la ensalutilojn de alia uzulo. Ĉi tio povas malebligi al ili ensaluti.
+flash.forum_deleted: La diskutejo kaj ties enhavo foriĝis.
+flash.forum_moderator_added: La uzanto fariĝis kontrolanto
+flash.forum_updated: La redaktoj konserviĝis.
+flash.no_cookies_verification: Ĉu la bildo ne ŝarĝas korekte? Bonvolu kontroli, ke vi ne estas barinta kuketojn kaj reprovi.
+flash.no_entries_to_display: Ne estas afiŝoj por montri.
+flash.no_messages: Sen mesaĝoj montreblaj.
+flash.no_moderated_forums: Vi ne moderigas neniun diskutejon.
+flash.no_password_resets: Pasvortaj restarigoj estis malebligitaj de la administranto.
+flash.notification_cleared: La avizo estis sukcese vakigita.
+flash.notifications_cleared: Viaj sciigoj ĵus estis forigitaj.
+flash.page_locked: La paĝo estis ŝlosita.
+flash.page_unlocked: La paĝo estis malŝlosita.
+flash.purge_submission_warning: La afiŝo kaj ĉiuj siaj komentoj estos daŭre forigitaj.
+flash.reset_password_email_sent: Restariga retletero sendiĝis al la adreso, kiun vi specifis.
+flash.submission_deleted: La afiŝo foriĝis.
+flash.submission_edited: La afiŝo redaktiĝis.
+flash.submission_is_locked: La afiŝo estas ŝlosita. Vi ne povas afiŝi novajn komentojn.
+flash.submission_locked: La afiŝo estis ŝlosita.
+flash.submission_pinned: La afiŝo estis kejlita.
+flash.submission_unlocked: La afiŝo estis malŝlosita.
+flash.submission_unpinned: La afiŝo estis malkejlita.
+flash.user_account_registered: Via konto estis ĵus registrita.
+flash.user_biography_updated: La biografio estis ĝisdatita.
+flash.user_blocked: La uzanto estis blokita.
+flash.user_marked_trusted: La uzanto estis markita kiel konfidulo.
+flash.user_marked_untrusted: La uzanto estis markita kiel malkonfidulo.
+flash.user_password_updated: Via pasvorto ĝisdatiĝis.
+flash.user_settings_updated: Uzanto-agordoj ĝisdatigis.
+flash.user_unblocked: La uzanto estis malblokita.
+flash.user_unmodded: La uzanto estis malmoderiĝita.
+flash.user_was_banned: La uzanto estis forbarita.
+flash.user_was_unbanned: La uzanto estis malforbarita.
+flash.wiki_page_deleted: La vikia paĝo estis ĵus forigita
+flash.you_must_reauthenticate: Vi devas reensaluti por aliri al ĉi tiu paĝo.
 
-forum:
-    moderators: Kontrolantoj
-    manage: Administri
-    edit: Redakti diskutejon
-    subscribe: Aboni
-    unsubscribe: Malaboni
-    subscriber_count: '{0} Sen abonantoj|{1} %formatted_count% abonanto|[1,Inf[ %formatted_count% abonantoj'
-    submission_count: '{0} Sen afiŝoj|{1} %formatted_count% afiŝo|[1,Inf[ %formatted_count% afiŝoj'
-    add_moderator: Aldoni kontrolanton
+forum.add_as_moderator: Aldoni kiel kontrolanton
+forum.add_moderator: Aldoni kontrolanton
+forum.create: Krei diskutejon
+forum.delete: Forigi fdiskutejon
+forum.edit: Redakti diskutejon
+forum.moderators: Kontrolantoj
+forum.submission_count: '{0} Sen afiŝoj|{1} %formatted_count% afiŝo|[1,Inf[ %formatted_count% afiŝoj'
+forum.subscriber_count: '{0} Sen abonantoj|{1} %formatted_count% abonanto|[1,Inf[ %formatted_count% abonantoj'
 
-forum_form:
-    name: Nomo
-    title: Titolo
-    description: Priskribo
-    category: Kategorio
-    create: Krei diskutejon
-    save: Konservi ŝanĝojn
-    delete: Forigi fdiskutejon
-    confirm_delete: Ĉu vi certe volas forigi ĉi tiun diskutejon kaj ĉiujn afiŝojn kun komentoj?
-    featured: Montri ĉefpaĝe
-    uncategorized_placeholder: (sen kategorio)
+forum_form.featured: Montri ĉefpaĝe
 
-forum_list:
-    name: Nomo
-    title: Titolo
-    subscribers: Abonantoj
-    page_title: Listo de diskutejoj
-    create_forum: Krei diskutejon
-    submission_count: Da afiŝoj
-    list_view: Lista vido
-    category_view: Kategoria vido
-    uncategorized: Senkategoria vido
+forum_list.category_view: Kategoria vido
+forum_list.list_view: Lista vido
+forum_list.page_title: Listo de diskutejoj
+forum_list.submission_count: Da afiŝoj
+forum_list.subscribers: Abonantoj
+forum_list.uncategorized: Senkategoria vido
 
-forum_moderators:
-    title: Kontrolantoj de /%forum_name%
-    username: Uzantonomo
-    since: Ekde
-    last_seen: Laste vidita
+forum_moderators.last_seen: Laste vidita
+forum_moderators.since: Ekde
+forum_moderators.title: Kontrolantoj de /%forum_name%
 
-front:
-    subscribed_forums: Abonitaj diskutejoj
-    no_subscriptions: Vi abonas neniun diskutejon. Anstataŭe montriĝas elstarigitaj diskutejoj.
-    featured_forums: Elstarigitaj diskutejoj
-    no_forums: Estas neniuj elstarigitaj diskutejoj montreblaj.
-    all: Ĉiuj
-    all_forums: Ĉiuj diskutejoj
-    featured: Elstarigitaj
-    subscribed: Abonataj
-    moderated_forums: Kontrolitaj diskutejoj
+front.all: Ĉiuj
+front.all_forums: Ĉiuj diskutejoj
+front.featured: Elstarigitaj
+front.featured_forums: Elstarigitaj diskutejoj
+front.moderated_forums: Kontrolitaj diskutejoj
+front.no_forums: Estas neniuj elstarigitaj diskutejoj montreblaj.
+front.no_subscriptions: Vi abonas neniun diskutejon. Anstataŭe montriĝas elstarigitaj diskutejoj.
+front.subscribed: Abonataj
+front.subscribed_forums: Abonitaj diskutejoj
 
-heading:
-    user_roles: Uzantaj roloj
-    forums_you_moderate: Diskutejojn vi moderigas
-    multi_forum_view: Multdiskuteja vidiĵo
-    message_thread: "%sender% skribis al %receiver% %timestamp%"
-    message_reply: "%sender% respondis %timestamp%"
-    category: 'Kategorio: %category%'
-    hide_this_forum: Kaŝi tiun diskutejon
-    you_were_mentioned: Vi estis menciita de %user%
-    search: Serĉi
-    search_results: '{0} Sen resultoj por %query%|{1} 1 resulto por %query%:|]1,Inf[ %count% resultoj por %query%:'
-    notifications: Sciigoj
-    privacy: Privateco
-    this_user_is_banned: Ĉi tiu uzanto estas forbarita!
+heading.category: 'Kategorio: %category%'
+heading.forums_you_moderate: Diskutejojn vi moderigas
+heading.hide_this_forum: Kaŝi tiun diskutejon
+heading.message_reply: "%sender% respondis %timestamp%"
+heading.message_thread: "%sender% skribis al %receiver% %timestamp%"
+heading.multi_forum_view: Multdiskuteja vidiĵo
+heading.notifications: Sciigoj
+heading.privacy: Privateco
+heading.search: Serĉi
+heading.search_results: '{0} Sen resultoj por %query%|{1} 1 resulto por %query%:|]1,Inf[ %count% resultoj por %query%:'
+heading.this_user_is_banned: Ĉi tiu uzanto estas forbarita!
+heading.user_roles: Uzantaj roloj
+heading.you_were_mentioned: Vi estis menciita de %user%
 
-help:
-    delete_forum_warning: Ĉiu enhavo en ĉi tiu diskutejo senrevene estos forigita
-    forum_description: Mallonga priskrivo de la diskutejo. Retserĉiloj montros ĉi tiun priskrivon en siaj rezultoj
-    block_users: Bloki uzantoj evitas, ke ili sendu al vi privatajn mesaĝojn, kaj vi ne ricevos avizojn, kiam ili respondos al vi.
-    will_appear_in_the_url: Ĝi aperos en la URL
-    forum_is_featured: Ĉi tiu diskutejo estas elstarigita.
-    forum_is_hidden: Vi ĵus elektis kaŝi ĉi tiun diskutejon.
-    hidden_forums: >
-        Se vi markas diskutejojn kiel kaŝitajn, vi ne vidos afiŝojn el tiuj diskutejoj
-        kiam  vi esploras la listo de afiŝoj "elstarigitaj" kaj "ciûj". Vi ankoraŭ
-        povas aboni kaj administri diskutejojn, kiujn vi decidis kaŝi.
-    hidden_forums_no_comment_hiding: Komentoj afiŝitaj en kaŝitaj diskutejoj ankoraŭ estos montritaj en la listo "novaj komentoj".
-    required_field: Ĉi tiu kampo estas deviga.
-    notify_on_reply: Ricevi sciigojn kiam iu respondas al viaj afiŝoj.
-    notify_on_mentions: Ricevi sciigojn kiam iu ligas al via uzulprofilon.
-    preferred_fonts: 'Diskoma listo de la tiparoj, kiuj vi preferas. Ĉi tiuj povas esti tiparoj el via sistemo aŭ el la listo de servilo-disponigitaj tiparoj malsupre..'
-    preferred_fonts_served: 'Servilo-disponigitaj tiparoj (disponebla ĉie): '
-    preferred_fonts_aliases: 'Alinomitaj nombroj de tiparoj: '
-    markdown_allowed: Markdown permesita.
-    allow_private_messages: Se malebligita, nur administrantoj, kunkontrolantoj kaj kontrolantoj de diskutejoj, in kiuj vi antaŭ ne longe partoprenis povos sendi al vi privatajn mesaĝojn.
+help.allow_private_messages: Se malebligita, nur administrantoj, kunkontrolantoj kaj kontrolantoj de diskutejoj, in kiuj vi antaŭ ne longe partoprenis povos sendi al vi privatajn mesaĝojn.
+help.block_users: Bloki uzantoj evitas, ke ili sendu al vi privatajn mesaĝojn, kaj vi ne ricevos avizojn, kiam ili respondos al vi.
+help.delete_forum_warning: Ĉiu enhavo en ĉi tiu diskutejo senrevene estos forigita
+help.forum_description: Mallonga priskrivo de la diskutejo. Retserĉiloj montros ĉi tiun priskrivon en siaj rezultoj
+help.forum_is_featured: Ĉi tiu diskutejo estas elstarigita.
+help.forum_is_hidden: Vi ĵus elektis kaŝi ĉi tiun diskutejon.
+help.hidden_forums: Se vi markas diskutejojn kiel kaŝitajn, vi ne vidos afiŝojn el tiuj diskutejoj kiam vi esploras la listo de afiŝoj "elstarigitaj" kaj "ciûj". Vi ankoraŭ povas aboni kaj administri diskutejojn, kiujn vi decidis kaŝi.
+help.hidden_forums_no_comment_hiding: Komentoj afiŝitaj en kaŝitaj diskutejoj ankoraŭ estos montritaj en la listo "novaj komentoj".
+help.notify_on_mentions: Ricevi sciigojn kiam iu ligas al via uzulprofilon.
+help.notify_on_reply: Ricevi sciigojn kiam iu respondas al viaj afiŝoj.
+help.preferred_fonts: 'Diskoma listo de la tiparoj, kiuj vi preferas. Ĉi tiuj povas esti tiparoj el via sistemo aŭ el la listo de servilo-disponigitaj tiparoj malsupre..'
+help.preferred_fonts_aliases: 'Alinomitaj nombroj de tiparoj: '
+help.preferred_fonts_served: 'Servilo-disponigitaj tiparoj (disponebla ĉie): '
+help.required_field: Ĉi tiu kampo estas deviga.
+help.will_appear_in_the_url: Ĝi aperos en la URL
 
-inbox:
-    message_reply_head: 'Re: %title%'
+inbox.message_reply_head: 'Re: %title%'
 
-item:
-    short_url: 'Mallonga URL'
-    op_abbr: OA
-    op: Origina afiŝinto
+item.op: Origina afiŝinto
+item.op_abbr: OA
+item.short_url: 'Mallonga URL'
 
-label:
-    name: Nomo
-    author: Aŭtoro
-    password: Pasvorto
-    save_settings: Konservi agordojn
-    source_code: Fontkodo
-    sidebar: Flankpanelo
-    username: Uzantnomo
-    banned: Forbaritaj
-    reason: Kaŭzo
-    expires: Finiĝas
-    never: Neniam
-    action: Ago
-    ban: Forbari
-    unban: Malforbari
-    general: Ĉefa
-    appearance: Aspekto
-    preferred_theme: Prefera estoso
-    blocked: Blokita
-    comment: Komento
-    last_revised: Lasta reviziita
-    id: ID
-    date: Dato
-    title: Titolo
-    front_page: Ĉefpaĝo
-    default: Defaŭlta
-    subscribed: Abonitaj
-    featured: Substrekitaj
-    all: Ĉiuj
-    moderated: Moderigitaj
-    recent_changes: Novaj aliigoj
-    verification: Kontrolado
-    admin: Administrulo
-    bans: Forbaroj
-    overview: Superrigardo
-    open_external_links_in_new_tab: Aperti eksterajn ligilojn en nova langeto
-    biography: Biografio
-    replies: Respondoj
-    from: de
-    to: al
-    sent: Sendis
-    toolbox: Ilaro
-    banned_by: Forbarita de
-    unban_associated_ips: Forigi asociigitajn IP-forbarojn
-    ban_ip_addresses: Ĉu forigi IP-adreso(j)?
-    ip_address: IP-adreso
-    ip_addresses: IP-adreso
-    forum: Diskutejo
-    trusted: Konfidulo
-    submissions: Afiŝoj
-    submissions_short: A
-    comments: Komentoj
-    comments_short: K
-    submission_votes: Afiŝaj voĉoj
-    submission_votes_short: AV
-    comment_votes: Komentaj voĉoj
-    comment_votes_short: KV
-    role: Rolo
-    moderates: Kontrolas
-    forums_count: '{0} neniu diskutejo|{1} %count% diskutejo|]1,Inf[ %count% diskutejoj'
-    any: Iu ajn
-    none: Nenio
-    order_by: Klasi je
-    registration_date: Aliĝildato
-    posting: Afiŝinta
-    auto_fetch_submission_titles: Aŭtomate ŝargi afiŝan titolon
-    compare: Kompari
-    forums_in_this_category: Diskutejo en ĉi tiu kategorio
-    description: Priskribo
-    show_post_previews: Montri lasta antaŭmontro
-    ip: IP-adreso
-    reason_for_banning: Kialo forbari
-    user_associated_with_ip: Uzanto de IP
-    body: Korpo
-    let_forums_override_preferred_theme: Lasi, ke diskutejoj transpasos preferitan estoson
-    search: Serĉi afiŝon...
-    show_thumbnails: Montri bildetojn
-    search_query: Serĉmendo
-    notify_on_reply: Sciigi por respondoj
-    notify_on_mentions: Sciigi por mencioj
-    sort_by: Klasi laŭ
-    sort_by_mode: 'Klasi laŭ: %mode%'
-    filter_by: Filtri laŭ
-    filter_on_mode: 'Filtri laŭ: %mode%'
-    from_time: 'De: %time%'
-    last_message: Lasta mesaĝo
-    participants: Partoprenantoj
-    preferred_fonts: Preferata(j) tiparo(j)
-    remember_me: Teni min ensalutitan
-    timezone: Horzono
-    allow_private_messages: Permesi privatajn mesaĝojn
+label.action: Ago
+label.admin: Administrulo
+label.all: Ĉiuj
+label.allow_private_messages: Permesi privatajn mesaĝojn
+label.any: Iu ajn
+label.appearance: Aspekto
+label.author: Aŭtoro
+label.auto_fetch_submission_titles: Aŭtomate ŝargi afiŝan titolon
+label.ban: Forbari
+label.ban_ip_addresses: Ĉu forigi IP-adreso(j)?
+label.banned: Forbaritaj
+label.banned_by: Forbarita de
+label.bans: Forbaroj
+label.biography: Biografio
+label.blocked: Blokita
+label.body: Korpo
+label.category: Kategorio
+label.comment: Komento
+label.comment_votes: Komentaj voĉoj
+label.comment_votes_short: KV
+label.comments: Komentoj
+label.comments_short: K
+label.compare: Kompari
+label.date: Dato
+label.default: Defaŭlta
+label.description: Priskribo
+label.email_address: Retpoŝtadreso
+label.expires: Finiĝas
+label.featured: Substrekitaj
+label.filter_by: Filtri laŭ
+label.filter_on_mode: 'Filtri laŭ: %mode%'
+label.forum: Diskutejo
+label.forums_count: '{0} neniu diskutejo|{1} %count% diskutejo|]1,Inf[ %count% diskutejoj'
+label.forums_in_this_category: Diskutejo en ĉi tiu kategorio
+label.from: de
+label.from_time: 'De: %time%'
+label.front_page: Ĉefpaĝo
+label.general: Ĉefa
+label.id: ID
+label.ip_address: IP-adreso
+label.ip_addresses: IP-adreso
+label.language: Lingvo
+label.last_message: Lasta mesaĝo
+label.last_revised: Lasta reviziita
+label.let_forums_override_preferred_theme: Lasi, ke diskutejoj transpasos preferitan estoson
+label.message: Mesaĝo
+label.moderated: Moderigitaj
+label.moderates: Kontrolas
+label.name: Nomo
+label.never: Neniam
+label.new_password: Nova pasvorto
+label.none: Nenio
+label.notify_on_mentions: Sciigi por mencioj
+label.notify_on_reply: Sciigi por respondoj
+label.open_external_links_in_new_tab: Aperti eksterajn ligilojn en nova langeto
+label.order_by: Klasi je
+label.overview: Superrigardo
+label.participants: Partoprenantoj
+label.password: Pasvorto
+label.posting: Afiŝinta
+label.preferred_fonts: Preferata(j) tiparo(j)
+label.preferred_theme: Prefera estoso
+label.reason: Kaŭzo
+label.reason_for_banning: Kialo forbari
+label.recent_changes: Novaj aliigoj
+label.registration_date: Aliĝildato
+label.repeat_new_password: Nova pasvorto (ripetu)
+label.repeat_password: Pasvorto (ripetu)
+label.replies: Respondoj
+label.role: Rolo
+label.search_query: Serĉmendo
+label.sent: Sendis
+label.show_post_previews: Montri lasta antaŭmontro
+label.show_thumbnails: Montri bildetojn
+label.sidebar: Flankpanelo
+label.sort_by: Klasi laŭ
+label.sort_by_mode: 'Klasi laŭ: %mode%'
+label.source_code: Fontkodo
+label.submission_votes: Afiŝaj voĉoj
+label.submission_votes_short: AV
+label.submissions: Afiŝoj
+label.submissions_short: A
+label.subscribed: Abonitaj
+label.timezone: Horzono
+label.title: Titolo
+label.to: al
+label.toolbox: Ilaro
+label.trusted: Konfidulo
+label.unban: Malforbari
+label.unban_associated_ips: Forigi asociigitajn IP-forbarojn
+label.url: URL
+label.user_associated_with_ip: Uzanto de IP
+label.username: Uzantnomo
+label.verification: Kontrolado
 
-log:
-    comment_deletion: '%user% forigis komenton de %author% en "%submission%"'
-    submission_deletion: '%user% forigis afiŝon "%title%" de %author%'
-    submission_deletion_with_reason: '%user% forigis afiŝon "%title%" de %author%. Kaŭzo: "%reason%"'
-    submission_lock: '%user% ŝlosis afiŝon "%title%" de %author%'
-    submission_unlock: '%user% malŝlosis afiŝon "%title%" de %author%'
-    ban: '%user% forbaris %banned% (finiĝas: %expires%). Kaŭzo: "%reason%"'
-    unban: '%user% malforbaris %banned%. Kaŭzo: "%reason%"'
+log.ban: '%user% forbaris %banned% (finiĝas: %expires%). Kaŭzo: "%reason%"'
+log.comment_deletion: '%user% forigis komenton de %author% en "%submission%"'
+log.submission_deletion: '%user% forigis afiŝon "%title%" de %author%'
+log.submission_deletion_with_reason: '%user% forigis afiŝon "%title%" de %author%. Kaŭzo: "%reason%"'
+log.submission_lock: '%user% ŝlosis afiŝon "%title%" de %author%'
+log.submission_unlock: '%user% malŝlosis afiŝon "%title%" de %author%'
+log.unban: '%user% malforbaris %banned%. Kaŭzo: "%reason%"'
 
-login_form:
-    log_in: Saluti
-    username: Uzantonomo
-    password: Pasvorto
-    reset_password: Ĉu restarigi pasvorton?
+login.remember_me: Teni min ensalutitan
+login.reset_password: Ĉu restarigi pasvorton?
 
-markdown_type:
-    preview: Antaŭrigardo
-    help: Sintaksa referenco
-    paragraph: Paragrafo
-    another_paragraph: Alia paragrafo
-    line: linio
-    break: salto
-    emphasis: Emfazo
-    strong_emphasis: Forta emfazo
-    strikethrough: Trastreko
-    heading_1: Titolo 1
-    heading_2: Titolo 2
-    heading_3: Titolo 3
-    heading_4: Titolo 4
-    heading_5: Titolo 5
-    heading_6: Titolo 6
-    list_item: Listero
-    link: Ligilo
-    forum: diskutejo
-    user: uzanto
-    wiki_page: wiki_paĝo
-    blockquote: Blokcitaĵo
-    horizontal_rule: Horizonta streko
-    inline_code: enteksta kodo
-    code_block: Koda bloko
+markdown.allowed: Markdown permesita.
+markdown.another_paragraph: Alia paragrafo
+markdown.blockquote: Blokcitaĵo
+markdown.break: salto
+markdown.code_block: Koda bloko
+markdown.emphasis: Emfazo
+markdown.forum: diskutejo
+markdown.heading: 'Titolo %count%'
+markdown.help: Sintaksa referenco
+markdown.horizontal_rule: Horizonta streko
+markdown.inline_code: enteksta kodo
+markdown.line: linio
+markdown.link: Ligilo
+markdown.list_item: Listero
+markdown.paragraph: Paragrafo
+markdown.preview: Antaŭrigardo
+markdown.strikethrough: Trastreko
+markdown.strong_emphasis: Forta emfazo
+markdown.user: uzanto
+markdown.wiki_page: wiki_paĝo
 
-message_form:
-    title: Titolo
-    message: Mesaĝo
-    send: Sendi
-    reply: Respondi
+nav.actions: Agoj
+nav.add_ban: Aldoni forbaron
+nav.appearance: Aspekto
+nav.ban_history: Historio de forbaroj
+nav.bans: Forbaroj
+nav.block_list: Listo de forbaroj
+nav.block_user: Bari uzanton
+nav.comments: Komentoj
+nav.dark_mode: Malhela reĝimo
+nav.delete_forum: Malkrei diskutejon
+nav.edit_biography: Redakti biografion
+nav.filter_results: Filtri rezultojn
+nav.forum_bans: Diskutejaj forbaroj
+nav.forum_categories: Distutejaj kategorioj
+nav.forums: Diskutejoj
+nav.hidden_forums: Kaŝitaj diskutejoj
+nav.home: Hejmo
+nav.ip_bans: IP-forbaroj
+nav.light_mode: Hela reĝimo
+nav.logged_in_as_user: Ensalutita kiel %user%
+nav.messages: Mesaĝoj
+nav.moderated: Kontrolitaj
+nav.moderation_log: Moderiga protokolo
+nav.my_account: Mia konto
+nav.new_category: Novan kategorion
+nav.next: Sekva
+nav.notifications: Sciigoj
+nav.notifications_count: 'Sciigoj (%count%)'
+nav.places: Lokoj
+nav.previous: Antaŭa
+nav.profile: Profilo
+nav.search: Serĉi
+nav.submissions: Afiŝoj
+nav.submit: Afiŝi
+nav.user: Uzanto
+nav.user_bans: Uzantaj forbaroj
+nav.user_settings: Uzanto-agordoj
+nav.users: Uzantoj
+nav.wiki: Vikio
 
-moderator_form:
-    user: Uzantonomo
-    submit: Aldoni kiel kontrolanton
+placeholder.choose_one: Elekti unu…
+placeholder.default: (defaŭlto)
+placeholder.deleted: '[forigis]'
+placeholder.repeat: (ripeti)
+placeholder.uncategorized: (sen kategorio)
 
-nav:
-    appearance: Aspekto
-    delete_forum: Malkrei diskutejon
-    submit: Afiŝi
-    log_in: Saluti
-    log_out: Adiaŭi
-    profile: Profilo
-    register: Registri
-    my_account: Mia konto
-    user_settings: Uzanto-agordoj
-    forums: Diskutejoj
-    submissions: Afiŝoj
-    comments: Komentoj
-    messages: Mesaĝoj
-    wiki: Vikio
-    next: Sekva
-    previous: Antaŭa
-    moderated: Kontrolitaj
-    bans: Forbaroj
-    ban_history: Historio de forbaroj
-    block_user: Bari uzanton
-    block_list: Listo de forbaroj
-    edit_biography: Redakti biografion
-    moderation_log: Moderiga protokolo
-    user_bans: Uzantaj forbaroj
-    ip_bans: IP-forbaroj
-    add_ban: Aldoni forbaron
-    filter_results: Filtri rezultojn
-    users: Uzantoj
-    forum_bans: Diskutejaj forbaroj
-    forum_categories: Distutejaj kategorioj
-    new_category: Novan kategorion
-    hidden_forums: Kaŝitaj diskutejoj
-    recent_comments: Freŝaj komentoj
-    notifications: Sciigoj
-    notifications_count: 'Sciigoj (%count%)'
-    actions: Agoj
-    places: Lokoj
-    home: Hejmo
-    user: Uzanto
-    search: Serĉi
-    dark_mode: Malhela reĝimo
-    light_mode: Hela reĝimo
-    logged_in_as_user: Ensalutita kiel %user%
+prompt.confirm_comment_delete: Ĉu vi vere volas forigi ĉi tiun komenton?
+prompt.confirm_message_delete: Ĉu vi vere volas forigi ĉi tiun mesaĝon?
+prompt.confirm_submission_delete: Ĉu vi vere volas forigi ĉi tiun afiŝon?
+prompt.confirm_wiki_delete: Ĉu vi vere volas forigi ĉi tiun vikipaĝon? Ĝi estos malfareble perdita por ĉiam.
 
-placeholder:
-    default: (defaŭlto)
-    deleted: '[forigis]'
-    choose_one: Elekti unu…
-    repeat: (ripeti)
+request_password_reset.multiple_accounts_notice: Se vi havas multaj kontoj estas registritajn kun unu retpoŝtadreso, vi ricevos unu retleteron po konto.
+request_password_reset.no_confirmation_notice: Se vi neniam ricevos retleteron, la adreso kiun vi donis eble estas malĝusta. Por privatecaj kialoj, ni ne konfirmos ĉu uzanto kun retpoŝtadreso ekzistas.
+request_password_reset.title: Peti ligilon al pasvorta restarigo
 
-prompt:
-    confirm_comment_delete: Ĉu vi vere volas forigi ĉi tiun komenton?
-    confirm_message_delete: Ĉu vi vere volas forigi ĉi tiun mesaĝon?
-    confirm_submission_delete: Ĉu vi vere volas forigi ĉi tiun afiŝon?
-    confirm_wiki_delete: Ĉu vi vere volas forigi ĉi tiun vikipaĝon? Ĝi estos malfareble perdita por ĉiam.
+request_password_reset_form.submit: Sendi
 
-request_password_reset:
-    title: Peti ligilon al pasvorta restarigo
-    multiple_accounts_notice: >
-        Se vi havas multaj kontoj estas registritajn kun unu retpoŝtadreso, vi ricevos unu retleteron po konto.
-    no_confirmation_notice: >
-        Se vi neniam ricevos retleteron, la adreso kiun vi donis eble estas malĝusta.
-        Por privatecaj kialoj, ni ne konfirmos ĉu uzanto kun retpoŝtadreso ekzistas.
+reset_password.email_subject: '%site_name% - Restarigi pasvorton por uzanto %username%'
+# this should be kept at 76 columns --------------------------------------------
+reset_password.email_body: |
+    Iu petis pasvortan restarigon por via konto ĉe %site_name%. Por restarigi
+    pasvorton, alklaku la ĉi-suban ligilon:
 
-request_password_reset_form:
-    email: Retpoŝtadreso
-    submit: Sendi
+    %reset_link%
 
-reset_password:
-    email_subject: '%site_name% - Restarigi pasvorton por uzanto %username%'
+    Se vi ne petis pasvortan restarigon, vi povas sendanĝere malatenti ĉi tiun
+    mesaĝon.
+reset_password.title: Restarigi pasvorton
 
-    # this should be kept at 76 columns --------------------------------------------
-    email_body: |
-        Iu petis pasvortan restarigon por via konto ĉe %site_name%. Por
-        restarigi pasvorton, alklaku la ĉi-suban ligilon:
+site_footer.app: Povigita de %app% %version%
+site_footer.version: '%version% (%branch%)'
 
-        %reset_link%
+submission_form.create: Krei afiŝon
+submission_form.edit: Redakti afiŝon
 
-        Se vi ne petis pasvortan restarigon, vi povas sendanĝere malatenti
-        ĉi tiun mesaĝon.
+submission.comments: '{0} Sen komentoj|{1} %count% komento|[1,Inf[ %count% komentoj'
+submission.edit_info: (redaktis %edited_at%)
+submission.info_with_forum_name: Afiŝis %submitter% %timestamp% en %forum%
+submission.info_without_forum_name: Afiŝis %submitter% %timestamp%
+submission.moderator_info: (kontrolanto redaktis %edited_at%)
+submission.new_comments: '{1} (%count% nova)|[1,Inf[ (%count% novaj)'
+submission.sort_by_controversial: Disputigaj
+submission.sort_by_hot: Furoraj
+submission.sort_by_most_commented: Plej komentitaj
+submission.sort_by_new: Novaj
+submission.sort_by_top: Supraj
+submission.time_all: Ĉiame
+submission.time_day: Lastaj 24 horoj
+submission.time_month: Lasta monato
+submission.time_week: Lasta semajno
+submission.time_year: Lasta jaro
+submission.total_votes: '{1} %count% voĉdono|[0,Inf[ %count% voĉdonoj'
+submission.vote_stats: (+%up%, −%down%)
 
-    title: Restarigi pasvorton
+time.earlier_format: '%relative_time% antaŭe'
+time.later_format: '%relative_time% poste'
+time.on_timestamp: je %timestamp%
 
-site_footer:
-    version: Povigita de %app% %version% (%branch%)
+title.active_global_user_bans: Aga, malloka uzantaj forbaroj
+title.ban_user: Forbarado de uzanto
+title.banning_user_from_forum: Forbarata %user% for %forum%
+title.bans_in_forum: Forbaroj en %forum%
+title.block_list: Listo de forbaroj
+title.blocking_user: Forbarata %user%
+title.create_forum_category: Krei diskutejan kategorion
+title.create_submission: Krei afiŝon
+title.delete_forum: Forigi diskutejon %forum%
+title.delete_submission: Forigi afiŝon
+title.editing_biography_for_user: Redaktado de biografio de %user%
+title.editing_forum: Redaktata diskutejon %forum%
+title.editing_forum_category: 'Redaktado de diskuteja kategorio: %category%'
+title.editing_submission: Redaktata afiŝon %title%
+title.forum_appearance: Aspekto por %forum%
+title.global_moderation_log: Malloka moderiga protokolo
+title.hidden_forums: Kaŝitaj diskutejoj
+title.ip_bans: Forbaritaj IP-adreson
+title.list_of_users: 'Lista de uzantoj, paĝo #%page%'
+title.manage_forum_categories: Kontroli diskutejajn kategoriojn
+title.messages: Mesaĝoj
+title.notifications: Sciigoj
+title.recent_comments: Novaj komentoj
+title.recent_comments_forum: Novaj komentoj en %forum%
+title.showing_ban_history_for_user_in_forum: Montrata forbaran historion de %user% en %forum%
+title.showing_moderation_log_for_forum: Montrata moderigan protokolon por %forum%
+title.showing_revision: 'Montrata revizion #%revision% de paĝo %path%'
+title.unban_user: Malforbarado de uzanto
+title.unbanning_user_from_forum: Malforbarata %user% for %forum%
+title.user_forum_bans: 'Diskutaja forbaroj de %user%'
+title.wiki_diff: Montrata diferencojn inter revizioj %from% kaj %to%
 
-submission_form:
-    title: Titolo
-    url: URL
-    body: Korpo
-    forum: Diskutejo
-    sticky: Gluita
-    create: Krei afiŝon
-    edit: Redakti afiŝon
-    delete: Forigi afiŝon
-    confirm_delete: Ĉu vi certe volas forigi ĉi tiun afiŝon?
+user.comments: Komentoj
+user.email_optional: Retpoŝtadreso malnepras. Ni nur uzos ĝin por reagordi pasvortojn kaj retpoŝti du-fazajn identokontrolojn.
+user.mark_as_trusted: Marki uzanton kiel konfidulo
+user.mark_as_untrusted: Marki uzanton kiel malkonfidulo
+user.message: Sendi mesaĝon
+user.moderates: '%username% estas kontrolanto por:'
+user.password_rules: Minimume 8 signoj; maksimume 72 pro limigoj de la algoritmo «bcrypt».
+user.registered: Registriĝis %timestamp%
+user.submissions: Afiŝoj
+user.username_rules: Permesitaj signoj estas A ĝis Z, a ĝis z, 0 ĝis 9, kaj substrekoj.
 
-submissions:
-    comments: '{0} Sen komentoj|{1} %count% komento|[1,Inf[ %count% komentoj'
-    edit: Redakti
-    info_with_forum_name: Afiŝis %submitter% %timestamp% en %forum%
-    info_without_forum_name: Afiŝis %submitter% %timestamp%
-    sort_by_hot: Furoraj
-    sort_by_new: Novaj
-    sort_by_top: Supraj
-    sort_by_controversial: Disputigaj
-    sort_by_most_commented: Plej komentitaj
-    time_all: Ĉiame
-    time_year: Lasta jaro
-    time_month: Lasta monato
-    time_week: Lasta semajno
-    time_day: Lastaj 24 horoj
-    total_votes: '{1} %count% voĉdono|[0,Inf[ %count% voĉdonoj'
-    vote_stats: (+%up%, −%down%)
-    ip_ban: IP-forbaro
-    edit_info: (redaktis %edited_at%)
-    moderator_info: (kontrolanto redaktis %edited_at%)
-    new_comments: '{1} (%count% nova)|[1,Inf[ (%count% novaj)'
+user_flag.admin: administranto
+user_flag.admin_label: Administranto
+user_flag.moderator: kontrolanto
+user_flag.moderator_label: Kontrolanto
+user_flag.none_label: (sen)
+user_flag.post_as_label: Afiŝi kiel
 
-time:
-    on_timestamp: je %timestamp%
-    earlier_format: '%relative_time% antaŭe'
-    later_format: '%relative_time% poste'
+user_settings.title: Redaktante uzanto-agordojn por %username%
 
-title:
-    delete_forum: Forigi diskutejon %forum%
-    forum_appearance: Aspekto por %forum%
-    showing_revision: 'Montrata revizion #%revision% de paĝo %path%'
-    editing_forum: Redaktata diskutejon %forum%
-    create_submission: Krei afiŝon
-    editing_submission: Redaktata afiŝon %title%
-    log_in: Ensaluti
-    sign_up: Registriĝi
-    bans_in_forum: Forbaroj en %forum%
-    showing_ban_history_for_user_in_forum: Montrata forbaran historion de %user% en %forum%
-    banning_user_from_forum: Forbarata %user% for %forum%
-    unbanning_user_from_forum: Malforbarata %user% for %forum%
-    block_list: Listo de forbaroj
-    blocking_user: Forbarata %user%
-    recent_comments: Novaj komentoj
-    recent_comments_forum: Novaj komentoj en %forum%
-    messages: Mesaĝoj
-    editing_biography_for_user: Redaktado de biografio de %user%
-    showing_moderation_log_for_forum: Montrata moderigan protokolon por %forum%
-    active_global_user_bans: Aga, malloka uzantaj forbaroj
-    ip_bans: Forbaritaj IP-adreson
-    ban_user: Forbarado de uzanto
-    unban_user: Malforbarado de uzanto
-    global_moderation_log: Malloka moderiga protokolo
-    delete_submission: Forigi afiŝon
-    list_of_users: 'Lista de uzantoj, paĝo #%page%'
-    user_forum_bans: 'Diskutaja forbaroj de %user%'
-    manage_forum_categories: Kontroli diskutejajn kategoriojn
-    create_forum_category: Krei diskutejan kategorion
-    editing_forum_category: 'Redaktado de diskuteja kategorio: %category%'
-    wiki_diff: Montrata diferencojn inter revizioj %from% kaj %to%
-    search_site: Serĉi en la retejo
-    search_forum: Serĉi en ĉi tiu diskutejo
-    hidden_forums: Kaŝitaj diskutejoj
-    notifications: Sciigoj
-
-user:
-    submissions: Afiŝoj
-    comments: Komentoj
-    moderates: '%username% estas kontrolanto por:'
-    username_rules: Permesitaj signoj estas A ĝis Z, a ĝis z, 0 ĝis 9, kaj substrekoj.
-    password_rules: Minimume 8 signoj; maksimume 72 pro limigoj de la algoritmo «bcrypt».
-    email_optional: Retpoŝtadreso malnepras. Ni nur uzos ĝin por reagordi pasvortojn kaj retpoŝti du-fazajn identokontrolojn.
-    message: Sendi mesaĝon
-    registered: Registriĝis %timestamp%
-
-user_flag:
-    post_as_label: Afiŝi kiel
-    none_label: (sen)
-    admin: administranto
-    admin_label: Administranto
-    moderator: kontrolanto
-    moderator_label: Kontrolanto
-
-user_form:
-    username: Uzantonomo
-    password: Pasvorto
-    repeat_password: Pasvorto (ripetu)
-    new_password: Nova pasvorto
-    repeat_new_password: Nova pasvorto (ripetu)
-    email: Retpoŝtadreso
-    register: Registriĝi
-    verification: Certigo
-    save: Konservi ŝanĝojn
-
-user_settings:
-    title: Redaktante uzanto-agordojn por %username%
-
-user_settings_form:
-    locale: Lingvo
-    save: Konservi ŝanĝojn
-
-wiki:
-    not_found_title: Ne trovis paĝon.
-    not_found_message: Petita paĝo ne troviĝis.
-    create_this_page: Krei ĉi tiun paĝon
-    editing_title: Redaktas "%path%"
-    create_title: Kreas "%path%"
-    history_title: Montras historion de "%path%"
-    revision_time: Redaktita
-    user: Uzanto
-    id_label: Identigilo
-    locked_notice: La paĝo estas ŝlosita. Nur administrantoj povas redakti ĝin.
-    page_title: Paĝa Titolo
-    path: Dosierindiko
-    all_pages: Ĉiuj paĝoj
-    page_history: Paĝa historio
-    edit_page: Redakti paĝon
-    navigation: Navigado
-    last_edited: Laste redaktis %username% %timestamp%
+wiki.all_pages: Ĉiuj paĝoj
+wiki.create_this_page: Krei ĉi tiun paĝon
+wiki.create_title: Kreas "%path%"
+wiki.edit_page: Redakti paĝon
+wiki.editing_title: Redaktas "%path%"
+wiki.history_title: Montras historion de "%path%"
+wiki.id_label: Identigilo
+wiki.last_edited: Laste redaktis %username% %timestamp%
+wiki.locked_notice: La paĝo estas ŝlosita. Nur administrantoj povas redakti ĝin.
+wiki.navigation: Navigado
+wiki.not_found_message: Petita paĝo ne troviĝis.
+wiki.not_found_title: Ne trovis paĝon.
+wiki.page_history: Paĝa historio
+wiki.page_title: Paĝa Titolo
+wiki.path: Dosierindiko
+wiki.revision_time: Redaktita
+wiki.user: Uzanto

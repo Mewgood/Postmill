@@ -8,11 +8,11 @@
   <section class="sidebar__section sidebar-card submission-meta">
     <p class="submission-meta__score">
       <strong class="submission-meta__vote-total">
-        {{- 'submissions.total_votes'|trans({'%count%': submission.votes|length}) -}}
+        {{- 'submission.total_votes'|trans({'%count%': submission.votes|length}) -}}
       </strong>
 
       <span class="submission-meta__vote-stats">
-        {{- 'submissions.vote_stats'|trans({
+        {{- 'submission.vote_stats'|trans({
           '%up%': submission.upvotes,
           '%down%': submission.downvotes,
         }) -}}

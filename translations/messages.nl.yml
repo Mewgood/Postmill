@@ -1,256 +1,185 @@
-action:
-    upvote: '+1'
-    downvote: '-1'
-    retract_upvote: '+1 verwijderen'
-    retract_downvote: '-1 verwijderen'
-    ban: Verbanning
+action.ban: Verbanning
+action.delete: Verwijder
+action.downvote: '-1'
+action.edit: Bewerk
+action.log_in: Log in
+action.log_out: Log uit
+action.retract_downvote: '-1 verwijderen'
+action.retract_upvote: '+1 verwijderen'
+action.save_changes: Sla veranderingen op
+action.send: Verzenden
+action.sign_up: Registeren
+action.subscribe: Abonneren
+action.unsubscribe: Zeg abonnement op
+action.upvote: '+1'
 
-add_moderator:
-    title: Voeg een moderator toe aan %forum%
+add_moderator.title: Voeg een moderator toe aan %forum%
 
-ban_add:
-    title: Verban een IP-adres
+ban_add.title: Verban een IP-adres
 
-ban_list:
-    title: Verbanningen
-    ip: IP-adres
-    timestamp: Tijd
-    banned_by: Verbannen door
-    reason: Reden
-    user: Gebruiker
-    user_none: geen
-    expires: Verloopt
-    expires_never: nooit
-    remove: Ontban
+ban_list.banned_by: Verbannen door
+ban_list.expires: Verloopt
+ban_list.expires_never: nooit
+ban_list.reason: Reden
+ban_list.remove: Ontban
+ban_list.timestamp: Tijd
+ban_list.user: Gebruiker
+ban_list.user_none: geen
 
-banned:
-    title: Verbannen
-    message: Je bent verbannen!
+banned.message: Je bent verbannen!
+banned.title: Verbannen
 
-comments:
-    comments: Reacties
-    delete: Verwijder
-    delete_thread: Verwijder inclusief reacties
-    edit: Bewerk
-    edit_info: (%edited_at% bewerkt)
-    moderator_info: (%edited_at% bewerkt door een moderator)
-    permalink: Permanente link
-    parent: Bovenliggende
-    reply: Reactie
-    admin_ban: IP-verbanning
-    form_load_error: Kon formulier niet laden. Probeer het nog eens.
-    info: '%user% schreef %timestamp%'
-    not_logged_in: Je moet je %login_link% of %register_link% om te kunnen reageren.
-    not_logged_in_login_link_label: inloggen
-    not_logged_in_register_link_label: registeren
-    viewing_thread: Draad van een enkele reactie aan het bekijken.
-    thread_return: Bekijk alle reacties
-    return_to_forum: ← Keer terug naar %forum%
+comments.comments: Reacties
+comments.delete_thread: Verwijder inclusief reacties
+comments.edit_info: (%edited_at% bewerkt)
+comments.form_load_error: Kon formulier niet laden. Probeer het nog eens.
+comments.info: '%user% schreef %timestamp%'
+comments.moderator_info: (%edited_at% bewerkt door een moderator)
+comments.not_logged_in: Je moet je %login_link% of %register_link% om te kunnen reageren.
+comments.not_logged_in_login_link_label: inloggen
+comments.not_logged_in_register_link_label: registeren
+comments.parent: Bovenliggende
+comments.permalink: Permanente link
+comments.reply: Reactie
+comments.return_to_forum: ← Keer terug naar %forum%
+comments.thread_return: Bekijk alle reacties
+comments.viewing_thread: Draad van een enkele reactie aan het bekijken.
 
-comment_form:
-    comment: Reactie
-    submit: Verstuur
-    edit_title: Reactie bewerken
-    create_title: Reactie aan het plaatsen
+comment_form.create_title: Reactie aan het plaatsen
+comment_form.edit_title: Reactie bewerken
 
-compose_message:
-    title: Nieuw bericht opstellen voor %username%
+compose_message.title: Nieuw bericht opstellen voor %username%
 
-create_forum:
-    create_new_forum: Maak een nieuw forum aan
+create_forum.create_new_forum: Maak een nieuw forum aan
 
-edit_forum:
-    title: '%forum% aan het bewerken'
+edit_forum.title: '%forum% aan het bewerken'
 
-edit_user:
-    title: Gebruiker %username% aan het bewerken
+edit_user.title: Gebruiker %username% aan het bewerken
 
-flash:
-    ban_added: Het IP-adres is verbannen.
-    forum_deleted: Het forum en al zijn inhoud zijn verwijderd.
-    forum_updated: De veranderingen zijn opgeslagen.
-    forum_moderator_added: De gebruiker is bevorderd tot moderator.
-    reset_password_email_sent: Een e-mail met een link is gestuurd naar het e-mailadres dat je hebt opgegeven.
-    submission_deleted: De inzending is verwijderd.
-    submission_edited: De inzending is bewerkt.
-    user_password_updated: Je wachtwoord is opnieuw ingesteld.
-    user_settings_updated: De gebruikersinstellingen zijn aangepast.
+flash.ban_added: Het IP-adres is verbannen.
+flash.forum_deleted: Het forum en al zijn inhoud zijn verwijderd.
+flash.forum_moderator_added: De gebruiker is bevorderd tot moderator.
+flash.forum_updated: De veranderingen zijn opgeslagen.
+flash.reset_password_email_sent: Een e-mail met een link is gestuurd naar het e-mailadres dat je hebt opgegeven.
+flash.submission_deleted: De inzending is verwijderd.
+flash.submission_edited: De inzending is bewerkt.
+flash.user_password_updated: Je wachtwoord is opnieuw ingesteld.
+flash.user_settings_updated: De gebruikersinstellingen zijn aangepast.
 
-forum:
-    moderators: Moderators
-    manage: Beheer
-    edit: Bewerk forum
-    subscribe: Abonneren
-    unsubscribe: Zeg abonnement op
-    subscriber_count: '{0} Geen abonnees|{1} %formatted_count% abbonee|[1,Inf[ %formatted_count% abbonees'
-    add_moderator: Moderator toevoegen
+forum.add_as_moderator: Voeg als moderator toe
+forum.add_moderator: Moderator toevoegen
+forum.create: Maak een forum aan
+forum.delete: Verwijder forum
+forum.edit: Bewerk forum
+forum.moderators: Moderators
+forum.subscriber_count: '{0} Geen abonnees|{1} %formatted_count% abbonee|[1,Inf[ %formatted_count% abbonees'
 
-forum_form:
-    name: Naam
-    title: Titel
-    category: Categorie
-    uncategorized_placeholder: (ongecategoriseerd)
-    description: Omschrijving
-    create: Maak forum aan
-    save: Sla veranderingen op
-    delete: Verwijder forum
-    confirm_delete: Weet je zeker dat je het forum en alle inzendingen en reacties wilt verwijderen?
-    featured: Laat zien op de voorpagina
+forum_form.featured: Laat zien op de voorpagina
 
-forum_list:
-    name: Naam
-    title: Titel
-    subscribers: Abbonees
-    page_title: Forumlijst
-    create_forum: Maak een forum aan
-    submission_count: Inzendingen
-    list_view: Lijstoverizcht
-    category_view: Categorieënoverizcht
-    uncategorized: Ongecategoriseerd
+forum_list.category_view: Categorieënoverizcht
+forum_list.list_view: Lijstoverizcht
+forum_list.page_title: Forumlijst
+forum_list.submission_count: Inzendingen
+forum_list.subscribers: Abbonees
+forum_list.uncategorized: Ongecategoriseerd
 
-forum_moderators:
-    title: Moderators van /%forum_name%
-    username: Gebruikersnaam
-    since: Vanaf
+forum_moderators.since: Vanaf
+forum_moderators.title: Moderators van /%forum_name%
 
-front:
-    subscribed_forums: Geaboneerde fora
-    no_subscriptions: Je hebt nog geen forumabonnementen. De aanbevolen fora worden nu laten zien.
-    featured_forums: Aanbevolen fora
-    no_forums: Er zijn geen fora om te laten zien.
-    all: Alles
-    featured: Uitgelicht
+front.all: Alles
+front.featured: Uitgelicht
+front.featured_forums: Aanbevolen fora
+front.no_forums: Er zijn geen fora om te laten zien.
+front.no_subscriptions: Je hebt nog geen forumabonnementen. De aanbevolen fora worden nu laten zien.
+front.subscribed_forums: Geaboneerde fora
 
-inbox:
-    message_reply_head: 'Antw.: %title'
+inbox.message_reply_head: 'Antw.: %title'
 
-label:
-    toolbox: Gereedschapskist
-    ip_address: IP-aders
-    reason_for_banning: Verbanningsreden
-    user_associated_with_ip: Gebruiker bij het IP
+label.body: Bericht
+label.category: Categorie
+label.comment: Reactie
+label.description: Omschrijving
+label.email_address: E-mailadres
+label.forum: Forum
+label.ip_address: IP-aders
+label.language: Taal
+label.message: Bericht
+label.name: Naam
+label.new_password: Nieuw wachtwoord
+label.password: Wachtwoord
+label.reason_for_banning: Verbanningsreden
+label.repeat_new_password: Nieuw wachtwoord (herhalen)
+label.repeat_password: Wachtwoord (herhalen)
+label.title: Titel
+label.toolbox: Gereedschapskist
+label.url: URL
+label.user_associated_with_ip: Gebruiker bij het IP
+label.username: Gebruikersnaam
+label.verification: Verificatie
 
-login_form:
-    log_in: Log in
-    username: Gebruikersnaam
-    password: Wachtwoord
-    reset_password: Wachtwoord opnieuw instellen?
+login.reset_password: Wachtwoord opnieuw instellen?
 
-markdown_type:
-    help: Syntaxhandleiding
+markdown.help: Syntaxhandleiding
 
-message_form:
-    title: Onderwerp
-    message: Bericht
-    send: Verzenden
-    reply: Antwoord
+nav.forums: Fora
+nav.my_account: Mijn account
+nav.next: Volgende
+nav.previous: Vorige
+nav.profile: Profiel
+nav.submit: Bericht plaatsen
+nav.user_settings: Gebruikersinstellingen
 
-moderator_form:
-    user: Gebruikersnaam
-    submit: Voeg als moderator toe
+placeholder.deleted: '[verwijderd]'
+placeholder.uncategorized: (ongecategoriseerd)
 
-nav:
-    submit: Bericht plaatsen
-    log_in: Log in
-    log_out: Log uit
-    profile: Profiel
-    register: Registeren
-    my_account: Mijn account
-    user_settings: Gebruikersinstellingen
-    forums: Fora
-    next: Volgende
-    previous: Vorige
+request_password_reset.multiple_accounts_notice: Wanneer je meedere gebruikers hebt geregistreerd met hetzelfde e-mailadres, dan zul je voor elk acocunt één email ontvangen.
+request_password_reset.no_confirmation_notice: Als je geen email ontvangt, dan is dat waarschijnlijk omdat je een verkeerd adres invoert. Omwille van privacy kunnen we je niet vertellen of een gebruiker met dit e-mailadres werkelijk bestaat.
+request_password_reset.title: Vraag link aan om wachtwoord opnieuw in te stellen
 
-placeholder:
-    deleted: '[verwijderd]'
+request_password_reset_form.submit: Vraag link aan
 
-request_password_reset:
-    title: Vraag link aan om wachtwoord opnieuw in te stellen
-    multiple_accounts_notice: >
-        Wanneer je meedere gebruikers hebt geregistreerd met hetzelfde e-mailadres,
-        dan zul je voor elk acocunt één email ontvangen.
-    no_confirmation_notice: >
-        Als je geen email ontvangt, dan is dat waarschijnlijk omdat je een verkeerd
-        adres invoert. Omwille van privacy kunnen we je niet vertellen of een gebruiker
-        met dit e-mailadres werkelijk bestaat.
-request_password_reset_form:
-    email: E-mailadres
-    submit: Vraag link aan
+reset_password.email_subject: '%site_name% - Stel wachtwoord opnieuw in voor %username%'
+# this should be kept at 76 columns --------------------------------------------
+reset_password.email_body: |
+    Iemand heeft een link aangevraagd om je wachtwoord voor je account op
+    %site_name% op nieuw in te stellen. Om je wachtwoord op nieuw in te stellen,
+    klik op deze link:
 
-reset_password:
-    email_subject: '%site_name% - Stel wachtwoord opnieuw in voor %username%'
+    %reset_link%
 
-    # this should be kept at 76 columns --------------------------------------------
-    email_body: |
-        Iemand heeft een link aangevraagd om je wachtwoord voor je account op
-        %site_name% op nieuw in te stellen. Om je wachtwoord op nieuw in te stellen,
-        klik op deze link:
+    Mocht je geen link hebben aangevraagd, dan kunt u dit bericht gerust
+    negeren. De link vervalt 24 uur nadat deze is aangevraagd.
+reset_password.title: Wachtwoord opnieuw instellen
 
-        %reset_link%
+site_footer.app: Deze site draait op %app% %version%
+site_footer.version: '%version% (%branch%)'
 
-        Mocht je geen link hebben aangevraagd, dan kunt u dit bericht gerust
-        negeren. De link vervalt 24 uur nadat deze is aangevraagd.
+submission_form.create: Zend bericht in!
+submission_form.edit: Bewerk inzending
 
-    title: Wachtwoord opnieuw instellen
+submission.comments: '{0} Geen reacties|{1} %count% reactie|[1,Inf[ %count% reacties'
+submission.edit_info: (%edited_at% bewerkt)
+submission.info_with_forum_name: Ingezonden door %submitter% %timestamp% in %forum%
+submission.info_without_forum_name: Ingezonden door %submitter% %timestamp%
+submission.moderator_info: (%edited_at% bewerkt door een moderator)
+submission.sort_by_controversial: Controversieel
+submission.sort_by_hot: Populair
+submission.sort_by_new: Nieuw
+submission.sort_by_top: Top
+submission.total_votes: '{1} %count% stem|[0,Inf[ %count% stemmen'
+submission.vote_stats: (+%up%, −%down%)
 
-site_footer:
-    version: Deze site draait op %app% %version% (%branch%)
+time.earlier_format: '%relative_time% eerder'
+time.later_format: '%relative_time% later'
+time.on_timestamp: op %timestamp%
 
-submission_form:
-    title: Titel
-    url: URL
-    body: Bericht
-    forum: Forum
-    sticky: Vastzetten
-    create: Zend bericht in!
-    edit: Bewerk inzending
-    delete: Verwijder inzending
-    confirm_delete: Weet je zeker dat je deze inzending wilt verijwderen?
+user.comments: Reacties
+user.email_optional: Het is niet verplicht om een e-mailadres op te geven. Deze zal slechts worden gebruikt wanneer je een nieuw wachtwoord aanvraagt.
+user.message: Stuur bericht
+user.moderates: '%username% is moderator voor:'
+user.password_rules: Je wachtwoord moet minimaal 8 tekens lang zijn; maximaal 72. (de reden hiervoor komt door het een beperking in het BCrypt-algoritme).
+user.registered: Geregistreed %timestamp%
+user.submissions: Inzendingen
+user.username_rules: Toegestane tekens zijn A t/m Z, a t/m z, 0 t/m 9 en een liggend streepje (_).
 
-submissions:
-    comments: '{0} Geen reacties|{1} %count% reactie|[1,Inf[ %count% reacties'
-    edit: Bewerk
-    edit_info: (%edited_at% bewerkt)
-    moderator_info: (%edited_at% bewerkt door een moderator)
-    info_with_forum_name: Ingezonden door %submitter% %timestamp% in %forum%
-    info_without_forum_name: Ingezonden door %submitter% %timestamp%
-    sort_by_hot: Populair
-    sort_by_new: Nieuw
-    sort_by_top: Top
-    sort_by_controversial: Controversieel
-    total_votes: '{1} %count% stem|[0,Inf[ %count% stemmen'
-    vote_stats: (+%up%, −%down%)
-    ip_ban: IP-verbanning
-
-time:
-    earlier_format: '%relative_time% eerder'
-    later_format: '%relative_time% later'
-    on_timestamp: op %timestamp%
-
-user:
-    submissions: Inzendingen
-    comments: Reacties
-    moderates: '%username% is moderator voor:'
-    username_rules: Toegestane tekens zijn A t/m Z, a t/m z, 0 t/m 9 en een liggend streepje (_).
-    password_rules: Je wachtwoord moet minimaal 8 tekens lang zijn; maximaal 72. (de reden hiervoor komt door het een beperking in het BCrypt-algoritme).
-    email_optional: Het is niet verplicht om een e-mailadres op te geven. Deze zal slechts worden gebruikt wanneer je een nieuw wachtwoord aanvraagt.
-    message: Stuur bericht
-    registered: Geregistreed %timestamp%
-
-user_form:
-    username: Gebruikersnaam
-    password: Wachtwoord
-    repeat_password: Wachtwoord (herhalen)
-    new_password: Nieuw wachtwoord
-    repeat_new_password: Nieuw wachtwoord (herhalen)
-    email: E-mailadres
-    register: Registreer
-    save: Sla veranderingen op
-    verification: Verificatie
-
-user_settings:
-    title: Gebruikersinstellingen aanpassen voor %username%
-
-user_settings_form:
-    locale: Taal
-    save: Sla veranderingen op
+user_settings.title: Gebruikersinstellingen aanpassen voor %username%

@@ -14,7 +14,7 @@ document.querySelectorAll('.js-display-new-comments').forEach(el => {
         return;
     }
 
-    el.append(' ', translator.transChoice('submissions.new_comments',
+    el.append(' ', translator.transChoice('submission.new_comments',
         newComments,
         { count: formatNumber(newComments) }
     ));

@@ -266,7 +266,7 @@
         <button type="submit"
                 class="unbuttonize comment__soft-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
           {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
-          {{ 'comments.delete'|trans -}}
+          {{ 'action.delete'|trans -}}
         </button>
       </form>
     </li>
@@ -286,7 +286,7 @@
         <button type="submit"
                 class="unbuttonize comment__thread-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
           {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
-          {{ comment.children|length > 0 ? 'comments.delete_thread'|trans : 'comments.delete'|trans -}}
+          {{ comment.children|length > 0 ? 'comments.delete_thread'|trans : 'action.delete'|trans -}}
         </button>
       </form>
     </li>
@@ -303,7 +303,7 @@
         comment_id: comment.id,
       }) }}" class="comment__edit-link {{ comment_nav_classes }}">
         {{- 'menu-item' in comment_nav_classes ? icon('pencil') }}
-        {{ 'comments.edit'|trans -}}
+        {{ 'action.edit'|trans -}}
       </a>
     </li>
   {% endif -%}
