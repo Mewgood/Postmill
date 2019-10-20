@@ -51,8 +51,13 @@ function handleKeyDown(event) {
     }
 
     if (event.key === 'Escape' || event.key === 'Esc') {
-        toggle(dropdownEl);
-        dropdownEl.querySelector('.dropdown__toggle').focus();
+        const deepestDropdownEl = [
+            dropdownEl,
+            ...dropdownEl.querySelectorAll('.dropdown--expanded'),
+        ].pop();
+
+        toggle(deepestDropdownEl);
+        deepestDropdownEl.querySelector('.dropdown__toggle').focus();
     } else if (event.shiftKey && event.key === 'Tab') {
         moveInDropdown(-1);
     } else if (event.key === 'Tab') {
