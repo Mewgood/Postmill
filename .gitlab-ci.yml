@@ -92,7 +92,7 @@ build-app:7.3: &build-app
         - docker:dind
     variables: &build-app-vars
         PHP_VERSION: '7.3'
-        TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION%-rc}-${CI_COMMIT_SHA}
+        TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION}-${CI_COMMIT_SHA}
         TEST_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:${CI_COMMIT_SHA}
     script:
         - docker build --pull
