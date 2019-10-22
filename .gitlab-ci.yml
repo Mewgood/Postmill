@@ -1,5 +1,6 @@
 stages:
     - audit
+    - lint
     - build-app
     - test
     - build-web
@@ -37,6 +38,47 @@ audit:node:
         - yarn audit
 
 
+# ====
+# Lint
+# ====
+
+lint:js:
+    image: node:10-alpine
+    stage: lint
+    services: []
+    except:
+        - schedules
+    before_script:
+        - yarn
+    script:
+        - yarn run lint:js
+
+lint:7.3: &lint
+    stage: lint
+    image: php:7.3-alpine
+    services: []
+    except:
+        - schedules
+    before_script: []
+    script:
+        - find config public src tests -type f -name "*.php" -print0 |
+          xargs -0 -n1 -P4 php -l -n |
+          (! grep -v "No syntax errors detected" )
+
+lint:7.4:
+    <<: *lint
+    image: php:7.4-rc-alpine
+    allow_failure: true
+
+lint:7.2:
+    <<: *lint
+    image: php:7.2-alpine
+
+lint:7.1:
+    <<: *lint
+    image: php:7.1-alpine
+
+
 # =========
 # Build app
 # =========
@@ -50,7 +92,7 @@ build-app:7.3: &build-app
         - docker:dind
     variables: &build-app-vars
         PHP_VERSION: '7.3'
-        TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION}-${CI_COMMIT_SHA}
+        TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION%-rc}-${CI_COMMIT_SHA}
         TEST_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:${CI_COMMIT_SHA}
     script:
         - docker build --pull
@@ -59,6 +101,13 @@ build-app:7.3: &build-app
             --build-arg PHP_VERSION="$PHP_VERSION"
             --target postmill_php -t $TEST_IMAGE_APP .
         - docker push $TEST_IMAGE_APP
+
+build-app:7.4:
+    <<: *build-app
+    allow_failure: true
+    variables:
+        <<: *build-app-vars
+        PHP_VERSION: '7.4-rc'
 
 build-app:7.2:
     <<: *build-app
@@ -97,15 +146,17 @@ test:7.3: &test
         - mkdir public/build
         - cp /app/public/build/*.json public/build/
     script:
-        - find config public src tests -type f -name "*.php" -print0 |
-          xargs -0 -n1 -P4 php -l -n |
-          (! grep -v "No syntax errors detected" )
         - bin/phpunit
         - bin/console doctrine:mapping:info -q
         - bin/console lint:yaml config
         - bin/console lint:twig templates
         - bin/console lint:yaml translations
         - composer validate --strict
+
+test:7.4:
+    <<: *test
+    image: ${CI_REGISTRY_IMAGE}/app:7.4-${CI_COMMIT_SHA}
+    allow_failure: true
 
 test:7.2:
     <<: *test

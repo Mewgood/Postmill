@@ -8,7 +8,6 @@ networks:
     app: {}
 
 volumes:
-    minio_data:
     postgres_data:
 
 services:
@@ -26,11 +25,9 @@ services:
     web:
         build:
             context: .
-            target: postmill_web
+            target: postmill_web_debug
         depends_on:
             - php
-        environment:
-            HTTPS_SELF_SIGNED: 1
         networks:
             - web
         ports:
@@ -41,46 +38,20 @@ services:
             - ./public:/app/public:ro
     php:
         build:
-            args: { DEVELOPMENT: 1 }
             context: .
-            target: postmill_php
+            target: postmill_php_debug
         depends_on:
             - assets
-            - db
-            - rabbitmq
-            - s3
-        environment:
-            APP_ENV: dev
-            DATABASE_URL: 'pgsql://postmill:secret@db/postmill?serverVersion=11'
         networks:
             - web
             - app
         volumes:
             - ./.git:/app/.git:ro
-            - ./public/submission_images:/app/public/submission_images
-            - ./public/media/cache:/app/public/media/cache
-            - ./var:/app/var
             - ./:/app
     assets:
         image: node:10-alpine
         command: ["sh", "-c", "yarn && yarn run watch"]
         volumes:
             - ./.git:/app/.git:ro
-            - ./:/app:rw
+            - ./:/app
         working_dir: /app
-    s3:
-        command: server /data/minio
-        image: minio/minio
-        networks:
-            - app
-        ports:
-            - 9000:9000
-        volumes:
-            - minio_data:/data
-        environment:
-            MINIO_ACCESS_KEY: minio
-            MINIO_SECRET_KEY: minio123
-    rabbitmq:
-        image: rabbitmq:3.7-alpine
-        networks:
-            - app

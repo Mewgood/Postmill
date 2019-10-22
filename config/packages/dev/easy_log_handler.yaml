@@ -1,7 +1,7 @@
 services:
     EasyCorp\EasyLog\EasyLogHandler:
         public: false
-        arguments: ['%kernel.logs_dir%/%kernel.environment%.log']
+        arguments: ["%env(resolve:LOG_FILE)%"]
 
 monolog:
     handlers:

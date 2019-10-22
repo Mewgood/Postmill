@@ -6,29 +6,20 @@ if [ "${1#-}" != "$1" ]; then
     set -- php-fpm "$@"
 fi
 
-# import default env variables
-# this wouldn't be necessary if `composer dump-env prod` didn't choke on
-# interpolated commands, but alas.
-if [ ! -f '.env' ]; then
-    _EXISTING_ENV="$(export -p)"
+if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
+    # seized from API Platform
 
-    set +e -o allexport
-    . ./.env.docker-defaults
-    set -e +o allexport
-
-    # restore variables overridden in the Dockerfile
-    eval "$_EXISTING_ENV"
-    unset _EXISTING_ENV
-fi
-
-if expr "$1" : 'bin/.*\|composer\|php\|php-fpm\|vendor/bin/.*' > /dev/null; then
-    if [ ! -d "var/cache/${APP_ENV}" ]; then
-        if [ "$APP_ENV" != 'prod' ]; then
-            composer install --prefer-dist --no-scripts --no-suggest --no-interaction
-        fi
-
-        bin/console cache:clear
+    if [ -n "$USER_UID" ] || [ -n "$USER_GID" ]; then
+        echo "Setting permissions for $USER_UID:$USER_GID"
+        chown -R "${USER_UID}:${USER_UID}" $POSTMILL_WRITE_DIRS
     fi
+
+    echo "Waiting for db to be ready..."
+    until bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; do
+        sleep 1
+    done
+
+    bin/console doctrine:migrations:migrate --no-interaction
 fi
 
-exec "$@"
+exec docker-php-entrypoint "$@"
