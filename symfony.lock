@@ -420,6 +420,12 @@
             "ref": "18f6fdceb63737d991efbb37ae9619a6f6c978c8"
         }
     },
+    "symfony/http-client": {
+        "version": "v4.3.5"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v1.1.7"
+    },
     "symfony/http-foundation": {
         "version": "v4.0.3"
     },
