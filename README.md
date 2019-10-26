@@ -5,26 +5,13 @@ threaded comments. It is built on the [Symfony](https://symfony.com/) framework.
 Any similarities between this software and that of a large community symbolised
 by an alien logo are purely coincidental.
 
-## Requirements
-
-* PHP >= 7.1 with the curl, gd, iconv, intl, json, mbstring, PDO_PGSQL and xml
-  extensions.
-    * (optional) The amqp extension is required to use RabbitMQ.
-* PostgreSQL >= 9.4
-* [Composer](https://getcomposer.org/)
-
-Postmill should be able to run under any Unix environment. It has been tested to
-work under Linux, macOS, and Windows 10's Linux subsystem. Running directly on
-Windows may work, but is unsupported.
-
-## Documentation
+## Getting started
 
 [Read the documentation][wiki] in the wiki.
 
 ## Support
 
-We have a [support board][support] and a [Matrix channel][matrix] where you can
-ask for help and support.
+We have a [Matrix channel][matrix] where you can ask for help and support.
 
 ## Reporting issues
 
@@ -62,5 +49,4 @@ details.
 
 [issues]: https://gitlab.com/edgyemma/Postmill/issues
 [matrix]: https://matrix.to/#/#postmill:matrix.org
-[support]: https://community.postmill.xyz/f/Support
-[wiki]: https://gitlab.com/postmill/Postmill/wikis/home
+[wiki]: https://gitlab.com/postmill/Postmill/wikis/getting-started
