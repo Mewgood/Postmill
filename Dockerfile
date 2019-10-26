@@ -106,11 +106,14 @@ ENV APP_BRANCH=${APP_BRANCH} \
         /app/public/submission_images \
         /app/var/cache/prod/http_cache \
         /app/var/cache/prod/pools \
-        /app/var/logs \
+        /app/var/log \
         /app/var/sessions \
     "
 
 RUN set -eux; \
+    apk add --no-cache \
+        acl \
+        su-exec; \
     { \
         echo 'opcache.max_accelerated_files = 20000'; \
         echo 'opcache.validate_timestamps = Off'; \
@@ -171,7 +174,8 @@ RUN set -eux; \
         echo 'xdebug.remote_enable = On'; \
         echo 'xdebug.remote_port = 9001'; \
         echo 'xdebug.remote_host = 172.17.0.1'; \
-    } >> "$PHP_INI_DIR/php.ini"; \
+    } >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
+    mv "$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini" "$PHP_INI_DIR/xdebug.ini"; \
     RUNTIME_DEPS="$(scanelf -nBRF '%n#p' /usr/local/lib/php/extensions | \
         tr ',' '\n' | \
         sort -u | \
@@ -180,6 +184,8 @@ RUN set -eux; \
     apk add --no-cache $RUNTIME_DEPS; \
     apk del --no-network .build-deps; \
     pecl clear-cache;
+
+CMD php-fpm -c "$PHP_INI_DIR"/xdebug.ini
 
 
 # ===========
