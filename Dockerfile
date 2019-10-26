@@ -175,7 +175,10 @@ RUN set -eux; \
         echo 'xdebug.remote_port = 9001'; \
         echo 'xdebug.remote_host = 172.17.0.1'; \
     } >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
-    mv "$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini" "$PHP_INI_DIR/xdebug.ini"; \
+    cat "$PHP_INI_DIR/php.ini" \
+        "$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini" \
+        > "$PHP_INI_DIR/php-debug.ini"; \
+    rm "$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini"; \
     RUNTIME_DEPS="$(scanelf -nBRF '%n#p' /usr/local/lib/php/extensions | \
         tr ',' '\n' | \
         sort -u | \
@@ -185,7 +188,7 @@ RUN set -eux; \
     apk del --no-network .build-deps; \
     pecl clear-cache;
 
-CMD php-fpm -c "$PHP_INI_DIR"/xdebug.ini
+CMD php-fpm -c "$PHP_INI_DIR/php-debug.ini"
 
 
 # ===========
