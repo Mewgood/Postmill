@@ -30,10 +30,18 @@ class ForumLogCommentDeletion extends ForumLogEntry {
      */
     private $title;
 
-    public function __construct(Comment $comment, User $user) {
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @var string
+     */
+    private $reason;
+
+    public function __construct(Comment $comment, User $user, string $reason) {
         $this->author = $comment->getUser();
         $this->submission = $comment->getSubmission();
         $this->title = $this->submission->getTitle();
+        $this->reason = $reason;
 
         parent::__construct($comment->getSubmission()->getForum(), $user);
     }
@@ -48,6 +56,10 @@ class ForumLogCommentDeletion extends ForumLogEntry {
 
     public function getTitle(): string {
         return $this->title;
+    }
+
+    public function getReason(): ?string {
+        return $this->reason;
     }
 
     public function getAction(): string {

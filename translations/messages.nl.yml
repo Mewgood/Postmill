@@ -30,7 +30,6 @@ banned.message: Je bent verbannen!
 banned.title: Verbannen
 
 comments.comments: Reacties
-comments.delete_thread: Verwijder inclusief reacties
 comments.edit_info: (%edited_at% bewerkt)
 comments.form_load_error: Kon formulier niet laden. Probeer het nog eens.
 comments.info: '%user% schreef %timestamp%'

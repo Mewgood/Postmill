@@ -57,7 +57,6 @@ banned.title: Utestengt
 comments.comments: Kommentarer
 comments.context.comment_reply: Reply to comment by %comment_author% in %submission_title% by %submission_author%
 comments.context.top_level_reply: Reply to %submission_title% by %submission_author%
-comments.delete_thread: Slett med svar
 comments.edit_info: (redigert %edited_at%)
 comments.form_load_error: En nettverksfeil oppstod. Vennligst prøv på nytt.
 comments.info: '%user% skrev %timestamp%'
@@ -317,13 +316,14 @@ label.username: Brukernavn
 label.verification: Verifikasjon
 label.verification_image: Verifikasjonsbilde
 
-log.ban: '%user% utestengte %banned% (utløper: %expires%). Årsak: "%reason%"'
-log.comment_deletion: '%user% slettet en kommentar fra %author% i "%submission%"'
-log.submission_deletion: '%user% slettet innlegget "%title%" fra %author%'
-log.submission_deletion_with_reason: '%user% slettet innlegget "%title%" fra %author%. Årsak: "%reason%"'
-log.submission_lock: '%user% låste innlegget "%title%" fra %author%'
-log.submission_unlock: '%user% åpnet innlegget "%title%" fra %author%'
-log.unban: '%user% fjernet utestengelsen av %banned%. Årsak: "%reason%"'
+log.ban: '%user% utestengte %banned% (utløper: %expires%). Årsak: «%reason%»'
+log.comment_deletion: '%user% slettet en kommentar av %author% i «%submission%»'
+log.comment_deletion_with_reason: '%user slettet en kommentar av %author% i «%submission%». Årsak: «%reason%»'
+log.submission_deletion: '%user% slettet innlegget «%title%» av %author%'
+log.submission_deletion_with_reason: '%user% slettet innlegget «%title%» av %author%. Årsak: «%reason%»'
+log.submission_lock: '%user% låste innlegget «%title%» av %author%'
+log.submission_unlock: '%user% åpnet innlegget «%title%» av %author%'
+log.unban: '%user% fjernet utestengelsen av %banned%. Årsak: «%reason%»'
 
 login.remember_me: Husk meg
 login.reset_password: Glemt passord?

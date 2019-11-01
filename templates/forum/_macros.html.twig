@@ -41,14 +41,15 @@
 
 {% macro _log_comment_deletion(entry) %}
   {% from 'user/_macros.html.twig' import user_link %}
-  {{ 'log.comment_deletion'|trans({
+  {{ (entry.reason is null ? 'log.comment_deletion' : 'log.comment_deletion_with_reason')|trans({
     '%user%': user_link(entry.user, {flag: entry.wasAdmin ? 'admin' : 'moderator'}),
     '%author%': user_link(entry.author),
     '%submission%': entry.submission
-    ? '<a href="%s">%s</a>'|format(
-      path('submission', {forum_name: entry.submission.forum.name, submission_id: entry.submission.id})|e,
-      entry.submission.title|e
-    ) : '<del>%s</del>'|format(entry.title|e),
+      ? '<a href="%s">%s</a>'|format(
+        path('submission', {forum_name: entry.submission.forum.name, submission_id: entry.submission.id})|e,
+        entry.submission.title|e)
+      : '<del>%s</del>'|format(entry.title|e),
+    '%reason%': entry.reason,
   })|raw }}
 {% endmacro %}
 

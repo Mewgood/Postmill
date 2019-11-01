@@ -50,7 +50,6 @@ banned.title: Banni
 comments.comments: Commentaires
 comments.context.comment_reply: Réponse au commentaire de %comment_author% dans %submission_title% par %submission_author%
 comments.context.top_level_reply: Réponse à %submission_title% par %submission_author%
-comments.delete_thread: Supprimer avec les réponses
 comments.edit_info: (modifié %edited_at%)
 comments.form_load_error: Erreur du chargement du formulaire. Veuillez réessayer.
 comments.info: '%user% a écrit %timestamp%'

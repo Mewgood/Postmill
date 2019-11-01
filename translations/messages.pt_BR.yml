@@ -37,7 +37,6 @@ banned.message: Você foi banido!
 banned.title: Banido
 
 comments.comments: Comentários
-comments.delete_thread: Apagar com as respostas
 comments.edit_info: (editado %edited_at%)
 comments.form_load_error: Erro ao carregar o formulário. Por favor tente novamente.
 comments.info: '%user% escreveu %timestamp%'

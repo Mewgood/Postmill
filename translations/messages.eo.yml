@@ -55,7 +55,6 @@ banned.title: Forbaris
 comments.comments: Komentoj
 comments.context.comment_reply: Respondi komenton de %comment_author% en %submission_title% de %submission_author%
 comments.context.top_level_reply: Respondita al %submission_title% de %submission_author%
-comments.delete_thread: Forigi kun respondoj
 comments.edit_info: (redaktita je %edited_at%)
 comments.form_load_error: Eraro pri enlego de formo. Bonvolu denove provi.
 comments.info: '%user% skribis %timestamp%'

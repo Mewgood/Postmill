@@ -165,51 +165,14 @@
 
 {% block comment_nav %}
   {{ block('comment_nav_reply') }}
-
-  {% if not post_numbers %}
-    {{ block('comment_nav_permalink') }}
-    {{ block('comment_nav_parent') }}
-  {% endif %}
-
-  {% if comment.user is same as(self) %}
-    {% set comment_nav_classes = 'fg-inherit text-sm' %}
-    {% if comment.children|length == 0 %}
-      {{ block('comment_nav_delete_thread') }}
-    {% endif %}
-    {{- block('comment_nav_softdelete') -}}
-    {{- block('comment_nav_edit') }}
-  {% endif %}
-
-  {% set menu_actions = block('comment_nav_menu_actions')|trim %}
-
-  {% if menu_actions is not empty %}
-    <li class="dropdown">
-      <button class="dropdown__toggle fg-inherit no-underline text-sm unbuttonize">
-        <span class="no-underline__exempt">{{ 'nav.actions'|trans }}</span>
-        <span class="dropdown__arrow" aria-hidden="true"></span>
-      </button>
-
-      <ul class="dropdown__menu dropdown-card unlistify no-margin">
-        {{ menu_actions|raw }}
-      </ul>
-    </li>
-  {% endif %}
+  {{ block('comment_nav_permalink') }}
+  {{ block('comment_nav_parent') }}
+  {{ block('comment_nav_delete_own') }}
+  {{ block('comment_nav_edit') }}
+  {{ block('comment_nav_actions') }}
 {% endblock comment_nav %}
 
-{% block comment_nav_menu_actions %}
-  {% set comment_nav_classes = 'menu-item no-wrap' %}
-  {% if comment.user is not same as(self) %}
-    {{ block('comment_nav_softdelete') }}
-    {{ block('comment_nav_delete_thread') }}
-    {{ block('comment_nav_edit') }}
-    {{ block('comment_nav_ban') }}
-    {{ block('comment_nav_ip_ban') }}
-  {% elseif comment.children|length > 0 %}
-    {{ block('comment_nav_delete_thread') }}
-  {% endif %}
-{% endblock %}
-
-{%- block comment_nav_reply -%}
+{% block comment_nav_reply %}
   {% if is_granted('ROLE_USER') %}
     <li>
       <a href="{{ path('comment', {
@@ -225,10 +188,10 @@
       </a>
     </li>
   {% endif %}
-{%- endblock comment_nav_reply -%}
+{% endblock comment_nav_reply %}
 
-{%- block comment_nav_permalink -%}
-  {%- apply spaceless -%}
+{% block comment_nav_permalink -%}
+  {% if not post_numbers %}
     <li>
       <a href="{{ path('comment', {
         forum_name: comment.submission.forum.name,
@@ -236,82 +199,130 @@
         comment_id: comment.id
       }) }}" class="comment__permalink fg-inherit text-sm">{{ 'comments.permalink'|trans }}</a>
     </li>
-  {%- endapply -%}
+  {% endif %}
 {%- endblock comment_nav_permalink -%}
 
-{%- block comment_nav_parent -%}
-  {%- apply spaceless -%}
-    {%- if comment.parent -%}
-      <li>
-        <a href="{{ path('comment', {
-          forum_name: comment.submission.forum.name,
-          submission_id: comment.submission.id,
-          comment_id: comment.parent.id
-        }) }}" class="comment__parent-link fg-inherit text-sm">{{ 'comments.parent'|trans }}</a>
-      </li>
-    {%- endif -%}
-  {%- endapply -%}
-{%- endblock comment_nav_parent -%}
-
-{% block comment_nav_softdelete %}
-  {% from '_macros/icon.html.twig' import icon %}
-  {% if is_granted('softdelete', comment) %}
+{% block comment_nav_parent -%}
+  {% if comment.parent and not post_numbers %}
     <li>
-      <form action="{{ path('softdelete_comment', {
+      <a href="{{ path('comment', {
+        forum_name: comment.submission.forum.name,
+        submission_id: comment.submission.id,
+        comment_id: comment.parent.id
+      }) }}" class="comment__parent-link fg-inherit text-sm">
+        {{- 'comments.parent'|trans -}}
+      </a>
+    </li>
+  {% endif %}
+{% endblock comment_nav_parent %}
+
+{% block comment_nav_delete_own %}
+  {% if is_granted('delete_own', comment) %}
+    <li>
+      <form action="{{ path('comment_delete_own', {
         forum_name: comment.submission.forum.name,
         submission_id: comment.submission.id,
         comment_id: comment.id,
       }) }}" method="POST">
-        <input type="hidden" name="token" value="{{ csrf_token('softdelete_comment') }}">
-        <button type="submit"
-                class="unbuttonize comment__soft-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
-          {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
-          {{ 'action.delete'|trans -}}
+        <input type="hidden" name="token" value="{{ csrf_token('delete_own_comment') }}">
+        <button class="fg-inherit text-sm unbuttonize js-confirm-comment-delete">
+          {{- 'action.delete'|trans -}}
         </button>
       </form>
     </li>
   {% endif %}
-{% endblock comment_nav_softdelete %}
+{% endblock comment_nav_delete_own %}
 
-{%- block comment_nav_delete_thread -%}
+{% block comment_nav_edit %}
   {% from '_macros/icon.html.twig' import icon %}
-  {% if is_granted('delete_thread', comment) %}
-    <li>
-      <form action="{{ path('delete_comment_thread', {
-          forum_name: comment.submission.forum.name,
-          submission_id: comment.submission.id,
-          comment_id: comment.id,
-      }) }}" method="POST">
-        <input type="hidden" name="token" value="{{ csrf_token('delete_comment') }}">
-        <button type="submit"
-                class="unbuttonize comment__thread-delete-button {{ comment_nav_classes }} js-confirm-comment-delete">
-          {{- 'menu-item' in comment_nav_classes ? icon('trash') }}
-          {{ comment.children|length > 0 ? 'comments.delete_thread'|trans : 'action.delete'|trans -}}
-        </button>
-      </form>
-    </li>
-  {% endif %}
-{%- endblock comment_nav_delete_thread -%}
-
-{%- block comment_nav_edit -%}
-  {% from '_macros/icon.html.twig' import icon %}
-  {% if is_granted('edit', comment) %}
+  {% if comment.user is same as(self) and is_granted('edit', comment) %}
     <li>
       <a href="{{ path('edit_comment', {
         forum_name: comment.submission.forum.name,
         submission_id: comment.submission.id,
         comment_id: comment.id,
-      }) }}" class="comment__edit-link {{ comment_nav_classes }}">
-        {{- 'menu-item' in comment_nav_classes ? icon('pencil') }}
+      }) }}" class="comment__edit-link fg-inherit text-sm">
+        {{- 'action.edit'|trans -}}
+      </a>
+    </li>
+  {% endif %}
+{% endblock comment_nav_edit %}
+
+{% block comment_nav_actions %}
+  {% set actions = block('comment_actions') %}
+  {% if actions|length > 0 %}
+    <li class="dropdown">
+      <button class="dropdown__toggle fg-inherit no-underline text-sm unbuttonize">
+        <span class="no-underline__exempt">{{ 'nav.actions'|trans }}</span>
+        <span class="dropdown__arrow" aria-hidden="true"></span>
+      </button>
+
+      <ul class="dropdown__menu dropdown-card unlistify no-margin">
+        {{ actions|raw }}
+      </ul>
+    </li>
+  {% endif %}
+{% endblock comment_nav_actions %}
+
+{% block comment_actions %}
+  {{- block('comment_actions_delete') -}}
+  {{- block('comment_actions_purge') -}}
+  {{- block('comment_actions_edit') -}}
+  {{- block('comment_actions_ban') -}}
+  {{- block('comment_actions_ip_ban') -}}
+{% endblock %}
+
+{% block comment_actions_delete %}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- if comment.user is not same as(self) and is_moderator -%}
+    <li>
+      <a href="{{ path('comment_delete', {
+        forum_name: comment.submission.forum.name,
+        submission_id: comment.submission.id,
+        comment_id: comment.id,
+      }) }}" class="menu-item no-wrap">
+        {{- icon('trash') }}
+        {{ 'action.delete'|trans -}}
+      </a>
+    </li>
+  {%- endif -%}
+{% endblock comment_actions_delete %}
+
+{% block comment_actions_purge %}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- if is_moderator and comment.replyCount > 0 -%}
+    <li>
+      <a href="{{ path('comment_purge', {
+        forum_name: comment.submission.forum.name,
+        submission_id: comment.submission.id,
+        comment_id: comment.id,
+      }) }}" class="menu-item no-wrap">
+        {{- icon('cancel') }}
+        {{ 'action.purge'|trans -}}
+      </a>
+    </li>
+  {%- endif -%}
+{% endblock comment_actions_purge %}
+
+{% block comment_actions_edit %}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- if comment.user is not same as(self) and is_granted('edit', comment) -%}
+    <li>
+      <a href="{{ path('edit_comment', {
+        forum_name: comment.submission.forum.name,
+        submission_id: comment.submission.id,
+        comment_id: comment.id,
+      }) }}" class="comment__edit-link menu-item no-wrap">
+        {{- icon('pencil') }}
         {{ 'action.edit'|trans -}}
       </a>
     </li>
-  {% endif -%}
-{% endblock comment_nav_edit %}
+  {%- endif -%}
+{% endblock comment_actions_edit %}
 
-{% block comment_nav_ban %}
-  {% from '_macros/icon.html.twig' import icon %}
-  {% if is_granted('moderator', comment.submission.forum) %}
+{% block comment_actions_ban %}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- if comment.user is not same as(app.user) and is_moderator -%}
     <li>
       <a href="{{ path('forum_ban', {forum_name: comment.submission.forum.name, username: comment.user.username}) }}"
          class="comment__ban-link menu-item no-wrap">
@@ -319,12 +330,12 @@
         {{ 'action.ban'|trans -}}
       </a>
     </li>
-  {% endif %}
-{% endblock comment_nav_ban %}
+  {%- endif -%}
+{% endblock comment_actions_ban %}
 
-{%- block comment_nav_ip_ban %}
-  {% from '_macros/icon.html.twig' import icon %}
-  {% if is_granted('ROLE_ADMIN') %}
+{% block comment_actions_ip_ban %}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- if comment.user is not same as(app.user) and is_granted('ROLE_ADMIN') -%}
     <li>
       <a href="{{ path('ban_user', {'username': comment.user.username}) }}"
          class="comment__ip-ban-link menu-item no-wrap">
@@ -332,5 +343,5 @@
         {{ 'action.global_ban'|trans -}}
       </a>
     </li>
-  {% endif -%}
-{% endblock comment_nav_ip_ban -%}
+  {%- endif -%}
+{% endblock comment_actions_ip_ban %}

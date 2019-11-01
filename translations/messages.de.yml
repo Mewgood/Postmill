@@ -29,7 +29,6 @@ banned.message: Du wurdest gesperrt!
 banned.title: Gesperrt
 
 comments.comments: Kommentare
-comments.delete_thread: Löschen mit Antworten
 comments.edit_info: (bearbeitet vor %edited_at%)
 comments.form_load_error: Fehler beim Laden des Formulars. Bitte versuche es nochmal.
 comments.info: '%user% schrieb %timestamp%'

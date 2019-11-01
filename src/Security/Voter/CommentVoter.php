@@ -9,12 +9,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class CommentVoter extends Voter {
-    /**
-     * - delete_thread - Ability to delete a comment with its replies.
-     * - softdelete - Ability to soft delete a comment.
-     * - edit - Ability to edit a comment.
-     */
-    public const ATTRIBUTES = ['delete_thread', 'softdelete', 'edit'];
+    public const ATTRIBUTES = ['delete_own', 'edit'];
 
     private $decisionManager;
 
@@ -22,20 +17,18 @@ final class CommentVoter extends Voter {
         $this->decisionManager = $decisionManager;
     }
 
-    protected function supports($attribute, $subject) {
-        return \in_array($attribute, self::ATTRIBUTES, true) && $subject instanceof Comment;
+    protected function supports($attribute, $subject): bool {
+        return $subject instanceof Comment && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool {
         if (!$token->getUser() instanceof User) {
             return false;
         }
 
         switch ($attribute) {
-        case 'delete_thread':
-            return $this->canDeleteThread($subject, $token);
-        case 'softdelete':
-            return $this->canSoftDelete($subject, $token);
+        case 'delete_own':
+            return $this->canDeleteOwn($subject, $token);
         case 'edit':
             return $this->canEdit($subject, $token);
         default:
@@ -43,48 +36,16 @@ final class CommentVoter extends Voter {
         }
     }
 
-    private function canDeleteThread(Comment $comment, TokenInterface $token): bool {
-        $forum = $comment->getSubmission()->getForum();
-
-        if ($forum->userIsModerator($token->getUser())) {
-            return true;
-        }
-
-        if ($token->getUser() !== $comment->getUser()) {
+    private function canDeleteOwn(Comment $comment, TokenInterface $token): bool {
+        if ($comment->getVisibility() === Comment::VISIBILITY_DELETED) {
             return false;
         }
 
-        if (\count($comment->getChildren()) > 0) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function canSoftDelete(Comment $comment, TokenInterface $token): bool {
-        if ($comment->getVisibility() !== Comment::VISIBILITY_VISIBLE) {
-            return false;
-        }
-
-        if (\count($comment->getChildren()) === 0) {
-            return false;
-        }
-
-        if ($token->getUser() === $comment->getUser()) {
-            return true;
-        }
-
-        $forum = $comment->getSubmission()->getForum();
-
-        if (!$forum->userIsModerator($token->getUser())) {
-            return false;
-        }
-
-        return true;
+        return $comment->getUser() === $token->getUser();
     }
 
     private function canEdit(Comment $comment, TokenInterface $token): bool {
-        if ($comment->getVisibility() !== Comment::VISIBILITY_VISIBLE) {
+        if ($comment->getVisibility() === Comment::VISIBILITY_DELETED) {
             return false;
         }
 
@@ -92,14 +53,10 @@ final class CommentVoter extends Voter {
             return true;
         }
 
-        if ($token->getUser() !== $comment->getUser()) {
-            return false;
-        }
-
         if ($comment->isModerated()) {
             return false;
         }
 
-        return true;
+        return $comment->getUser() === $token->getUser();
     }
 }

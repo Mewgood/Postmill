@@ -57,7 +57,6 @@ banned.title: Banned
 comments.comments: Comments
 comments.context.comment_reply: Reply to comment by %comment_author% in %submission_title% by %submission_author%
 comments.context.top_level_reply: Reply to %submission_title% by %submission_author%
-comments.delete_thread: Delete with replies
 comments.edit_info: (edited %edited_at%)
 comments.form_load_error: Error loading form. Please try again.
 comments.info: '%user% wrote %timestamp%'
@@ -113,6 +112,7 @@ flash.notification_cleared: The notification was successfully cleared.
 flash.notifications_cleared: Your notifications have been cleared.
 flash.page_locked: The page was locked.
 flash.page_unlocked: The page was unlocked.
+flash.purge_comment_warning: The comment and all its replies will be irreversably deleted.
 flash.purge_submission_warning: The submission and all its comments will be irreversably deleted.
 flash.reset_password_email_sent: A reset email has been sent to the address you specified.
 flash.site_settings_saved: The settings have been saved.
@@ -319,6 +319,7 @@ label.verification_image: Verification image
 
 log.ban: '%user% banned %banned% (expires: %expires%). Reason: "%reason%"'
 log.comment_deletion: '%user% deleted comment by %author% in "%submission%"'
+log.comment_deletion_with_reason: '%user% deleted comment by %author% in "%submission%". Reason: "%reason%"'
 log.submission_deletion: '%user% deleted submission "%title%" by %author%'
 log.submission_deletion_with_reason: '%user% deleted submission "%title%" by %author%. Reason: "%reason%"'
 log.submission_lock: '%user% locked submission "%title%" by %author%'
@@ -477,6 +478,7 @@ title.blocking_user: Blocking %user%
 title.create_forum_category: Create forum category
 title.create_submission: Create submission
 title.delete_account: Delete account
+title.delete_comment: Delete comment
 title.delete_forum: Delete forum %forum%
 title.delete_submission: Delete submission
 title.editing_biography_for_user: Editing biography for %user%
@@ -491,6 +493,7 @@ title.list_of_users: 'List of users, page #%page%'
 title.manage_forum_categories: Manage forum categories
 title.messages: Messages
 title.notifications: Notifications
+title.purge_comment: Purge comment
 title.purge_submission: Purge submission
 title.recent_comments: Recent comments
 title.recent_comments_forum: Recent comments in %forum%

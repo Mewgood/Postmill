@@ -13,6 +13,7 @@ use App\Entity\User;
 use App\Event\EditCommentEvent;
 use App\Event\NewCommentEvent;
 use App\Form\CommentType;
+use App\Form\DeleteReasonType;
 use App\Repository\CommentRepository;
 use App\Repository\ForumRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -155,18 +156,18 @@ final class CommentController extends AbstractController {
     }
 
     /**
-     * Delete a comment thread.
-     *
      * @IsGranted("ROLE_USER")
-     * @IsGranted("delete_thread", subject="comment", statusCode=403)
+     * @IsGranted("delete_own", subject="comment")
      */
-    public function deleteComment(Submission $submission, Forum $forum, Comment $comment, Request $request): Response {
-        $this->validateCsrf('delete_comment', $request->request->get('token'));
+    public function deleteOwn(Forum $forum, Submission $submission, Comment $comment, Request $request): Response {
+        $this->validateCsrf('delete_own_comment', $request->request->get('token'));
 
-        $submission->removeComment($comment);
-        $this->entityManager->remove($comment);
-
-        $this->logDeletion($forum, $comment);
+        if ($comment->getReplyCount() === 0) {
+            $submission->removeComment($comment);
+            $this->entityManager->remove($comment);
+        } else {
+            $comment->softDelete();
+        }
 
         $this->entityManager->flush();
 
@@ -174,29 +175,43 @@ final class CommentController extends AbstractController {
     }
 
     /**
-     * "Soft deletes" a comment by blanking its body.
-     *
      * @IsGranted("ROLE_USER")
-     * @IsGranted("softdelete", subject="comment", statusCode=403)
+     * @IsGranted("moderator", subject="forum", statusCode=403)
      */
-    public function softDeleteComment(Forum $forum, Submission $submission, Comment $comment, Request $request): Response {
-        $this->validateCsrf('softdelete_comment', $request->request->get('token'));
+    public function delete(Forum $forum, Submission $submission, Comment $comment, Request $request, bool $purge = false): Response {
+        $form = $this->createForm(DeleteReasonType::class);
+        $form->handleRequest($request);
 
-        $comment->softDelete();
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($purge || $comment->getReplyCount() === 0) {
+                $submission->removeComment($comment);
+                $this->entityManager->remove($comment);
+            } else {
+                $comment->softDelete();
+            }
 
-        $this->logDeletion($forum, $comment);
+            $this->logDeletion($forum, $comment, $form->getData()['reason']);
 
-        $this->entityManager->flush();
+            $this->entityManager->flush();
 
-        return $this->redirectAfterDelete($request);
+            return $this->redirect($this->generateSubmissionUrl($submission));
+        }
+
+        return $this->render('comment/delete.html.twig', [
+            'comment' => $comment,
+            'forum' => $forum,
+            'submission' => $submission,
+            'form' => $form->createView(),
+            'purge' => $purge,
+        ]);
     }
 
-    private function logDeletion(Forum $forum, Comment $comment): void {
+    private function logDeletion(Forum $forum, Comment $comment, string $reason): void {
         /* @var User $user */
         $user = $this->getUser();
 
         if ($user !== $comment->getUser()) {
-            $forum->addLogEntry(new ForumLogCommentDeletion($comment, $user));
+            $forum->addLogEntry(new ForumLogCommentDeletion($comment, $user, $reason));
         }
     }
 

@@ -39,7 +39,6 @@ banned.message: Έχετε απαγορευτεί!
 banned.title: Έχετε απαγορευτεί
 
 comments.comments: Σχόλια
-comments.delete_thread: Διαγραφή με απαντήσεις
 comments.edit_info: (Επεξεργασία %edited_at%)
 comments.form_load_error: Πρόβλημα φόρτωσης. Παρακαλω προσπαθησε ξανα.
 comments.info: '%user% έγραψε %timestamp%'

@@ -49,7 +49,6 @@ banned.title: Vetada
 comments.comments: Comentarios
 comments.context.comment_reply: Respuesta a comentario de %comment_author% en %submission_title% por %submission_author%
 comments.context.top_level_reply: Respuesta a %submission_title% por %submission_author%
-comments.delete_thread: Borrar con respuestas
 comments.edit_info: (Editado %edited_at%)
 comments.form_load_error: Error cargando formulario. Por favor, inténtalo de nuevo.
 comments.info: '%user% escribió %timestamp%'

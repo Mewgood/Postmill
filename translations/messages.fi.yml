@@ -31,7 +31,6 @@ banned.message: Olet saanut porttikiellon.
 banned.title: Bannattu
 
 comments.comments: Kommentit
-comments.delete_thread: Poista vastausten kanssa
 comments.edit_info: (muokattu %edited_at%)
 comments.form_load_error: Virhe ladattaessa lomaketta. Yritä uudelleen.
 comments.info: '%user% kirjoitti %timestamp%'
