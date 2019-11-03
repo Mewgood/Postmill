@@ -15,8 +15,3 @@ framework:
     fragments: ~
     php_errors:
         log: true
-    # we need to enable the templating component in order for
-    # liip/imagine-bundle to work, and for gregwar/captcha-bundle not to break
-    # when trying to load its form resources
-    templating:
-        engines: [twig]
