@@ -26,6 +26,7 @@ action.retract_upvote: Retract upvote
 action.save: Save
 action.save_changes: Save changes
 action.search: Search
+action.see_full_list: See full list
 action.send: Send
 action.sign_up: Sign up
 action.subscribe: Subscribe
@@ -107,6 +108,7 @@ flash.no_cookies_verification: Does the image not load correctly? Please make su
 flash.no_entries_to_display: There are no entries to display.
 flash.no_messages: There are no messages to display.
 flash.no_moderated_forums: You don't moderate any forums.
+flash.no_moderators: This forum has no moderators.
 flash.no_password_resets: Password resets have been disabled by the administrator.
 flash.notification_cleared: The notification was successfully cleared.
 flash.notifications_cleared: Your notifications have been cleared.
@@ -159,7 +161,7 @@ forum_list.uncategorized: Uncategorized
 
 forum_moderators.last_seen: Last seen
 forum_moderators.since: Since
-forum_moderators.title: Moderators for /%forum_name%
+forum_moderators.title: Moderators for %forum_name%
 
 front.all: All
 front.all_forums: All forums

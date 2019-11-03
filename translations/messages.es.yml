@@ -123,7 +123,7 @@ forum_list.uncategorized: Sin categorizar
 
 forum_moderators.last_seen: Visto por última vez
 forum_moderators.since: Desde
-forum_moderators.title: Moderadoras de /%forum_name%
+forum_moderators.title: Moderadoras de %forum_name%
 
 front.all: Todos
 front.featured: Destacados

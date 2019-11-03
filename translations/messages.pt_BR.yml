@@ -108,7 +108,7 @@ forum_list.uncategorized: Não categorizado
 
 forum_moderators.last_seen: Visto por último
 forum_moderators.since: Desde
-forum_moderators.title: Moderadores de /%forum_name%
+forum_moderators.title: Moderadores de %forum_name%
 
 front.all: Tudo
 front.featured: Em destaque

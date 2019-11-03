@@ -83,7 +83,7 @@ forum_list.subscribers: Abbonees
 forum_list.uncategorized: Ongecategoriseerd
 
 forum_moderators.since: Vanaf
-forum_moderators.title: Moderators van /%forum_name%
+forum_moderators.title: Moderators van %forum_name%
 
 front.all: Alles
 front.featured: Uitgelicht

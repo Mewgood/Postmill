@@ -112,7 +112,7 @@ forum_list.uncategorized: Δεν ταξινομούνται
 
 forum_moderators.last_seen: Τελευταία ενεργή
 forum_moderators.since: από
-forum_moderators.title: Συντονιστές για /%forum_name%
+forum_moderators.title: Συντονιστές για %forum_name%
 
 front.all: Ολα
 front.featured: Προεπιλεγμένα

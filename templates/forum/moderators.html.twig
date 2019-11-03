@@ -1,6 +1,6 @@
 {% extends 'forum/base.html.twig' %}
 
-{% block title 'forum_moderators.title'|trans({'%forum_name%': forum.name}) %}
+{% block title block('html_title')|striptags %}
 
 {% block head %}
   {{ parent() }}
@@ -8,7 +8,16 @@
 {% endblock head %}
 
 {% block body %}
-  <h1 class="page-heading">{{ block('title') }}</h1>
+  <h1 class="page-heading">
+    {% block html_title %}
+      {{- 'forum_moderators.title'|trans({
+        '%forum_name%': '<a href="%s">/f/%s</a>'|format(
+          path('forum', { forum_name: forum.name })|e,
+          forum.name|e
+        ),
+      })|raw -}}
+    {% endblock html_title %}
+  </h1>
 
   {% embed '_layouts/table_pagination.html.twig' with { items: moderators } %}
     {% block header %}

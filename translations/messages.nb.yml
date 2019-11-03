@@ -26,6 +26,7 @@ action.retract_upvote: Fjern oppstemning
 action.save: Lagre
 action.save_changes: Lagre endringer
 action.search: Søk
+action.see_full_list: Se fullstendig liste
 action.send: Send
 action.sign_up: Registrer
 action.subscribe: Abonnere
@@ -107,6 +108,7 @@ flash.no_cookies_verification: Laster ikke bildet riktig? Sørg for at du ikke b
 flash.no_entries_to_display: Det er ingenting å vise.
 flash.no_messages: Det finnes ingen meldinger å vise.
 flash.no_moderated_forums: Du modererer ingen fora.
+flash.no_moderators: Dette forumet har ingen moderatorer.
 flash.no_password_resets: Tilbakestilling av passord har blitt deaktivert av administratoren.
 flash.notification_cleared: Notifikasjonen ble fjernet.
 flash.notifications_cleared: Notifikasjonene dine har blitt fjernet.
@@ -158,7 +160,7 @@ forum_list.uncategorized: Ukategorisert
 
 forum_moderators.last_seen: Sist sett
 forum_moderators.since: Siden
-forum_moderators.title: Moderatorer for /%forum_name%
+forum_moderators.title: Moderatorer for %forum_name%
 
 front.all: Alle
 front.all_forums: Alle fora

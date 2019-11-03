@@ -126,7 +126,7 @@ forum_list.uncategorized: Sans catégorie
 
 forum_moderators.last_seen: Dernière connexion
 forum_moderators.since: Nommé
-forum_moderators.title: Modérateurs de /%forum_name%
+forum_moderators.title: Modérateurs de %forum_name%
 
 front.all: Tout
 front.featured: Mis en avant

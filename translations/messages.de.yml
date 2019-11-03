@@ -77,7 +77,7 @@ forum_list.submission_count: Einreichungen
 forum_list.subscribers: Abonnenten
 
 forum_moderators.since: Seit
-forum_moderators.title: Moderatoren für /%forum_name%
+forum_moderators.title: Moderatoren für %forum_name%
 
 front.all: Alle
 front.featured: Empfohlen

@@ -86,7 +86,7 @@ forum_list.uncategorized: Kategorisoimattomat
 
 forum_moderators.last_seen: Paikalla viimeksi
 forum_moderators.since: Ajasta
-forum_moderators.title: Foorumin /%forum_name% moderaattorit
+forum_moderators.title: Foorumin %forum_name% moderaattorit
 
 front.all: Kaikki
 front.featured: Suositellut
