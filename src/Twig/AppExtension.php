@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Utils\UrlRewriter;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -15,6 +16,11 @@ final class AppExtension extends AbstractExtension {
      * @var RequestStack
      */
     private $requestStack;
+
+    /**
+     * @var UrlRewriter
+     */
+    private $urlRewriter;
 
     /**
      * @var string
@@ -45,6 +51,7 @@ final class AppExtension extends AbstractExtension {
 
     public function __construct(
         RequestStack $requestStack,
+        UrlRewriter $urlRewriter,
         string $siteName,
         ?string $branch,
         ?string $version,
@@ -53,6 +60,7 @@ final class AppExtension extends AbstractExtension {
         string $uploadRoot
     ) {
         $this->requestStack = $requestStack;
+        $this->urlRewriter = $urlRewriter;
         $this->siteName = $siteName;
         $this->branch = $branch;
         $this->version = $version;
@@ -85,6 +93,7 @@ final class AppExtension extends AbstractExtension {
 
                 return $this->fontsConfig[$font]['entrypoint'] ?? null;
             }),
+            new TwigFunction('rewrite_url', [$this->urlRewriter, 'rewrite']),
             new TwigFunction('theme_list', function (): array {
                 return array_keys($this->fontsConfig);
             }),

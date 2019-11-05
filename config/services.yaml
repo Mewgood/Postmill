@@ -5,6 +5,7 @@ imports:
     - ./ratelimit.yaml
 
 parameters:
+    env(TRUSTED_HOSTS): ''
     days_to_keep_logs: 7
     fonts_config: "%env(json:file:resolve:APP_FONTS)%"
     themes_config: "%env(json:file:resolve:APP_THEMES)%"
@@ -28,6 +29,7 @@ services:
             $siteName: '@=service("App\\Repository\\SiteRepository").getCurrentSiteName()'
             $uploadRoot: "%env(resolve:UPLOAD_ROOT)%"
             bool $enableExperimentalRestApi: "%env(bool:ENABLE_EXPERIMENTAL_REST_API)%"
+            array $trustedHosts: "%env(csv:TRUSTED_HOSTS)%"
         public: false
 
     # makes classes in src/ available to be used as services

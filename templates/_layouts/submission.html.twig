@@ -115,7 +115,7 @@
 
 {%- block submission_url -%}
   {%- if submission.url -%}
-    {{- submission.url -}}
+    {{- rewrite_url(submission.url) -}}
   {%- elseif submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image -%}
     {{- upload_url('submission_images/'~submission.image) -}}
   {%- else -%}

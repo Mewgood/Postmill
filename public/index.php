@@ -23,7 +23,9 @@ if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ??
 }
 
 if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
-    Request::setTrustedHosts(explode(',', $trustedHosts));
+    Request::setTrustedHosts(array_map(function ($host) {
+        return '^'.str_replace('\*', '.*', preg_quote($host, '{')).'$';
+    }, explode(',', $trustedHosts)));
 }
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
