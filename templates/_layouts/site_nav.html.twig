@@ -14,10 +14,10 @@
   {% from '_macros/icon.html.twig' import icon %}
   <header class="site-nav__header">
     <a href="{{ path('front') }}"
-       class="no-underline site-nav__link {{ active == 'front' ? 'site-nav__link--active' }}"
+       class="site-nav__link {{ active == 'front' ? 'site-nav__link--active' }}"
        aria-label="{{ 'nav.home'|trans }}">
       {{ icon('home', 'nav.home'|trans, 'no-desktop') }}
-      <b class="no-mobile no-underline__exempt">{{ site_name() }}</b>
+      <b class="no-mobile">{{ site_name() }}</b>
     </a>
   </header>
 {% endblock site_nav_header %}
@@ -60,8 +60,8 @@
   {% if is_granted('ROLE_ADMIN') %}
     <li class="dropdown">
       <button type="button"
-              class="dropdown__toggle no-underline no-wrap site-nav__link unbuttonize {{ active == 'admin' ? 'site-nav__link--active' }}">
-        <span class="no-underline__exempt">{{ 'label.admin'|trans }}</span>
+              class="dropdown__toggle no-wrap site-nav__link unbuttonize {{ active == 'admin' ? 'site-nav__link--active' }}">
+        {{- 'label.admin'|trans }}
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
       <ul class="dropdown-card dropdown__menu no-wrap no-margin unlistify">
@@ -144,14 +144,14 @@
   {% set active_menu_item %}{% if active == 'user' %}{% block site_nav_user_menu_active '' %}{% endif %}{% endset %}
   <li>
     <a href="{{ path('notifications') }}"
-       class="no-underline no-wrap site-nav__link
+       class="no-wrap site-nav__link
              {{ notification_count > 0 ? 'site-nav__has-notifications' }}
              {{ active == 'notifications' ? 'site-nav__link--active' }}"
        title="{{ 'nav.notifications_count'|trans({'%count%': notification_count|localizednumber}) }}"
        aria-label="{{ 'nav.notifications_count'|trans({'%count%': notification_count|localizednumber}) }}">
       {% if notification_count > 0 %}
         {{ icon('envelope-open', 'nav.notifications'|trans) }}
-        <small class="no-underline__exempt" aria-hidden="true">{{ notification_count|localizednumber }}</small>
+        <small aria-hidden="true">{{ notification_count|localizednumber }}</small>
       {% else %}
         {{ icon('envelope', 'nav.notifications'|trans) }}
       {% endif %}
@@ -160,17 +160,17 @@
 
   <li>
     <a href="{{ path('submit', { forum_name: forum.name ?? null }) }}"
-       class="no-underline no-wrap site-nav__link {{ active == 'submit' ? 'site-nav__link--active' }}"
+       class="no-wrap site-nav__link {{ active == 'submit' ? 'site-nav__link--active' }}"
        aria-label="{{ 'nav.submit'|trans }}">
       {{ icon('plus', 'nav.submit'|trans, '', 'no-desktop') }}
-      <span class="no-underline__exempt no-mobile">{{ 'nav.submit'|trans }}</span>
+      <span class="no-mobile">{{ 'nav.submit'|trans }}</span>
     </a>
   </li>
 
   <li class="dropdown dropdown--right">
-    <button type="button" class="dropdown__toggle no-underline site-nav__link no-wrap unbuttonize {{ active == 'user' ? 'site-nav__link--active' }}">
+    <button type="button" class="dropdown__toggle site-nav__link no-wrap unbuttonize {{ active == 'user' ? 'site-nav__link--active' }}">
       {{ icon('user', 'nav.user'|trans, '', 'no-desktop') }}
-      <strong class="no-underline__exempt no-mobile">{{ app.user.username }}</strong>
+      <strong class="no-mobile">{{ app.user.username }}</strong>
       <span class="dropdown__arrow no-mobile" aria-hidden="true"></span>
     </button>
 
