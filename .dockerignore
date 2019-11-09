@@ -29,11 +29,8 @@ docs/
 keys/
 node_modules/
 phpunit.xml.dist
-public/build/
-public/bundles/
-public/js/
-public/media/cache/
-public/submission_images/
+public/
+!public/index.php
 templates/overrides/
 !templates/overrides/.gitignore
 translations/overrides/

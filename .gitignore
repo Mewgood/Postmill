@@ -17,10 +17,9 @@ tags
 docker-compose.override.yml
 /keys/
 
-# Built assets and uploaded files
-/public/js/
-/public/media/
-/public/submission_images/
+/public
+!/public/check.php
+!/public/index.php
 
 # Override directories (must exist, so an empty .gitignore is kept in both)
 /templates/overrides/*

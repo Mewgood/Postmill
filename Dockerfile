@@ -87,7 +87,7 @@ COPY assets/fonts.json assets/themes.json assets/
 COPY bin/console bin/
 COPY config config/
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY public public/
+COPY public/index.php public/
 COPY --from=postmill_assets /app/public/build/*.json public/build/
 COPY src src/
 COPY templates templates/
@@ -151,7 +151,7 @@ WORKDIR /app
 
 COPY LICENSE .
 COPY docker/nginx/conf.d/*.conf /etc/nginx/conf.d/
-COPY public/apple-touch-icon-precomposed.png public/favicon.ico public/robots.txt public/
+COPY assets/public/* public/
 COPY --from=postmill_assets /app/public/build public/build/
 COPY --from=postmill_php /app/public/bundles public/bundles/
 COPY --from=postmill_php /app/public/js public/js/
