@@ -47,8 +47,9 @@ class UnionAdapter implements AdapterInterface {
                 : $a <=> $b;
         });
 
-        $results = \array_slice($results, 0, $maxPerPage + 1);
+        $pagerEntity = $results[$maxPerPage] ?? null;
+        $results = \array_slice($results, 0, $maxPerPage);
 
-        return new AdapterResult($results, $results[$maxPerPage] ?? null);
+        return new AdapterResult($results, $pagerEntity);
     }
 }
