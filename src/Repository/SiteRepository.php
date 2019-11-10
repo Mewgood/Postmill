@@ -5,9 +5,9 @@ namespace App\Repository;
 use App\Entity\Site;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\DBAL\DBALException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Ramsey\Uuid\Uuid;
 
 final class SiteRepository extends ServiceEntityRepository {
     /**
@@ -21,14 +21,15 @@ final class SiteRepository extends ServiceEntityRepository {
         $this->logger = $logger ?? new NullLogger();
     }
 
-    public function findCurrentSite(): ?Site {
+    public function findCurrentSite(): Site {
         // we currently don't support multi-site
-        $site = $this->find('00000000-0000-0000-0000-000000000000');
+        $site = $this->find(Uuid::NIL);
 
         if (!$site instanceof Site) {
-            throw new \RuntimeException(
-                'There should exist a site with a nil UUID in the database. Did you mess around with the "sites" table?'
-            );
+            $site = new Site();
+            $site->setSiteName($_SERVER['SITE_NAME'] ?? $site->getSiteName());
+            $this->_em->persist($site);
+            $this->_em->flush();
         }
 
         return $site;
@@ -39,13 +40,11 @@ final class SiteRepository extends ServiceEntityRepository {
      */
     public function getCurrentSiteName(): string {
         try {
-            $siteName = $this->_em->getConnection()
-                ->query('SELECT site_name FROM sites WHERE id = \'00000000-0000-0000-0000-000000000000\'')
-                ->fetchColumn();
-        } catch (DBALException $e) {
+            return $this->findCurrentSite()->getSiteName();
+        } catch (\Throwable $e) {
             $this->logger->error((string) $e);
-        }
 
-        return ($siteName ?? null) ?: ($_SERVER['SITE_NAME'] ?? '[name unavailable]');
+            return $_SERVER['SITE_NAME'] ?? '[name unavailable]';
+        }
     }
 }

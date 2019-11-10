@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -25,7 +26,7 @@ class Site {
      *
      * @var string
      */
-    private $siteName;
+    private $siteName = 'Postmill';
 
     /**
      * @ORM\Column(type="boolean")
@@ -54,6 +55,10 @@ class Site {
      * @var string
      */
     private $wikiEditRole = 'ROLE_USER';
+
+    public function __construct() {
+        $this->id = Uuid::fromString(Uuid::NIL);
+    }
 
     public function getId(): UuidInterface {
         return $this->id;
