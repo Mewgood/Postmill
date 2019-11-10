@@ -80,7 +80,7 @@ class UserBan {
         $this->bannedBy = $bannedBy;
         $this->expiresAt = $expiresAt;
         $this->timestamp = $timestamp ?:
-            \DateTime::createFromFormat('U.u', microtime(true));
+            \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
     }
 
     public function getId(): Uuid {
@@ -116,6 +116,6 @@ class UserBan {
             return false;
         }
 
-        return $this->expiresAt < \DateTime::createFromFormat('U.u', microtime(true));
+        return $this->expiresAt < new \DateTime('@'.time());
     }
 }

@@ -62,7 +62,7 @@ abstract class ForumLogEntry {
         $this->forum = $forum;
         $this->user = $user;
         $this->wasAdmin = !$forum->userIsModerator($user, false);
-        $this->timestamp = \DateTime::createFromFormat('U.u', microtime(true));
+        $this->timestamp = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
     }
 
     public function getId(): Uuid {
