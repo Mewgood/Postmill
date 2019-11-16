@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class SiteController extends AbstractController {
+    public function healthCheck(): Response {
+        return new Response('It works!', 200, ['Content-Type' => 'text/plain']);
+    }
+
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("IS_AUTHENTICATED_FULLY")

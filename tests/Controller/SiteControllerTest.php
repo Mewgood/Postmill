@@ -8,6 +8,14 @@ use App\Tests\WebTestCase;
  * @covers \App\Controller\SiteController
  */
 class SiteControllerTest extends WebTestCase {
+    public function testHealthCheck(): void {
+        $client = self::createClient();
+        $client->request('GET', '/site/health_check');
+
+        self::assertResponseIsSuccessful();
+        self::assertEquals('It works!', $client->getResponse()->getContent());
+    }
+
     public function testCanChangeSiteName(): void {
         $this->submitSiteSettings([
             'site_settings[siteName]' => 'Crap Site',

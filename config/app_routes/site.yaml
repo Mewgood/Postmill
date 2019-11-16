@@ -1,3 +1,8 @@
+health_check:
+    controller: App\Controller\SiteController::healthCheck
+    methods: [GET]
+    path: /site/health_check
+
 site_settings:
     controller: App\Controller\SiteController::settings
     methods: [GET, POST]
