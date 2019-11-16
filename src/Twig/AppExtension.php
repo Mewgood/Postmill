@@ -2,6 +2,8 @@
 
 namespace App\Twig;
 
+use App\Entity\Theme;
+use App\Repository\SiteRepository;
 use App\Utils\UrlRewriter;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
@@ -18,14 +20,14 @@ final class AppExtension extends AbstractExtension {
     private $requestStack;
 
     /**
+     * @var SiteRepository
+     */
+    private $siteRepository;
+
+    /**
      * @var UrlRewriter
      */
     private $urlRewriter;
-
-    /**
-     * @var string
-     */
-    private $siteName;
 
     /**
      * @var string|null
@@ -51,8 +53,8 @@ final class AppExtension extends AbstractExtension {
 
     public function __construct(
         RequestStack $requestStack,
+        SiteRepository $siteRepository,
         UrlRewriter $urlRewriter,
-        string $siteName,
         ?string $branch,
         ?string $version,
         array $fontsConfig,
@@ -60,8 +62,8 @@ final class AppExtension extends AbstractExtension {
         string $uploadRoot
     ) {
         $this->requestStack = $requestStack;
+        $this->siteRepository = $siteRepository;
         $this->urlRewriter = $urlRewriter;
-        $this->siteName = $siteName;
         $this->branch = $branch;
         $this->version = $version;
         $this->fontsConfig = $fontsConfig;
@@ -71,8 +73,11 @@ final class AppExtension extends AbstractExtension {
 
     public function getFunctions(): array {
         return [
-            new TwigFunction('site_name', function () {
-                return $this->siteName;
+            new TwigFunction('site_name', function (): string {
+                return $this->siteRepository->getCurrentSiteName();
+            }),
+            new Twigfunction('site_theme', function (): ?Theme {
+                return $this->siteRepository->findCurrentSite()->getDefaultTheme();
             }),
             new TwigFunction('app_branch', function () {
                 return $this->branch;

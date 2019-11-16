@@ -16,7 +16,7 @@
 
       {{ form_row(form.siteName) }}
 
-      {{ form_row(form.wikiEnabled) }}
+      {{ form_row(form.defaultTheme) }}
     </fieldset>
 
     <fieldset class="fieldset">
@@ -25,6 +25,12 @@
       {{ form_row(form.forumCreateRole) }}
 
       {{ form_row(form.imageUploadRole) }}
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend>{{ 'nav.wiki'|trans }}</legend>
+
+      {{ form_row(form.wikiEnabled) }}
 
       {{ form_row(form.wikiEditRole) }}
     </fieldset>

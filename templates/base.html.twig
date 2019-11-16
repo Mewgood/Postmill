@@ -31,7 +31,7 @@
 
     {% block theme_css %}
       {{ encore_entry_link_tags(theme_entrypoint(
-        app.user.preferredTheme.configKey ?? '_default',
+        app.user.preferredTheme.configKey ?? site_theme().configKey ?? '_default',
         app.user.nightMode ?? false
       )) }}
     {% endblock theme_css %}

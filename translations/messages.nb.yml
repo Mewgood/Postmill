@@ -203,6 +203,7 @@ help.preferred_fonts: Kommaseparert liste over skrifttypene du foretrekker. Dett
 help.preferred_fonts_aliases: 'Aliaserte skrifttyper: '
 help.preferred_fonts_served: 'Skrifttyper levert av serveren (tilgjengelige overalt): '
 help.required_field: Dette feltet er påkrevd.
+help.theme_selector: Stjerne indikerer samme som forhåndsvalgt.
 help.will_appear_in_the_url: Vil vises i webadressen.
 
 inbox.message_reply_head: 'Sv: %title%'
@@ -435,10 +436,12 @@ site_footer.app: Kjører %app% %version%
 site_footer.version: '%version% (%branch%)'
 
 site_settings.site_name: Navn på nettstedet
+site_settings.site_theme: Globalt fargetema
+site_settings.site_theme_help: Dette vil være temaet som er brukt globalt, med mindre det er overstyrt av fora eller brukerinnstillinger.
 site_settings.wiki_enabled: Åpne wikien
 site_settings.forum_create_role: Hvem kan opprette nye fora?
 site_settings.image_upload_role: Hvem kan laste opp bilder?
-site_settings.wiki_edit_role: hvem kan redigere wikien?
+site_settings.wiki_edit_role: Hvem kan redigere wikien?
 
 submission_form.create: Send innlegg
 submission_form.edit: Rediger innlegg

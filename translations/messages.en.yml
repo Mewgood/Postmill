@@ -204,6 +204,7 @@ help.preferred_fonts: 'Comma-separated list of the fonts you prefer. These can b
 help.preferred_fonts_aliases: 'Aliased font names: '
 help.preferred_fonts_served: 'Server-provided fonts (available everywhere): '
 help.required_field: This field is required.
+help.theme_selector: Asterisk indicates same as default.
 help.will_appear_in_the_url: Will appear in the URL.
 
 inbox.message_reply_head: 'Re: %title%'
@@ -436,6 +437,8 @@ site_footer.app: Running %app% %version%
 site_footer.version: '%version% (%branch%)'
 
 site_settings.site_name: Site name
+site_settings.site_theme: Site theme
+site_settings.site_theme_help: This will be the theme that is used across the site, unless overridden by forum settings or the user's choice.
 site_settings.wiki_enabled: Enable wiki
 site_settings.forum_create_role: Who can create new forums?
 site_settings.image_upload_role: Who can upload images?

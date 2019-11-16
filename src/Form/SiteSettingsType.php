@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Form\Model\SiteData;
+use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -21,6 +22,11 @@ final class SiteSettingsType extends AbstractType {
         $builder
             ->add('siteName', TextType::class, [
                 'label' => 'site_settings.site_name',
+            ])
+            ->add('defaultTheme', ThemeSelectorType::class, [
+                'help' => 'site_settings.site_theme_help',
+                'label' => 'site_settings.site_theme',
+                'required' => false,
             ])
             ->add('wikiEnabled', CheckboxType::class, [
                 'label' => 'site_settings.wiki_enabled',

@@ -11,6 +11,9 @@ use Ramsey\Uuid\UuidInterface;
  * a single-row table where some global settings are stored.
  *
  * @ORM\Entity(repositoryClass="App\Repository\SiteRepository")
+ * @ORM\Table(indexes={
+ *     @ORM\Index(name="site_default_theme_idx", columns={"default_theme_id"})
+ * })
  */
 class Site {
     /**
@@ -27,6 +30,13 @@ class Site {
      * @var string
      */
     private $siteName = 'Postmill';
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Theme")
+     *
+     * @var Theme|null
+     */
+    private $defaultTheme;
 
     /**
      * @ORM\Column(type="boolean")
@@ -70,6 +80,14 @@ class Site {
 
     public function setSiteName(string $siteName): void {
         $this->siteName = $siteName;
+    }
+
+    public function getDefaultTheme(): ?Theme {
+        return $this->defaultTheme;
+    }
+
+    public function setDefaultTheme(?Theme $defaultTheme): void {
+        $this->defaultTheme = $defaultTheme;
     }
 
     public function isWikiEnabled(): bool {
