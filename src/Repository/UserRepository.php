@@ -25,6 +25,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @method User|null findOneByUsername(string|string[] $username)
  * @method User|null findOneByNormalizedUsername(string|string[] $normalizedUsername)
  * @method User[]    findByUsername(string|string[] $usernames)
+ * @method User[]    findByNormalizedUsername(string|string[] $usernames)
  */
 class UserRepository extends ServiceEntityRepository implements UserLoaderInterface {
     /**
