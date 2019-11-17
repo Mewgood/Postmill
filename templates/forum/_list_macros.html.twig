@@ -1,5 +1,9 @@
+{% macro header() %}
+  <h1 class="no-margin">{{ 'forum_list.page_title'|trans }}</h1>
+{% endmacro header %}
+
 {% macro forum_list_tabs() %}
-  <ul class="unlistify nav">
+  <ul class="unlistify nav no-margin">
     {% with { active: app.request.attributes.get('_route') == 'forum_list' } %}
       <li>
         <a href="{{ path('forum_list') }}" class="tab {{ active ? 'tab--active' }}">
@@ -19,8 +23,8 @@
 
 {% macro create_forum() %}
   {% if is_granted('create_forum') %}
-    <p role="navigation">
+    <div>
       <a href="{{ path('create_forum') }}" class="button">{{ 'forum.create'|trans }}</a>
-    </p>
+    </div>
   {% endif %}
 {% endmacro create_forum %}

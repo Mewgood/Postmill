@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% from 'forum/_list_macros.html.twig' import forum_list_tabs %}
+{% from 'forum/_list_macros.html.twig' import header, forum_list_tabs, create_forum %}
 
 {% block site_nav_active 'places' %}
 {% block site_nav_main_menu_active 'forums' %}
@@ -9,11 +9,15 @@
 {% endblock %}
 
 {% block body %}
-  <h1 class="page-heading">{{ 'forum_list.page_title'|trans }}</h1>
+  <header class="nav nav--guttered">
+    {{ header() }}
 
-  <nav class="nav nav--guttered forum-list-view-selector">
-    {{ forum_list_tabs() }}
-  </nav>
+    <div class="nav__grow">
+      {{ forum_list_tabs() }}
+    </div>
+
+    {{ create_forum() }}
+  </header>
 
   <ul class="grouped-forum-listing">
     {% for category in forum_categories %}

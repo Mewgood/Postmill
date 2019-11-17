@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% use '_layouts/forum_card.html.twig' %}
 {% from '_macros/icon.html.twig' import icon %}
-{% from 'forum/_list_macros.html.twig' import create_forum, forum_list_tabs %}
+{% from 'forum/_list_macros.html.twig' import header, mode_toggle, create_forum, forum_list_tabs %}
 
 {% block site_nav_active 'places' %}
 {% block site_nav_main_menu_active 'forums' %}
@@ -22,36 +22,42 @@
 } %}
 
 {% block body %}
-  <h1 class="page-heading">{{ 'forum_list.page_title'|trans }}</h1>
+  <div class="nav nav--guttered">
+    {{ header() }}
 
-  <nav class="forum-list-view-selector nav nav--guttered">
-    {{ forum_list_tabs() }}
-    <ul class="unlistify nav">
-      <li class="dropdown">
-        <button type="button"
-                class="tab dropdown__toggle unbuttonize no-underline"
-                aria-label="{{ 'label.sort_by_mode'|trans({
-                  '%mode%': forum_sort_modes[sortBy]
-                }) }}">
-          {{ icon('sort') }}
-          <span class="no-underline__exempt">{{ forum_sort_modes[sortBy] }}</span>
-          <span class="dropdown__arrow" aria-hidden="true"></span>
-        </button>
-        <ul class="dropdown__menu dropdown-card no-margin unlistify">
-          {% for mode, label in forum_sort_modes %}
-            <li>
-              <a href="{{ path('forum_list', { sortBy: mode }) }}"
-                 class="menu-item {{ sortBy == mode ? 'menu-item--active' }} no-wrap">
-                {{- label -}}
-              </a>
-            </li>
-          {% endfor %}
+    <div class="nav__grow">
+      <nav class="nav nav--guttered">
+        {{ forum_list_tabs() }}
+
+        <ul class="no-margin unlistify">
+          <li class="dropdown">
+            <button type="button"
+                    class="tab dropdown__toggle unbuttonize no-underline"
+                    aria-label="{{ 'label.sort_by_mode'|trans({
+                      '%mode%': forum_sort_modes[sortBy]
+                    }) }}">
+              {{ icon('sort') }}
+              <span class="no-underline__exempt">{{ forum_sort_modes[sortBy] }}</span>
+              <span class="dropdown__arrow" aria-hidden="true"></span>
+            </button>
+
+            <ul class="dropdown__menu dropdown-card no-margin unlistify">
+              {% for mode, label in forum_sort_modes %}
+                <li>
+                  <a href="{{ path('forum_list', { sortBy: mode }) }}"
+                     class="menu-item {{ sortBy == mode ? 'menu-item--active' }} no-wrap">
+                    {{- label -}}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
         </ul>
-      </li>
-    </ul>
-  </nav>
+      </nav>
+    </div>
 
-  {{ create_forum() }}
+    {{ create_forum() }}
+  </div>
 
   {% for forum in forums %}
     {{ block('forum_card') }}
