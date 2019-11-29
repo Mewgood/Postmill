@@ -53,9 +53,9 @@ lint:js:
     script:
         - yarn run lint:js
 
-lint:7.3: &lint
+lint:7.4: &lint
     stage: lint
-    image: php:7.3-alpine
+    image: php:7.4-alpine
     services: []
     except:
         - schedules
@@ -65,10 +65,9 @@ lint:7.3: &lint
           xargs -0 -n1 -P4 php -l -n |
           (! grep -v "No syntax errors detected" )
 
-lint:7.4:
+lint:7.3:
     <<: *lint
-    image: php:7.4-rc-alpine
-    allow_failure: true
+    image: php:7.3-alpine
 
 lint:7.2:
     <<: *lint
@@ -83,7 +82,7 @@ lint:7.1:
 # Build app
 # =========
 
-build-app:7.3: &build-app
+build-app:7.4: &build-app
     stage: build-app
     image: docker:19-git
     except:
@@ -91,7 +90,7 @@ build-app:7.3: &build-app
     services:
         - docker:dind
     variables: &build-app-vars
-        PHP_VERSION: '7.3'
+        PHP_VERSION: '7.4'
         TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION}-${CI_COMMIT_SHA}
         TEST_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:${CI_COMMIT_SHA}
     script:
@@ -102,12 +101,11 @@ build-app:7.3: &build-app
             --target postmill_php -t $TEST_IMAGE_APP .
         - docker push $TEST_IMAGE_APP
 
-build-app:7.4:
+build-app:7.3:
     <<: *build-app
-    allow_failure: true
     variables:
         <<: *build-app-vars
-        PHP_VERSION: '7.4-rc'
+        PHP_VERSION: '7.3'
 
 build-app:7.2:
     <<: *build-app
@@ -126,8 +124,8 @@ build-app:7.1:
 # Test
 # ====
 
-test:7.3: &test
-    image: ${CI_REGISTRY_IMAGE}/app:7.3-${CI_COMMIT_SHA}
+test:7.4: &test
+    image: ${CI_REGISTRY_IMAGE}/app:7.4-${CI_COMMIT_SHA}
     stage: test
     except:
         - schedules
@@ -153,10 +151,9 @@ test:7.3: &test
         - bin/console lint:yaml translations
         - composer validate --strict
 
-test:7.4:
+test:7.3:
     <<: *test
-    image: ${CI_REGISTRY_IMAGE}/app:7.4-rc-${CI_COMMIT_SHA}
-    allow_failure: true
+    image: ${CI_REGISTRY_IMAGE}/app:7.3-${CI_COMMIT_SHA}
 
 test:7.2:
     <<: *test
