@@ -44,7 +44,7 @@
       <td>
         {{ relative_time(item.created, { date_format: 'short', time_format: 'none' }) }}
       </td>
-      <td>{{ item.admin ? ('label.admin'|trans) : item.trusted ? ('label.trusted'|trans) : '-' }}</td>
+      <td>{{ item.admin ? ('label.admin'|trans) : item.whitelisted ? ('label.whitelisted'|trans) : '-' }}</td>
       <td>
         {% with { count: item.moderatorTokens|length } %}
           {{ count > 0 ? 'label.forums_count'|trans({'%count%': count}) : '-' }}

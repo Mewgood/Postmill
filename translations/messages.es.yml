@@ -95,8 +95,6 @@ flash.submission_unlocked: La publicación fue desbloqueada.
 flash.user_account_registered: Tu cuenta ha sido registrada.
 flash.user_biography_updated: Se actualizó la biografía.
 flash.user_blocked: La usuaria fue bloqueada.
-flash.user_marked_trusted: La usuaria fue marcada como confiable.
-flash.user_marked_untrusted: La usuaria fue marcada como no confiable.
 flash.user_password_updated: Tu contraseña ha sido actualizada.
 flash.user_settings_updated: Las opciones de usuario han sido actualizadas.
 flash.user_unblocked: La usuaria fue desbloqueada.
@@ -138,7 +136,6 @@ heading.forums_you_moderate: Foros que moderas
 heading.message_reply: "%sender% respondió %timestamp%"
 heading.message_thread: "%sender% le escribió a %receiver% %timestamp%"
 heading.multi_forum_view: Vista de múltiples foros
-heading.user_roles: Roles de usuario
 
 help.block_users: Bloquear usuarias impide que te envíen mensajes privados, y no recibirás notificaciones cuando te respondan.
 help.delete_forum_warning: ¡Todo el contenido de este foro será borrado irreversiblemente!
@@ -222,7 +219,6 @@ label.subscribed: Suscrito
 label.title: Título
 label.to: A
 label.toolbox: Herramientas
-label.trusted: Confiable
 label.unban: Dejar de vetar
 label.unban_associated_ips: Elimina vetos asociados a IP
 label.url: URL
@@ -348,8 +344,6 @@ title.wiki_diff: Mostrando diferencia entre revisiones %from% y %to%
 
 user.comments: Comentarios
 user.email_optional: Proporcionar una dirección correo es opcional. Solo la utilizaremos para restablecer contraseñas y enviar códigos de autenticación de dos factores.
-user.mark_as_trusted: Marcar usuaria como confiable
-user.mark_as_untrusted: Marca usuaria como no confiable
 user.message: Enviar mensaje
 user.moderates: '%username% es una moderadora en:'
 user.password_rules: Mínimo de 8 caracteres; máximo de 72 debido a limitaciones del algoritmo bcrypt.

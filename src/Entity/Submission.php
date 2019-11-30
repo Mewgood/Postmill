@@ -284,7 +284,7 @@ class Submission implements VisibilityInterface, VotableInterface {
         $this->body = $body;
         $this->forum = $forum;
         $this->user = $user;
-        $this->ip = $user->isTrustedOrAdmin() ? null : $ip;
+        $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
         $this->timestamp = $timestamp ?? new \DateTime('@'.time());
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();

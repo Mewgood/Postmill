@@ -179,7 +179,7 @@ class Comment implements VisibilityInterface, VotableInterface {
         $this->user = $user;
         $this->submission = $submission;
         $this->parent = $parent;
-        $this->ip = $user->isTrustedOrAdmin() ? null : $ip;
+        $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
         $this->timestamp = $timestamp ?: new \DateTime('@'.time());
         $this->children = new ArrayCollection();
         $this->votes = new ArrayCollection();

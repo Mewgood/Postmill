@@ -80,8 +80,6 @@ flash.submission_unlocked: A postagem foi destrancada.
 flash.user_account_registered: Sua conta foi registrada.
 flash.user_biography_updated: A biografia foi atualizada.
 flash.user_blocked: O usuário foi bloqueado.
-flash.user_marked_trusted: O usuário foi marcado como confiável.
-flash.user_marked_untrusted: O usuário foi marcado como não confiável.
 flash.user_password_updated: Sua senha foi alterada.
 flash.user_settings_updated: As configurações de usuário foram atualizadas.
 flash.user_unblocked: O usuário foi desbloqueado.
@@ -122,7 +120,6 @@ heading.forums_you_moderate: Fóruns que você modera
 heading.message_reply: "%sender% respondeu %timestamp%"
 heading.message_thread: "%sender% escreveu para %receiver% %timestamp%"
 heading.multi_forum_view: Visulização multi fórum
-heading.user_roles: Funções do usuário
 
 help.block_users: Bloquear usuários impede que eles lhe enviem mensagens privadas, e você não receberá notificações quando eles lhe responderem.
 help.delete_forum_warning: Todo o conteúdo deste fórum será apagado permanentemente!
@@ -280,8 +277,6 @@ title.unbanning_user_from_forum: Desbanindo %user% de %forum%
 
 user.comments: Comentários
 user.email_optional: Fornecer um endereço de email é opcional. Nós vamos usá-lo apenas para recuperar senhas.
-user.mark_as_trusted: Marcar como confiável
-user.mark_as_untrusted: Marcar como não confiável
 user.message: Enviar mensagem
 user.moderates: '%username% é moderador em:'
 user.password_rules: Mínimo de 8 caracteres; máximo de 72 devido a limitações do algoritmo bcrypt.

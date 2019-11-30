@@ -70,7 +70,7 @@ final class BanListener implements EventSubscriberInterface {
                 return;
             }
 
-            if ($user->isTrustedOrAdmin()) {
+            if ($user->isWhitelistedOrAdmin()) {
                 // don't check for ip bans
                 return;
             }

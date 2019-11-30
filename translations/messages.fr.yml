@@ -98,8 +98,6 @@ flash.submission_unlocked: Le post a été déverrouillé.
 flash.user_account_registered: Votre compte a été créé.
 flash.user_biography_updated: La biographie a été mise à jour.
 flash.user_blocked: L'utilisateur a été bloqué.
-flash.user_marked_trusted: L'utilisateur a été marqué comme fiable.
-flash.user_marked_untrusted: L'utilisateur a été marqué comme non fiable.
 flash.user_password_updated: Votre mot de passe a été mis à jour.
 flash.user_settings_updated: Les paramètres du compte ont été mis à jour.
 flash.user_unblocked: L'utilisateur a été débloqué.
@@ -141,7 +139,6 @@ heading.forums_you_moderate: Forums que vous modérez
 heading.message_reply: "%sender% a répondu %timestamp%"
 heading.message_thread: "%sender% a écrit à %receiver% %timestamp%"
 heading.multi_forum_view: Vue multi-forum
-heading.user_roles: Rôles
 
 help.block_users: Bloquer un utilisateur l'empêche de vous envoyer des messages privés, et vous ne recevrez pas de notifications lorsqu'ils vous répondent.
 help.delete_forum_warning: Tout le contenu de ce forum sera supprimé pour toujours!
@@ -225,7 +222,6 @@ label.subscribed: Abonné
 label.title: Titre
 label.to: À
 label.toolbox: Boîte à outils
-label.trusted: Fiable
 label.unban: Ne plus bannir
 label.unban_associated_ips: Supprimer les bans d'addresses IP associées
 label.url: URL
@@ -359,8 +355,6 @@ title.wiki_diff: Affichage des modifications entre %from% et %to%
 
 user.comments: Commentaires
 user.email_optional: Fournir une adresse mail est optionnel. Nous ne l'utiliserons que pour réinitialiser votre mot de passe.
-user.mark_as_trusted: Marquer ce compte comme fiable
-user.mark_as_untrusted: Marquer ce compte comme non fiable
 user.message: Envoyer le message
 user.moderates: '%username% modère:'
 user.password_rules: Minimum de 8 caractères, maximum de 72, en raison des limites de l'algorithme bcrypt.

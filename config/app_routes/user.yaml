@@ -83,17 +83,17 @@ registration:
     path: /registration
     methods: [GET, POST]
 
-mark_user_trusted:
-    controller: App\Controller\UserController::markAsTrusted
-    defaults: { trusted: true }
-    path: /user/{username}/mark_as_trusted
+user_whitelist:
+    controller: App\Controller\UserController::whitelist
+    defaults: { whitelist: true }
+    path: /user/{username}/whitelist
     methods: [POST]
     requirements: { username: "%username_regex%" }
 
-mark_user_untrusted:
-    controller: App\Controller\UserController::markAsTrusted
-    defaults: { trusted: false }
-    path: /user/{username}/mark_as_untrusted
+user_dewhitelist:
+    controller: App\Controller\UserController::whitelist
+    defaults: { whitelist: false }
+    path: /user/{username}/dewhitelist
     methods: [POST]
     requirements: { username: "%username_regex%" }
 

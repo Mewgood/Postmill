@@ -108,8 +108,6 @@ flash.submission_unpinned: La afiŝo estis malkejlita.
 flash.user_account_registered: Via konto estis ĵus registrita.
 flash.user_biography_updated: La biografio estis ĝisdatita.
 flash.user_blocked: La uzanto estis blokita.
-flash.user_marked_trusted: La uzanto estis markita kiel konfidulo.
-flash.user_marked_untrusted: La uzanto estis markita kiel malkonfidulo.
 flash.user_password_updated: Via pasvorto ĝisdatiĝis.
 flash.user_settings_updated: Uzanto-agordoj ĝisdatigis.
 flash.user_unblocked: La uzanto estis malblokita.
@@ -162,7 +160,6 @@ heading.privacy: Privateco
 heading.search: Serĉi
 heading.search_results: '{0} Sen resultoj por %query%|{1} 1 resulto por %query%:|]1,Inf[ %count% resultoj por %query%:'
 heading.this_user_is_banned: Ĉi tiu uzanto estas forbarita!
-heading.user_roles: Uzantaj roloj
 heading.you_were_mentioned: Vi estis menciita de %user%
 
 help.allow_private_messages: Se malebligita, nur administrantoj, kunkontrolantoj kaj kontrolantoj de diskutejoj, in kiuj vi antaŭ ne longe partoprenis povos sendi al vi privatajn mesaĝojn.
@@ -274,7 +271,6 @@ label.timezone: Horzono
 label.title: Titolo
 label.to: al
 label.toolbox: Ilaro
-label.trusted: Konfidulo
 label.unban: Malforbari
 label.unban_associated_ips: Forigi asociigitajn IP-forbarojn
 label.url: URL
@@ -446,8 +442,6 @@ title.wiki_diff: Montrata diferencojn inter revizioj %from% kaj %to%
 
 user.comments: Komentoj
 user.email_optional: Retpoŝtadreso malnepras. Ni nur uzos ĝin por reagordi pasvortojn kaj retpoŝti du-fazajn identokontrolojn.
-user.mark_as_trusted: Marki uzanton kiel konfidulo
-user.mark_as_untrusted: Marki uzanton kiel malkonfidulo
 user.message: Sendi mesaĝon
 user.moderates: '%username% estas kontrolanto por:'
 user.password_rules: Minimume 8 signoj; maksimume 72 pro limigoj de la algoritmo «bcrypt».

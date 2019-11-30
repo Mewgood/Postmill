@@ -38,6 +38,8 @@ action.unlock: Åpne
 action.unpin: Ta ned
 action.unsubscribe: Avabonnere
 action.upvote: Stem opp
+action.whitelist: Hvitelist
+action.whitelist_remove: Fjern hvitelisting
 
 add_moderator.title: Legg til moderator for %forum%
 
@@ -128,14 +130,14 @@ flash.too_many_characters: Du skrev inn for mange tegn (maks %max%, %count% skre
 flash.user_account_registered: Din konto har blitt registrert.
 flash.user_biography_updated: Biografien ble oppdatert.
 flash.user_blocked: Brukeren ble blokkert.
-flash.user_marked_trusted: Brukeren ble market som pålitelig.
-flash.user_marked_untrusted: Pålitelighetsmarkøren ble fjernet.
 flash.user_password_updated: Passordet ditt ble oppdatert.
 flash.user_settings_updated: Innstillingene har blitt oppdatert.
 flash.user_unblocked: Brukeren ble avblokkert.
 flash.user_unmodded: Brukeren ble fjernet som moderator.
 flash.user_was_banned: Brukeren ble utestengt.
 flash.user_was_unbanned: Utestengelsen ble fjernet.
+flash.user_whitelisted: Brukeren ble hvitelistet.
+flash.user_whitelist_removed: Brukeren ble fjernet fra hvitelisten.
 flash.wiki_page_deleted: Wikisiden ble slettet.
 flash.you_must_reauthenticate: Du må autentisere på nytt for å få tilgang til denne siden.
 
@@ -185,8 +187,8 @@ heading.privacy: Personvern
 heading.search: Søk
 heading.search_results: '{0} Ingen resultater for %query%|{1} Ett resultat for %query%:|]1,Inf[ %count% resultater for %query%:'
 heading.this_user_is_banned: Denne brukeren er utestengt!
-heading.user_roles: Brukerroller
 heading.you_were_mentioned: Du var nevnt av %user%
+heading.whitelisting: Hvitelisting
 
 help.allow_private_messages: Om deaktivert, så vil kun administratorer, dine med-moderatorer og moderatorer av fora du nylig har deltatt i kunne sende deg private meldinger.
 help.block_users: Å blokkere brukere forhindrer dem i å sende deg private meldinger, og du vil heller ikke bli varslet når de svarer deg.
@@ -204,6 +206,7 @@ help.preferred_fonts_aliases: 'Aliaserte skrifttyper: '
 help.preferred_fonts_served: 'Skrifttyper levert av serveren (tilgjengelige overalt): '
 help.required_field: Dette feltet er påkrevd.
 help.theme_selector: Stjerne indikerer samme som forhåndsvalgt.
+help.whitelisting: Hvitelisting vil tillate brukeren å slippe forbi IP-utestengelser og noen virkemidler mot automatisert misbruk. I tillegg vil ikke IP-adressen deres bli lagret lengre.
 help.will_appear_in_the_url: Vil vises i webadressen.
 
 inbox.message_reply_head: 'Sv: %title%'
@@ -309,7 +312,6 @@ label.timezone: Time zone
 label.title: Tittel
 label.to: Til
 label.toolbox: Verktøy
-label.trusted: Pålitelig
 label.unban: Fjern utestengelse
 label.unban_associated_ips: Fjern brukerutestengelser assosiert med IP-utestengelser
 label.upload_image: Last opp bilde
@@ -318,6 +320,7 @@ label.user_associated_with_ip: Bruker assosiert med IP
 label.username: Brukernavn
 label.verification: Verifikasjon
 label.verification_image: Verifikasjonsbilde
+label.whitelisted: Hvitelistet
 
 log.ban: '%user% utestengte %banned% (utløper: %expires%). Årsak: «%reason%»'
 log.comment_deletion: '%user% slettet en kommentar av %author% i «%submission%»'
@@ -430,7 +433,7 @@ reset_password.title: Nullstille passord
 
 role.admins: Administratorer
 role.everyone: Alle
-role.trusted_users: Pålitelige brukere
+role.whitelisted: Hvitelistede
 
 site_footer.app: Kjører %app% %version%
 site_footer.version: '%version% (%branch%)'
@@ -510,8 +513,6 @@ title.wiki_diff: Viser forskjellen mellom %from% og %to%
 
 user.comments: Kommentarer
 user.email_optional: Å oppgi en epost-adresse er valgfritt. Den vil kun bli brukt til nullstilling av passord.
-user.mark_as_trusted: Marker som pålitelig
-user.mark_as_untrusted: Fjern pålitelighet
 user.message: Send melding
 user.moderates: '%username% er en moderator i:'
 user.password_rules: Minst 8 tegn; opptil 72 på grunn av begrensninger med bcrypt-algoritmen.

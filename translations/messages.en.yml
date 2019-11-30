@@ -38,6 +38,8 @@ action.unlock: Unlock
 action.unpin: Unpin
 action.unsubscribe: Unsubscribe
 action.upvote: Upvote
+action.whitelist: Whitelist
+action.whitelist_remove: De-whitelist
 
 add_moderator.title: Add moderator to %forum%
 
@@ -129,14 +131,14 @@ flash.too_many_characters: You entered too many characters (max %max%, %count% e
 flash.user_account_registered: Your account has been registered.
 flash.user_biography_updated: The biography was updated.
 flash.user_blocked: The user was blocked.
-flash.user_marked_trusted: The user was marked as trusted.
-flash.user_marked_untrusted: The user was marked as untrusted.
 flash.user_password_updated: Your password has been updated.
 flash.user_settings_updated: User settings have been updated.
 flash.user_unblocked: The user was unblocked.
 flash.user_unmodded: The user was unmodded.
 flash.user_was_banned: The user was banned.
 flash.user_was_unbanned: The user was unbanned.
+flash.user_whitelisted: The user was whitelisted.
+flash.user_whitelist_removed: The user was de-whitelisted.
 flash.wiki_page_deleted: The wiki page has been deleted.
 flash.you_must_reauthenticate: You must reauthenticate to access this page.
 
@@ -186,8 +188,8 @@ heading.privacy: Privacy
 heading.search: Search
 heading.search_results: '{0} No results for %query%|{1} 1 result for %query%:|]1,Inf[ %count% results for %query%:'
 heading.this_user_is_banned: This user is banned!
-heading.user_roles: User roles
 heading.you_were_mentioned: You were mentioned by %user%
+heading.whitelisting: Whitelisting
 
 help.allow_private_messages: If disabled, only admins, co-moderators, and moderators of forums you've recently participated in will be able to send you private messages.
 help.block_users: Blocking users prevents them from sending you private messages, and you won't receive notifications when they reply to you.
@@ -205,6 +207,7 @@ help.preferred_fonts_aliases: 'Aliased font names: '
 help.preferred_fonts_served: 'Server-provided fonts (available everywhere): '
 help.required_field: This field is required.
 help.theme_selector: Asterisk indicates same as default.
+help.whitelisting: Whitelisting will allow this user to bypass IP bans and some flood protections. Additionally, their IP addresses will no longer be stored.
 help.will_appear_in_the_url: Will appear in the URL.
 
 inbox.message_reply_head: 'Re: %title%'
@@ -310,7 +313,6 @@ label.timezone: Time zone
 label.title: Title
 label.to: To
 label.toolbox: Toolbox
-label.trusted: Trusted
 label.unban: Unban
 label.unban_associated_ips: Remove associated IP bans
 label.upload_image: Upload image
@@ -319,6 +321,7 @@ label.user_associated_with_ip: User associated with IP
 label.username: Username
 label.verification: Verification
 label.verification_image: Verification image
+label.whitelisted: Whitelisted
 
 log.ban: '%user% banned %banned% (expires: %expires%). Reason: "%reason%"'
 log.comment_deletion: '%user% deleted comment by %author% in "%submission%"'
@@ -431,7 +434,7 @@ reset_password.title: Resetting password
 
 role.admins: Admins
 role.everyone: Everyone
-role.trusted_users: Trusted users
+role.whitelisted: Whitelisted
 
 site_footer.app: Running %app% %version%
 site_footer.version: '%version% (%branch%)'
@@ -513,8 +516,6 @@ title.wiki_diff: Showing difference between revisions %from% and %to%
 
 user.comments: Comments
 user.email_optional: Providing an email address is optional. We will only use it for resetting passwords.
-user.mark_as_trusted: Mark user as trusted
-user.mark_as_untrusted: Mark user as untrusted
 user.message: Send message
 user.moderates: '%username% is a moderator on:'
 user.password_rules: Minimum of 8 characters; maximum of 72 due to limitations of the bcrypt algorithm.

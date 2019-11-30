@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class SiteSettingsType extends AbstractType {
     private const ROLES = [
         'role.admins' => 'ROLE_ADMIN',
-        'role.trusted_users' => 'ROLE_TRUSTED_USER',
+        'role.whitelisted' => 'ROLE_WHITELISTED',
         'role.everyone' => 'ROLE_USER',
     ];
 

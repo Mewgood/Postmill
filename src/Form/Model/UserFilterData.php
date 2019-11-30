@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Criteria;
 class UserFilterData {
     public const ROLE_ANY = 'any';
     public const ROLE_ADMIN = 'admin';
-    public const ROLE_TRUSTED = 'trusted';
+    public const ROLE_WHITELISTED = 'whitelisted';
     public const ROLE_NONE = 'none';
 
     public const ORDER_CREATED = 'created';
@@ -35,14 +35,14 @@ class UserFilterData {
             $criteria->where(Criteria::expr()->eq('admin', true));
             break;
 
-        case self::ROLE_TRUSTED:
-            $criteria->where(Criteria::expr()->eq('trusted', true));
+        case self::ROLE_WHITELISTED:
+            $criteria->where(Criteria::expr()->eq('whitelisted', true));
             $criteria->andWhere(Criteria::expr()->eq('admin', false));
             break;
 
         case self::ROLE_NONE:
             $criteria->where(Criteria::expr()->eq('admin', false));
-            $criteria->andWhere(Criteria::expr()->eq('trusted', false));
+            $criteria->andWhere(Criteria::expr()->eq('whitelisted', false));
             break;
 
         default:

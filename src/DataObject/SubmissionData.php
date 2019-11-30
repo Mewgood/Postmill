@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @RateLimit(period="5 minutes", max=15, groups={"create"}, entityClass=Submission::class)
- * @RateLimit(period="1 hour", max=3, groups={"untrusted_user_create"}, entityClass=Submission::class)
+ * @RateLimit(period="1 hour", max=3, groups={"unwhitelisted_user_create"}, entityClass=Submission::class)
  */
 class SubmissionData implements NormalizeMarkdownInterface {
     /**

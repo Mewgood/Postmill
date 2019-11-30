@@ -132,11 +132,16 @@
 
   {% if is_granted('ROLE_ADMIN') %}
     <section class="sidebar__section sidebar-card">
-      <h1 class="sidebar__title">{{ 'heading.user_roles'|trans }}</h1>
-      <form action="{{ path(user.trusted ? 'mark_user_untrusted' : 'mark_user_trusted', {username: user.username}) }}" method="post" class="form">
-        <input type="hidden" name="token" value="{{ csrf_token('mark_trusted') }}">
-        <div class="form__row">
-          <button class="button button--secondary">{{ (not user.trusted ? 'user.mark_as_trusted' : 'user.mark_as_untrusted')|trans }}</button>
+      <h1 class="sidebar__title">{{ 'heading.whitelisting'|trans }}</h1>
+
+      <p class="fg-muted">{{ 'help.whitelisting'|trans }}</p>
+
+      <form action="{{ path(user.whitelisted ? 'user_dewhitelist' : 'user_whitelist', {username: user.username}) }}" method="post" class="form">
+        <input type="hidden" name="token" value="{{ csrf_token('whitelist') }}">
+        <div class="form-row form__row">
+          <button class="button button--secondary">
+            {{ not user.whitelisted ? 'action.whitelist'|trans : 'action.whitelist_remove'|trans }}
+          </button>
         </div>
       </form>
     </section>

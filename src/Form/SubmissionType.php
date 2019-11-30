@@ -126,14 +126,14 @@ final class SubmissionType extends AbstractType {
 
     private function getValidationGroups(FormInterface $form): array {
         $groups = ['Default'];
-        $trusted = $this->authorizationChecker->isGranted('ROLE_TRUSTED_USER');
+        $whitelisted = $this->authorizationChecker->isGranted('ROLE_WHITELISTED');
         $editing = $form->getData() && $form->getData()->getId();
 
         if (!$editing) {
             $groups[] = 'create';
 
-            if (!$trusted) {
-                $groups[] = 'untrusted_user_create';
+            if (!$whitelisted) {
+                $groups[] = 'unwhitelisted_user_create';
             }
 
             if ($form->has('mediaType')) {
@@ -152,8 +152,8 @@ final class SubmissionType extends AbstractType {
                 $groups[] = 'url';
             }
 
-            if (!$trusted) {
-                $groups[] = 'untrusted_user_edit';
+            if (!$whitelisted) {
+                $groups[] = 'unwhitelisted_user_edit';
             }
         }
 

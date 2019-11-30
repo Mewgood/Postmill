@@ -69,7 +69,7 @@ class Message {
         $this->thread = $thread;
         $this->sender = $sender;
         $this->body = $body;
-        $this->ip = $sender->isTrustedOrAdmin() ? null : $ip;
+        $this->ip = $sender->isWhitelistedOrAdmin() ? null : $ip;
         $this->timestamp = new \DateTime('@'.time());
         $this->notify();
 

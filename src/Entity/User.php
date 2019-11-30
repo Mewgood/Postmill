@@ -25,7 +25,7 @@ class User implements UserInterface, \Serializable {
      */
     public const ROLES = [
         'ROLE_ADMIN',
-        'ROLE_TRUSTED_USER',
+        'ROLE_WHITELISTED',
         'ROLE_USER',
     ];
 
@@ -200,11 +200,11 @@ class User implements UserInterface, \Serializable {
     private $showCustomStylesheets = true;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(type="boolean", options={"default": false}, name="trusted")
      *
      * @var bool
      */
-    private $trusted = false;
+    private $whitelisted = false;
 
     /**
      * @ORM\JoinColumn(onDelete="SET NULL")
@@ -412,8 +412,8 @@ class User implements UserInterface, \Serializable {
             $roles[] = 'ROLE_ADMIN';
         }
 
-        if ($this->trusted) {
-            $roles[] = 'ROLE_TRUSTED_USER';
+        if ($this->whitelisted) {
+            $roles[] = 'ROLE_WHITELISTED';
         }
 
         return $roles;
@@ -567,16 +567,16 @@ class User implements UserInterface, \Serializable {
         $this->showCustomStylesheets = $showCustomStylesheets;
     }
 
-    public function isTrusted(): bool {
-        return $this->trusted;
+    public function isWhitelisted(): bool {
+        return $this->whitelisted;
     }
 
-    public function isTrustedOrAdmin(): bool {
-        return $this->admin || $this->trusted;
+    public function isWhitelistedOrAdmin(): bool {
+        return $this->admin || $this->whitelisted;
     }
 
-    public function setTrusted(bool $trusted): void {
-        $this->trusted = $trusted;
+    public function setWhitelisted(bool $whitelisted): void {
+        $this->whitelisted = $whitelisted;
     }
 
     public function getPreferredTheme(): ?Theme {

@@ -71,7 +71,7 @@ abstract class Vote {
 
         $this->upvote = $choice === VotableInterface::VOTE_UP;
         $this->user = $user;
-        $this->ip = $user->isTrustedOrAdmin() ? null : $ip;
+        $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
         $this->timestamp = new \DateTime('@'.time());
     }
 

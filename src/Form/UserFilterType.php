@@ -22,8 +22,8 @@ class UserFilterType extends AbstractType {
                 'label' => 'label.role',
                 'choices' => [
                     'label.any' => UserFilterData::ROLE_ANY,
-                    'label.admin' => UserFilterData::ROLE_ADMIN,
-                    'label.trusted' => UserFilterData::ROLE_TRUSTED,
+                    'role.admins' => UserFilterData::ROLE_ADMIN,
+                    'role.whitelisted' => UserFilterData::ROLE_WHITELISTED,
                     'label.none' => UserFilterData::ROLE_NONE,
                 ],
             ]);

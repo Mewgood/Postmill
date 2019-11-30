@@ -352,13 +352,13 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
      */
-    public function markAsTrusted(Request $request, User $user, ObjectManager $em, bool $trusted): Response {
-        $this->validateCsrf('mark_trusted', $request->request->get('token'));
+    public function whitelist(Request $request, User $user, ObjectManager $em, bool $whitelist): Response {
+        $this->validateCsrf('whitelist', $request->request->get('token'));
 
-        $user->setTrusted($trusted);
+        $user->setWhitelisted($whitelist);
         $em->flush();
 
-        $this->addFlash('success', $trusted ? 'flash.user_marked_trusted' : 'flash.user_marked_untrusted');
+        $this->addFlash('success', $whitelist ? 'flash.user_whitelisted' : 'flash.user_whitelist_removed');
 
         return $this->redirectToRoute('user', [
             'username' => $user->getUsername(),

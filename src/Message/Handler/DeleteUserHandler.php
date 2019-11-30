@@ -134,7 +134,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $user->setPreferredTheme(null);
         $user->setPreferredFonts(null);
         $user->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-        $user->setTrusted(false);
+        $user->setWhitelisted(false);
 
         $this->entityManager->createQueryBuilder()
             ->delete(ForumSubscription::class, 'fs')
