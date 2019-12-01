@@ -30,10 +30,10 @@
     </h1>
   {% endapply %}
 
-  <nav class="nav nav--guttered">
+  <nav class="flex flex--guttered">
     {{ forum_post_types(forum.name, 'submissions') }}
 
-    <ul class="unlistify nav">
+    <ul class="unlistify flex">
       {{ submission_sort(sort_by) }}
       {{ submission_time(sort_by) }}
     </ul>

@@ -45,7 +45,7 @@
 
     {% if is_granted('lock', page) or is_granted('delete', page) %}
       <nav>
-        <ul class="nav nav--guttered unlistify">
+        <ul class="flex flex--guttered unlistify">
           {% if is_granted('lock', page) %}
             <li>
               <form action="{{ path(page.locked ? 'wiki_unlock' : 'wiki_lock', {path: page.path}) }}" method="post">

@@ -151,7 +151,7 @@
     <section class="sidebar__section sidebar-card">
       <h1 class="sidebar__title break-text">{{ 'user.moderates'|trans({'%username%': user.username}) }}</h1>
 
-      <ul class="unlistify nav nav--guttered nav--slim-gutters">
+      <ul class="unlistify flex flex--guttered flex--slim-gutters">
         {% for token in user.moderatorTokens %}
           <li>
             <a href="{{ path('forum', {forum_name: token.forum.name}) }}"

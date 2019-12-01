@@ -8,7 +8,7 @@
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title">{{ 'front.subscribed_forums'|trans }}</h1>
 
-    <ul class="unlistify nav nav--guttered nav--slim-gutters">
+    <ul class="unlistify flex flex--guttered flex--slim-gutters">
       {% for name in forums %}
         <li>
           <a href="{{ path('forum', {forum_name: name}) }}"

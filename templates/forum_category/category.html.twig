@@ -42,8 +42,8 @@
 {% block body %}
   <h1 class="page-heading">{{ 'heading.category'|trans({'%category%': category.title}) }}</h1>
 
-  <nav class="nav nav--guttered">
-    <ul class="unlistify nav">
+  <nav class="flex flex--guttered">
+    <ul class="unlistify flex">
       {{ submission_sort(sort_by) }}
       {{ submission_time(sort_by) }}
     </ul>

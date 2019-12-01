@@ -3,7 +3,7 @@
 {% endmacro header %}
 
 {% macro forum_list_tabs() %}
-  <ul class="unlistify nav no-margin">
+  <ul class="unlistify flex no-margin">
     {% with { active: app.request.attributes.get('_route') == 'forum_list' } %}
       <li>
         <a href="{{ path('forum_list') }}" class="tab {{ active ? 'tab--active' }}">

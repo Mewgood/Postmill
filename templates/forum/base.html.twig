@@ -124,8 +124,8 @@
 
   {% if forum.moderators is not empty or is_granted('ROLE_ADMIN') %}
     <section class="sidebar__section sidebar-card">
-      <div class="nav nav--guttered">
-        <h1 class="sidebar__title nav__grow">
+      <div class="flex flex--guttered">
+        <h1 class="sidebar__title flex__grow">
           {{- 'forum.moderators'|trans -}}
         </h1>
 
@@ -141,7 +141,7 @@
       </div>
 
       {% if forum.moderators is not empty %}
-        <ul class="unlistify nav nav--guttered nav--slim-gutters">
+        <ul class="unlistify flex flex--guttered flex--slim-gutters">
           {% for moderator in forum.moderators %}
             <li>
               <a href="{{ path('user', {username: moderator.user.username}) }}"

@@ -1,5 +1,5 @@
 {% macro front_post_types(current) %}
-  <ul class="unlistify nav">
+  <ul class="unlistify flex">
     <li>
       <a href="{{ path('front') }}"
          class="tab {{ current == 'submissions' ? 'tab--active' }}">
@@ -16,7 +16,7 @@
 {% endmacro front_post_types %}
 
 {% macro forum_post_types(forum_name, current) %}
-  <ul class="unlistify nav">
+  <ul class="unlistify flex">
     <li>
       <a href="{{ path('forum', { forum_name: forum_name }) }}"
          class="tab {{ current == 'submissions' ? 'tab--active' }}">

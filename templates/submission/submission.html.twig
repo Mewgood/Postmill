@@ -20,10 +20,10 @@
 
   {{ submission(submission, {show_body: true}) }}
 
-  <header class="nav nav--guttered">
+  <header class="flex flex--guttered">
     <h2>{{ 'comments.comments'|trans }}</h2>
 
-    <ul class="nav unlistify" role="navigation">
+    <ul class="flex unlistify" role="navigation">
       {% for view in ['nested', 'linear'] %}
         <li>
           <a href="{{ path('submission', { forum_name: forum.name, submission_id: submission.id, slug: submission.title|slugify, commentView: view }) }}"

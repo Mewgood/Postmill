@@ -33,7 +33,7 @@
 
 {% block body %}
   <nav class="submission-permalink-nav">
-    <ul class="nav nav--guttered unlistify">
+    <ul class="flex flex--guttered unlistify">
       <li>
         <a href="{{ path('forum', {forum_name: forum.name}) }}">
           {{ 'comments.return_to_forum'|trans({'%forum%': '/f/<strong>'~forum.name~'</strong>'})|raw -}}

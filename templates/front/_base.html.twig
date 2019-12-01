@@ -21,10 +21,10 @@
 {% endblock head %}
 
 {% block body %}
-  <nav class="nav nav--guttered">
+  <nav class="flex flex--guttered">
     {{ front_post_types('submissions') }}
 
-    <ul class="unlistify nav">
+    <ul class="unlistify flex">
       {{ submission_filter(block('listing'), sort_by) }}
       {{ submission_sort(sort_by) }}
       {{ submission_time(sort_by) }}

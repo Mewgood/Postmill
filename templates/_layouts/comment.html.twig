@@ -35,7 +35,7 @@
             </span>
           </h1>
 
-          <ul class="nav no-margin unlistify">
+          <ul class="flex no-margin unlistify">
             {% if post_numbers %}
               <li>
                 <a href="{{ path('comment', { forum_name: comment.submission.forum.name, submission_id: comment.submission.id, comment_id: comment.id }) }}"
@@ -85,7 +85,7 @@
         </div>
 
         <nav class="comment__nav hideable__hide">
-          <ul class="fg-muted nav nav--guttered no-margin unlistify">
+          <ul class="fg-muted flex flex--guttered no-margin unlistify">
             {{- block('comment_nav') -}}
           </ul>
         </nav>

@@ -14,7 +14,7 @@
     '%forum%': '<a href="%s">/f/%s</a>'|format(path('forum', {forum_name: forum.name})|e, forum.name|e)
   })|raw }}</h1>
 
-  <nav class="nav nav--guttered">
+  <nav class="flex flex--guttered">
     {{ forum_post_types(forum.name, 'comments') }}
   </nav>
 
