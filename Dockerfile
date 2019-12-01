@@ -40,12 +40,20 @@ RUN set -eux; \
         libzip-dev \
         postgresql-dev \
         rabbitmq-c-dev; \
-    docker-php-ext-configure gd \
-        --with-gd \
-        --with-freetype-dir=/usr/include/ \
-        --with-jpeg-dir=/usr/include/ \
-        --with-png-dir=/usr/include/ \
-        --with-webp-dir=/usr/include; \
+    if php -r'die(-!version_compare($argv[1],"7.4",">="));' $PHP_VERSION; then \
+        docker-php-ext-configure gd \
+            --enable-gd \
+            --with-freetype \
+            --with-jpeg \
+            --with-webp; \
+    else \
+        docker-php-ext-configure gd \
+            --with-gd \
+            --with-freetype-dir=/usr/include/ \
+            --with-jpeg-dir=/usr/include/ \
+            --with-png-dir=/usr/include/ \
+            --with-webp-dir=/usr/include; \
+    fi; \
     docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) \
         gd \
         intl \
