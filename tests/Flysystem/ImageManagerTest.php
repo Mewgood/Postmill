@@ -2,28 +2,28 @@
 
 namespace App\Tests\Flysystem;
 
-use App\Flysystem\SubmissionImageManager;
+use App\Flysystem\ImageManager;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class SubmissionImageManagerTest extends TestCase {
+class ImageManagerTest extends TestCase {
     /**
      * @var FilesystemInterface|MockObject
      */
     private $filesystem;
 
     /**
-     * @var SubmissionImageManager
+     * @var ImageManager
      */
     private $manager;
 
     protected function setUp(): void {
         $this->filesystem = $this->createMock(FilesystemInterface::class);
 
-        $this->manager = new SubmissionImageManager($this->filesystem);
+        $this->manager = new ImageManager($this->filesystem);
     }
 
     public function testCanGuessFilenameOfPngImage(): void {

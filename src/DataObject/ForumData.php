@@ -2,6 +2,7 @@
 
 namespace App\DataObject;
 
+use App\Entity\Contracts\BackgroundImageInterface;
 use App\Entity\Forum;
 use App\Entity\ForumCategory;
 use App\Entity\Theme;
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     entityClass="App\Entity\Forum", errorPath="name",
  *     message="A forum by that name already exists.")
  */
-class ForumData implements NormalizeMarkdownInterface {
+class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface {
     /**
      * @Groups({"forum:read", "abbreviated_relations"})
      *
@@ -86,6 +87,21 @@ class ForumData implements NormalizeMarkdownInterface {
     private $category;
 
     /**
+     * @var string|null
+     */
+    private $lightBackgroundImage;
+
+    /**
+     * @var string|null
+     */
+    private $darkBackgroundImage;
+
+    /**
+     * @var string
+     */
+    private $backgroundImageMode = BackgroundImageInterface::BACKGROUND_TILE;
+
+    /**
      * @Groups({"forum:read"})
      *
      * @var Theme|null
@@ -101,6 +117,9 @@ class ForumData implements NormalizeMarkdownInterface {
             $this->description = $forum->getDescription();
             $this->featured = $forum->isFeatured();
             $this->category = $forum->getCategory();
+            $this->lightBackgroundImage = $forum->getLightBackgroundImage();
+            $this->darkBackgroundImage = $forum->getDarkBackgroundImage();
+            $this->backgroundImageMode = $forum->getBackgroundImageMode();
             $this->suggestedTheme = $forum->getSuggestedTheme();
         }
     }
@@ -116,6 +135,9 @@ class ForumData implements NormalizeMarkdownInterface {
 
         $forum->setFeatured($this->featured);
         $forum->setCategory($this->category);
+        $forum->setLightBackgroundImage($this->lightBackgroundImage);
+        $forum->setDarkBackgroundImage($this->darkBackgroundImage);
+        $forum->setBackgroundImageMode($this->backgroundImageMode);
         $forum->setSuggestedTheme($this->suggestedTheme);
 
         return $forum;
@@ -127,6 +149,9 @@ class ForumData implements NormalizeMarkdownInterface {
         $forum->setSidebar($this->sidebar);
         $forum->setDescription($this->description);
         $forum->setFeatured($this->featured);
+        $forum->setLightBackgroundImage($this->lightBackgroundImage);
+        $forum->setDarkBackgroundImage($this->darkBackgroundImage);
+        $forum->setBackgroundImageMode($this->backgroundImageMode);
         $forum->setSuggestedTheme($this->suggestedTheme);
         $forum->setCategory($this->category);
     }
@@ -201,5 +226,29 @@ class ForumData implements NormalizeMarkdownInterface {
 
     public function getMarkdownFields(): iterable {
         yield 'sidebar';
+    }
+
+    public function getLightBackgroundImage(): ?string {
+        return $this->lightBackgroundImage;
+    }
+
+    public function setLightBackgroundImage(?string $lightBackgroundImage): void {
+        $this->lightBackgroundImage = $lightBackgroundImage;
+    }
+
+    public function getDarkBackgroundImage(): ?string {
+        return $this->darkBackgroundImage;
+    }
+
+    public function setDarkBackgroundImage(?string $darkBackgroundImage): void {
+        $this->darkBackgroundImage = $darkBackgroundImage;
+    }
+
+    public function getBackgroundImageMode(): string {
+        return $this->backgroundImageMode;
+    }
+
+    public function setBackgroundImageMode(string $backgroundImageMode): void {
+        $this->backgroundImageMode = $backgroundImageMode;
     }
 }

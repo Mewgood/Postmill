@@ -4,7 +4,7 @@ namespace App\Form\EventListener;
 
 use App\DataObject\SubmissionData;
 use App\Entity\Submission;
-use App\Flysystem\SubmissionImageManager;
+use App\Flysystem\ImageManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\FormEvents;
@@ -14,11 +14,11 @@ use Symfony\Component\Form\FormEvents;
  */
 final class SubmissionImageListener implements EventSubscriberInterface {
     /**
-     * @var SubmissionImageManager
+     * @var ImageManager
      */
     private $imageHelper;
 
-    public function __construct(SubmissionImageManager $imageHelper) {
+    public function __construct(ImageManager $imageHelper) {
         $this->imageHelper = $imageHelper;
     }
 

@@ -1,0 +1,33 @@
+{% set light_bg = entity.lightBackgroundImage %}
+{% set dark_bg = entity.darkBackgroundImage %}
+{% set mode = entity.backgroundImageMode %}
+{% if light_bg or dark_bg %}
+  {% cspstyle %}
+    <style>
+      {% if light_bg %}
+        .light-mode:root {
+          --bg-image: url({{ upload_url('submission_images/'~light_bg)|e('css') }});
+        }
+      {% endif %}
+      {% if dark_bg %}
+        .dark-mode:root {
+          --bg-image: url({{ upload_url('submission_images/'~dark_bg)|e('css') }});
+        }
+      {% endif %}
+      {% if mode is constant('App\\Entity\\Contracts\\BackgroundImageInterface::BACKGROUND_CENTER') %}
+        :root {
+          background-attachment: fixed;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+      {% elseif mode is constant('App\\Entity\\Contracts\\BackgroundImageInterface::BACKGROUND_FIT_TO_PAGE') %}
+        :root {
+          background-attachment: fixed;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+      {% endif %}
+    </style>
+  {% endcspstyle %}
+{% endif %}

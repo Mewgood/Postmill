@@ -16,6 +16,8 @@
   {% else %}
     {{ parent() }}
   {% endif %}
+
+  {{ include('_includes/background_image.html.twig', { entity: forum }, with_context=false) }}
 {% endblock theme_css %}
 
 {% block sidebar %}

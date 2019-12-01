@@ -43,6 +43,13 @@ action.whitelist_remove: De-whitelist
 
 add_moderator.title: Add moderator to %forum%
 
+background.light_background_image: Light background image
+background.dark_background_image: Dark background image
+background.mode: Display mode
+background.center: Center
+background.fit_to_page: Fit to page
+background.tile: Tile
+
 ban_add.title: Ban an IP address
 
 ban_list.banned_by: Banned by
@@ -224,6 +231,7 @@ label.any: Any
 label.appearance: Appearance
 label.author: Author
 label.auto_fetch_submission_titles: Auto-fetch submission titles
+label.background_image: Background image
 label.ban: Ban
 label.ban_ip_addresses: Ban IP address(es)?
 label.banned: Banned

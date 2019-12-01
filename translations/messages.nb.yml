@@ -43,6 +43,13 @@ action.whitelist_remove: Fjern hvitelisting
 
 add_moderator.title: Legg til moderator for %forum%
 
+background.light_background_image: Lyst bakgrunnsbilde
+background.dark_background_image: Mørkt bakgrunnsbilde
+background.mode: Visningsmodus
+background.center: Vis i midten
+background.fit_to_page: Strekk
+background.tile: Side om side
+
 ban_add.title: Utesteng en IP-adresse
 
 ban_list.banned_by: Utestengt av
@@ -223,6 +230,7 @@ label.any: Hvilke som helst
 label.appearance: Utseende
 label.author: Forfatter
 label.auto_fetch_submission_titles: Hent innleggstitler automatisk
+label.background_image: Bakgrunnsbilde
 label.ban: Utestenger
 label.ban_ip_addresses: Utesteng IP-adress(er)?
 label.banned: Utestengt

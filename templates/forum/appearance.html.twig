@@ -15,9 +15,13 @@
   {{ form_start(form) }}
     {{ form_row(form.suggestedTheme) }}
 
+    {% if form.backgroundImage is defined %}
+      {{ form_widget(form.backgroundImage) }}
+    {% endif %}
+
     <div class="form-row form-row--single-line">
       <div class="form-row__align" aria-hidden="true"></div>
       <button class="button">{{ 'action.save'|trans }}</button>
     </div>
   {{ form_end(form) }}
-{% endblock %}
+{% endblock body %}

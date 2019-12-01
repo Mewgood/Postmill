@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Contracts\BackgroundImageInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -20,7 +21,7 @@ use Pagerfanta\Pagerfanta;
  *     @ORM\UniqueConstraint(name="forums_normalized_name_idx", columns={"normalized_name"}),
  * })
  */
-class Forum {
+class Forum implements BackgroundImageInterface {
     /**
      * @ORM\Column(type="bigint")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -114,6 +115,27 @@ class Forum {
      * @var ForumCategory|null
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string|null
+     */
+    private $lightBackgroundImage;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string|null
+     */
+    private $darkBackgroundImage;
+
+    /**
+     * @ORM\Column(type="text", options={"default": BackgroundImageInterface::BACKGROUND_TILE})
+     *
+     * @var string
+     */
+    private $backgroundImageMode = BackgroundImageInterface::BACKGROUND_TILE;
 
     /**
      * @ORM\JoinColumn(onDelete="SET NULL")
@@ -358,6 +380,30 @@ class Forum {
 
     public function setCategory(?ForumCategory $category): void {
         $this->category = $category;
+    }
+
+    public function getLightBackgroundImage(): ?string {
+        return $this->lightBackgroundImage;
+    }
+
+    public function setLightBackgroundImage(?string $lightBackgroundImage): void {
+        $this->lightBackgroundImage = $lightBackgroundImage;
+    }
+
+    public function getDarkBackgroundImage(): ?string {
+        return $this->darkBackgroundImage;
+    }
+
+    public function setDarkBackgroundImage(?string $darkBackgroundImage): void {
+        $this->darkBackgroundImage = $darkBackgroundImage;
+    }
+
+    public function getBackgroundImageMode(): string {
+        return $this->backgroundImageMode;
+    }
+
+    public function setBackgroundImageMode(string $backgroundImageMode): void {
+        $this->backgroundImageMode = $backgroundImageMode;
     }
 
     public function getSuggestedTheme(): ?Theme {

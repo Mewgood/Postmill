@@ -3,7 +3,7 @@
 namespace App\Message\Handler;
 
 use App\Entity\Submission;
-use App\Flysystem\SubmissionImageManager;
+use App\Flysystem\ImageManager;
 use App\Message\NewSubmission;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
@@ -28,7 +28,7 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $httpClient;
 
     /**
-     * @var SubmissionImageManager
+     * @var ImageManager
      */
     private $imageHelper;
 
@@ -45,7 +45,7 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     public function __construct(
         Client $httpClient,
         EntityManagerInterface $entityManager,
-        SubmissionImageManager $imageHelper,
+        ImageManager $imageHelper,
         LoggerInterface $logger,
         ValidatorInterface $validator
     ) {

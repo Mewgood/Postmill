@@ -2,7 +2,7 @@
 
 namespace App\Message\Handler;
 
-use App\Flysystem\SubmissionImageManager;
+use App\Flysystem\ImageManager;
 use App\Message\DeleteSubmissionImage;
 use App\Repository\SubmissionRepository;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -26,7 +26,7 @@ final class DeleteSubmissionImageHandler implements MessageHandlerInterface {
     private $messageBus;
 
     /**
-     * @var SubmissionImageManager
+     * @var ImageManager
      */
     private $imageManager;
 
@@ -43,7 +43,7 @@ final class DeleteSubmissionImageHandler implements MessageHandlerInterface {
     public function __construct(
         CacheManager $cacheManager,
         MessageBusInterface $messageBus,
-        SubmissionImageManager $imageManager,
+        ImageManager $imageManager,
         SubmissionRepository $submissions,
         int $batchSize
     ) {
