@@ -8,7 +8,7 @@ use App\Entity\Submission;
 use App\Event\DeleteSubmissionEvent;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,7 +67,7 @@ final class SubmissionController extends AbstractController {
     /**
      * @Route("", methods={"POST"})
      */
-    public function create(ObjectManager $em, Request $request): Response {
+    public function create(EntityManagerInterface $em, Request $request): Response {
         return $this->apiCreate(SubmissionData::class, [
             'normalization_groups' => ['submission:read', 'abbreviated_relations'],
             'denormalization_groups' => ['submission:create'],
@@ -86,7 +86,7 @@ final class SubmissionController extends AbstractController {
      * @Route("/{id}", methods={"PUT"})
      * @IsGranted("edit", subject="submission")
      */
-    public function update(Submission $submission, ObjectManager $em): Response {
+    public function update(Submission $submission, EntityManagerInterface $em): Response {
         $data = new SubmissionData($submission);
 
         return $this->apiUpdate($data, SubmissionData::class, [
@@ -104,7 +104,7 @@ final class SubmissionController extends AbstractController {
      * @Route("/{id}", methods={"DELETE"})
      * @IsGranted("delete_own", subject="submission")
      */
-    public function delete(Submission $submission, ObjectManager $em): Response {
+    public function delete(Submission $submission, EntityManagerInterface $em): Response {
         if ($submission->getCommentCount() > 0) {
             $submission->softDelete();
         } else {

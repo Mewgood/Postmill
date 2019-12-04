@@ -9,7 +9,7 @@ use App\Entity\Submission;
 use App\Entity\User;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,7 +51,7 @@ final class UserController extends AbstractController {
      * @Route("/{id}/preferences", methods={"PUT"})
      * @IsGranted("edit_user", subject="user")
      */
-    public function updatePreferences(User $user, ObjectManager $em): Response {
+    public function updatePreferences(User $user, EntityManagerInterface $em): Response {
         return $this->apiUpdate(new UserData($user), UserData::class, [
             'normalization_groups' => ['user:preferences'],
             'denormalization_groups' => ['user:preferences'],

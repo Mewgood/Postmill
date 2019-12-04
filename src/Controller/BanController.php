@@ -11,7 +11,7 @@ use App\Form\UnbanUserType;
 use App\Repository\IpBanRepository;
 use App\Repository\UserBanRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function banUser(User $user, UserRepository $repository, ObjectManager $em, Request $request): Response {
+    public function banUser(User $user, UserRepository $repository, EntityManagerInterface $em, Request $request): Response {
         $data = new UserBanData($repository->findIpsUsedByUser($user));
 
         $form = $this->createForm(BanUserType::class, $data);
@@ -55,7 +55,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function unbanUser(User $user, ObjectManager $em, Request $request): Response {
+    public function unbanUser(User $user, EntityManagerInterface $em, Request $request): Response {
         $data = new UserBanData();
 
         $form = $this->createForm(UnbanUserType::class, $data);
@@ -91,7 +91,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function banIp(Request $request, ObjectManager $em): Response {
+    public function banIp(Request $request, EntityManagerInterface $em): Response {
         $data = new IpBanData();
 
         $form = $this->createForm(IpBanType::class, $data);
@@ -113,7 +113,7 @@ final class BanController extends AbstractController {
         ]);
     }
 
-    public function unbanIps(Request $request, IpBanRepository $repository, ObjectManager $em): Response {
+    public function unbanIps(Request $request, IpBanRepository $repository, EntityManagerInterface $em): Response {
         $this->validateCsrf('unban_ips', $request->request->get('token'));
 
         $ids = array_filter((array) $request->request->get('ban'), function ($id) {

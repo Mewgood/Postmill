@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Site;
 use App\Form\Model\SiteData;
 use App\Form\SiteSettingsType;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ final class SiteController extends AbstractController {
      *
      * @Entity("site", expr="repository.findCurrentSite()")
      */
-    public function settings(Site $site, Request $request, ObjectManager $em): Response {
+    public function settings(Site $site, Request $request, EntityManagerInterface $em): Response {
         $data = SiteData::createFromSite($site);
 
         $form = $this->createForm(SiteSettingsType::class, $data);

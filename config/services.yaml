@@ -86,7 +86,7 @@ services:
 
     App\Utils\IpRateLimit:
         class: App\Utils\IpRateLimit
-        factory: 'App\Utils\IpRateLimitFactory:create'
+        factory: ['@App\Utils\IpRateLimitFactory', create]
         abstract: true
 
     App\Validator\Constraints\RateLimitValidator:

@@ -20,7 +20,7 @@ use App\Repository\ForumLogEntryRepository;
 use App\Repository\ForumRepository;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,7 +83,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("create_forum", statusCode=403)
      */
-    public function createForum(Request $request, ObjectManager $em): Response {
+    public function createForum(Request $request, EntityManagerInterface $em): Response {
         $data = new ForumData();
 
         $form = $this->createForm(ForumType::class, $data);
@@ -109,7 +109,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
      */
-    public function editForum(Request $request, Forum $forum, ObjectManager $em): Response {
+    public function editForum(Request $request, Forum $forum, EntityManagerInterface $em): Response {
         $data = new ForumData($forum);
 
         $form = $this->createForm(ForumType::class, $data);
@@ -138,7 +138,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @IsGranted("delete", subject="forum", statusCode=403)
      */
-    public function delete(Request $request, Forum $forum, ObjectManager $em): Response {
+    public function delete(Request $request, Forum $forum, EntityManagerInterface $em): Response {
         $form = $this->createForm(ConfirmDeletionType::class, null, [
             'name' => $forum->getName(),
         ]);
@@ -169,7 +169,7 @@ final class ForumController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function subscribe(Request $request, ObjectManager $em, Forum $forum, bool $subscribe, string $_format): Response {
+    public function subscribe(Request $request, EntityManagerInterface $em, Forum $forum, bool $subscribe, string $_format): Response {
         $this->validateCsrf('subscribe', $request->request->get('token'));
 
         if ($subscribe) {
@@ -222,7 +222,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
      */
-    public function addModerator(ObjectManager $em, Forum $forum, Request $request): Response {
+    public function addModerator(EntityManagerInterface $em, Forum $forum, Request $request): Response {
         $data = new ModeratorData($forum);
         $form = $this->createForm(ModeratorType::class, $data);
         $form->handleRequest($request);
@@ -249,7 +249,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("remove", subject="moderator", statusCode=403)
      */
-    public function removeModerator(ObjectManager $em, Forum $forum, Request $request, Moderator $moderator): Response {
+    public function removeModerator(EntityManagerInterface $em, Forum $forum, Request $request, Moderator $moderator): Response {
         $this->validateCsrf('remove_moderator', $request->request->get('token'));
 
         $em->remove($moderator);
@@ -281,7 +281,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
      */
-    public function appearance(Forum $forum, Request $request, ObjectManager $em): Response {
+    public function appearance(Forum $forum, Request $request, EntityManagerInterface $em): Response {
         $data = new ForumData($forum);
 
         $form = $this->createForm(ForumAppearanceType::class, $data);
@@ -326,7 +326,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
      */
-    public function ban(Forum $forum, User $user, Request $request, ObjectManager $em): Response {
+    public function ban(Forum $forum, User $user, Request $request, EntityManagerInterface $em): Response {
         $data = new ForumBanData();
 
         $form = $this->createForm(ForumBanType::class, $data, ['intent' => 'ban']);
@@ -355,7 +355,7 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
      */
-    public function unban(Forum $forum, User $user, Request $request, ObjectManager $em): Response {
+    public function unban(Forum $forum, User $user, Request $request, EntityManagerInterface $em): Response {
         $data = new ForumBanData();
 
         $form = $this->createForm(ForumBanType::class, $data, ['intent' => 'unban']);

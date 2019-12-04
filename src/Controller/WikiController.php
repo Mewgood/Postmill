@@ -9,7 +9,7 @@ use App\Form\WikiType;
 use App\Repository\WikiPageRepository;
 use App\Repository\WikiRevisionRepository;
 use App\Utils\Differ;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -45,7 +45,7 @@ final class WikiController extends AbstractController {
      * @todo handle conflicts
      * @todo do something if the page already exists
      */
-    public function create(Request $request, string $path, ObjectManager $em): Response {
+    public function create(Request $request, string $path, EntityManagerInterface $em): Response {
         $data = new WikiData();
 
         $form = $this->createForm(WikiType::class, $data);
@@ -71,7 +71,7 @@ final class WikiController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("delete", subject="page", statusCode=403)
      */
-    public function delete(Request $request, WikiPage $page, ObjectManager $em): Response {
+    public function delete(Request $request, WikiPage $page, EntityManagerInterface $em): Response {
         $this->validateCsrf('wiki_delete', $request->request->get('token'));
 
         $em->remove($page);
@@ -91,7 +91,7 @@ final class WikiController extends AbstractController {
      *
      * @todo handle conflicts
      */
-    public function edit(Request $request, WikiPage $page, ObjectManager $em): Response {
+    public function edit(Request $request, WikiPage $page, EntityManagerInterface $em): Response {
         $data = WikiData::createFromPage($page);
         $form = $this->createForm(WikiType::class, $data);
         $form->handleRequest($request);
@@ -116,7 +116,7 @@ final class WikiController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("lock", subject="page", statusCode=403)
      */
-    public function lock(Request $request, WikiPage $page, bool $lock, ObjectManager $em): Response {
+    public function lock(Request $request, WikiPage $page, bool $lock, EntityManagerInterface $em): Response {
         $this->validateCsrf('wiki_lock', $request->request->get('token'));
 
         $page->setLocked($lock);

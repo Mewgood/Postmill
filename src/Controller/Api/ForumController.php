@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use App\Controller\AbstractController;
 use App\DataObject\ForumData;
 use App\Entity\Forum;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +28,7 @@ class ForumController extends AbstractController {
      * @Route("", methods={"POST"})
      * @IsGranted("create_forum")
      */
-    public function create(ObjectManager $em): Response {
+    public function create(EntityManagerInterface $em): Response {
         return $this->apiCreate(ForumData::class, [
             'normalization_groups' => ['forum:read', 'abbreviated_relations'],
             'denormalization_groups' => ['forum:create'],
@@ -47,7 +47,7 @@ class ForumController extends AbstractController {
      * @Route("/{id}", methods={"PUT"})
      * @IsGranted("moderator", subject="forum")
      */
-    public function update(Forum $forum, ObjectManager $em): Response {
+    public function update(Forum $forum, EntityManagerInterface $em): Response {
         return $this->apiUpdate($forum, ForumData::class, [
             'normalization_groups' => ['forum:read'],
             'denormalization_groups' => ['forum:update'],

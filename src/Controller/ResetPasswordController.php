@@ -8,7 +8,7 @@ use App\Form\RequestPasswordResetType;
 use App\Form\UserType;
 use App\Mailer\ResetPasswordMailer;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +48,7 @@ final class ResetPasswordController extends AbstractController {
      */
     public function reset(
         Request $request,
-        ObjectManager $em,
+        EntityManagerInterface $em,
         User $user,
         ResetPasswordMailer $mailer,
         \DateTime $expires,

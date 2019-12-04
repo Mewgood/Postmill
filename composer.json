@@ -26,7 +26,7 @@
         "ezyang/htmlpurifier": "^4.8",
         "friendsofsymfony/http-cache-bundle": "^2.6",
         "friendsofsymfony/jsrouting-bundle": "^2.1",
-        "gregwar/captcha-bundle": "^2.0.4",
+        "gregwar/captcha-bundle": "^2.0",
         "league/commonmark": "^1.0",
         "league/commonmark-ext-strikethrough": "^1.0",
         "league/commonmark-ext-table": "^2.0",
@@ -75,8 +75,7 @@
         "symfony/debug-pack": "^1.0",
         "symfony/maker-bundle": "^1.5",
         "symfony/profiler-pack": "^1.0",
-        "symfony/test-pack": "^1.0",
-        "symfony/web-server-bundle": "^4.0"
+        "symfony/test-pack": "^1.0"
     },
     "replace": {
         "symfony/polyfill-iconv": "*",

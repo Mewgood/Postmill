@@ -6,7 +6,7 @@ use App\Controller\AbstractController;
 use App\DataObject\CommentData;
 use App\Entity\Comment;
 use App\Repository\CommentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,7 +38,7 @@ final class CommentController extends AbstractController {
      * @Route("/{id}", methods={"PUT"})
      * @IsGranted("edit", subject="comment")
      */
-    public function update(Comment $comment, ObjectManager $em): Response {
+    public function update(Comment $comment, EntityManagerInterface $em): Response {
         return $this->apiUpdate(new CommentData($comment), CommentData::class, [
             'normalization_groups' => ['comment:read'],
             'denormalization_groups' => ['comment:update']

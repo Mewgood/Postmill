@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contracts\VotableInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ final class VoteController extends AbstractController {
      *
      * @IsGranted("ROLE_USER")
      */
-    public function __invoke(ObjectManager $em, Request $request, string $entityClass, int $id): Response {
+    public function __invoke(EntityManagerInterface $em, Request $request, string $entityClass, int $id): Response {
         $this->validateCsrf('vote', $request->request->get('token'));
 
         $choice = $request->request->getInt('choice', null);

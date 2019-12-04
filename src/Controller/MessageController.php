@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Form\MessageType;
 use App\Form\Model\MessageData;
 use App\Repository\MessageThreadRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +32,7 @@ final class MessageController extends AbstractController {
      * @IsGranted("message", subject="receiver", statusCode=403)
      * @Entity("receiver", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
      */
-    public function compose(Request $request, ObjectManager $em, User $receiver): Response {
+    public function compose(Request $request, EntityManagerInterface $em, User $receiver): Response {
         $data = new MessageData();
 
         $form = $this->createForm(MessageType::class, $data);
@@ -81,7 +81,7 @@ final class MessageController extends AbstractController {
     /**
      * @IsGranted("reply", subject="thread", statusCode=403)
      */
-    public function reply(Request $request, ObjectManager $em, MessageThread $thread): Response {
+    public function reply(Request $request, EntityManagerInterface $em, MessageThread $thread): Response {
         $data = new MessageData();
 
         $form = $this->createForm(MessageType::class, $data);
@@ -107,7 +107,7 @@ final class MessageController extends AbstractController {
     /**
      * @IsGranted("delete", subject="message", statusCode=403)
      */
-    public function delete(Request $request, ObjectManager $em, Message $message): Response {
+    public function delete(Request $request, EntityManagerInterface $em, Message $message): Response {
         $this->validateCsrf('delete_message', $request->request->get('token'));
 
         $em->refresh($message);
