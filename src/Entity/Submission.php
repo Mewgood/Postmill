@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\Index(name="submissions_net_score_id_idx", columns={"net_score", "id"}),
  *     @ORM\Index(name="submissions_search_idx", columns={"search_doc"}),
  *     @ORM\Index(name="submissions_visibility_idx", columns={"visibility"}),
- *     @ORM\Index(name="submissions_image_idx", columns={"image"}),
+ *     @ORM\Index(name="submissions_image_id_idx", columns={"image_id"}),
  * })
  */
 class Submission implements VisibilityInterface, VotableInterface {
@@ -193,9 +193,9 @@ class Submission implements VisibilityInterface, VotableInterface {
     private $mentions;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Image", cascade={"persist"})
      *
-     * @var string|null
+     * @var Image|null
      */
     private $image;
 
@@ -496,11 +496,11 @@ class Submission implements VisibilityInterface, VotableInterface {
         $mentioned->sendNotification(new SubmissionMention($mentioned, $this));
     }
 
-    public function getImage(): ?string {
+    public function getImage(): ?Image {
         return $this->image;
     }
 
-    public function setImage(?string $image): void {
+    public function setImage(?Image $image): void {
         $this->image = $image;
     }
 

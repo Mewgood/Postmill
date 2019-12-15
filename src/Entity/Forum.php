@@ -15,7 +15,9 @@ use Pagerfanta\Pagerfanta;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ForumRepository")
  * @ORM\Table(indexes={
- *     @ORM\Index(name="forum_featured_idx", columns={"featured"})
+ *     @ORM\Index(name="forum_featured_idx", columns={"featured"}),
+ *     @ORM\Index(name="forums_light_background_image_id_idx", columns={"light_background_image_id"}),
+ *     @ORM\Index(name="forums_dark_background_image_id_idx", columns={"dark_background_image_id"}),
  * }, uniqueConstraints={
  *     @ORM\UniqueConstraint(name="forums_name_idx", columns={"name"}),
  *     @ORM\UniqueConstraint(name="forums_normalized_name_idx", columns={"normalized_name"}),
@@ -117,16 +119,16 @@ class Forum implements BackgroundImageInterface {
     private $category;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Image", cascade={"persist"})
      *
-     * @var string|null
+     * @var Image|null
      */
     private $lightBackgroundImage;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Image", cascade={"persist"})
      *
-     * @var string|null
+     * @var Image|null
      */
     private $darkBackgroundImage;
 
@@ -382,19 +384,19 @@ class Forum implements BackgroundImageInterface {
         $this->category = $category;
     }
 
-    public function getLightBackgroundImage(): ?string {
+    public function getLightBackgroundImage(): ?Image {
         return $this->lightBackgroundImage;
     }
 
-    public function setLightBackgroundImage(?string $lightBackgroundImage): void {
+    public function setLightBackgroundImage(?Image $lightBackgroundImage): void {
         $this->lightBackgroundImage = $lightBackgroundImage;
     }
 
-    public function getDarkBackgroundImage(): ?string {
+    public function getDarkBackgroundImage(): ?Image {
         return $this->darkBackgroundImage;
     }
 
-    public function setDarkBackgroundImage(?string $darkBackgroundImage): void {
+    public function setDarkBackgroundImage(?Image $darkBackgroundImage): void {
         $this->darkBackgroundImage = $darkBackgroundImage;
     }
 

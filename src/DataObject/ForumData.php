@@ -5,6 +5,7 @@ namespace App\DataObject;
 use App\Entity\Contracts\BackgroundImageInterface;
 use App\Entity\Forum;
 use App\Entity\ForumCategory;
+use App\Entity\Image;
 use App\Entity\Theme;
 use App\Entity\User;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
@@ -87,12 +88,12 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
     private $category;
 
     /**
-     * @var string|null
+     * @var Image|null
      */
     private $lightBackgroundImage;
 
     /**
-     * @var string|null
+     * @var Image|null
      */
     private $darkBackgroundImage;
 
@@ -228,19 +229,19 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
         yield 'sidebar';
     }
 
-    public function getLightBackgroundImage(): ?string {
+    public function getLightBackgroundImage(): ?Image {
         return $this->lightBackgroundImage;
     }
 
-    public function setLightBackgroundImage(?string $lightBackgroundImage): void {
+    public function setLightBackgroundImage(?Image $lightBackgroundImage): void {
         $this->lightBackgroundImage = $lightBackgroundImage;
     }
 
-    public function getDarkBackgroundImage(): ?string {
+    public function getDarkBackgroundImage(): ?Image {
         return $this->darkBackgroundImage;
     }
 
-    public function setDarkBackgroundImage(?string $darkBackgroundImage): void {
+    public function setDarkBackgroundImage(?Image $darkBackgroundImage): void {
         $this->darkBackgroundImage = $darkBackgroundImage;
     }
 

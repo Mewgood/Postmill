@@ -15,6 +15,9 @@ final class DeleteSubmissionEvent extends Event {
         $this->submissions = $submissions;
     }
 
+    /**
+     * @return Submission[]
+     */
     public function getSubmissions(): array {
         return $this->submissions;
     }

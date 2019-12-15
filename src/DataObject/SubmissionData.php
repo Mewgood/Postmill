@@ -3,6 +3,7 @@
 namespace App\DataObject;
 
 use App\Entity\Forum;
+use App\Entity\Image;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserFlags;
@@ -144,7 +145,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
     /**
      * @Groups("submission:read")
      *
-     * @var string|null
+     * @var Image|null
      */
     private $image;
 
@@ -337,11 +338,11 @@ class SubmissionData implements NormalizeMarkdownInterface {
         $this->uploadedImage = $image;
     }
 
-    public function getImage(): ?string {
+    public function getImage(): ?Image {
         return $this->image;
     }
 
-    public function setImage(?string $image): void {
+    public function setImage(?Image $image): void {
         $this->image = $image;
     }
 

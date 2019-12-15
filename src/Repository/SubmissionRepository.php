@@ -51,19 +51,4 @@ class SubmissionRepository extends ServiceEntityRepository {
                 ->getResult();
         }
     }
-
-    public function findRemovableImages(array $images): array {
-        if (!$images) {
-            return [];
-        }
-
-        $nonRemovable = $this->createQueryBuilder('s')
-            ->select('s.image')
-            ->where('s.image IN (?1)')
-            ->setParameter(1, $images)
-            ->getQuery()
-            ->execute();
-
-        return array_diff($images, array_column($nonRemovable, 'image'));
-    }
 }

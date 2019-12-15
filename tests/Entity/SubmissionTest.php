@@ -6,6 +6,7 @@ use App\Entity\Contracts\VotableInterface;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Forum;
 use App\Entity\ForumBan;
+use App\Entity\Image;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserFlags;
@@ -36,7 +37,7 @@ class SubmissionTest extends TestCase {
             $user,
             '127.0.0.1'
         );
-        $submission->setImage('foo.png');
+        $submission->setImage(new Image('foo.png', null, null));
         $submission->setSticky(true);
         $submission->setUserFlag(UserFlags::FLAG_ADMIN);
 

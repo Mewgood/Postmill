@@ -3,6 +3,7 @@
 namespace App\Tests\Serializer;
 
 use App\DataObject\SubmissionData;
+use App\Entity\Image;
 use App\Serializer\SubmissionDataNormalizer;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PHPUnit\Framework\TestCase;
@@ -51,7 +52,7 @@ class SubmissionDataNormalizerTest extends TestCase {
             );
 
         $data = new SubmissionData();
-        $data->setImage('foo.png');
+        $data->setImage(new Image('foo.png', null, null));
 
         $this->decorated
             ->expects($this->once())

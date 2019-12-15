@@ -91,10 +91,28 @@
           {% endif %}
 
           {% if submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image %}
-            <a href="{{ upload_url('submission_images/'~submission.image) }}"
+            {% set width, height = submission.image.width, submission.image.height %}
+            {% set max_width, max_height = 500, 500 %}
+            {% if width and height and width > max_width %}
+              {% set width = max_width %}
+              {% set height = height * (max_width / submission.image.width) %}
+            {% endif %}
+            {% if width and height and height > max_height %}
+              {% set temp_height = height %}
+              {% set height = max_height %}
+              {% set width = width * (max_height / temp_height) %}
+            {% endif %}
+            {% set url = upload_url('submission_images/'~submission.image) %}
+            <a href="{{ url }}"
                class="submission__image-link"
                target="{{ open_external ? '_blank' : '_self' }}">
-              <img src="{{ upload_url('submission_images/'~submission.image) }}" alt="" class="submission__image">
+              <img src="{{ url }}"
+                   alt=""
+                   class="submission__image"
+                   {% if width and height %}
+                      width="{{ width|round(0, 'ceil') }}"
+                      height="{{ height|round(0, 'ceil') }}"
+                   {% endif %}>
             </a>
           {% endif %}
         {%- endif -%}

@@ -3,8 +3,8 @@
 namespace App\Message\Handler;
 
 use App\Entity\Submission;
-use App\Flysystem\ImageManager;
 use App\Message\NewSubmission;
+use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
 use Embed\Exceptions\EmbedException;
@@ -28,9 +28,9 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $httpClient;
 
     /**
-     * @var ImageManager
+     * @var ImageRepository
      */
-    private $imageHelper;
+    private $images;
 
     /**
      * @var LoggerInterface
@@ -45,13 +45,13 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     public function __construct(
         Client $httpClient,
         EntityManagerInterface $entityManager,
-        ImageManager $imageHelper,
+        ImageRepository $images,
         LoggerInterface $logger,
         ValidatorInterface $validator
     ) {
         $this->entityManager = $entityManager;
         $this->httpClient = $httpClient;
-        $this->imageHelper = $imageHelper;
+        $this->images = $images;
         $this->logger = $logger;
         $this->validator = $validator;
     }
@@ -87,11 +87,10 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
                 return;
             }
 
-            $imageName = $this->imageHelper->getFileName($tempFile);
-            $this->imageHelper->store($tempFile, $imageName);
+            $image = $this->images->findOrCreateFromPath($tempFile);
 
-            $this->entityManager->transactional(function () use ($submission, $imageName): void {
-                $submission->setImage($imageName);
+            $this->entityManager->transactional(function () use ($submission, $image): void {
+                $submission->setImage($image);
             });
         } catch (\RuntimeException $e) {
             throw new UnrecoverableMessageHandlingException($e->getMessage(), $e->getCode(), $e);

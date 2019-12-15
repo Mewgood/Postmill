@@ -4,6 +4,7 @@ namespace App\Tests\DataObject;
 
 use App\DataObject\SubmissionData;
 use App\Entity\Forum;
+use App\Entity\Image;
 use App\Entity\Submission;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +28,7 @@ class SubmissionDataTest extends TestCase {
         $data = new SubmissionData();
         $data->setForum($forum);
         $data->setTitle('wah');
-        $data->setImage('foof.jpeg');
+        $data->setImage(new Image('foof.jpeg', null, null));
         $data->setUrl('http://www.garfield.com');
         $submission = $data->toSubmission($user, null);
 
@@ -45,7 +46,7 @@ class SubmissionDataTest extends TestCase {
         $data = new SubmissionData();
         $data->setForum($forum);
         $data->setTitle('wah');
-        $data->setImage('foof.jpeg');
+        $data->setImage(new Image('foof.jpeg', null, null));
         $data->setUrl('http://www.garfield.com');
         $data->setMediaType(Submission::MEDIA_IMAGE);
         $submission = $data->toSubmission($user, null);

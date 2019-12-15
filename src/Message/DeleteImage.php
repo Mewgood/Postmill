@@ -2,7 +2,7 @@
 
 namespace App\Message;
 
-class DeleteSubmissionImage {
+class DeleteImage {
     /**
      * @var string[]
      */

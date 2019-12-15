@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Controller\AbstractController;
 use App\DataObject\ForumData;
 use App\Entity\Forum;
+use App\Event\EditForumEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,9 +54,12 @@ class ForumController extends AbstractController {
             'denormalization_groups' => ['forum:update'],
             'validation_groups' => ['update'],
         ], function (ForumData $data) use ($forum, $em) {
+            $before = clone $forum;
             $data->updateForum($forum);
 
             $em->flush();
+
+            $this->dispatchEvent(new EditForumEvent($before, $forum));
         });
     }
 }

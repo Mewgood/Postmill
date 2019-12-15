@@ -31,7 +31,7 @@ security:
 
             user_checker: App\Security\UserChecker
 
+    # ROLE_TRUSTED_USER is deprecated
     role_hierarchy:
-        ROLE_ADMIN:        [ROLE_WHITELISTED, ROLE_USER]
-        ROLE_TRUSTED_USER: [ROLE_WHITELISTED] # deprecated
-        ROLE_WHITELISTED:  [ROLE_USER]
+        ROLE_ADMIN:        [ROLE_WHITELISTED, ROLE_TRUSTED_USER, ROLE_USER]
+        ROLE_WHITELISTED:  [ROLE_TRUSTED_USER, ROLE_USER]

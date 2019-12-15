@@ -52,12 +52,10 @@
   &__image-link {
     border: 1px solid var(--border);
     border-radius: 0.25rem;
-    display: flex;
-    height: @submission-image-height;
+    display: table;
     margin-bottom: 0.5rem;
     padding: 0.5rem;
     transition: box-shadow .25s, border .25s;
-    max-width: @submission-image-width;
 
     &:hover,
     &:focus {
@@ -68,9 +66,17 @@
   }
 
   &__image {
-    display: block;
+    display: table;
+    height: auto;
     max-width: 100%;
+    max-height: @submission-image-max-height;
+  }
+
+  &__image:not([width]) {
     object-fit: cover;
+    height: @submission-image-height;
+    width: @submission-image-width;
+    max-height: @submission-image-height;
   }
 
   &__header {

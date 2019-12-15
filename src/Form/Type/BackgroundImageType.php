@@ -3,7 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Contracts\BackgroundImageInterface;
-use App\Flysystem\ImageManager;
+use App\Repository\ImageRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -16,20 +16,20 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
 
 class BackgroundImageType extends AbstractType {
     /**
-     * @var ImageManager
+     * @var ImageRepository
      */
-    private $imageManager;
+    private $images;
 
-    public function __construct(ImageManager $imageManager) {
-        $this->imageManager = $imageManager;
+    public function __construct(ImageRepository $images) {
+        $this->images = $images;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
-        $imageConstraint = new Image([
+        $imageConstraint = new ImageConstraint([
             'detectCorrupted' => true,
             'groups' => ['upload'],
             'maxSize' => '2M',
@@ -101,17 +101,21 @@ class BackgroundImageType extends AbstractType {
 
             \assert($data instanceof BackgroundImageInterface);
 
+            $uploadMap = [];
+
             foreach (['lightBackgroundImage', 'darkBackgroundImage'] as $key) {
-                $image = $form->get($key)->getData();
+                $upload = $form->get($key)->getData();
 
-                \assert($image instanceof UploadedFile || !$image);
+                \assert($upload instanceof UploadedFile || !$upload);
 
-                if ($image) {
-                    $source = $image->getPathname();
-                    $filename = $this->imageManager->getFileName($source);
-                    $this->imageManager->store($source, $filename);
+                if ($upload) {
+                    $image = $this->images->findOrCreateFromUpload($upload);
 
-                    $data->{'set'.ucfirst($key)}($filename);
+                    // avoid error if the same image is chosen twice
+                    $image = $uploadMap[$image->getFileName()] ?? $image;
+                    $uploadMap[$image->getFileName()] = $image;
+
+                    $data->{'set'.ucfirst($key)}($image);
                 }
             }
         });
