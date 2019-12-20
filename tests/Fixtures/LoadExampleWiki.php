@@ -5,7 +5,7 @@ namespace App\Tests\Fixtures;
 use App\Entity\WikiPage;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadExampleWiki extends AbstractFixture implements DependentFixtureInterface {
     public function load(ObjectManager $manager): void {

@@ -4,7 +4,7 @@ namespace App\Tests\Fixtures;
 
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadExampleUsers extends AbstractFixture {
     public function load(ObjectManager $manager): void {

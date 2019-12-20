@@ -7,7 +7,7 @@ use App\Entity\Image;
 use App\Entity\Submission;
 use App\Flysystem\ImageManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
