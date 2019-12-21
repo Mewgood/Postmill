@@ -40,7 +40,7 @@ RUN set -eux; \
         libzip-dev \
         postgresql-dev \
         rabbitmq-c-dev; \
-    if php -r'die(-!version_compare($argv[1],"7.4",">="));' $PHP_VERSION; then \
+    if php -r 'die(PHP_VERSION_ID >= 70400 ? 0 : 1);'; then \
         docker-php-ext-configure gd \
             --enable-gd \
             --with-freetype \
@@ -127,7 +127,12 @@ RUN set -eux; \
         echo 'opcache.validate_timestamps = Off'; \
         echo 'realpath_cache_size = 4096K'; \
         echo 'realpath_cache_ttl = 600'; \
-    } >> "$PHP_INI_DIR/zz-postmill.ini"; \
+        # Uncomment and change version number when preloading becomes stable
+        #if php -r 'die(PHP_VERSION_ID >= 70401 ? 0 : 1);'; then \
+        #    echo 'opcache.preload = /app/var/cache/prod/srcApp_KernelProdContainer.preload.php'; \
+        #    echo 'opcache.preload_user = www-data'; \
+        #fi; \
+    } >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
     cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
     composer install \
         --apcu-autoloader \
