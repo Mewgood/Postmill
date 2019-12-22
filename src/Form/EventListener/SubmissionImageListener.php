@@ -34,13 +34,14 @@ final class SubmissionImageListener implements EventSubscriberInterface {
         }
 
         $data = $event->getData();
-
         \assert($data instanceof SubmissionData);
 
-        $upload = $data->getUploadedImage();
+        $upload = $event->getForm()->get('image')->getData();
 
         if ($upload && !$data->getImage() && $data->getMediaType() === Submission::MEDIA_IMAGE) {
-            $data->setImage($this->images->findOrCreateFromUpload($upload));
+            $image = $this->images->findOrCreateFromUpload($upload);
+
+            $data->setImage($image);
         }
     }
 }

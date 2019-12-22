@@ -11,7 +11,6 @@ use App\Serializer\Contracts\NormalizeMarkdownInterface;
 use App\Utils\Slugger;
 use App\Validator\Constraints\NotForumBanned;
 use App\Validator\Constraints\RateLimit;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -133,14 +132,6 @@ class SubmissionData implements NormalizeMarkdownInterface {
      * @var int
      */
     private $downvotes;
-
-    /**
-     * @Assert\Image(maxSize="10M", detectCorrupted=true, groups={"image"},
-     *     mimeTypes={"image/gif", "image/jpeg", "image/png", "image/webp"})
-     *
-     * @var UploadedFile
-     */
-    private $uploadedImage;
 
     /**
      * @Groups("submission:read")
@@ -328,14 +319,6 @@ class SubmissionData implements NormalizeMarkdownInterface {
 
     public function getDownvotes(): int {
         return $this->downvotes;
-    }
-
-    public function getUploadedImage(): ?UploadedFile {
-        return $this->uploadedImage;
-    }
-
-    public function setUploadedImage(UploadedFile $image): void {
-        $this->uploadedImage = $image;
     }
 
     public function getImage(): ?Image {

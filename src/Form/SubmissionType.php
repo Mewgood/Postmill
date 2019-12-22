@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
 
 final class SubmissionType extends AbstractType {
     /**
@@ -85,8 +86,15 @@ final class SubmissionType extends AbstractType {
                     'label' => 'label.media_type',
                 ])
                 ->add('image', FileType::class, [
+                    'constraints' => [
+                        new ImageConstraint([
+                            'detectCorrupted' => true,
+                            'groups' => 'image',
+                            'mimeTypes' => ['image/jpeg', 'image/gif', 'image/png'],
+                        ]),
+                    ],
                     'label' => 'label.upload_image',
-                    'property_path' => 'uploadedImage',
+                    'mapped' => false,
                     'required' => false,
                 ]);
 

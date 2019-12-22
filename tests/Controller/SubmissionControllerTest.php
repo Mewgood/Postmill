@@ -49,6 +49,23 @@ class SubmissionControllerTest extends WebTestCase {
         );
     }
 
+    public function testCannotCreateSubmissionWithInvalidImage(): void {
+        $client = self::createAdminClient();
+        $crawler = $client->request('GET', '/submit');
+
+        $form = $crawler->selectButton('Create submission')->form([
+            'submission[title]' => 'Non-submission with non-image',
+            'submission[mediaType]' => 'image',
+            'submission[forum]' => '2',
+        ]);
+        $form['submission[image]']->upload(__DIR__.'/../Resources/garbage.bin');
+
+        $client->submit($form);
+
+        self::assertResponseStatusCodeSame(200);
+        self::assertSelectorTextContains('.form-error-list', 'This file is not a valid image.');
+    }
+
     public function testSubmissionJson(): void {
         $client = self::createClient();
         $client->request('GET', '/f/news/1.json');
