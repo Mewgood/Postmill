@@ -5,11 +5,12 @@ namespace App\Repository;
 use App\Entity\IpBan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\Persistence\ManagerRegistry;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
 
-final class IpBanRepository extends ServiceEntityRepository {
+class IpBanRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, IpBan::class);
     }
@@ -34,7 +35,7 @@ final class IpBanRepository extends ServiceEntityRepository {
             ->where('ip >>= :ip')
             ->andWhere('(expiry_date IS NULL OR expiry_date >= :now)')
             ->setParameter('ip', $ip, 'inet')
-            ->setParameter('now', new \DateTime(), 'datetimetz')
+            ->setParameter('now', new \DateTime(), Type::DATETIMETZ)
             ->execute()
             ->fetchColumn();
 

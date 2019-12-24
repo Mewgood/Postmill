@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
 
-final class SiteRepository extends ServiceEntityRepository {
+class SiteRepository extends ServiceEntityRepository {
     /**
      * @var LoggerInterface
      */
@@ -41,7 +41,7 @@ final class SiteRepository extends ServiceEntityRepository {
     public function getCurrentSiteName(): string {
         try {
             return $this->findCurrentSite()->getSiteName();
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             $this->logger->error((string) $e);
 
             return $_SERVER['SITE_NAME'] ?? '[name unavailable]';

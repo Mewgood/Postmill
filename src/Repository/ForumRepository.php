@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @method Forum[]    findByNormalizedName(string|string[] $normalizedName)
  * @method Forum|null findOneByNormalizedName(string $normalizedName)
  */
-final class ForumRepository extends ServiceEntityRepository {
+class ForumRepository extends ServiceEntityRepository {
     /**
      * @var UrlGeneratorInterface
      */

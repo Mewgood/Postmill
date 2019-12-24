@@ -12,7 +12,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class ModeratorRepository extends ServiceEntityRepository {
+class ModeratorRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Moderator::class);
     }
