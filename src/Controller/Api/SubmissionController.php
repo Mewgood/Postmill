@@ -28,7 +28,7 @@ final class SubmissionController extends AbstractController {
         $sortBy = $request->query->get('sortBy', $this->getUser()->getFrontPageSortMode());
 
         if (!\in_array($sortBy, Submission::SORT_OPTIONS, true)) {
-            return $this->json(['message' => 'unknown sort mode', 400]);
+            return $this->json(['message' => 'unknown sort mode'], 400);
         }
 
         $criteria = new Criteria($sortBy, $this->getUser());

@@ -23,6 +23,13 @@ class SubmissionControllerTest extends WebTestCase {
         ], json_decode($client->getResponse()->getContent(), true));
     }
 
+    public function testCannotListSubmissionsWithInvalidSortMode(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/api/submissions?sortBy=poo');
+
+        self::assertResponseStatusCodeSame(400);
+    }
+
     public function testGetSubmission(): void {
         $client = self::createUserClient();
         $client->request('GET', '/api/submissions/3');
