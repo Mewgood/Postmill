@@ -295,7 +295,7 @@ user.comments: Σχόλια
 user.email_optional: Η παροχή μιας διεύθυνσης email είναι προαιρετική. Θα χρησιμοποιηθεί μόνο για επαναφορά του κωδικού πρόσβασής σας.
 user.message: Στείλετε μήνυμα
 user.moderates: '%username% είναι συντονιστής:'
-user.password_rules: Ελάχιστο 8 χαρακτήρες; Το πολύ 72 λόγω περιορισμών του αλγόριθμου bcrypt.
+user.password_rules: Ελάχιστο 8 χαρακτήρες.
 user.registered: Εγγεγραμμένοι στις %timestamp%
 user.submissions: Υποβολές
 user.username_rules: Επιτρέπονται χαρακτήρες είναι A-Z, a-z, 0-9 και _.

@@ -158,7 +158,7 @@ time.later_format: '%relative_time% später'
 user.comments: Kommentare
 user.email_optional: Das Angeben einer Email Adresse ist freiwillig. Es wird ausschliesslich zum Zurücksetzen des Passworts verwendet.
 user.moderates: '%username% ist ein Moderator in:'
-user.password_rules: Mindestens 8, maximal 72 Zeichen auf Grund der Limitationen durch den bcrypt Algorithmus.
+user.password_rules: Mindestens 8 Zeichen.
 user.submissions: Einreichungen
 user.username_rules: Erlaubte Zeichen sind A-Z, a-z, 0-9 und Underscore.
 

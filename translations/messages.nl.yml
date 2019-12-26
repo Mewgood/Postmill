@@ -176,7 +176,7 @@ user.comments: Reacties
 user.email_optional: Het is niet verplicht om een e-mailadres op te geven. Deze zal slechts worden gebruikt wanneer je een nieuw wachtwoord aanvraagt.
 user.message: Stuur bericht
 user.moderates: '%username% is moderator voor:'
-user.password_rules: Je wachtwoord moet minimaal 8 tekens lang zijn; maximaal 72. (de reden hiervoor komt door het een beperking in het BCrypt-algoritme).
+user.password_rules: Je wachtwoord moet minimaal 8 tekens lang zijn.
 user.registered: Geregistreed %timestamp%
 user.submissions: Inzendingen
 user.username_rules: Toegestane tekens zijn A t/m Z, a t/m z, 0 t/m 9 en een liggend streepje (_).

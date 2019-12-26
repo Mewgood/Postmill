@@ -187,7 +187,7 @@ user.comments: Kommentit
 user.email_optional: Sähköpostiosoite on vapaaehtoinen. Käytämme sitä vain salasanojen nollaamiseen ja kaksivaiheistodennuskoodien lähettämiseen.
 user.message: Lähetä viesti
 user.moderates: '%username% on moderaattori foorumeilla:'
-user.password_rules: Vähintään 8 merkkiä; enintään 72 bcrypt-algoritmin rajoitusten takia.
+user.password_rules: Vähintään 8 merkkiä.
 user.registered: Rekisteröity %timestamp%
 user.submissions: Lisäykset
 user.username_rules: Sallitut merkit ovat A-Z, a-z, 0-9 ja alaviiva.

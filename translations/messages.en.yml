@@ -526,7 +526,7 @@ user.comments: Comments
 user.email_optional: Providing an email address is optional. We will only use it for resetting passwords.
 user.message: Send message
 user.moderates: '%username% is a moderator on:'
-user.password_rules: Minimum of 8 characters; maximum of 72 due to limitations of the bcrypt algorithm.
+user.password_rules: Minimum of 8 characters.
 user.registered: Registered %timestamp%
 user.submissions: Submissions
 user.username_rules: Allowed characters are A-Z, a-z, 0-9 and underscore.

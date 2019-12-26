@@ -444,7 +444,7 @@ user.comments: Komentoj
 user.email_optional: Retpoŝtadreso malnepras. Ni nur uzos ĝin por reagordi pasvortojn kaj retpoŝti du-fazajn identokontrolojn.
 user.message: Sendi mesaĝon
 user.moderates: '%username% estas kontrolanto por:'
-user.password_rules: Minimume 8 signoj; maksimume 72 pro limigoj de la algoritmo «bcrypt».
+user.password_rules: Minimume 8 signoj.
 user.registered: Registriĝis %timestamp%
 user.submissions: Afiŝoj
 user.username_rules: Permesitaj signoj estas A ĝis Z, a ĝis z, 0 ĝis 9, kaj substrekoj.

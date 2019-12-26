@@ -279,7 +279,7 @@ user.comments: Comentários
 user.email_optional: Fornecer um endereço de email é opcional. Nós vamos usá-lo apenas para recuperar senhas.
 user.message: Enviar mensagem
 user.moderates: '%username% é moderador em:'
-user.password_rules: Mínimo de 8 caracteres; máximo de 72 devido a limitações do algoritmo bcrypt.
+user.password_rules: Mínimo de 8 caracteres.
 user.registered: Registrado em %timestamp%
 user.submissions: Postagens
 user.username_rules: Caracteres permitidos são A-Z, a-z, 0-9 e underline.

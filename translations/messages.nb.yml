@@ -523,7 +523,7 @@ user.comments: Kommentarer
 user.email_optional: Å oppgi en epost-adresse er valgfritt. Den vil kun bli brukt til nullstilling av passord.
 user.message: Send melding
 user.moderates: '%username% er en moderator i:'
-user.password_rules: Minst 8 tegn; opptil 72 på grunn av begrensninger med bcrypt-algoritmen.
+user.password_rules: Minst 8 tegn.
 user.registered: Registrert %timestamp%
 user.submissions: Innlegg
 user.username_rules: Tillatte tegn er A-Z, a-z, 0-9 og understrek.

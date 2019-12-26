@@ -346,7 +346,7 @@ user.comments: Comentarios
 user.email_optional: Proporcionar una dirección correo es opcional. Solo la utilizaremos para restablecer contraseñas y enviar códigos de autenticación de dos factores.
 user.message: Enviar mensaje
 user.moderates: '%username% es una moderadora en:'
-user.password_rules: Mínimo de 8 caracteres; máximo de 72 debido a limitaciones del algoritmo bcrypt.
+user.password_rules: Mínimo de 8 caracteres.
 user.registered: Registrado el %timestamp%
 user.submissions: Publicaciones
 user.username_rules: Los caracteres permitidos son A-Z, a-z, 0-9 y barra baja.

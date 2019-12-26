@@ -357,7 +357,7 @@ user.comments: Commentaires
 user.email_optional: Fournir une adresse mail est optionnel. Nous ne l'utiliserons que pour réinitialiser votre mot de passe.
 user.message: Envoyer le message
 user.moderates: '%username% modère:'
-user.password_rules: Minimum de 8 caractères, maximum de 72, en raison des limites de l'algorithme bcrypt.
+user.password_rules: Minimum de 8 caractères.
 user.registered: Inscrit %timestamp%
 user.submissions: Posts
 user.username_rules: Les caractères autorisés sont A-Z, a-z, 0-9 et le trait de soulignement.
