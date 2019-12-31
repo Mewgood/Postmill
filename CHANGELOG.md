@@ -1,5 +1,60 @@
 # Change Log
 
+## v2.1.0 (2020-01-01)
+
+* Add background images for forums.
+* Add Docker images suitable for production use.
+* Add link to global moderation log in forum logs.
+* Add monochrome theme.
+* Add popovers for user links.
+* Add `postmill:admin` command for setting the admin flag, replacing
+  `app:user:add` and `app:user:modify`.
+* Add requirement for deletion reason when moderators delete comments.
+* Add REST API (unfinished, experimental).
+* Add /site/health_check endpoint.
+* Add site setting for global theme.
+* Disable HTTP caching by default, as this would consume a lot of storage in a
+  short amount of time.
+* Fix bugs occurring when soft-deleting submissions.
+* Fix false positive that had 1/10000 chance of occurring when checking if a ban
+  had expired.
+* Fix incorrect creation of `DateTime` objects with millisecond precision which
+  could potentially cause server errors.
+* Fix JS breaking when using a locale with country code.
+* Fix nested hideables (e.g. nested comments).
+* Fix redirect to 404 after deleting things.
+* Fix sessions not being stored in var/sessions.
+* Fix unload warning after changing non-text fields.
+* Improve appearance of alerts.
+* Improve appearance of (un)subscribe buttons.
+* Improve display of moderators in forum sidebar.
+* Improve display of submission images, particularly if they're portrait-sized.
+* Improve dropdown menus to close upon hitting Escape.
+* Improve forum list header by reducing vertical footprint.
+* Improve light/dark mode button to act without needing a page refresh.
+* Improve loading time of paginated comments.
+* Improve placement of 'edit biography' link.
+* Improve test coverage.
+* Improve UI for marking users as whitelisted (previously 'trusted users').
+* Refactor alerts to use macros/Twig theme.
+* Refactor buttons to use Twig macros instead of the Symfony form builder.
+* Refactor CAPTCHA reloading to remove use of inline JS.
+* Refactor JS to remove nearly all uses of jQuery.
+* Refactor pagination to use Doctrine's ORM.
+* Refactor translation files to be flat YAML files, allowing for easy grepping
+  of translation keys.
+* Remove message about bcrypt password length restrictions, as non-bcrypt
+  algorithms are used if available.
+* Remove `.notification-head` class.
+* Remove `.required-indicator` class.
+* Remove special handling of exceptions in XHR context, as XHR is no longer
+  used.
+* Rename `.nav` to `.flex` in HTML/CSS.
+* Rename `.table-list` to `.definition-list` in HTML/CSS.
+* Restore Node 8 support in Webpack configuration.
+* Update Norwegian translation.
+* Update to Symfony 4.4.
+
 ## v2.0.0 (2019-07-25)
 
 * Add accessible nav for skipping to certain locations on the page.
