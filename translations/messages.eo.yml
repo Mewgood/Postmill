@@ -367,16 +367,6 @@ request_password_reset.title: Peti ligilon al pasvorta restarigo
 
 request_password_reset_form.submit: Sendi
 
-reset_password.email_subject: '%site_name% - Restarigi pasvorton por uzanto %username%'
-# this should be kept at 76 columns --------------------------------------------
-reset_password.email_body: |
-    Iu petis pasvortan restarigon por via konto ĉe %site_name%. Por restarigi
-    pasvorton, alklaku la ĉi-suban ligilon:
-
-    %reset_link%
-
-    Se vi ne petis pasvortan restarigon, vi povas sendanĝere malatenti ĉi tiun
-    mesaĝon.
 reset_password.title: Restarigi pasvorton
 
 site_footer.app: Povigita de %app% %version%

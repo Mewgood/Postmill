@@ -25,6 +25,7 @@ services:
             $defaultLocale: "%env(APP_LOCALE)%"
             $fontsConfig: "%fonts_config%"
             $themesConfig: "%themes_config%"
+            $noReplyAddress: "%env(NO_REPLY_ADDRESS)%"
             $secret: "%env(APP_SECRET)%"
             $siteName: '@=service("App\\Repository\\SiteRepository").getCurrentSiteName()'
             $uploadRoot: "%env(resolve:UPLOAD_ROOT)%"
@@ -60,9 +61,6 @@ services:
 
     App\Form\UserSettingsType:
         $availableLocales: "%env(csv:AVAILABLE_LOCALES)%"
-
-    App\Mailer\ResetPasswordMailer:
-        $noReplyAddress: "%env(NO_REPLY_ADDRESS)%"
 
     App\Markdown\MarkdownConverter:
         $cacheItemPool: "@cache.markdown"

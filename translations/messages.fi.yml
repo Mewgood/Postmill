@@ -147,16 +147,6 @@ request_password_reset.title: Pyydä linkki salasanan nollaukseen
 
 request_password_reset_form.submit: Lähetä
 
-reset_password.email_subject: '%site_name% - Nollaa käyttäjän %username% salasana'
-# this should be kept at 76 columns --------------------------------------------
-reset_password.email_body: |
-    Joku pyysi, että %site_name%-tunnuksesi salasana nollataan. Nollataksesi
-    salasanan, napsauta alla olevaa linkkiä:
-
-    %reset_link%
-
-    Jos et pyytänyt salasanan nollausta, voit turvallisesti jättää viestin
-    huomiotta. Linkkiä ei voi käyttää enää 24 tunnin kuluttua.
 reset_password.title: Nollataan salasanaa
 
 site_footer.app: Käytössä %app% %version%

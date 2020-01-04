@@ -137,17 +137,6 @@ request_password_reset.title: Vraag link aan om wachtwoord opnieuw in te stellen
 
 request_password_reset_form.submit: Vraag link aan
 
-reset_password.email_subject: '%site_name% - Stel wachtwoord opnieuw in voor %username%'
-# this should be kept at 76 columns --------------------------------------------
-reset_password.email_body: |
-    Iemand heeft een link aangevraagd om je wachtwoord voor je account op
-    %site_name% op nieuw in te stellen. Om je wachtwoord op nieuw in te stellen,
-    klik op deze link:
-
-    %reset_link%
-
-    Mocht je geen link hebben aangevraagd, dan kunt u dit bericht gerust
-    negeren. De link vervalt 24 uur nadat deze is aangevraagd.
 reset_password.title: Wachtwoord opnieuw instellen
 
 site_footer.app: Deze site draait op %app% %version%

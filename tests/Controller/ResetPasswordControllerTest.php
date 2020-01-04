@@ -4,23 +4,33 @@ namespace App\Tests\Controller;
 
 use App\Controller\ResetPasswordController;
 use App\Entity\User;
-use App\Mailer\ResetPasswordMailer;
+use App\Repository\UserRepository;
+use App\Security\PasswordResetHelper;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @covers \App\Controller\ResetPasswordController
  * @group time-sensitive
  */
 class ResetPasswordControllerTest extends WebTestCase {
+    /**
+     * @var PasswordResetHelper
+     */
+    private $helper;
+
     public static function setUpBeforeClass(): void {
-        ClockMock::register(ResetPasswordMailer::class);
+        ClockMock::register(PasswordResetHelper::class);
         ClockMock::register(ResetPasswordController::class);
     }
 
-    public function testCanSendResetEmails() {
+    protected function setUp(): void {
+        self::bootKernel();
+        $this->helper = self::$container->get(PasswordResetHelper::class);
+    }
+
+    public function testCanRequestPasswordReset(): void {
         $client = static::createClient();
         $crawler = $client->request('GET', '/reset_password');
 
@@ -29,47 +39,22 @@ class ResetPasswordControllerTest extends WebTestCase {
             'request_password_reset[verification]' => 'bypass',
         ]);
 
-        $client->enableProfiler();
         $client->submit($form);
 
-        /** @var MessageDataCollector $collector */
-        $collector = $client->getProfile()->getCollector('swiftmailer');
+        $user = $this->getUser();
 
-        $this->assertEquals(1, $collector->getMessageCount());
-
-        /* @var \Swift_Message $message */
-        $message = $collector->getMessages()[0];
-
-        $mailer = $client->getContainer()->get(ResetPasswordMailer::class);
-
-        $this->assertEquals(
-            sprintf('%s - Reset password for user emma', $mailer->getSiteName()),
-            $message->getSubject()
-        );
-
-        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['username' => 'emma']);
-        $expires = (new \DateTime('@'.time().' +24 hours'))->format('U');
-
-        $resetUrl = $client->getContainer()->get('router')->generate('password_reset', [
-            'id' => $user->getId(),
-            'expires' => $expires,
-            'checksum' => hash_hmac(
-                'sha256', $user->getId().'~'.$user->getPassword().'~'.$expires,
-                $mailer->getSecret()
-            ),
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        $this->assertContains($resetUrl, $message->getBody());
-
-        return $resetUrl;
+        self::assertResponseRedirects();
+        self::assertEmailCount(1);
+        $mail = self::getMailerMessage(0);
+        self::assertEmailHeaderSame($mail, 'From', 'Postmill <no-reply@example.com>');
+        self::assertEmailHeaderSame($mail, 'To', 'emma <emma@example.com>');
+        self::assertEmailTextBodyContains($mail, $this->helper->generateResetUrl($user));
     }
 
-    /**
-     * @depends testCanSendResetEmails
-     *
-     * @param string $url
-     */
-    public function testCanResetPassword($url): void {
+    public function testCanResetPassword(): void {
+        $user = $this->getUser();
+        $url = $this->helper->generateResetUrl($user);
+
         $client = static::createClient();
         $crawler = $client->request('GET', $url);
 
@@ -80,24 +65,40 @@ class ResetPasswordControllerTest extends WebTestCase {
 
         $client->submit($form);
 
-        $this->assertTrue($client->getResponse()->isRedirection());
+        self::assertResponseRedirects();
 
-        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['username' => 'emma']);
+        /** @var UserPasswordEncoderInterface $encoder */
+        $encoder = self::$container->get('security.password_encoder');
 
-        $this->assertTrue($client->getContainer()->get('security.password_encoder')->isPasswordValid($user, 'badshit1'));
+        $user = self::$container->get(UserRepository::class)->findOneByUsername('emma');
+
+        $this->assertTrue($encoder->isPasswordValid($user, 'badshit1'));
     }
 
-    /**
-     * @depends testCanSendResetEmails
-     *
-     * @param $url
-     */
-    public function testResetLinkDoesNotWorkAfterTwentyFourHours($url): void {
-        sleep(86400);
+    public function testResetLinkDoesNotWorkAfterTwentyFourHours(): void {
+        $url = $this->helper->generateResetUrl($this->getUser());
 
         $client = static::createClient();
         $client->request('GET', $url);
+        self::assertResponseIsSuccessful();
 
-        $this->assertTrue($client->getResponse()->isNotFound());
+        sleep(86400);
+
+        $client->request('GET', $url);
+        self::assertResponseStatusCodeSame(403);
+    }
+
+    public function testResetLinkWithBogusUrlDoesNotWork(): void {
+        $hash = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+
+        $client = self::createClient();
+        $client->request('GET', 'http://localhost/reset_password/1/'.time().'/'.$hash);
+
+        self::assertResponseStatusCodeSame(403);
+    }
+
+    private function getUser(): User {
+        return self::$container->get(UserRepository::class)
+            ->findOneByUsername('emma');
     }
 }

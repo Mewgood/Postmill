@@ -234,17 +234,6 @@ request_password_reset.title: Ζητήστε να επαναφέρουμε το�
 
 request_password_reset_form.submit: Υποβάλλε
 
-reset_password.email_subject: '%site_name% - Επαναφορά κωδικού πρόσβασης για τον χρήστη %username%'
-# this should be kept at 76 columns --------------------------------------------
-reset_password.email_body: |
-    Κάποιος ζήτησε την επαναφορά του κωδικού πρόσβασης για το %site_name%
-    λογαριασμό σας. Για να επαναφέρετε τον κωδικό πρόσβασής σας, κάντε κλικ
-    παρακάτω:
-
-    %reset_link%
-
-    Εάν δεν ζητήσατε επαναφορά κωδικού πρόσβασης, μπορείτε να αγνοήσετε αυτό το
-    μήνυμα. Η σελίδα λήγει μετά από 24 ώρες.
 reset_password.title: Επαναφορά κωδικού πρόσβασης
 
 site_footer.app: Λειτουργώντας %app% %version%

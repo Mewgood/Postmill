@@ -14,13 +14,13 @@ use App\Form\UserBlockType;
 use App\Form\UserFilterType;
 use App\Form\UserSettingsType;
 use App\Form\UserType;
-use App\Mailer\ResetPasswordMailer;
 use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Security\AuthenticationHelper;
+use App\Security\PasswordResetHelper;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -94,7 +94,7 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    public function login(AuthenticationUtils $helper, ResetPasswordMailer $mailer, Request $request): Response {
+    public function login(AuthenticationUtils $helper, PasswordResetHelper $passwordReset, Request $request): Response {
         // store the last visited location if none exists
         if (!$this->getTargetPath($request->getSession(), 'main')) {
             $referer = $request->headers->get('Referer');
@@ -105,7 +105,7 @@ final class UserController extends AbstractController {
         }
 
         return $this->render('user/login.html.twig', [
-            'can_reset_password' => $mailer->canMail(),
+            'can_reset_password' => $passwordReset->canReset(),
             'error' => $helper->getLastAuthenticationError(),
             'last_username' => $helper->getLastUsername(),
             'remember_me' => $request->getSession()->get('remember_me'),

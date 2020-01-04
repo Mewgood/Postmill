@@ -103,6 +103,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             ->orWhere('u.normalizedEmail = ?2')
             ->setParameter(1, $email)
             ->setParameter(2, User::normalizeEmail($email))
+            ->orderBy('u.id', 'ASC')
             ->getQuery()
             ->execute();
     }

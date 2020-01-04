@@ -427,16 +427,11 @@ request_password_reset.no_confirmation_notice: Adressen du oppga er sikkert ugyl
 
 request_password_reset_form.submit: Send
 
-reset_password.email_subject: '%site_name% - Nullstill passord for %username%'
-# this should be kept at 76 columns --------------------------------------------
-reset_password.email_body: |
-    Noen ba om å nullstille passordet for %site_name%-kontoen din. For å
-    nullstille passordet ditt, klikk på lenken nedenfor:
+reset_password_email.entry: 'Nullstill passordet for %username%:'
+reset_password_email.footer: 'Du kan trygt ignorere denne eposten om du ikke ba om å nullstille passordet ditt. Lenken(e) vil utløpe om 24 timer.'
+reset_password_email.header: 'Noen ba om å nullstille passordet for %site_name%-kontoen din.'
+reset_password_email.subject: '%site_name% - Nullstill passord'
 
-    %reset_link%
-
-    Du kan trygt ignorere denne meldingen om du ikke ba om å nullstille
-    passordet ditt. Lenken vil utløpe om 24 timer.
 reset_password.title: Nullstille passord
 
 role.admins: Administratorer

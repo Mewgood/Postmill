@@ -278,16 +278,6 @@ request_password_reset.no_confirmation_notice: Si nunca recibes un correo, la di
 request_password_reset.title: Solicitar link para reseteo de contraseña
 request_password_reset_form.submit: Enviar
 
-reset_password.email_subject: '%site_name% - Restablecer contraseña para %username%'
-# this should be kept at 76 columns --------------------------------------------
-reset_password.email_body: |
-    Alguien solicitó un cambio de contraseña para tu cuenta de %site_name%. Para
-    restablecer tu contraseña, haz click en este enlace:
-
-    %reset_link%
-
-    Si no has solicitado un cambio de contraseña, por favor, ignora este
-    mensaje. El enlace expirará después de 24 horas.
 reset_password.title: Restableciendo contraseña
 
 site_footer.app: Usando %app% %version%

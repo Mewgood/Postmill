@@ -224,16 +224,6 @@ request_password_reset.no_confirmation_notice: Se você não receber um emai, o 
 
 request_password_reset_form.submit: Enviar
 
-reset_password.email_subject: '%site_name% - Recuperar senha para o usuário %username%'
-# this should be kept at 76 columns --------------------------------------------
-reset_password.email_body: |
-    Algúem solicitou a recuperação da senha para sua conta no %site_name%. Para
-    recuperar sua senha, clique no link abaixo:
-
-    %reset_link%
-
-    Se você não solicitus a recuperção da senha, ignore esta mensagem. O link
-    vai expirar após 24 horas.
 reset_password.title: Recuperar senha
 
 site_footer.app: Rodando %app% %version%
