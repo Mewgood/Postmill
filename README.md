@@ -32,8 +32,13 @@ tracker to gauge the possibility of it being merged. A feature that's outside
 the scope of the software is likely to be rejected. We don't want hurt feelings,
 so please just ask beforehand.
 
-If you'd like to support me with money, you can send Bitcoins to
-`1AXAH2ZaHfVsq2xnbXRN9497FpUAri8x72`.
+## Donations
+
+Instead of donating to me, consider [donating to help trans people cover living
+expenses][#transcrowdfund].
+
+<!-- But if you absolutely must donate to me, send bitcoins to
+1AXAH2ZaHfVsq2xnbXRN9497FpUAri8x72. I'll probably spend them eventually. -->
 
 ## Contact
 
@@ -50,3 +55,4 @@ details.
 [issues]: https://gitlab.com/edgyemma/Postmill/issues
 [matrix]: https://matrix.to/#/#postmill:matrix.org
 [wiki]: https://gitlab.com/postmill/Postmill/wikis/getting-started
+[#transcrowdfund]: https://twitter.com/search?q=%23TransCrowdFund
