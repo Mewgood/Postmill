@@ -17,7 +17,8 @@ final class IpRateLimitFactory {
 
     public function __construct(AdapterInterface $cache, array $ipWhitelist) {
         $this->cache = $cache;
-        $this->ipWhitelist = $ipWhitelist;
+        // FIXME: $ipWhitelist shouldn't contain null values
+        $this->ipWhitelist = array_filter($ipWhitelist, 'is_string');
     }
 
     public function create(string $prefix, int $maxHits, string $interval): IpRateLimit {

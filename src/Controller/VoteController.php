@@ -17,7 +17,7 @@ final class VoteController extends AbstractController {
     public function __invoke(EntityManagerInterface $em, Request $request, string $entityClass, int $id): Response {
         $this->validateCsrf('vote', $request->request->get('token'));
 
-        $choice = $request->request->getInt('choice', null);
+        $choice = (int) $request->request->get('choice');
 
         $votable = $em->find($entityClass, $id);
 

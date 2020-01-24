@@ -12,7 +12,9 @@ use Symfony\Component\Routing\RequestContext;
 class RequestContextMiddlewareTest extends MiddlewareTestCase {
     public function testSetsAndRestoresRequestContext(): void {
         /** @var RequestContext|\PHPUnit\Framework\MockObject\MockObject $requestContext */
-        $requestContext = $this->createMock(RequestContext::class);
+        $requestContext = $this->getMockBuilder(RequestContext::class)
+            ->setMethods(['getHost', 'setHost'])
+            ->getMock();
         $requestContext
             ->expects($this->once())
             ->method('getHost')

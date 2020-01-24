@@ -42,7 +42,8 @@ final class IpRateLimit {
         \DateInterval $interval
     ) {
         $this->cache = $cache;
-        $this->ipWhitelist = $ipWhitelist;
+        // FIXME: $ipWhitelist shouldn't contain null values
+        $this->ipWhitelist = array_filter($ipWhitelist, 'is_string');
         $this->prefix = $prefix;
         $this->maxHits = $maxHits;
         $this->interval = $interval;

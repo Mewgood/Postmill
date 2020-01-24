@@ -43,7 +43,8 @@ final class RateLimitValidator extends ConstraintValidator {
         $this->manager = $manager;
         $this->requestStack = $requestStack;
         $this->tokenStorage = $tokenStorage;
-        $this->ipWhitelist = $ipWhitelist;
+        // FIXME: $ipWhitelist shouldn't contain null values
+        $this->ipWhitelist = array_filter($ipWhitelist, 'is_string');
     }
 
     public function validate($value, Constraint $constraint): void {

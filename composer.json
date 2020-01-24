@@ -14,7 +14,7 @@
         }
     },
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.2.9",
         "ext-gd": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
@@ -117,9 +117,9 @@
     },
     "config": {
         "platform": {
-            "php": "7.1.3",
+            "php": "7.2.9",
             "ext-amqp": "1.6.0",
-            "ext-ctype": "7.1.3"
+            "ext-ctype": "7.2.9"
         },
         "sort-packages": true
     }
