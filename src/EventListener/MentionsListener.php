@@ -2,20 +2,18 @@
 
 namespace App\EventListener;
 
+use App\Entity\User;
 use App\Event\NewCommentEvent;
 use App\Event\NewSubmissionEvent;
 use App\Markdown\MarkdownConverter;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Exception\ExceptionInterface;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RouterInterface;
 
 class MentionsListener implements EventSubscriberInterface {
+    private const USER_URL_PATTERN = '!^%s/user/(\w{3,25})$!';
+
     /**
      * @var MarkdownConverter
      */
@@ -27,14 +25,9 @@ class MentionsListener implements EventSubscriberInterface {
     private $manager;
 
     /**
-     * @var RequestStack
+     * @var RequestContext
      */
-    private $requestStack;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private $requestContext;
 
     /**
      * @var UserRepository
@@ -51,14 +44,12 @@ class MentionsListener implements EventSubscriberInterface {
     public function __construct(
         EntityManagerInterface $manager,
         MarkdownConverter $converter,
-        RequestStack $requestStack,
-        RouterInterface $router,
+        RequestContext $requestContext,
         UserRepository $users
     ) {
         $this->converter = $converter;
         $this->manager = $manager;
-        $this->requestStack = $requestStack;
-        $this->router = $router;
+        $this->requestContext = $requestContext;
         $this->users = $users;
     }
 
@@ -70,7 +61,6 @@ class MentionsListener implements EventSubscriberInterface {
         }
 
         $html = $this->converter->convertToHtml($submission->getBody());
-
         $users = $this->getUsersToNotify($html);
 
         foreach ($users as $user) {
@@ -82,9 +72,7 @@ class MentionsListener implements EventSubscriberInterface {
 
     public function onNewComment(NewCommentEvent $event): void {
         $comment = $event->getComment();
-
         $html = $this->converter->convertToHtml($comment->getBody());
-
         $users = $this->getUsersToNotify($html);
 
         foreach ($users as $user) {
@@ -97,50 +85,32 @@ class MentionsListener implements EventSubscriberInterface {
     /**
      * @return \App\Entity\User[]
      */
-    public function getUsersToNotify(string $html): array {
-        $request = $this->requestStack->getCurrentRequest();
+    private function getUsersToNotify(string $html) {
+        $document = new \DOMDocument('1.0', 'UTF-8');
+        $document->loadHTML($html);
 
-        if (!$request) {
-            return [];
-        }
-
-        $urlMatcher = new UrlMatcher(
-            $this->router->getRouteCollection(),
-            (new RequestContext())
-                ->fromRequest($request)
-                ->setMethod('GET')
+        $links = $document->documentElement->getElementsByTagName('a');
+        $pattern = sprintf(
+            self::USER_URL_PATTERN,
+            preg_quote($this->requestContext->getBaseUrl(), '!')
         );
-
-        $hrefs = (new Crawler($html))
-            ->filterXPath(sprintf(
-                '//a[starts-with(@href,"%s/user/")]',
-                $request->getBasePath()
-            ))
-            ->extract(['href']);
-
-        $usernames = [];
         $count = 0;
 
-        foreach ($hrefs as $href) {
-            try {
-                $params = $urlMatcher->match($href);
+        foreach ($links as $node) {
+            \assert($node instanceof \DOMElement);
+            $href = $node->getAttribute('href');
 
-                if (($params['_route'] ?? null) === 'user') {
-                    if (!isset($usernames[$params['username']])) {
-                        $usernames[$params['username']] = true;
-                        $count++;
-                    }
-                }
-            } catch (ExceptionInterface $e) {
+            if (preg_match($pattern, $href, $matches)) {
+                $usernames[] = User::normalizeUsername($matches[1]);
             }
 
-            if ($count === 10) {
+            if (++$count === 25) {
                 break;
             }
         }
 
-        $usernames = array_keys($usernames);
+        $usernames = array_unique($usernames ?? []);
 
-        return $this->users->findByUsername($usernames);
+        return $this->users->findByNormalizedUsername($usernames);
     }
 }
