@@ -17,8 +17,6 @@ class ForumBanData {
     private $reason;
 
     /**
-     * @Assert\DateTime(groups={"ban"})
-     *
      * @var \DateTime|null
      */
     private $expiryTime;
