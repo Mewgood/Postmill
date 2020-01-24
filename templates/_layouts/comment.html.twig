@@ -40,7 +40,7 @@
               <li>
                 <a href="{{ path('comment', { forum_name: comment.submission.forum.name, submission_id: comment.submission.id, comment_id: comment.id }) }}"
                    class="comment__info-link fg-grey">
-                  <span class="text-sm">{{- 'number.id'|trans({ '%number%': comment.id|localizednumber }) -}}</span>
+                  <span class="text-sm">{{- 'number.id'|trans({ '%number%': comment.id|format_number }) -}}</span>
                 </a>
               </li>
             {% endif %}
@@ -69,7 +69,7 @@
               {{ 'comments.replying_to_comment'|trans({
                 '%user%': '<span class="fg-muted">%s</span>'|format(comment.parent.user.username|e),
                 '%id%': '<span class="fg-primary no-underline__exempt">%s</span>'|format(
-                  'number.id'|trans({ '%number%': comment.parent.id|localizednumber|e })
+                  'number.id'|trans({ '%number%': comment.parent.id|format_number|e })
                 )
               })|raw -}}
             </a>

@@ -6,8 +6,8 @@
     extra_classes: '',
   }|merge(options) -%}
   {%- set timezone = app.user.timezone ?? null -%}
-  {%- set timestamp = datetime|localizeddate(options.date_format, options.time_format, null, timezone) -%}
-  {%- set tip = datetime|localizeddate('long', 'long', null, timezone) -%}
+  {%- set timestamp = datetime|format_datetime(options.date_format, options.time_format, timezone=timezone) -%}
+  {%- set tip = datetime|format_datetime('long', 'long', timezone=timezone) -%}
   {%- set classes = ('js-relative-time '~options.extra_classes)|trim -%}
   <time datetime="{{ datetime|date('c') }}" class="{{ classes }}" title="{{ tip }}">
     {%- if options.natural -%}
@@ -26,8 +26,8 @@
     extra_classes: '',
   }|merge(options) -%}
   {%- set timezone = app.user.timezone ?? null -%}
-  {%- set timestamp = datetime|localizeddate(options.date_format, options.time_format, null, timezone) -%}
-  {%- set tip = datetime|localizeddate('long', 'long', null, timezone) -%}
+  {%- set timestamp = datetime|format_datetime(options.date_format, options.time_format, timezone=timezone) -%}
+  {%- set tip = datetime|format_datetime('long', 'long', timezone=timezone) -%}
   {%- set classes = ('js-relative-time-diff '~options.extra_classes)|trim -%}
   <time datetime="{{ datetime|date('c') }}" data-compare-to="{{ compare_to|date('c') }}" class="{{ classes }}" title="{{ tip }}">
     {%- if options.natural -%}

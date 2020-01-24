@@ -147,11 +147,11 @@
        class="no-wrap site-nav__link
              {{ notification_count > 0 ? 'site-nav__has-notifications' }}
              {{ active == 'notifications' ? 'site-nav__link--active' }}"
-       title="{{ 'nav.notifications_count'|trans({'%count%': notification_count|localizednumber}) }}"
-       aria-label="{{ 'nav.notifications_count'|trans({'%count%': notification_count|localizednumber}) }}">
+       title="{{ 'nav.notifications_count'|trans({'%count%': notification_count|format_number}) }}"
+       aria-label="{{ 'nav.notifications_count'|trans({'%count%': notification_count|format_number}) }}">
       {% if notification_count > 0 %}
         {{ icon('envelope-open', 'nav.notifications'|trans) }}
-        <small aria-hidden="true">{{ notification_count|localizednumber }}</small>
+        <small aria-hidden="true">{{ notification_count|format_number }}</small>
       {% else %}
         {{ icon('envelope', 'nav.notifications'|trans) }}
       {% endif %}

@@ -16,9 +16,9 @@
     <b class="subscribe-button__subscriber-count"
        aria-label="{{ 'forum.subscriber_count'|trans({
          '%count%': subscriber_count,
-         '%formatted_count%': subscriber_count|localizednumber,
+         '%formatted_count%': subscriber_count|format_number,
        }) }}">
-      {{- subscriber_count|localizednumber -}}
+      {{- subscriber_count|format_number -}}
     </b>
   </button>
 {%- endmacro %}

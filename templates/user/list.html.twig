@@ -2,7 +2,7 @@
 
 {% block site_nav_active 'admin' %}
 {% block site_nav_main_menu_active 'users' %}
-{% block title 'title.list_of_users'|trans({'%page%': page|localizednumber}) %}
+{% block title 'title.list_of_users'|trans({'%page%': page|format_number}) %}
 
 {% block head %}
   {{ include('_includes/meta_pagination.html.twig', {pager: users}, with_context=false) }}
@@ -52,22 +52,22 @@
       </td>
       <td class="table__shrink">
         {% with { count: item.submissions|length } %}
-          {{ count > 0 ? count|localizednumber : '-' }}
+          {{ count > 0 ? count|format_number : '-' }}
         {% endwith %}
       </td>
       <td class="table__shrink">
         {% with { count: item.comments|length } %}
-          {{ count > 0 ? count|localizednumber : '-' }}
+          {{ count > 0 ? count|format_number : '-' }}
         {% endwith %}
       </td>
       <td class="table__shrink">
         {% with { count: item.submissionVotes|length } %}
-          {{ count > 0 ? count|localizednumber : '-' }}
+          {{ count > 0 ? count|format_number : '-' }}
         {% endwith %}
       </td>
       <td class="table__shrink">
         {% with { count: item.commentVotes|length } %}
-          {{ count > 0 ? count|localizednumber : '-' }}
+          {{ count > 0 ? count|format_number : '-' }}
         {% endwith %}
       </td>
     {% endblock row %}

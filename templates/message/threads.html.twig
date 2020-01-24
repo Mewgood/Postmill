@@ -29,7 +29,7 @@
         {{ relative_time(item.messages|last.timestamp, { date_format: 'short' }) }}
       </td>
       <td class="table__shrink text-align-right">
-        {{ (item.messages|length - 1)|localizednumber }}
+        {{ (item.messages|length - 1)|format_number }}
       </td>
       <td class="table__shrink">
         {%- for participant in item.participants|filter(participant => participant is not same as(app.user)) -%}

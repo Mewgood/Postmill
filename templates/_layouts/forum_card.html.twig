@@ -45,7 +45,7 @@
         {% set subscriber_count = forum.subscriptions|length %}
         <p class="no-margin">{{ 'forum.subscriber_count'|trans({
           '%count%': subscriber_count,
-          '%formatted_count%': subscriber_count|localizednumber,
+          '%formatted_count%': subscriber_count|format_number,
         }) }}</p>
       {% endif %}
 
@@ -53,7 +53,7 @@
         {% set submission_count = forum.submissions|length %}
         {{ 'forum.submission_count'|trans({
           '%count%': submission_count,
-          '%formatted_count%': submission_count|localizednumber,
+          '%formatted_count%': submission_count|format_number,
         }) -}}
       </p>
     </div>
