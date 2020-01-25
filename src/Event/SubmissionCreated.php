@@ -5,7 +5,7 @@ namespace App\Event;
 use App\Entity\Submission;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class NewSubmissionEvent extends Event {
+class SubmissionCreated extends Event {
     /**
      * @var Submission
      */

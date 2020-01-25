@@ -10,9 +10,9 @@ use App\Entity\Forum;
 use App\Entity\ForumLogSubmissionDeletion;
 use App\Entity\ForumLogSubmissionLock;
 use App\Entity\Submission;
-use App\Event\DeleteSubmissionEvent;
-use App\Event\EditSubmissionEvent;
-use App\Event\NewSubmissionEvent;
+use App\Event\SubmissionDeleted;
+use App\Event\SubmissionUpdated;
+use App\Event\SubmissionCreated;
 use App\Form\DeleteReasonType;
 use App\Form\SubmissionType;
 use App\Message\NewSubmission;
@@ -105,7 +105,7 @@ final class SubmissionController extends AbstractController {
             $this->entityManager->persist($submission);
             $this->entityManager->flush();
 
-            $this->dispatchEvent(new NewSubmissionEvent($submission));
+            $this->dispatchEvent(new SubmissionCreated($submission));
             $this->dispatchMessage(new NewSubmission($submission));
 
             return $this->redirect($this->generateSubmissionUrl($submission));
@@ -133,7 +133,7 @@ final class SubmissionController extends AbstractController {
 
             $this->entityManager->flush();
             $this->addFlash('success', 'flash.submission_edited');
-            $this->dispatchEvent(new EditSubmissionEvent($before, $submission));
+            $this->dispatchEvent(new SubmissionUpdated($before, $submission));
 
             return $this->redirect($this->generateSubmissionUrl($submission));
         }
@@ -167,7 +167,7 @@ final class SubmissionController extends AbstractController {
             }
 
             $this->entityManager->flush();
-            $this->dispatchEvent(new DeleteSubmissionEvent($submission));
+            $this->dispatchEvent(new SubmissionDeleted($submission));
             $this->addFlash('success', 'flash.submission_deleted');
 
             return $this->redirectToRoute('forum', [
@@ -197,7 +197,7 @@ final class SubmissionController extends AbstractController {
         }
 
         $this->entityManager->flush();
-        $this->dispatchEvent(new DeleteSubmissionEvent($submission));
+        $this->dispatchEvent(new SubmissionDeleted($submission));
         $this->addFlash('success', 'flash.submission_deleted');
 
         return $this->redirectAfterDelete($request);

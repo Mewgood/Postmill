@@ -5,7 +5,7 @@ namespace App\Event;
 use App\Entity\Comment;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class NewCommentEvent extends Event {
+class CommentCreated extends Event {
     /**
      * @var Comment
      */

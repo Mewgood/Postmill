@@ -5,7 +5,7 @@ namespace App\Event;
 use App\Entity\Submission;
 use Symfony\Contracts\EventDispatcher\Event;
 
-final class DeleteSubmissionEvent extends Event {
+final class SubmissionDeleted extends Event {
     /**
      * @var Submission[]
      */

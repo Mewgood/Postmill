@@ -5,8 +5,8 @@ namespace App\Tests\EventListener;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Event\NewCommentEvent;
-use App\Event\NewSubmissionEvent;
+use App\Event\CommentCreated;
+use App\Event\SubmissionCreated;
 use App\EventListener\MentionsListener;
 use App\Markdown\MarkdownConverter;
 use App\Repository\UserRepository;
@@ -27,7 +27,7 @@ class MentionsListenerTest extends TestCase {
             ->method('addMention')
             ->withConsecutive(...$userParams);
 
-        $listener->onNewSubmission(new NewSubmissionEvent($submission));
+        $listener->onNewSubmission(new SubmissionCreated($submission));
     }
 
     public function testCommentMentions() {
@@ -38,7 +38,7 @@ class MentionsListenerTest extends TestCase {
             ->method('addMention')
             ->withConsecutive(...$userParams);
 
-        $listener->onNewComment(new NewCommentEvent($comment));
+        $listener->onNewComment(new CommentCreated($comment));
     }
 
     private function getListener(&$userParams): MentionsListener {

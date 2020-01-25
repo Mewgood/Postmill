@@ -10,7 +10,7 @@ use App\Entity\Moderator;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
-use App\Event\DeleteSubmissionEvent;
+use App\Event\SubmissionDeleted;
 use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\MessageRepository;
@@ -183,7 +183,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
         $this->entityManager->flush();
 
-        $this->eventDispatcher->dispatch(new DeleteSubmissionEvent(...$submissions));
+        $this->eventDispatcher->dispatch(new SubmissionDeleted(...$submissions));
 
         return $dispatchAgain;
     }

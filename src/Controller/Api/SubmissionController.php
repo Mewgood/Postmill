@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use App\Controller\AbstractController;
 use App\DataObject\SubmissionData;
 use App\Entity\Submission;
-use App\Event\DeleteSubmissionEvent;
+use App\Event\SubmissionDeleted;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -112,7 +112,7 @@ final class SubmissionController extends AbstractController {
         }
 
         $em->flush();
-        $this->dispatchEvent(new DeleteSubmissionEvent($submission));
+        $this->dispatchEvent(new SubmissionDeleted($submission));
 
         return $this->createEmptyResponse();
     }

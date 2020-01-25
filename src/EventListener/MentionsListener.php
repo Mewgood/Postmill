@@ -3,8 +3,8 @@
 namespace App\EventListener;
 
 use App\Entity\User;
-use App\Event\NewCommentEvent;
-use App\Event\NewSubmissionEvent;
+use App\Event\CommentCreated;
+use App\Event\SubmissionCreated;
 use App\Markdown\MarkdownConverter;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,8 +36,8 @@ class MentionsListener implements EventSubscriberInterface {
 
     public static function getSubscribedEvents(): array {
         return [
-            NewCommentEvent::class => ['onNewComment'],
-            NewSubmissionEvent::class => ['onNewSubmission'],
+            CommentCreated::class => ['onNewComment'],
+            SubmissionCreated::class => ['onNewSubmission'],
         ];
     }
 
@@ -53,7 +53,7 @@ class MentionsListener implements EventSubscriberInterface {
         $this->users = $users;
     }
 
-    public function onNewSubmission(NewSubmissionEvent $event): void {
+    public function onNewSubmission(SubmissionCreated $event): void {
         $submission = $event->getSubmission();
 
         if ($submission->getBody() === null) {
@@ -70,7 +70,7 @@ class MentionsListener implements EventSubscriberInterface {
         $this->manager->flush();
     }
 
-    public function onNewComment(NewCommentEvent $event): void {
+    public function onNewComment(CommentCreated $event): void {
         $comment = $event->getComment();
         $html = $this->converter->convertToHtml($comment->getBody());
         $users = $this->getUsersToNotify($html);

@@ -2,30 +2,30 @@
 
 namespace App\Event;
 
-use App\Entity\Comment;
+use App\Entity\Forum;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class EditCommentEvent extends Event {
+class ForumUpdated extends Event {
     /**
-     * @var Comment
+     * @var Forum
      */
     private $before;
 
     /**
-     * @var Comment
+     * @var Forum
      */
     private $after;
 
-    public function __construct(Comment $before, Comment $after) {
+    public function __construct(Forum $before, Forum $after) {
         $this->before = $before;
         $this->after = $after;
     }
 
-    public function getBefore(): Comment {
+    public function getBefore(): Forum {
         return $this->before;
     }
 
-    public function getAfter(): Comment {
+    public function getAfter(): Forum {
         return $this->after;
     }
 }

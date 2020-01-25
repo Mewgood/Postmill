@@ -3,10 +3,10 @@
 namespace App\EventListener;
 
 use App\Entity\Image;
-use App\Event\DeleteForumEvent;
-use App\Event\DeleteSubmissionEvent;
-use App\Event\EditForumEvent;
-use App\Event\EditSubmissionEvent;
+use App\Event\ForumDeleted;
+use App\Event\SubmissionDeleted;
+use App\Event\ForumUpdated;
+use App\Event\SubmissionUpdated;
 use App\Message\DeleteImage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -19,10 +19,10 @@ class PruneImagesListener implements EventSubscriberInterface {
 
     public static function getSubscribedEvents(): array {
         return [
-            DeleteForumEvent::class => ['onDeleteForum'],
-            DeleteSubmissionEvent::class => ['onDeleteSubmission'],
-            EditForumEvent::class => ['onEditForum'],
-            EditSubmissionEvent::class => ['onEditSubmission'],
+            ForumDeleted::class => ['onDeleteForum'],
+            SubmissionDeleted::class => ['onDeleteSubmission'],
+            ForumUpdated::class => ['onEditForum'],
+            SubmissionUpdated::class => ['onEditSubmission'],
         ];
     }
 
@@ -30,7 +30,7 @@ class PruneImagesListener implements EventSubscriberInterface {
         $this->messageBus = $messageBus;
     }
 
-    public function onDeleteSubmission(DeleteSubmissionEvent $event): void {
+    public function onDeleteSubmission(SubmissionDeleted $event): void {
         $images = [];
 
         foreach ($event->getSubmissions() as $submission) {
@@ -46,7 +46,7 @@ class PruneImagesListener implements EventSubscriberInterface {
         }
     }
 
-    public function onEditSubmission(EditSubmissionEvent $event): void {
+    public function onEditSubmission(SubmissionUpdated $event): void {
         $before = $event->getBefore()->getImage();
         $after = $event->getAfter()->getImage();
 
@@ -57,7 +57,7 @@ class PruneImagesListener implements EventSubscriberInterface {
         }
     }
 
-    public function onDeleteForum(DeleteForumEvent $event): void {
+    public function onDeleteForum(ForumDeleted $event): void {
         $images = array_map(function (Image $image) {
             return $image->getFileName();
         }, array_filter([
@@ -70,7 +70,7 @@ class PruneImagesListener implements EventSubscriberInterface {
         }
     }
 
-    public function onEditForum(EditForumEvent $event): void {
+    public function onEditForum(ForumUpdated $event): void {
         $images = [];
 
         $before = $event->getBefore()->getLightBackgroundImage();

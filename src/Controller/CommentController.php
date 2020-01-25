@@ -10,8 +10,8 @@ use App\Entity\Forum;
 use App\Entity\ForumLogCommentDeletion;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Event\EditCommentEvent;
-use App\Event\NewCommentEvent;
+use App\Event\CommentUpdated;
+use App\Event\CommentCreated;
 use App\Form\CommentType;
 use App\Form\DeleteReasonType;
 use App\Repository\CommentRepository;
@@ -105,7 +105,7 @@ final class CommentController extends AbstractController {
             $this->entityManager->persist($reply);
             $this->entityManager->flush();
 
-            $this->dispatchEvent(new NewCommentEvent($reply));
+            $this->dispatchEvent(new CommentCreated($reply));
 
             return $this->redirect($this->generateCommentUrl($reply));
         }
@@ -142,7 +142,7 @@ final class CommentController extends AbstractController {
 
             $this->entityManager->flush();
 
-            $this->dispatchEvent(new EditCommentEvent($before, $comment));
+            $this->dispatchEvent(new CommentUpdated($before, $comment));
 
             return $this->redirect($this->generateCommentUrl($comment));
         }

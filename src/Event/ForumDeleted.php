@@ -5,7 +5,7 @@ namespace App\Event;
 use App\Entity\Forum;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class DeleteForumEvent extends Event {
+class ForumDeleted extends Event {
     /**
      * @var Forum
      */
