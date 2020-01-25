@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use App\Controller\AbstractController;
 use App\DataObject\ForumData;
 use App\Entity\Forum;
-use App\Event\ForumUpdated;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,8 +57,6 @@ class ForumController extends AbstractController {
             $data->updateForum($forum);
 
             $em->flush();
-
-            $this->dispatchEvent(new ForumUpdated($before, $forum));
         });
     }
 }

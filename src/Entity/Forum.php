@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
-use App\Entity\Contracts\BackgroundImageInterface;
+use App\Entity\Contracts\BackgroundImageInterface as BackgroundImage;
+use App\Entity\Contracts\DomainEventsInterface as DomainEvents;
+use App\Event\ForumDeleted;
+use App\Event\ForumUpdated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -11,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Pagerfanta\Adapter\DoctrineCollectionAdapter;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ForumRepository")
@@ -23,7 +27,7 @@ use Pagerfanta\Pagerfanta;
  *     @ORM\UniqueConstraint(name="forums_normalized_name_idx", columns={"normalized_name"}),
  * })
  */
-class Forum implements BackgroundImageInterface {
+class Forum implements BackgroundImage, DomainEvents {
     /**
      * @ORM\Column(type="bigint")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -133,11 +137,11 @@ class Forum implements BackgroundImageInterface {
     private $darkBackgroundImage;
 
     /**
-     * @ORM\Column(type="text", options={"default": BackgroundImageInterface::BACKGROUND_TILE})
+     * @ORM\Column(type="text", options={"default": BackgroundImage::BACKGROUND_TILE})
      *
      * @var string
      */
-    private $backgroundImageMode = BackgroundImageInterface::BACKGROUND_TILE;
+    private $backgroundImageMode = BackgroundImage::BACKGROUND_TILE;
 
     /**
      * @ORM\JoinColumn(onDelete="SET NULL")
@@ -435,5 +439,19 @@ class Forum implements BackgroundImageInterface {
 
     public static function normalizeName(string $name): string {
         return mb_strtolower($name, 'UTF-8');
+    }
+
+    public function onCreate(): Event {
+        return new Event();
+    }
+
+    public function onUpdate($previous): Event {
+        \assert($previous instanceof self);
+
+        return new ForumUpdated($previous, $this);
+    }
+
+    public function onDelete(): Event {
+        return new ForumDeleted($this);
     }
 }

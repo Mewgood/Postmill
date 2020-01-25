@@ -10,9 +10,6 @@ use App\Entity\Forum;
 use App\Entity\ForumLogSubmissionDeletion;
 use App\Entity\ForumLogSubmissionLock;
 use App\Entity\Submission;
-use App\Event\SubmissionDeleted;
-use App\Event\SubmissionUpdated;
-use App\Event\SubmissionCreated;
 use App\Form\DeleteReasonType;
 use App\Form\SubmissionType;
 use App\Message\NewSubmission;
@@ -105,7 +102,6 @@ final class SubmissionController extends AbstractController {
             $this->entityManager->persist($submission);
             $this->entityManager->flush();
 
-            $this->dispatchEvent(new SubmissionCreated($submission));
             $this->dispatchMessage(new NewSubmission($submission));
 
             return $this->redirect($this->generateSubmissionUrl($submission));
@@ -128,12 +124,10 @@ final class SubmissionController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $before = clone $submission;
             $data->updateSubmission($submission, $this->getUser());
 
             $this->entityManager->flush();
             $this->addFlash('success', 'flash.submission_edited');
-            $this->dispatchEvent(new SubmissionUpdated($before, $submission));
 
             return $this->redirect($this->generateSubmissionUrl($submission));
         }
@@ -167,7 +161,6 @@ final class SubmissionController extends AbstractController {
             }
 
             $this->entityManager->flush();
-            $this->dispatchEvent(new SubmissionDeleted($submission));
             $this->addFlash('success', 'flash.submission_deleted');
 
             return $this->redirectToRoute('forum', [
@@ -197,7 +190,6 @@ final class SubmissionController extends AbstractController {
         }
 
         $this->entityManager->flush();
-        $this->dispatchEvent(new SubmissionDeleted($submission));
         $this->addFlash('success', 'flash.submission_deleted');
 
         return $this->redirectAfterDelete($request);

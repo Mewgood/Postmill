@@ -21,7 +21,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 abstract class AbstractController extends BaseAbstractController {
     public static function getSubscribedServices(): array {
         return [
-            'event_dispatcher' => EventDispatcherInterface::class,
             'validator' => ValidatorInterface::class,
         ] + parent::getSubscribedServices();
     }
@@ -46,10 +45,6 @@ abstract class AbstractController extends BaseAbstractController {
         return $this->container
             ->get('form.factory')
             ->createNamed($name, $type, $data, $options);
-    }
-
-    protected function dispatchEvent(Event $event): Event {
-        return $this->container->get('event_dispatcher')->dispatch($event);
     }
 
     protected function generateSubmissionUrl(Submission $submission): string {

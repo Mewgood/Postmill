@@ -51,6 +51,10 @@ services:
     App\Command\ActivateMaintenanceMode:
         $includeFilePath: "%kernel.project_dir%/var/maintenance.php"
 
+    App\EventListener\DomainEventsListener:
+        tags:
+            - { name: doctrine.event_subscriber }
+
     App\EventListener\LocaleListener:
         arguments:
             $availableLocales: "%env(csv:AVAILABLE_LOCALES)%"

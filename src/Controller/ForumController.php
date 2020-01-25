@@ -6,8 +6,6 @@ use App\DataObject\ForumData;
 use App\Entity\Forum;
 use App\Entity\Moderator;
 use App\Entity\User;
-use App\Event\ForumDeleted;
-use App\Event\ForumUpdated;
 use App\Form\ConfirmDeletionType;
 use App\Form\ForumAppearanceType;
 use App\Form\ForumBanType;
@@ -118,12 +116,10 @@ final class ForumController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $before = clone $forum;
             $data->updateForum($forum);
 
             $em->flush();
             $this->addFlash('success', 'flash.forum_updated');
-            $this->dispatchEvent(new ForumUpdated($before, $forum));
 
             return $this->redirectToRoute('edit_forum', [
                 'forum_name' => $forum->getName(),
@@ -150,7 +146,6 @@ final class ForumController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $em->remove($forum);
             $em->flush();
-            $this->dispatchEvent(new ForumDeleted($forum));
 
             $this->addFlash('notice', 'flash.forum_deleted');
 
@@ -292,11 +287,9 @@ final class ForumController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $before = clone $forum;
             $data->updateForum($forum);
 
             $em->flush();
-            $this->dispatchEvent(new ForumUpdated($before, $forum));
 
             return $this->redirectToRoute('forum_appearance', [
                 'forum_name' => $forum->getName(),

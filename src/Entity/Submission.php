@@ -2,16 +2,21 @@
 
 namespace App\Entity;
 
-use App\Entity\Contracts\VisibilityInterface;
-use App\Entity\Contracts\VotableInterface;
+use App\Entity\Contracts\DomainEventsInterface as DomainEvents;
+use App\Entity\Contracts\VisibilityInterface as Visibility;
+use App\Entity\Contracts\VotableInterface as Votable;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Exception\SubmissionLockedException;
 use App\Entity\Traits\VotableTrait;
+use App\Event\SubmissionCreated;
+use App\Event\SubmissionDeleted;
+use App\Event\SubmissionUpdated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
@@ -26,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\Index(name="submissions_image_id_idx", columns={"image_id"}),
  * })
  */
-class Submission implements VisibilityInterface, VotableInterface {
+class Submission implements DomainEvents, Visibility, Votable {
     use VotableTrait {
         vote as private realVote;
         getNetScore as private getRealNetScore;
@@ -571,5 +576,19 @@ class Submission implements VisibilityInterface, VotableInterface {
 
     public function getNetScore(): int {
         return $this->netScore;
+    }
+
+    public function onCreate(): Event {
+        return new SubmissionCreated($this);
+    }
+
+    public function onUpdate($previous): Event {
+        \assert($previous instanceof self);
+
+        return new SubmissionUpdated($previous, $this);
+    }
+
+    public function onDelete(): Event {
+        return new SubmissionDeleted($this);
     }
 }
