@@ -3,10 +3,11 @@
 namespace App\EventListener;
 
 use App\Entity\User;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Event\UserUpdated;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -16,16 +17,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @see https://symfony.com/doc/current/session/locale_sticky_session.html
  */
-final class LocaleListener {
+final class LocaleListener implements EventSubscriberInterface {
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
-     * @var TokenStorageInterface
+     * @var Security
      */
-    private $tokenStorage;
+    private $security;
 
     /**
      * @var TranslatorInterface|LocaleAwareInterface
@@ -42,9 +43,17 @@ final class LocaleListener {
      */
     private $defaultLocale;
 
+    public static function getSubscribedEvents() {
+        return [
+            RequestEvent::class => ['onKernelRequest', 20],
+            InteractiveLoginEvent::class => ['onInteractiveLogin'],
+            UserUpdated::class => ['onUserUpdated'],
+        ];
+    }
+
     public function __construct(
-        SessionInterface $session,
-        TokenStorageInterface $tokenStorage,
+        RequestStack $requestStack,
+        Security $security,
         TranslatorInterface $translator,
         array $availableLocales,
         string $defaultLocale
@@ -55,8 +64,8 @@ final class LocaleListener {
             );
         }
 
-        $this->session = $session;
-        $this->tokenStorage = $tokenStorage;
+        $this->requestStack = $requestStack;
+        $this->security = $security;
         $this->translator = $translator;
         $this->availableLocales = $availableLocales;
         $this->defaultLocale = $defaultLocale;
@@ -70,7 +79,7 @@ final class LocaleListener {
         $request = $event->getRequest();
 
         if ($request->hasPreviousSession()) {
-            $locale = $this->session->get('_locale');
+            $locale = $request->getSession()->get('_locale');
         }
 
         if (!isset($locale)) {
@@ -93,7 +102,7 @@ final class LocaleListener {
 
         if ($user instanceof User) {
             $locale = $user->getLocale();
-            $this->session->set('_locale', $locale);
+            $event->getRequest()->getSession()->set('_locale', $locale);
             $event->getRequest()->setLocale($locale);
 
             // Because security.interactive_login runs after kernel.request,
@@ -103,15 +112,20 @@ final class LocaleListener {
         }
     }
 
-    public function postUpdate(LifecycleEventArgs $args): void {
-        $user = $args->getEntity();
+    public function onUserUpdated(UserUpdated $event): void {
+        $request = $this->requestStack->getCurrentRequest();
 
-        if ($user instanceof User) {
-            $token = $this->tokenStorage->getToken();
+        if (!$request) {
+            return;
+        }
 
-            if ($token && $token->getUser() === $user) {
-                $this->session->set('_locale', $user->getLocale());
-            }
+        $updatedUser = $event->getAfter();
+
+        if (
+            $this->security->getUser() === $updatedUser &&
+            $event->getBefore()->getLocale() !== $updatedUser->getLocale()
+        ) {
+            $request->getSession()->set('_locale', $updatedUser->getLocale());
         }
     }
 }

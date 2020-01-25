@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Contracts\DomainEventsInterface;
+use App\Event\UserUpdated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -11,6 +13,7 @@ use Pagerfanta\Adapter\DoctrineCollectionAdapter;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -19,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     @ORM\UniqueConstraint(name="users_normalized_username_idx", columns={"normalized_username"}),
  * })
  */
-class User implements UserInterface, \Serializable {
+class User implements DomainEventsInterface, UserInterface, \Serializable {
     /**
      * User roles, from most privileged to least privileged.
      */
@@ -774,5 +777,19 @@ class User implements UserInterface, \Serializable {
             $this->username,
             $this->password,
         ] = @unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    public function onCreate(): Event {
+        return new Event();
+    }
+
+    public function onUpdate($previous): Event {
+        \assert($previous instanceof self);
+
+        return new UserUpdated($previous, $this);
+    }
+
+    public function onDelete(): Event {
+        return new Event();
     }
 }

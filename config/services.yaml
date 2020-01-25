@@ -30,6 +30,7 @@ services:
             $siteName: '@=service("App\\Repository\\SiteRepository").getCurrentSiteName()'
             $uploadRoot: "%env(resolve:UPLOAD_ROOT)%"
             bool $enableExperimentalRestApi: "%env(bool:ENABLE_EXPERIMENTAL_REST_API)%"
+            array $availableLocales: "%env(csv:AVAILABLE_LOCALES)%"
             array $trustedHosts: "%env(csv:TRUSTED_HOSTS)%"
         public: false
 
@@ -54,17 +55,6 @@ services:
     App\EventListener\DomainEventsListener:
         tags:
             - { name: doctrine.event_subscriber }
-
-    App\EventListener\LocaleListener:
-        arguments:
-            $availableLocales: "%env(csv:AVAILABLE_LOCALES)%"
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 20 }
-            - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
-            - { name: doctrine.event_listener, event: postUpdate }
-
-    App\Form\UserSettingsType:
-        $availableLocales: "%env(csv:AVAILABLE_LOCALES)%"
 
     App\Markdown\MarkdownConverter:
         $cacheItemPool: "@cache.markdown"
