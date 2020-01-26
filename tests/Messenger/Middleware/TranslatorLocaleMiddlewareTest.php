@@ -33,7 +33,7 @@ class TranslatorLocaleMiddlewareTest extends MiddlewareTestCase {
         $request->setLocale('nb');
 
         $envelope = Envelope::wrap((object) [], [
-            RequestInfoStamp::createFromRequest($request)
+            RequestInfoStamp::createFromRequest($request),
         ]);
 
         $middleware = new TranslatorLocaleMiddleware($translator);

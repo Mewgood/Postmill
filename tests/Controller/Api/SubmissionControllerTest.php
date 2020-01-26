@@ -19,7 +19,7 @@ class SubmissionControllerTest extends WebTestCase {
                 ['id' => 3],
                 ['id' => 2],
                 ['id' => 1],
-            ]
+            ],
         ], json_decode($client->getResponse()->getContent(), true));
     }
 
@@ -202,7 +202,7 @@ class SubmissionControllerTest extends WebTestCase {
                         'netScore' => 1,
                         'upvotes' => 1,
                         'downvotes' => 0,
-                        'renderedBody' => "<p>This is a reply to the previous comment.</p>\n"
+                        'renderedBody' => "<p>This is a reply to the previous comment.</p>\n",
                     ],
                 ],
                 'replyCount' => 1,

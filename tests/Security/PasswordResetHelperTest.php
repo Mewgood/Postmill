@@ -19,7 +19,7 @@ class PasswordResetHelperTest extends TestCase {
         ClockMock::register(PasswordResetHelper::class);
     }
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
     }
 

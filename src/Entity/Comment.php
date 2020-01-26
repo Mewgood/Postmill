@@ -376,7 +376,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         return new CommentUpdated($previous, $this);
     }
 
-    public function onDelete(): Event{
+    public function onDelete(): Event {
         return new Event();
     }
 }

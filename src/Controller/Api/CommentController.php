@@ -41,8 +41,8 @@ final class CommentController extends AbstractController {
     public function update(Comment $comment, EntityManagerInterface $em): Response {
         return $this->apiUpdate(new CommentData($comment), CommentData::class, [
             'normalization_groups' => ['comment:read'],
-            'denormalization_groups' => ['comment:update']
-        ], function (CommentData $data) use ($comment, $em) {
+            'denormalization_groups' => ['comment:update'],
+        ], function (CommentData $data) use ($comment, $em): void {
             $data->updateComment($comment, $this->getUser());
 
             $em->flush();

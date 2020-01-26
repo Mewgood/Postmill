@@ -72,26 +72,26 @@ class BackgroundImageType extends AbstractType {
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $form->getData();
 
             if ($form->get('removeLightBackgroundImage')->isClicked()) {
                 $data->setLightBackgroundImage(null);
 
-                /** @noinspection PhpDeprecationInspection */
+                /* @noinspection PhpDeprecationInspection */
                 $event->stopPropagation();
             }
 
             if ($form->get('removeDarkBackgroundImage')->isClicked()) {
                 $data->setDarkBackgroundImage(null);
 
-                /** @noinspection PhpDeprecationInspection */
+                /* @noinspection PhpDeprecationInspection */
                 $event->stopPropagation();
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getForm()->getData();
 

@@ -40,7 +40,7 @@ class RequestContextMiddlewareTest extends MiddlewareTestCase {
         $middleware = new RequestContextMiddleware($requestContext);
 
         $middleware->handle(new Envelope((object) [], [
-            RequestInfoStamp::createFromRequest($request)
+            RequestInfoStamp::createFromRequest($request),
         ]), $this->getStackMock());
     }
 }

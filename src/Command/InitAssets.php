@@ -30,7 +30,7 @@ EOHELP
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $io = new SymfonyStyle($input, $output);
-        $rootDir = dirname(__DIR__, 2);
+        $rootDir = \dirname(__DIR__, 2);
         $filesCopied = 0;
 
         if (file_exists("$rootDir/assets/public")) {

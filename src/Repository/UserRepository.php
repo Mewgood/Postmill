@@ -12,7 +12,6 @@ use App\Pagination\Pager;
 use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\DBAL\FetchMode;
 use Doctrine\Persistence\ManagerRegistry;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;

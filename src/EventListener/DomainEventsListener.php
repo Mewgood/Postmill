@@ -35,7 +35,7 @@ class DomainEventsListener implements EventSubscriber {
         ];
     }
 
-    public function postPersist(LifecycleEventArgs $args) {
+    public function postPersist(LifecycleEventArgs $args): void {
         $entity = $args->getEntity();
 
         if ($entity instanceof DomainEventsInterface) {
@@ -43,7 +43,7 @@ class DomainEventsListener implements EventSubscriber {
         }
     }
 
-    public function postRemove(LifecycleEventArgs $args) {
+    public function postRemove(LifecycleEventArgs $args): void {
         $entity = $args->getEntity();
 
         if ($entity instanceof DomainEventsInterface) {
@@ -51,7 +51,7 @@ class DomainEventsListener implements EventSubscriber {
         }
     }
 
-    public function preUpdate(PreUpdateEventArgs $args) {
+    public function preUpdate(PreUpdateEventArgs $args): void {
         $entity = $args->getEntity();
 
         if ($entity instanceof DomainEventsInterface) {
@@ -69,7 +69,7 @@ class DomainEventsListener implements EventSubscriber {
         }
     }
 
-    public function postUpdate(LifecycleEventArgs $args) {
+    public function postUpdate(LifecycleEventArgs $args): void {
         $entity = $args->getEntity();
 
         if ($entity instanceof DomainEventsInterface) {

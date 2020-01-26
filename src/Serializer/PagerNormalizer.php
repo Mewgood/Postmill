@@ -11,14 +11,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class PagerNormalizer implements
     NormalizerInterface,
     NormalizerAwareInterface,
-    CacheableSupportsMethodInterface
-{
+    CacheableSupportsMethodInterface {
     use NormalizerAwareTrait;
 
     public function normalize($object, $format = null, array $context = []): array {
         \assert($object instanceof Pager);
 
-        $entries = \iterator_to_array($object);
+        $entries = iterator_to_array($object);
 
         return array_filter([
             'entries' => $this->normalizer->normalize($entries, $format, $context),

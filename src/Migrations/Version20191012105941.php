@@ -5,8 +5,7 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20191012105941 extends AbstractMigration
-{
+final class Version20191012105941 extends AbstractMigration {
     public function getDescription(): string {
         return 'Add user preference for toggling poppers';
     }

@@ -88,7 +88,7 @@ class UserControllerTest extends WebTestCase {
             'entries' => [
                 ['id' => 2],
                 ['id' => 1],
-            ]
+            ],
         ], json_decode($client->getResponse()->getContent(), true));
     }
 
@@ -107,8 +107,8 @@ class UserControllerTest extends WebTestCase {
                 [
                     'forum' => ['id' => 2, 'name' => 'news'],
                     'since' => '2017-01-01T00:00:00+00:00',
-                ]
-            ]
+                ],
+            ],
         ], json_decode($client->getResponse()->getContent(), true));
     }
 }

@@ -56,7 +56,7 @@ final class UserController extends AbstractController {
             'normalization_groups' => ['user:preferences'],
             'denormalization_groups' => ['user:preferences'],
             'validation_groups' => ['settings'],
-        ], function (UserData $data) use ($em, $user) {
+        ], function (UserData $data) use ($em, $user): void {
             $data->updateUser($user);
 
             $em->flush();
@@ -83,7 +83,7 @@ final class UserController extends AbstractController {
         return $this->json([
             'entries' => $user->getModeratorTokens()->map(function ($token) {
                 return new ModeratorData($token);
-            })
+            }),
         ], 200, [], [
             'groups' => ['moderator:user-side', 'abbreviated_relations'],
         ]);

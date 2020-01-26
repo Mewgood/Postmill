@@ -34,7 +34,7 @@ class HoneypotType extends AbstractType {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             if ((string) $event->getData() !== '') {
                 $ip = $this->requestStack->getCurrentRequest()->getClientIp();
 

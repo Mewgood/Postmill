@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
 
 class MentionsListenerTest extends TestCase {
-    public function testSubmissionMentions() {
+    public function testSubmissionMentions(): void {
         $listener = $this->getListener($userParams);
 
         $submission = $this->createMock(Submission::class);
@@ -30,7 +30,7 @@ class MentionsListenerTest extends TestCase {
         $listener->onNewSubmission(new SubmissionCreated($submission));
     }
 
-    public function testCommentMentions() {
+    public function testCommentMentions(): void {
         $listener = $this->getListener($userParams);
 
         $comment = $this->createMock(Comment::class);

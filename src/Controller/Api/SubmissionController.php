@@ -92,7 +92,7 @@ final class SubmissionController extends AbstractController {
             'normalization_groups' => ['submission:read'],
             'denormalization_groups' => ['submission:update'],
             'validation_groups' => ['update'],
-        ], function (SubmissionData $data) use ($em, $submission) {
+        ], function (SubmissionData $data) use ($em, $submission): void {
             $data->updateSubmission($submission, $this->getUser());
 
             $em->flush();

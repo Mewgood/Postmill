@@ -18,7 +18,7 @@ class MakeFirstUserAdminListenerTest extends TestCase {
     private $manager;
 
     /**
-     * @var User|\PHPUnit\Framework\MockObject\MockObject $user
+     * @var User|\PHPUnit\Framework\MockObject\MockObject
      */
     private $user;
 

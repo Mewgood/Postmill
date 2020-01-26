@@ -13,7 +13,6 @@ interface PageInterface {
     /**
      * Get the fields of the entity/DTO used for pagination.
      *
-     *
      * @return string[]
      */
     public function getPaginationFields(string $group): array;

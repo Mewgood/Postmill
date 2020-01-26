@@ -18,7 +18,7 @@ class ModeratorRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Returns true if any of the following conditions are true:
+     * Returns true if any of the following conditions are true.
      *
      * - `$subject` moderates a forum together with `$moderator`.
      *

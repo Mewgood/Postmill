@@ -38,7 +38,7 @@ class TranslatorLocaleMiddleware implements MiddlewareInterface {
             return $stack->next()->handle($envelope, $stack);
         } finally {
             if ($requestInfo) {
-                /** @noinspection PhpUndefinedVariableInspection */
+                /* @noinspection PhpUndefinedVariableInspection */
                 $this->translator->setLocale($defaultLocale);
             }
         }

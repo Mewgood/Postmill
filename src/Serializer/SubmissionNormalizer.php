@@ -5,15 +5,14 @@ namespace App\Serializer;
 use App\DataObject\SubmissionData;
 use App\Entity\Submission;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class SubmissionNormalizer implements
     NormalizerInterface,
     NormalizerAwareInterface,
-    CacheableSupportsMethodInterface
-{
+    CacheableSupportsMethodInterface {
     use NormalizerAwareTrait;
 
     public function normalize($object, $format = null, array $context = []): array {

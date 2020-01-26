@@ -12,8 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class ForumNormalizer implements
     NormalizerInterface,
     NormalizerAwareInterface,
-    CacheableSupportsMethodInterface
-{
+    CacheableSupportsMethodInterface {
     use NormalizerAwareTrait;
 
     public function normalize($object, $format = null, array $context = []): array {

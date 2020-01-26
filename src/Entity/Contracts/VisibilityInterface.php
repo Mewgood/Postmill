@@ -8,7 +8,7 @@ interface VisibilityInterface {
     // TODO: queued for moderation
 
     /**
-     * @return string One of VISIBILITY_* constants.
+     * @return string one of VISIBILITY_* constants
      */
     public function getVisibility(): string;
 

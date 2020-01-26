@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\ForumCategory;
 use App\DataObject\ForumData;
+use App\Entity\ForumCategory;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
 use Doctrine\ORM\EntityRepository;

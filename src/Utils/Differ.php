@@ -19,7 +19,6 @@ final class Differ {
      * Diff in a format that's easy to work with in templates, and contains only
      * what we want (changed lines).
      *
-     *
      * @return array[]
      */
     public static function diff(string $from, string $to): array {

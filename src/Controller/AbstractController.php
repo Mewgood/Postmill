@@ -10,10 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\Event;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @method \App\Entity\User|null getUser()
@@ -78,7 +75,7 @@ abstract class AbstractController extends BaseAbstractController {
 
     protected function apiCreate(string $type, array $options, callable $handler): Response {
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        assert($request !== null);
+        \assert($request !== null);
 
         /** @var \Symfony\Component\Serializer\Serializer $serializer */
         $serializer = $this->container->get('serializer');
@@ -101,7 +98,7 @@ abstract class AbstractController extends BaseAbstractController {
 
     protected function apiUpdate($data, string $type, array $options, callable $handler): Response {
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        assert($request !== null);
+        \assert($request !== null);
 
         /** @var \Symfony\Component\Serializer\Serializer $serializer */
         $serializer = $this->container->get('serializer');

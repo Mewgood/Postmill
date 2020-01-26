@@ -67,7 +67,7 @@ EOF
             return 1;
         }
 
-        $this->manager->transactional(function () use ($users, $remove) {
+        $this->manager->transactional(function () use ($users, $remove): void {
             foreach ($users as $user) {
                 $user->setAdmin(!$remove);
             }

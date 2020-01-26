@@ -4,8 +4,8 @@ namespace App\EventListener;
 
 use App\Entity\Image;
 use App\Event\ForumDeleted;
-use App\Event\SubmissionDeleted;
 use App\Event\ForumUpdated;
+use App\Event\SubmissionDeleted;
 use App\Event\SubmissionUpdated;
 use App\Message\DeleteImage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -25,7 +25,7 @@ class SubmissionDataNormalizerTest extends TestCase {
      */
     private $normalizer;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->cacheManager = $this->createMock(CacheManager::class);
         $this->decorated = $this->createMock(NormalizerInterface::class);
         $this->normalizer = new SubmissionDataNormalizer($this->cacheManager);

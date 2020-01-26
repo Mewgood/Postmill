@@ -17,7 +17,7 @@ class VoteTest extends TestCase {
             ->setConstructorArgs([
                 $choice,
                 $this->createMock(User::class),
-                null
+                null,
             ])
             ->getMockForAbstractClass();
 

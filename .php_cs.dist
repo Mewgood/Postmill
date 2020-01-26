@@ -8,6 +8,9 @@ return PhpCsFixer\Config::create()
         'braces' => [
             'position_after_functions_and_oop_constructs' => 'same',
         ],
+        'class_definition' => [
+            'multi_line_extends_each_single_line' => true,
+        ],
         'fopen_flags' => false,
         'fopen_flag_order' => true,
         'increment_style' => null,
@@ -24,6 +27,7 @@ return PhpCsFixer\Config::create()
         'psr4' => true,
         'self_accessor' => true,
         'set_type_to_cast' => true,
+        'single_line_throw' => false,
         'strict_param' => true,
         'visibility_required' => [
             'elements' => ['property', 'method', 'const'],

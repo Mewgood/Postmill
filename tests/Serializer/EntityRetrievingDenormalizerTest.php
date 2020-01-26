@@ -32,7 +32,7 @@ class EntityRetrievingDenormalizerTest extends TestCase {
     /**
      * @dataProvider invalidEntityProvider
      */
-    public function testDoesNotSupportInvalidDataAndType($id, $type) {
+    public function testDoesNotSupportInvalidDataAndType($id, $type): void {
         $this->assertFalse($this->normalizer->supportsDenormalization($id, $type));
     }
 

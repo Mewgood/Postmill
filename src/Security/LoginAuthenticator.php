@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 /**
  * Guard authenticator for username/password login that does things a bit
- * differently from Symfony:
+ * differently from Symfony.
  *
  * - Rate limit IPs on login.
  *
