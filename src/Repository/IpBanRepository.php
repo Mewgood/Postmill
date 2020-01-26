@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\IpBan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
@@ -29,13 +29,15 @@ class IpBanRepository extends ServiceEntityRepository {
     }
 
     public function ipIsBanned(string $ip): bool {
+        $now = new \DateTimeImmutable();
+
         $count = $this->_em->getConnection()->createQueryBuilder()
             ->select('COUNT(b)')
             ->from('bans', 'b')
             ->where('ip >>= :ip')
             ->andWhere('(expiry_date IS NULL OR expiry_date >= :now)')
             ->setParameter('ip', $ip, 'inet')
-            ->setParameter('now', new \DateTime(), Type::DATETIMETZ)
+            ->setParameter('now', $now, Types::DATETIMETZ_IMMUTABLE)
             ->execute()
             ->fetchColumn();
 

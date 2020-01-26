@@ -6,7 +6,7 @@ use App\Entity\Forum;
 use App\Entity\ForumBan;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
@@ -23,6 +23,8 @@ class ForumBanRepository extends ServiceEntityRepository {
      * @return Pagerfanta|ForumBan[]
      */
     public function findValidBansInForum(Forum $forum, int $page, int $maxPerPage = 25): Pagerfanta {
+        $now = new \DateTimeImmutable();
+
         $qb = $this->createQueryBuilder('m')
             ->leftJoin(ForumBan::class, 'b',
                 'WITH', 'm.user = b.user AND '.
@@ -35,7 +37,7 @@ class ForumBanRepository extends ServiceEntityRepository {
             ->andWhere('m.expiresAt IS NULL OR m.expiresAt >= :now')
             ->orderBy('m.timestamp', 'DESC')
             ->setParameter('forum', $forum)
-            ->setParameter('now', new \DateTime(), Type::DATETIMETZ);
+            ->setParameter('now', $now, Types::DATETIMETZ_IMMUTABLE);
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
         $pager->setMaxPerPage($maxPerPage);
@@ -48,6 +50,8 @@ class ForumBanRepository extends ServiceEntityRepository {
      * @return Pagerfanta|ForumBan[]
      */
     public function findActiveBansByUser(User $user, int $page, int $maxPerPage = 25): Pagerfanta {
+        $now = new \DateTimeImmutable();
+
         $qb = $this->createQueryBuilder('m')
             ->leftJoin(ForumBan::class, 'b',
                 'WITH', 'm.user = b.user AND '.
@@ -60,7 +64,7 @@ class ForumBanRepository extends ServiceEntityRepository {
             ->andWhere('m.expiresAt IS NULL OR m.expiresAt >= :now')
             ->orderBy('m.timestamp', 'DESC')
             ->setParameter('user', $user)
-            ->setParameter('now', new \DateTime(), Type::DATETIMETZ);
+            ->setParameter('now', $now, Types::DATETIMETZ_IMMUTABLE);
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
         $pager->setMaxPerPage($maxPerPage);

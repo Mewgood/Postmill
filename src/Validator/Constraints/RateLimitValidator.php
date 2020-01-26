@@ -3,7 +3,7 @@
 namespace App\Validator\Constraints;
 
 use App\Entity\User;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -68,13 +68,13 @@ final class RateLimitValidator extends ConstraintValidator {
 
         $class = $constraint->entityClass ?: \get_class($value);
         $interval = \DateInterval::createFromDateString($constraint->period);
-        $time = (new \DateTime('@'.time()))->sub($interval);
+        $time = (new \DateTimeImmutable('@'.time()))->sub($interval);
 
         $qb = $this->manager->createQueryBuilder()
             ->select('COUNT(e)')
             ->from($class, 'e')
             ->where(sprintf('e.%s >= :timestamp', $constraint->timestampField))
-            ->setParameter('timestamp', $time, Type::DATETIMETZ);
+            ->setParameter('timestamp', $time, Types::DATETIMETZ_IMMUTABLE);
 
         $expr = $qb->expr()->orX();
 

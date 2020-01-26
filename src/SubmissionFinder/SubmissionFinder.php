@@ -8,7 +8,7 @@ use App\Pagination\DTO\SubmissionPage;
 use App\Pagination\Pager;
 use App\Pagination\Paginator;
 use App\Repository\SubmissionRepository;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -94,28 +94,28 @@ final class SubmissionFinder {
             $time = $request->query->get('t', Submission::TIME_ALL);
 
             if ($time !== Submission::TIME_ALL) {
-                $since = new \DateTime();
-
-                $qb->andWhere('s.timestamp > :time');
-                $qb->setParameter('time', $since, Type::DATETIMETZ);
+                $since = new \DateTimeImmutable();
 
                 switch ($time) {
                 case Submission::TIME_YEAR:
-                    $since->modify('-1 year');
+                    $since = $since->modify('-1 year');
                     break;
                 case Submission::TIME_MONTH:
-                    $since->modify('-1 month');
+                    $since = $since->modify('-1 month');
                     break;
                 case Submission::TIME_WEEK:
-                    $since->modify('-1 week');
+                    $since = $since->modify('-1 week');
                     break;
                 case Submission::TIME_DAY:
-                    $since->modify('-1 day');
+                    $since = $since->modify('-1 day');
                     break;
                 default:
                     // 404 on bad query parameter
                     throw new NoSubmissionsException();
                 }
+
+                $qb->andWhere('s.timestamp > :time');
+                $qb->setParameter('time', $since, Types::DATETIMETZ_IMMUTABLE);
             }
         }
     }

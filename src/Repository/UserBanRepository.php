@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\UserBan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
@@ -18,6 +18,7 @@ class UserBanRepository extends ServiceEntityRepository {
      * @return Pagerfanta|UserBan[]
      */
     public function findActiveBans(int $page, int $maxPerPage = 25): Pagerfanta {
+        $now = new \DateTimeImmutable();
         $qb = $this->createQueryBuilder('m')
             ->leftJoin(UserBan::class, 'b',
                 'WITH', 'm.user = b.user AND '.
@@ -27,7 +28,7 @@ class UserBanRepository extends ServiceEntityRepository {
             ->andWhere('m.banned = TRUE')
             ->andWhere('m.expiresAt IS NULL OR m.expiresAt >= :now')
             ->orderBy('m.timestamp', 'DESC')
-            ->setParameter('now', new \DateTime(), Type::DATETIMETZ);
+            ->setParameter('now', $now, Types::DATETIMETZ_IMMUTABLE);
 
         $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
         $pager->setMaxPerPage($maxPerPage);

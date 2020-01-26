@@ -9,7 +9,7 @@ use App\Entity\Moderator;
 use App\Entity\Submission;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ModeratorRepository extends ServiceEntityRepository {
@@ -29,8 +29,8 @@ class ModeratorRepository extends ServiceEntityRepository {
      *   `$moderator` moderates within the past 2 hours.
      */
     public function userRulesOverSubject(User $moderator, User $subject): bool {
-        $threshold1 = new \DateTime('@'.time().' -3 days');
-        $threshold2 = new \DateTime('@'.time().' -2 hours');
+        $threshold1 = new \DateTimeImmutable('@'.time().' -3 days');
+        $threshold2 = new \DateTimeImmutable('@'.time().' -2 hours');
 
         $qb = $this->createQueryBuilder('m1');
 
@@ -61,8 +61,8 @@ class ModeratorRepository extends ServiceEntityRepository {
             ))
             ->setParameter('moderator', $moderator)
             ->setParameter('subject', $subject)
-            ->setParameter('threshold1', $threshold1, Type::DATETIMETZ)
-            ->setParameter('threshold2', $threshold2, Type::DATETIMETZ)
+            ->setParameter('threshold1', $threshold1, Types::DATETIMETZ_IMMUTABLE)
+            ->setParameter('threshold2', $threshold2, Types::DATETIMETZ_IMMUTABLE)
             ->setMaxResults(1)
             ->getQuery()
             ->getSingleScalarResult();
