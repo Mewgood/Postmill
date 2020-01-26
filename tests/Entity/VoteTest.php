@@ -16,7 +16,7 @@ class VoteTest extends TestCase {
         $vote = $this->getMockBuilder(Vote::class)
             ->setConstructorArgs([
                 $choice,
-                $this->createMock(User::class),
+                new User('u', 'p'),
                 null,
             ])
             ->getMockForAbstractClass();
@@ -35,7 +35,7 @@ class VoteTest extends TestCase {
         $this->getMockBuilder(Vote::class)
             ->setConstructorArgs([
                 $vote,
-                $this->createMock(User::class),
+                new User('u', 'p'),
                 null,
             ])
             ->getMockForAbstractClass();
@@ -48,7 +48,7 @@ class VoteTest extends TestCase {
         $this->getMockBuilder(Vote::class)
             ->setConstructorArgs([
                 VotableInterface::VOTE_UP,
-                $this->createMock(User::class),
+                new User('u', 'p'),
                 'poo',
             ])
             ->getMockForAbstractClass();
@@ -58,11 +58,8 @@ class VoteTest extends TestCase {
      * @dataProvider provideExpectedIpWhitelistMap
      */
     public function testConstructorSavesIpDependsOnUserWhitelistStatus(?string $expectedIp, bool $whitelisted): void {
-        $user = $this->createMock(User::class);
-        $user
-            ->expects($this->once())
-            ->method('isWhitelistedOrAdmin')
-            ->willReturn($whitelisted);
+        $user = new User('u', 'p');
+        $user->setWhitelisted($whitelisted);
 
         /** @var Vote $vote */
         $vote = $this->getMockBuilder(Vote::class)

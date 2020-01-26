@@ -6,13 +6,11 @@ use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\SubmissionFinder\Criteria;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CriteriaTest extends TestCase {
     public function testDefaults(): void {
-        /** @var User|MockObject $user */
-        $user = $this->createMock(User::class);
+        $user = new User('u', 'p');
         $criteria = new Criteria(Submission::SORT_HOT, $user);
 
         $this->assertEquals(Submission::SORT_HOT, $criteria->getSortBy());
@@ -47,11 +45,10 @@ class CriteriaTest extends TestCase {
         $this->assertEquals(0, $criteria->getExclusions());
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage This method was already called
-     */
     public function testExcludeHiddenForumsCannotBeCalledTwice(): void {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('This method was already called');
+
         $this->createCriteria()
             ->excludeHiddenForums()
             ->excludeHiddenForums();
@@ -70,11 +67,8 @@ class CriteriaTest extends TestCase {
     }
 
     public function testForumView(): void {
-        /** @var Forum|MockObject $forum1 */
-        $forum1 = $this->createMock(Forum::class);
-
-        /** @var Forum|MockObject $forum2 */
-        $forum2 = $this->createMock(Forum::class);
+        $forum1 = new Forum('a', 'a', 'a', 'a');
+        $forum2 = new Forum('a', 'a', 'a', 'a');
 
         $criteria = $this->createCriteria()->showForums($forum1, $forum2);
 
@@ -96,9 +90,10 @@ class CriteriaTest extends TestCase {
 
     /**
      * @dataProvider provideViewMethodMatrix
-     * @expectedException \BadMethodCallException
      */
     public function testNoViewMethodCanBeCalledAfterAnother(string $first, string $second): void {
+        $this->expectException(\BadMethodCallException::class);
+
         $this->createCriteria()->$first()->$second();
     }
 
@@ -110,11 +105,8 @@ class CriteriaTest extends TestCase {
     }
 
     public function testUserView(): void {
-        /** @var User|MockObject $user1 */
-        $user1 = $this->createMock(User::class);
-
-        /** @var User|MockObject $user2 */
-        $user2 = $this->createMock(User::class);
+        $user1 = new User('u', 'p');
+        $user2 = new User('u', 'p');
 
         $criteria = new Criteria(Submission::SORT_HOT);
         $criteria->showUsers($user1, $user2);
@@ -125,17 +117,17 @@ class CriteriaTest extends TestCase {
 
     /**
      * @dataProvider provideGettersThatCannotBeAccessedBeforeMutatorHasBeenCalled
-     * @expectedException \BadMethodCallException
      */
     public function testCannotCallGetterMethodsWithoutHavingCalledTheirRespectiveMutators(string $getter): void {
+        $this->expectException(\BadMethodCallException::class);
+
         $this->createCriteria()->$getter();
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown sort mode 'poop'
-     */
     public function testThrowsOnInvalidSortMode(): void {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Unknown sort mode 'poop");
+
         new Criteria('poop');
     }
 
@@ -146,6 +138,9 @@ class CriteriaTest extends TestCase {
      * @expectedExceptionMessage No user was set
      */
     public function testMethodsThatNeedUserSetThrowExceptionWhenNoUserIsSet(string $method): void {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('No user was set');
+
         (new Criteria(Submission::SORT_HOT))->$method();
     }
 
@@ -183,8 +178,7 @@ class CriteriaTest extends TestCase {
     }
 
     private function createCriteria(): Criteria {
-        /** @var User|MockObject $user */
-        $user = $this->createMock(User::class);
+        $user = new User('u', 'p');
 
         return new Criteria(Submission::SORT_HOT, $user);
     }

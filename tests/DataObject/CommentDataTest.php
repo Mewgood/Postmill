@@ -4,10 +4,9 @@ namespace App\Tests\DataObject;
 
 use App\DataObject\CommentData;
 use App\Entity\Comment;
+use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
@@ -16,7 +15,7 @@ use Symfony\Bridge\PhpUnit\ClockMock;
  */
 class CommentDataTest extends TestCase {
     /**
-     * @var Comment|MockObject
+     * @var Comment
      */
     private $comment;
 
@@ -25,36 +24,11 @@ class CommentDataTest extends TestCase {
     }
 
     protected function setUp(): void {
-        $this->comment = $this->getMockBuilder(Comment::class)
-            ->setMethods(['getSubmission', 'getTimestamp', 'getVotes', 'getUser', 'getReplyCount', 'getChildren'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $forum = new Forum('a', 'a', 'a', 'a');
+        $user = new User('u', 'p');
+        $parent = new Submission('a', null, null, $forum, $user, null);
 
-        $this->comment
-            ->method('getSubmission')
-            ->willReturn($this->createMock(Submission::class));
-
-        $this->comment
-            ->method('getUser')
-            ->willReturn($this->createMock(User::class));
-
-        $this->comment
-            ->method('getTimestamp')
-            ->willReturn(new \DateTime('@'.time()));
-
-        $this->comment
-            ->method('getVotes')
-            ->willReturn(new ArrayCollection());
-
-        $this->comment
-            ->method('getReplyCount')
-            ->willReturn(0);
-
-        $this->comment
-            ->method('getChildren')
-            ->willReturn([]);
-
-        $this->comment->setBody('foo');
+        $this->comment = new Comment('foo', new User('u', 'p'), $parent, null);
     }
 
     public function testUpdate(): void {
@@ -68,7 +42,7 @@ class CommentDataTest extends TestCase {
         sleep(5);
 
         $data->setBody('baz');
-        $data->updateComment($this->comment, $this->createMock(User::class));
+        $data->updateComment($this->comment, new User('u', 'p'));
 
         $this->assertEquals(new \DateTime('@'.time()), $this->comment->getEditedAt());
         $this->assertTrue($this->comment->isModerated());

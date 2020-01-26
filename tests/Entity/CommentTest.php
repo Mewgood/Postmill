@@ -10,11 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CommentTest extends TestCase {
     public function testNewTopLevelCommentSendsNotification(): void {
-        /** @var Forum|\PHPUnit\Framework\MockObject\MockObject $forum */
-        $forum = $this->createMock(Forum::class);
-
-        $submission = new Submission('a', null, null, $forum, new User('u', 'p'), null);
-
+        $submission = new Submission('a', null, null, new Forum('a', 'a', 'a', 'a'), new User('u', 'p'), null);
         $comment = new Comment('a', new User('u', 'p'), $submission, null);
 
         $this->assertCount(0, $comment->getUser()->getNotifications());
@@ -22,8 +18,7 @@ class CommentTest extends TestCase {
     }
 
     public function testNewChildReplySendsNotifications(): void {
-        /** @var Submission|\PHPUnit\Framework\MockObject\MockObject $submission */
-        $submission = $this->createMock(Submission::class);
+        $submission = new Submission('a', null, null, new Forum('a', 'a', 'a', 'a'), new User('u', 'p'), null);
 
         $parent = new Comment('a', new User('u', 'p'), $submission, null);
         $child = new Comment('b', new User('u', 'p'), $parent, null);
@@ -34,13 +29,7 @@ class CommentTest extends TestCase {
 
     public function testDoesNotSendNotificationsWhenReplyingToSelf(): void {
         $user = new User('u', 'p');
-
-        /** @var Submission|\PHPUnit\Framework\MockObject\MockObject $submission */
-        $submission = $this->createMock(Submission::class);
-
-        $submission
-            ->method('getUser')
-            ->willReturn($user);
+        $submission = new Submission('a', null, null, new Forum('a', 'a', 'a', 'a'), $user, null);
 
         $parent = new Comment('a', $user, $submission, null);
         new Comment('b', $user, $parent, null);

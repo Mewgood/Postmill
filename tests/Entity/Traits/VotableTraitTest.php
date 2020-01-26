@@ -23,7 +23,7 @@ class VotableTraitTest extends TestCase {
     public function testVotableScores(): void {
         $votable = $this->createVotable();
 
-        $user = $this->createUser();
+        $user = new User('u', 'p');
 
         $this->assertEquals(0, $votable->getNetScore());
         $this->assertEquals(0, $votable->getUpvotes());
@@ -43,7 +43,7 @@ class VotableTraitTest extends TestCase {
     }
 
     public function testVoteCollectionHasCorrectProperties(): void {
-        $user = $this->createUser();
+        $user = new User('u', 'p');
 
         $this->votable->vote(VotableInterface::VOTE_UP, $user, null);
         $this->assertEquals(VotableInterface::VOTE_UP, $this->votable->getVotes()->first()->getChoice());
@@ -61,19 +61,19 @@ class VotableTraitTest extends TestCase {
      * @expectedException \App\Entity\Exception\BadVoteChoiceException
      */
     public function testCannotGiveIncorrectVote(): void {
-        $user = $this->createUser();
+        $user = new User('u', 'p');
 
         $this->votable->vote(69, $user, null);
     }
 
     public function testGetUserVote(): void {
-        $user1 = $this->createUser();
+        $user1 = new User('u', 'p');
         $this->votable->vote(VotableInterface::VOTE_UP, $user1, null);
 
-        $user2 = $this->createUser();
+        $user2 = new User('u', 'p');
         $this->votable->vote(VotableInterface::VOTE_DOWN, $user2, null);
 
-        $user3 = $this->createUser();
+        $user3 = new User('u', 'p');
 
         $this->assertEquals(VotableInterface::VOTE_UP, $this->votable->getUserChoice($user1));
         $this->assertEquals(VotableInterface::VOTE_DOWN, $this->votable->getUserChoice($user2));
@@ -84,7 +84,7 @@ class VotableTraitTest extends TestCase {
      * @doesNotPerformAssertions
      */
     public function testAcceptsWellFormedIpAddresses(): void {
-        $user = $this->createUser();
+        $user = new User('u', 'p');
         $this->votable->vote(VotableInterface::VOTE_UP, $user, '127.0.4.20');
         $this->votable->vote(VotableInterface::VOTE_UP, $user, '::69');
         $this->votable->vote(VotableInterface::VOTE_UP, $user, null);
@@ -95,16 +95,9 @@ class VotableTraitTest extends TestCase {
      * @expectedExceptionMessage Bad IP address
      */
     public function testThrowsExceptionOnBadIpAddress(): void {
-        $user = $this->createUser();
+        $user = new User('u', 'p');
 
         $this->votable->vote(VotableInterface::VOTE_UP, $user, 'poop');
-    }
-
-    /**
-     * @return User|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private function createUser() {
-        return $this->createMock(User::class);
     }
 
     private function createVotable(): VotableInterface {

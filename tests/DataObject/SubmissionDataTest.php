@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
 /**
+ * @covers \App\DataObject\SubmissionData
  * @group time-sensitive
  */
 class SubmissionDataTest extends TestCase {
@@ -19,11 +20,8 @@ class SubmissionDataTest extends TestCase {
     }
 
     public function testCannotCreateSubmissionWithMediaTypeUrlAndImage(): void {
-        /** @var Forum|\PHPUnit\Framework\MockObject\MockObject $forum */
-        $forum = $this->createMock(Forum::class);
-
-        /** @var User|\PHPUnit\Framework\MockObject\MockObject $user */
-        $user = $this->createMock(User::class);
+        $forum = new Forum('a', 'a', 'a', 'a');
+        $user = new User('u', 'p');
 
         $data = new SubmissionData();
         $data->setForum($forum);
@@ -37,11 +35,8 @@ class SubmissionDataTest extends TestCase {
     }
 
     public function testCannotCreateSubmissionWithMediaTypeImageAndUrl(): void {
-        /** @var Forum|\PHPUnit\Framework\MockObject\MockObject $forum */
-        $forum = $this->createMock(Forum::class);
-
-        /** @var User|\PHPUnit\Framework\MockObject\MockObject $user */
-        $user = $this->createMock(User::class);
+        $forum = new Forum('a', 'a', 'a', 'a');
+        $user = new User('u', 'p');
 
         $data = new SubmissionData();
         $data->setForum($forum);
@@ -58,31 +53,22 @@ class SubmissionDataTest extends TestCase {
     /**
      * @dataProvider provideMethodsThatUpdateTheEditableAtProperty
      */
-    public function testEditedAtAttributeIsUpdated(string $setter): void {
-        /** @var User|\PHPUnit\Framework\MockObject\MockObject $user */
-        $user = $this->createMock(User::class);
-
-        /** @var Submission|\PHPUnit\Framework\MockObject\MockObject $submission */
-        $submission = $this->createMock(Submission::class);
-
-        $submission
-            ->expects($this->once())
-            ->method($setter)
-            ->with($this->equalTo('http://www.example.com'));
-
-        $submission
-            ->expects($this->once())
-            ->method('setEditedAt')
-            ->with($this->equalTo(new \DateTime('@'.time())));
+    public function testEditedAtAttributeIsUpdated(string $getter, string $setter): void {
+        $forum = new Forum('a', 'a', 'a', 'a');
+        $user = new User('u', 'p');
+        $submission = new Submission('title', null, null, $forum, $user, null);
 
         $data = new SubmissionData($submission);
         $data->$setter('http://www.example.com');
         $data->updateSubmission($submission, $user);
+
+        $this->assertEquals('http://www.example.com', $submission->{$getter}());
+        $this->assertEquals(time(), $submission->getEditedAt()->getTimestamp());
     }
 
     public function provideMethodsThatUpdateTheEditableAtProperty(): iterable {
-        yield ['setTitle'];
-        yield ['setUrl'];
-        yield ['setBody'];
+        yield ['getTitle', 'setTitle'];
+        yield ['getUrl', 'setUrl'];
+        yield ['getBody', 'setBody'];
     }
 }
