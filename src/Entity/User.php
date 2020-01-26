@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Contracts\DomainEventsInterface;
+use App\Event\UserCreated;
 use App\Event\UserUpdated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -780,7 +781,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     }
 
     public function onCreate(): Event {
-        return new Event();
+        return new UserCreated($this);
     }
 
     public function onUpdate($previous): Event {

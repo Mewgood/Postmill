@@ -30,6 +30,7 @@ services:
             $siteName: '@=service("App\\Repository\\SiteRepository").getCurrentSiteName()'
             $uploadRoot: "%env(resolve:UPLOAD_ROOT)%"
             bool $enableExperimentalRestApi: "%env(bool:ENABLE_EXPERIMENTAL_REST_API)%"
+            bool $makeFirstUserAdmin: "%env(bool:MAKE_FIRST_USER_ADMIN)%"
             array $availableLocales: "%env(csv:AVAILABLE_LOCALES)%"
             array $trustedHosts: "%env(csv:TRUSTED_HOSTS)%"
         public: false
