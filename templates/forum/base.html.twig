@@ -12,7 +12,7 @@
 {% block theme_css %}
   {% set theme = (app.user.showCustomStylesheets ?? true) ? forum.suggestedTheme %}
   {% if theme %}
-    {{ encore_entry_link_tags(theme_entrypoint(theme.configKey, app.user.nightMode ?? false)) }}
+    {{ encore_entry_link_tags(theme_entrypoint(theme.configKey)) }}
   {% else %}
     {{ parent() }}
   {% endif %}

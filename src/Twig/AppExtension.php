@@ -13,7 +13,7 @@ use Twig\TwigFunction;
  * Twig extension which makes certain parameters available as template
  * functions.
  */
-final class AppExtension extends AbstractExtension {
+class AppExtension extends AbstractExtension {
     /**
      * @var RequestStack
      */
@@ -73,59 +73,82 @@ final class AppExtension extends AbstractExtension {
 
     public function getFunctions(): array {
         return [
-            new TwigFunction('site_name', function (): string {
-                return $this->siteRepository->getCurrentSiteName();
-            }),
-            new Twigfunction('site_theme', function (): ?Theme {
-                return $this->siteRepository->findCurrentSite()->getDefaultTheme();
-            }),
-            new TwigFunction('app_branch', function () {
-                return $this->branch;
-            }),
-            new TwigFunction('app_version', function () {
-                return $this->version;
-            }),
-            new TwigFunction('font_list', function (): array {
-                return array_keys($this->fontsConfig);
-            }),
-            new TwigFunction('font_names', function (string $font): array {
-                $font = strtolower($font);
-
-                return $this->fontsConfig[$font]['alias'] ?? [$font];
-            }),
-            new TwigFunction('font_entrypoint', function (string $font): ?string {
-                $font = strtolower($font);
-
-                return $this->fontsConfig[$font]['entrypoint'] ?? null;
-            }),
+            new TwigFunction('site_name', [$this, 'getSiteName']),
+            new Twigfunction('site_theme', [$this, 'getSiteTheme']),
+            new TwigFunction('app_branch', [$this, 'getAppBranch']),
+            new TwigFunction('app_version', [$this, 'getAppVersion']),
+            new TwigFunction('font_list', [$this, 'getFontList']),
+            new TwigFunction('font_names', [$this, 'getFontNames']),
+            new TwigFunction('font_entrypoint', [$this, 'getFontEntrypoint']),
             new TwigFunction('rewrite_url', [$this->urlRewriter, 'rewrite']),
-            new TwigFunction('theme_list', function (): array {
-                return array_keys($this->fontsConfig);
-            }),
-            new TwigFunction('theme_entrypoint', function (string $name, bool $nightMode): ?string {
-                if ($name === '_default') {
-                    $name = $this->themesConfig['_default'];
-                }
-
-                $config = $this->themesConfig[strtolower($name)]['entrypoint'];
-
-                if (\is_array($config)) {
-                    throw new \RuntimeException('object entrypoints are no longer supported');
-                }
-
-                return $config;
-            }),
-            new TwigFunction('upload_url', function (string $path) {
-                $path = rtrim($this->uploadRoot, '/').'/'.$path;
-
-                if (strpos($path, '//') === false) {
-                    $request = $this->requestStack->getCurrentRequest();
-
-                    $path = $request->getSchemeAndHttpHost().$path;
-                }
-
-                return $path;
-            }),
+            new TwigFunction('theme_list', [$this, 'getThemeList']),
+            new TwigFunction('theme_entrypoint', [$this, 'getThemeEntrypoint']),
+            new TwigFunction('upload_url', [$this, 'getUploadUrl']),
         ];
+    }
+
+    public function getSiteName(): string {
+        return $this->siteRepository->getCurrentSiteName();
+    }
+
+    public function getSiteTheme(): ?Theme {
+        return $this->siteRepository->findCurrentSite()->getDefaultTheme();
+    }
+
+    public function getAppBranch(): ?string {
+        return $this->branch;
+    }
+
+    public function getAppVersion(): ?string {
+        return $this->version;
+    }
+
+    public function getFontList(): array {
+        return array_keys($this->fontsConfig);
+    }
+
+    public function getFontNames(string $font): array {
+        $key = strtolower($font);
+
+        return $this->fontsConfig[$key]['alias'] ?? [$font];
+    }
+
+    public function getFontEntrypoint(string $font): ?string {
+        $font = strtolower($font);
+
+        return $this->fontsConfig[$font]['entrypoint'] ?? null;
+    }
+
+    public function getThemeList(): array {
+        return array_keys($this->themesConfig);
+    }
+
+    public function getThemeEntrypoint(string $name): string {
+        if ($name === '_default') {
+            $name = $this->themesConfig['_default'];
+        }
+
+        $config = $this->themesConfig[strtolower($name)]['entrypoint'];
+
+        if (\is_array($config)) {
+            throw new \RuntimeException('object entrypoints are no longer supported');
+        }
+
+        return $config;
+    }
+
+    public function getUploadUrl(string $path): string {
+        $path = rtrim($this->uploadRoot, '/').'/'.$path;
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request && strpos($path, '//') === false) {
+            $path = sprintf('%s%s%s',
+                $request->getSchemeAndHttpHost(),
+                $request->getBasePath(),
+                $path
+            );
+        }
+
+        return $path;
     }
 }

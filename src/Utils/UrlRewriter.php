@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RequestContext;
  * URLs with ports are currently left alone, as they are assumed to belong to
  * other services.
  */
-final class UrlRewriter {
+class UrlRewriter {
     private const REGEX_TEMPLATE = '!^'.
         '(?<scheme>https?)://'.
         '(?<credentials>[^/]*@)?'.
