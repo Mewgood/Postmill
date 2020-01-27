@@ -22,7 +22,7 @@ final class SubmissionDataNormalizer implements ContextAwareNormalizerInterface,
         $this->cacheManager = $cacheManager;
     }
 
-    public function normalize($object, $format = null, array $context = []) {
+    public function normalize($object, string $format = null, array $context = []) {
         $context[self::NORMALIZED_MARKER][spl_object_id($object)] = true;
         $data = $this->normalizer->normalize($object, $format, $context);
 
@@ -44,7 +44,7 @@ final class SubmissionDataNormalizer implements ContextAwareNormalizerInterface,
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = []): bool {
+    public function supportsNormalization($data, string $format = null, array $context = []): bool {
         return $data instanceof SubmissionData &&
             empty($context[self::NORMALIZED_MARKER][spl_object_id($data)]);
     }

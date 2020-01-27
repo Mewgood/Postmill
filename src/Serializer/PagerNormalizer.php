@@ -14,7 +14,7 @@ final class PagerNormalizer implements
     CacheableSupportsMethodInterface {
     use NormalizerAwareTrait;
 
-    public function normalize($object, $format = null, array $context = []): array {
+    public function normalize($object, string $format = null, array $context = []): array {
         \assert($object instanceof Pager);
 
         $entries = iterator_to_array($object);
@@ -27,7 +27,7 @@ final class PagerNormalizer implements
         ]);
     }
 
-    public function supportsNormalization($data, $format = null): bool {
+    public function supportsNormalization($data, string $format = null): bool {
         return $data instanceof Pager;
     }
 

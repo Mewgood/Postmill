@@ -16,13 +16,15 @@ final class EntityRetrievingDenormalizer implements DenormalizerInterface {
     }
 
     /**
+     * @param mixed $data
+     *
      * @return object|null
      */
-    public function denormalize($data, $type, $format = null, array $context = []) {
+    public function denormalize($data, string $type, string $format = null, array $context = []) {
         return $this->entityManager->find($type, $data);
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool {
-        return is_scalar($data) && preg_match('/^App\\\\Entity\\\\\w+$/', $type);
+    public function supportsDenormalization($data, string $type, string $format = null): bool {
+        return is_scalar($data) && strpos($type, 'App\Entity') === 0 && substr_count($type, '\\') === 2;
     }
 }

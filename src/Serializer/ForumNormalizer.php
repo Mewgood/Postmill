@@ -15,13 +15,13 @@ final class ForumNormalizer implements
     CacheableSupportsMethodInterface {
     use NormalizerAwareTrait;
 
-    public function normalize($object, $format = null, array $context = []): array {
+    public function normalize($object, string $format = null, array $context = []): array {
         $object = new ForumData($object);
 
         return $this->normalizer->normalize($object, $format, $context);
     }
 
-    public function supportsNormalization($data, $format = null): bool {
+    public function supportsNormalization($data, string $format = null): bool {
         return $data instanceof Forum;
     }
 
