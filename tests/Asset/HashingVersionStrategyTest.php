@@ -31,4 +31,12 @@ class HashingVersionStrategyTest extends TestCase {
             $this->strategy->applyVersion('garbage.bin')
         );
     }
+
+    public function testGetVersionReturnsEmptyStringOnNonExistentFile(): void {
+        $this->assertEquals('', $this->strategy->getVersion('nonexist.ing'));
+    }
+
+    public function testApplyVersionReturnsUnmodifiedPathOnNonExistentFile(): void {
+        $this->assertEquals('nonexist.ing', $this->strategy->applyVersion('nonexist.ing'));
+    }
 }

@@ -15,13 +15,15 @@ final class HashingVersionStrategy implements VersionStrategyInterface {
     }
 
     public function getVersion($path): string {
-        return substr(hash_file('sha256', $this->webRoot.'/'.$path), 0, 16);
+        $hash = @hash_file('sha256', $this->webRoot.'/'.$path);
+
+        return \is_string($hash) ? substr($hash, 0, 16) : '';
     }
 
-    public function applyVersion($path): string {
+    public function applyVersion(string $path): string {
         $version = $this->getVersion($path);
 
-        if (!$version) {
+        if ($version === '') {
             return $path;
         }
 
