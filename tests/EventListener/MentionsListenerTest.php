@@ -14,6 +14,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
 
+/**
+ * @covers \App\EventListener\MentionsListener
+ */
 class MentionsListenerTest extends TestCase {
     public function testSubmissionMentions(): void {
         $listener = $this->getListener($userParams);

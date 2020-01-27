@@ -13,6 +13,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+/**
+ * @covers \App\EventListener\MarkdownListener
+ */
 class MarkdownListenerTest extends TestCase {
     public function testInitListenerAddsTargetBlankToPurifierConfig(): void {
         $user = $this->createMock(User::class);

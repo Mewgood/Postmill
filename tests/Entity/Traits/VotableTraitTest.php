@@ -10,6 +10,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Entity\Traits\VotableTrait
+ */
 class VotableTraitTest extends TestCase {
     /**
      * @var VotableTrait

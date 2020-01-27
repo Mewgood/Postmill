@@ -5,6 +5,9 @@ namespace App\Tests\Asset;
 use App\Asset\HashingVersionStrategy;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Asset\HashingVersionStrategy
+ */
 class HashingVersionStrategyTest extends TestCase {
     /**
      * @var HashingVersionStrategy

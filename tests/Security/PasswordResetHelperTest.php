@@ -9,6 +9,9 @@ use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @covers \App\Security\PasswordResetHelper
+ */
 class PasswordResetHelperTest extends TestCase {
     /**
      * @var UrlGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject

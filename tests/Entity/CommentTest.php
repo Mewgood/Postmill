@@ -8,6 +8,9 @@ use App\Entity\Submission;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Entity\Comment
+ */
 class CommentTest extends TestCase {
     public function testNewTopLevelCommentSendsNotification(): void {
         $submission = new Submission('a', null, null, new Forum('a', 'a', 'a', 'a'), new User('u', 'p'), null);

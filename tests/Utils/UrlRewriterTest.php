@@ -6,6 +6,9 @@ use App\Utils\UrlRewriter;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
 
+/**
+ * @covers \App\Utils\UrlRewriter
+ */
 class UrlRewriterTest extends TestCase {
     /**
      * @var UrlRewriter

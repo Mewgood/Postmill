@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Tests\WebTestCase;
 
 /**
- * @coversDefaultClass  \App\Controller\CommentController
+ * @covers \App\Controller\CommentController
  */
 class CommentControllerTest extends WebTestCase {
     public function testCommentListing(): void {

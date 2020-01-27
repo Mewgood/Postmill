@@ -7,6 +7,9 @@ use App\Entity\User;
 use App\Entity\Vote;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Entity\Vote
+ */
 class VoteTest extends TestCase {
     /**
      * @dataProvider provideValidChoices

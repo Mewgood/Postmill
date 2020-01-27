@@ -5,6 +5,9 @@ namespace App\Tests\Utils;
 use App\Utils\Differ;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Utils\Differ
+ */
 class DifferTest extends TestCase {
     /**
      * @dataProvider provideDiffs

@@ -7,6 +7,9 @@ use App\Validator\Constraints\IpWithCidrValidator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
+/**
+ * @covers \App\Validator\Constraints\IpWithCidrValidator
+ */
 class IpWithCidrValidatorTest extends ConstraintValidatorTestCase {
     protected function createValidator(): ConstraintValidatorInterface {
         return new IpWithCidrValidator();

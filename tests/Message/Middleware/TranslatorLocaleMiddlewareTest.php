@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Messenger\Middleware;
+namespace App\Tests\Message\Middleware;
 
 use App\Message\Middleware\TranslatorLocaleMiddleware;
 use App\Message\Stamp\RequestInfoStamp;
@@ -10,6 +10,9 @@ use Symfony\Component\Messenger\Test\Middleware\MiddlewareTestCase;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @covers \App\Message\Middleware\TranslatorLocaleMiddleware
+ */
 class TranslatorLocaleMiddlewareTest extends MiddlewareTestCase {
     public function testSetsAndRestoresLocale(): void {
         /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject $translator */

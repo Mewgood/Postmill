@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Tests\WebTestCase;
 
 /**
- * @coversDefaultClass \App\Controller\SubmissionController
+ * @covers \App\Controller\SubmissionController
  */
 class SubmissionControllerTest extends WebTestCase {
     public function testCanCreateSubmission(): void {

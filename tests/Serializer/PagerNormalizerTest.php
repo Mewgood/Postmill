@@ -7,6 +7,9 @@ use App\Serializer\PagerNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @covers \App\Serializer\PagerNormalizer
+ */
 class PagerNormalizerTest extends TestCase {
     public function testNormalizesPager(): void {
         /** @var NormalizerInterface|\PHPUnit\Framework\MockObject\MockObject $decorated */

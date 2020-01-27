@@ -8,6 +8,9 @@ use App\Serializer\MarkdownNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @covers \App\Serializer\MarkdownNormalizer
+ */
 class MarkdownNormalizerTest extends TestCase {
     public function testSupportMethodReturnsTrueForCorrectDataTypes(): void {
         /** @var MarkdownConverter|\PHPUnit\Framework\MockObject\MockObject $converter */

@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+/**
+ * @covers \App\EventListener\FixCharsetListener
+ */
 class FixCharsetListenerTest extends TestCase {
     /**
      * @var Response

@@ -8,6 +8,9 @@ use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Doctrine\Type\InetType
+ */
 class InetTypeTest extends TestCase {
     /**
      * @var Type

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Messenger\Middleware;
+namespace App\Tests\Message\Middleware;
 
 use App\Message\Middleware\RequestContextMiddleware;
 use App\Message\Stamp\RequestInfoStamp;
@@ -9,6 +9,9 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Test\Middleware\MiddlewareTestCase;
 use Symfony\Component\Routing\RequestContext;
 
+/**
+ * @covers \App\Message\Middleware\RequestContextMiddleware
+ */
 class RequestContextMiddlewareTest extends MiddlewareTestCase {
     public function testSetsAndRestoresRequestContext(): void {
         /** @var RequestContext|\PHPUnit\Framework\MockObject\MockObject $requestContext */

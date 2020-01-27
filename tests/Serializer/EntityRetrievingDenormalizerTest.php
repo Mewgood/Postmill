@@ -6,6 +6,9 @@ use App\Serializer\EntityRetrievingDenormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Serializer\EntityRetrievingDenormalizer
+ */
 class EntityRetrievingDenormalizerTest extends TestCase {
     /**
      * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject

@@ -8,6 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @covers \App\Command\ChangePasswordCommand
+ */
 class ChangePasswordCommandTest extends KernelTestCase {
     /**
      * @var Command

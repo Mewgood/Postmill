@@ -5,6 +5,9 @@ namespace App\Tests\Utils;
 use App\Utils\Slugger;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Utils\Slugger
+ */
 class SluggerTest extends TestCase {
     /**
      * @dataProvider inputProvider

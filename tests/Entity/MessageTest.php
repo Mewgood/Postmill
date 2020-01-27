@@ -7,6 +7,9 @@ use App\Entity\MessageThread;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Entity\Message
+ */
 class MessageTest extends TestCase {
     /**
      * @var User

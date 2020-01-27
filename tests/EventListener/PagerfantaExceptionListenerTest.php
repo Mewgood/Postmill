@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @covers \App\EventListener\PagerfantaExceptionListener
+ */
 class PagerfantaExceptionListenerTest extends TestCase {
     public function testSetsExceptionOnPagerfantaException(): void {
         $pagerException = new OutOfRangeCurrentPageException();

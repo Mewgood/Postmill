@@ -5,6 +5,9 @@ namespace App\Tests\Event;
 use App\Event\MarkdownCacheEvent;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Event\MarkdownCacheEvent
+ */
 class MarkdownCacheEventTest extends TestCase {
     public function testCacheKeyGeneration(): void {
         $event = new MarkdownCacheEvent();

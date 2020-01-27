@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
 /**
+ * @covers \App\Entity\Submission
  * @group time-sensitive
  */
 class SubmissionTest extends TestCase {

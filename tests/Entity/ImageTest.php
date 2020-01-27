@@ -5,6 +5,9 @@ namespace App\Tests\Entity;
 use App\Entity\Image;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Entity\Image
+ */
 class ImageTest extends TestCase {
     public function testAcceptsFilename(): void {
         $image = new Image('a.png', 420, 69);

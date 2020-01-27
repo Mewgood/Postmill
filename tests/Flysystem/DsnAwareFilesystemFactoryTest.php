@@ -8,6 +8,9 @@ use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Flysystem\DsnAwareFilesystemFactory
+ */
 class DsnAwareFilesystemFactoryTest extends TestCase {
     public function testCreateLocalFilesystem(): void {
         $filesystem = DsnAwareFilesystemFactory::createFilesystem('file:///tmp');

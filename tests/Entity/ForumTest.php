@@ -9,6 +9,9 @@ use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @covers \App\Entity\Forum
+ */
 class ForumTest extends TestCase {
     /**
      * @var Forum

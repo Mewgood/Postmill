@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
 /**
+ * @covers \App\DataObject\CommentData
  * @group time-sensitive
  */
 class CommentDataTest extends TestCase {

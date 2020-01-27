@@ -14,6 +14,7 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
+ * @covers \App\EventListener\UpdateLastSeenListener
  * @group time-sensitive
  */
 class UpdateLastSeenListenerTest extends TestCase {

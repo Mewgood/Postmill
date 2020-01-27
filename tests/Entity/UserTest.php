@@ -6,6 +6,9 @@ use App\Entity\User;
 use App\Entity\UserBan;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Entity\User
+ */
 class UserTest extends TestCase {
     /**
      * @dataProvider unnormalizedUserProvider

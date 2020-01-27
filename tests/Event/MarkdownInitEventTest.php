@@ -7,6 +7,9 @@ use League\CommonMark\ConfigurableEnvironmentInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Event\MarkdownInitEvent
+ */
 class MarkdownInitEventTest extends TestCase {
     /**
      * @var MockObject|ConfigurableEnvironmentInterface

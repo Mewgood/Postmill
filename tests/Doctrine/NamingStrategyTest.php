@@ -5,6 +5,9 @@ namespace App\Tests\Doctrine;
 use App\Doctrine\NamingStrategy;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Doctrine\NamingStrategy
+ */
 class NamingStrategyTest extends TestCase {
     /**
      * @var NamingStrategy

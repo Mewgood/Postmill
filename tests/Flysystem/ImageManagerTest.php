@@ -9,6 +9,9 @@ use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\Flysystem\ImageManager
+ */
 class ImageManagerTest extends TestCase {
     /**
      * @var FilesystemInterface|MockObject

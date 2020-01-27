@@ -9,6 +9,9 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @covers \App\Serializer\SubmissionDataNormalizer
+ */
 class SubmissionDataNormalizerTest extends TestCase {
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|CacheManager

@@ -8,6 +8,9 @@ use App\Entity\User;
 use App\SubmissionFinder\Criteria;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \App\SubmissionFinder\Criteria
+ */
 class CriteriaTest extends TestCase {
     public function testDefaults(): void {
         $user = new User('u', 'p');

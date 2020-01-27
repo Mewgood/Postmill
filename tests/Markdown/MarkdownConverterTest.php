@@ -15,6 +15,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+/**
+ * @covers \App\Markdown\MarkdownConverter
+ */
 class MarkdownConverterTest extends TestCase {
     private function createMarkdownConverter(bool $externalLinksOpenInNewTab) {
         $user = $this->createMock(User::class);

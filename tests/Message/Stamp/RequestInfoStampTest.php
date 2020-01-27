@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Tests\Messenger\Stamp;
+namespace App\Tests\Message\Stamp;
 
 use App\Message\Stamp\RequestInfoStamp;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @covers \App\Message\Stamp\RequestInfoStamp
+ */
 class RequestInfoStampTest extends TestCase {
     public function testStampCreation(): void {
         $request = $this->getMockBuilder(Request::class)
