@@ -81,7 +81,6 @@ class AppExtension extends AbstractExtension {
             new TwigFunction('font_list', [$this, 'getFontList']),
             new TwigFunction('font_names', [$this, 'getFontNames']),
             new TwigFunction('font_entrypoint', [$this, 'getFontEntrypoint']),
-            new TwigFunction('rewrite_url', [$this->urlRewriter, 'rewrite']),
             new TwigFunction('theme_list', [$this, 'getThemeList']),
             new TwigFunction('theme_entrypoint', [$this, 'getThemeEntrypoint']),
             new TwigFunction('upload_url', [$this, 'getUploadUrl']),
