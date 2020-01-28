@@ -7,6 +7,7 @@ use App\Repository\SiteRepository;
 use App\Utils\UrlRewriter;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
@@ -84,6 +85,12 @@ class AppExtension extends AbstractExtension {
             new TwigFunction('theme_list', [$this, 'getThemeList']),
             new TwigFunction('theme_entrypoint', [$this, 'getThemeEntrypoint']),
             new TwigFunction('upload_url', [$this, 'getUploadUrl']),
+        ];
+    }
+
+    public function getFilters(): array {
+        return [
+            new TwigFilter('rewrite_url', [$this->urlRewriter, 'rewrite']),
         ];
     }
 

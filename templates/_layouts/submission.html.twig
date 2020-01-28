@@ -49,7 +49,7 @@
             {% endif %}
 
             {% if submission.url is not empty and '://' in submission.url %}
-              {% with { host: submission.url|split('://')[1]|split('/')[0] } %}
+              {% with { host: submission.url|rewrite_url|split('://')[1]|split('/')[0] } %}
                 <a href="{{ path('search', { q: host }) }}" class="submission__host text-xs">
                   {{- host[0:4] == 'www.' ? host[4:] : host -}}
                 </a>
@@ -133,7 +133,7 @@
 
 {%- block submission_url -%}
   {%- if submission.url -%}
-    {{- rewrite_url(submission.url) -}}
+    {{- submission.url|rewrite_url -}}
   {%- elseif submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image -%}
     {{- upload_url('submission_images/'~submission.image) -}}
   {%- else -%}
