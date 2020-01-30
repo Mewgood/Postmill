@@ -7,6 +7,7 @@ use App\Entity\CommentVote;
 use App\Entity\Message;
 use App\Entity\Submission;
 use App\Entity\SubmissionVote;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,6 +22,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * privacy.
  */
 class PruneIpAddressesCommand extends Command {
+    protected static $defaultName = 'postmill:prune-ips';
+
     /**
      * @var EntityManagerInterface
      */
@@ -34,7 +37,7 @@ class PruneIpAddressesCommand extends Command {
 
     protected function configure(): void {
         $this
-            ->setName('app:prune-ips')
+            ->setAliases(['app:prune-ips'])
             ->setDescription('Prunes IP addresses associated with some entities')
             ->addOption('max-age', 'm', InputOption::VALUE_REQUIRED,
                 'The maximum age (strtotime format) of an entity in seconds before its IP address is cleared.'
@@ -48,23 +51,21 @@ class PruneIpAddressesCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $io = new SymfonyStyle($input, $output);
 
-        if ($input->isInteractive()) {
-            if (!$io->confirm('Are you sure you wish to prune IP addresses?', false)) {
-                $io->text('Aborting...');
+        if (!$io->confirm('Are you sure you wish to prune IP addresses?', !$input->isInteractive())) {
+            $io->text('Aborting...');
 
-                return 1;
-            }
+            return 1;
         }
 
         if ($input->getOption('max-age')) {
-            $nowTime = new \DateTime('@'.time());
-            $maxTime = clone $nowTime;
-
-            if (!@$maxTime->modify($input->getOption('max-age'))) {
+            if (strtotime($input->getOption('max-age')) === false) {
                 $io->error('Invalid date format');
 
                 return 1;
             }
+
+            $nowTime = new \DateTimeImmutable('@'.time());
+            $maxTime = $nowTime->modify($input->getOption('max-age'));
 
             if ($maxTime > $nowTime) {
                 $io->error('max-age option cannot be a future time');
@@ -110,7 +111,7 @@ class PruneIpAddressesCommand extends Command {
 
     private function clearIpsForEntity(
         string $entity,
-        ?\DateTime $maxTime,
+        ?\DateTimeImmutable $maxTime,
         string $ipField = 'ip',
         string $timestampField = 'timestamp'
     ): int {
@@ -122,7 +123,7 @@ class PruneIpAddressesCommand extends Command {
 
         if ($maxTime) {
             $qb->andWhere('e.'.$timestampField.' <= ?2');
-            $qb->setParameter(2, $maxTime);
+            $qb->setParameter(2, $maxTime, Types::DATETIMETZ_IMMUTABLE);
         }
 
         return $qb->getQuery()->execute();
