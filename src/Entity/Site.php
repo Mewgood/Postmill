@@ -32,6 +32,13 @@ class Site {
     private $siteName = 'Postmill';
 
     /**
+     * @ORM\Column(type="text", options={"default": Submission::SORT_HOT})
+     *
+     * @var string
+     */
+    private $defaultSortMode = Submission::SORT_HOT;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Theme")
      *
      * @var Theme|null
@@ -80,6 +87,14 @@ class Site {
 
     public function setSiteName(string $siteName): void {
         $this->siteName = $siteName;
+    }
+
+    public function getDefaultSortMode(): string {
+        return $this->defaultSortMode;
+    }
+
+    public function setDefaultSortMode(string $defaultSortMode): void {
+        $this->defaultSortMode = $defaultSortMode;
     }
 
     public function getDefaultTheme(): ?Theme {

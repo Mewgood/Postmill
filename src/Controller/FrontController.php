@@ -34,13 +34,12 @@ final class FrontController extends AbstractController {
         $this->submissionFinder = $submissionFinder;
     }
 
-    public function front(string $sortBy = null): Response {
+    public function front(?string $sortBy): Response {
         if ($this->isGranted('ROLE_USER')) {
-            /* @var \App\Entity\User $user */
             $user = $this->getUser();
+            \assert($user instanceof \App\Entity\User);
 
             $listing = $user->getFrontPage();
-            $sortBy = $sortBy ?? $user->getFrontPageSortMode();
 
             if (
                 $listing === Submission::FRONT_SUBSCRIBED &&
@@ -50,14 +49,13 @@ final class FrontController extends AbstractController {
             }
         } else {
             $listing = Submission::FRONT_FEATURED;
-            $sortBy = $sortBy ?? Submission::SORT_HOT;
         }
 
         return $this->$listing($sortBy, 'html');
     }
 
-    public function featured(string $sortBy, string $_format): Response {
-        $criteria = (new Criteria($sortBy, $this->getUser()))
+    public function featured(?string $sortBy, string $_format): Response {
+        $criteria = (new Criteria($sortBy))
             ->showFeatured()
             ->excludeHiddenForums();
 
@@ -65,7 +63,7 @@ final class FrontController extends AbstractController {
 
         return $this->render("front/featured.$_format.twig", [
             'forums' => $this->forums->findFeaturedForumNames(),
-            'sort_by' => $sortBy,
+            'sort_by' => $this->submissionFinder->getSortMode($sortBy),
             'submissions' => $submissions,
         ]);
     }
@@ -73,7 +71,7 @@ final class FrontController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function subscribed(string $sortBy): Response {
+    public function subscribed(?string $sortBy): Response {
         $forums = $this->forums->findSubscribedForumNames($this->getUser());
 
         if (!$forums) {
@@ -82,26 +80,26 @@ final class FrontController extends AbstractController {
             return $this->redirectToRoute('featured', ['sortBy' => $sortBy]);
         }
 
-        $criteria = (new Criteria($sortBy, $this->getUser()))
+        $criteria = (new Criteria($sortBy))
             ->showSubscribed();
 
         $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('front/subscribed.html.twig', [
             'forums' => $forums,
-            'sort_by' => $sortBy,
+            'sort_by' => $this->submissionFinder->getSortMode($sortBy),
             'submissions' => $submissions,
         ]);
     }
 
-    public function all(string $sortBy, string $_format): Response {
-        $criteria = (new Criteria($sortBy, $this->getUser()))
+    public function all(?string $sortBy, string $_format): Response {
+        $criteria = (new Criteria($sortBy))
             ->excludeHiddenForums();
 
         $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render("front/all.$_format.twig", [
-            'sort_by' => $sortBy,
+            'sort_by' => $this->submissionFinder->getSortMode($sortBy),
             'submissions' => $submissions,
         ]);
     }
@@ -109,17 +107,17 @@ final class FrontController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function moderated(string $sortBy): Response {
+    public function moderated(?string $sortBy): Response {
         $forums = $this->forums->findModeratedForumNames($this->getUser());
 
-        $criteria = (new Criteria($sortBy, $this->getUser()))
+        $criteria = (new Criteria($sortBy))
             ->showModerated();
 
         $submissions = $this->submissionFinder->find($criteria);
 
         return $this->render('front/moderated.html.twig', [
             'forums' => $forums,
-            'sort_by' => $sortBy,
+            'sort_by' => $this->submissionFinder->getSortMode($sortBy),
             'submissions' => $submissions,
         ]);
     }

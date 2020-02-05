@@ -3,6 +3,7 @@
 namespace App\Form\Model;
 
 use App\Entity\Site;
+use App\Entity\Submission;
 use App\Entity\Theme;
 use App\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,6 +16,14 @@ final class SiteData {
      * @var string
      */
     public $siteName;
+
+    /**
+     * @Assert\Choice({Submission::SORT_HOT, Submission::SORT_ACTIVE, Submission::SORT_NEW})
+     * @Assert\NotBlank()
+     *
+     * @var string
+     */
+    public $defaultSortMode;
 
     /**
      * @var Theme|null
@@ -53,6 +62,7 @@ final class SiteData {
     public static function createFromSite(Site $site): self {
         $self = new self();
         $self->siteName = $site->getSiteName();
+        $self->defaultSortMode = $site->getDefaultSortMode();
         $self->defaultTheme = $site->getDefaultTheme();
         $self->wikiEnabled = $site->isWikiEnabled();
         $self->forumCreateRole = $site->getForumCreateRole();
@@ -64,6 +74,7 @@ final class SiteData {
 
     public function updateSite(Site $site): void {
         $site->setSiteName($this->siteName);
+        $site->setDefaultSortMode($this->defaultSortMode);
         $site->setDefaultTheme($this->defaultTheme);
         $site->setWikiEnabled($this->wikiEnabled);
         $site->setForumCreateRole($this->forumCreateRole);

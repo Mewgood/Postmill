@@ -36,7 +36,7 @@ class ForumCategoryController extends AbstractController {
     public function category(ForumCategory $category, string $sortBy): Response {
         $forums = $this->forums->findForumsInCategory($category);
 
-        $criteria = (new Criteria($sortBy, $this->getUser()))
+        $criteria = (new Criteria($sortBy))
             ->showForums(...$category->getForums())
             ->excludeHiddenForums();
 
@@ -45,7 +45,7 @@ class ForumCategoryController extends AbstractController {
         return $this->render('forum_category/category.html.twig', [
             'category' => $category,
             'forums' => $forums,
-            'sort_by' => $sortBy,
+            'sort_by' => $this->submissionFinder->getSortMode($sortBy),
             'submissions' => $submissions,
         ]);
     }

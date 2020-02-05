@@ -2,16 +2,22 @@
 
 namespace App\SubmissionFinder;
 
+use App\Entity\Forum;
+use App\Entity\ForumSubscription;
+use App\Entity\Moderator;
 use App\Entity\Submission;
+use App\Entity\User;
 use App\Pagination\Adapter\DoctrineAdapter;
 use App\Pagination\DTO\SubmissionPage;
 use App\Pagination\Pager;
 use App\Pagination\Paginator;
+use App\Repository\SiteRepository;
 use App\Repository\SubmissionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Security;
 
 final class SubmissionFinder {
     /**
@@ -30,20 +36,34 @@ final class SubmissionFinder {
     private $requestStack;
 
     /**
+     * @var Security
+     */
+    private $security;
+
+    /**
+     * @var SiteRepository
+     */
+    private $sites;
+
+    /**
      * @var SubmissionRepository
      */
-    private $repository;
+    private $submissions;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         Paginator $paginator,
         RequestStack $requestStack,
-        SubmissionRepository $repository
+        Security $security,
+        SiteRepository $sites,
+        SubmissionRepository $submissions
     ) {
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
         $this->requestStack = $requestStack;
-        $this->repository = $repository;
+        $this->security = $security;
+        $this->sites = $sites;
+        $this->submissions = $submissions;
     }
 
     /**
@@ -68,21 +88,35 @@ final class SubmissionFinder {
             new DoctrineAdapter($qb),
             $criteria->getMaxPerPage(),
             SubmissionPage::class,
-            $criteria->getSortBy()
+            $this->getSortMode($criteria->getSortBy())
         );
 
         if ($page && \count($results) === 0) {
             throw new NoSubmissionsException();
         }
 
-        $this->repository->hydrate(...$results);
+        $this->submissions->hydrate(...$results);
 
         return $results;
     }
 
+    /**
+     * Get the submission ordering currently in use.
+     */
+    public function getSortMode(?string $sortBy): string {
+        /** @var User|null $user */
+        $user = $this->security->getUser();
+
+        return $sortBy
+            ?? ($user ? $user->getFrontPageSortMode() : null)
+            ?? $this->sites->findCurrentSite()->getDefaultSortMode();
+    }
+
     private function getPage(Criteria $criteria): ?SubmissionPage {
-        /** @var SubmissionPage|null $page */
-        $page = $this->paginator->getPage(SubmissionPage::class, $criteria->getSortBy());
+        $sortBy = $this->getSortMode($criteria->getSortBy());
+        $page = $this->paginator->getPage(SubmissionPage::class, $sortBy);
+
+        \assert($page instanceof SubmissionPage || $page === null);
 
         return $page;
     }
@@ -138,15 +172,15 @@ final class SubmissionFinder {
     private function filter(QueryBuilder $qb, Criteria $criteria): void {
         switch ($criteria->getView()) {
         case Criteria::VIEW_FEATURED:
-            $qb->andWhere('s.forum IN (SELECT f FROM App\Entity\Forum f WHERE f.featured = TRUE)');
+            $qb->andWhere('s.forum IN (SELECT f FROM '.Forum::class.' f WHERE f.featured = TRUE)');
             break;
         case Criteria::VIEW_SUBSCRIBED:
-            $qb->andWhere('s.forum IN (SELECT IDENTITY(fs.forum) FROM App\Entity\ForumSubscription fs WHERE fs.user = :user)');
-            $qb->setParameter('user', $criteria->getUser());
+            $qb->andWhere('s.forum IN (SELECT IDENTITY(fs.forum) FROM '.ForumSubscription::class.' fs WHERE fs.user = :user)');
+            $qb->setParameter('user', $this->getUser());
             break;
         case Criteria::VIEW_MODERATED:
-            $qb->andWhere('s.forum IN (SELECT IDENTITY(m.forum) FROM App\Entity\Moderator m WHERE m.user = :user)');
-            $qb->setParameter('user', $criteria->getUser());
+            $qb->andWhere('s.forum IN (SELECT IDENTITY(m.forum) FROM '.Moderator::class.' m WHERE m.user = :user)');
+            $qb->setParameter('user', $this->getUser());
             break;
         case Criteria::VIEW_FORUMS:
             $forums = $criteria->getForums();
@@ -169,9 +203,21 @@ final class SubmissionFinder {
             throw new \LogicException("Bad sort mode {$criteria->getView()}");
         }
 
-        if ($criteria->getExclusions() & Criteria::EXCLUDE_HIDDEN_FORUMS) {
-            $qb->andWhere('s.forum NOT IN (SELECT hf FROM App\Entity\User u JOIN u.hiddenForums AS hf WHERE u = :user)');
-            $qb->setParameter('user', $criteria->getUser());
+        $user = $this->getUser(false);
+        if ($user && $criteria->getExclusions() & Criteria::EXCLUDE_HIDDEN_FORUMS) {
+            $qb->andWhere('s.forum NOT IN (SELECT hf FROM '.User::class.' u JOIN u.hiddenForums AS hf WHERE u = :user)');
+            $qb->setParameter('user', $user);
         }
+    }
+
+    private function getUser(bool $throw = true): ?User {
+        if ($throw && !$this->security->isGranted('ROLE_USER')) {
+            throw new \LogicException('User is not logged in');
+        }
+
+        $user = $this->security->getUser();
+        \assert(!$user || $user instanceof User);
+
+        return $user;
     }
 }

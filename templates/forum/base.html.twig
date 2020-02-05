@@ -6,7 +6,7 @@
 
 {% block feed %}
   {{ parent() }}
-  <link rel="alternate" type="application/atom+xml" href="{{ path('forum', { forum_name: forum.name, _format: 'atom' }) }}" title="/f/{{ forum.name }}">
+  <link rel="alternate" type="application/atom+xml" href="{{ path('forum', { forum_name: forum.name, sortBy: 'new', _format: 'atom' }) }}" title="/f/{{ forum.name }}">
 {% endblock feed %}
 
 {% block theme_css %}

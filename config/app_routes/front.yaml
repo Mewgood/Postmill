@@ -7,28 +7,28 @@ front:
 
 featured:
     controller: App\Controller\FrontController::featured
-    defaults: { sortBy: hot, _format: html }
+    defaults: { sortBy: ~, _format: html }
     path: /featured/{sortBy}.{_format}
     methods: [GET]
     requirements: { sortBy: "%submission_sort_modes%", _format: html|atom }
 
 subscribed:
     controller: App\Controller\FrontController::subscribed
-    defaults: { sortBy: hot }
+    defaults: { sortBy: ~ }
     path: /subscribed/{sortBy}
     methods: [GET]
     requirements: { sortBy: "%submission_sort_modes%" }
 
 all:
     controller: App\Controller\FrontController::all
-    defaults: { sortBy: hot, _format: html }
+    defaults: { sortBy: ~, _format: html }
     path: /all/{sortBy}.{_format}
     methods: [GET]
     requirements: { sortBy: "%submission_sort_modes%", _format: html|atom }
 
 moderated:
     controller: App\Controller\FrontController::moderated
-    defaults: { sortBy: hot }
+    defaults: { sortBy: ~ }
     path: /moderated/{sortBy}
     methods: [GET]
     requirements: { sortBy: "%submission_sort_modes%" }

@@ -140,7 +140,6 @@ class ApplicationAvailabilityTest extends WebTestCase {
     }
 
     public function redirectUrlProvider(): iterable {
-        yield ['/f/news', '/f/NeWs/hot'];
         yield ['/f/news', '/f/news/'];
         yield ['/f/news/new', '/f/NeWs/new'];
         yield ['/f/news/top', '/f/NeWs/top'];

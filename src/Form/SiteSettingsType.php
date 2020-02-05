@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Submission;
 use App\Form\Model\SiteData;
 use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
@@ -22,6 +23,14 @@ final class SiteSettingsType extends AbstractType {
         $builder
             ->add('siteName', TextType::class, [
                 'label' => 'site_settings.site_name',
+            ])
+            ->add('defaultSortMode', ChoiceType::class, [
+                'choices' => [
+                    'submission.sort_by_hot' => Submission::SORT_HOT,
+                    'submission.sort_by_active' => Submission::SORT_ACTIVE,
+                    'submission.sort_by_new' => Submission::SORT_NEW,
+                ],
+                'label' => 'site_settings.default_sort_mode',
             ])
             ->add('defaultTheme', ThemeSelectorType::class, [
                 'help' => 'site_settings.site_theme_help',

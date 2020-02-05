@@ -67,7 +67,7 @@ final class UserController extends AbstractController {
      * @Route("/{id}/submissions", methods={"GET"})
      */
     public function readSubmissions(User $user, SubmissionFinder $finder): Response {
-        $criteria = (new Criteria(Submission::SORT_NEW, $this->getUser()))
+        $criteria = (new Criteria(Submission::SORT_NEW))
             ->showUsers($user);
 
         return $this->json($finder->find($criteria), 200, [], [

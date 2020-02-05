@@ -1,6 +1,6 @@
 multi:
     controller: App\Controller\ForumController::multi
-    defaults: { sortBy: hot }
+    defaults: { sortBy: ~ }
     path: /f/{names}/{sortBy}
     requirements:
         names: '(?:\w{3,25}\+){1,70}\w{3,25}'
@@ -8,7 +8,7 @@ multi:
 
 forum:
     controller: App\Controller\ForumController::front
-    defaults: { sortBy: hot, _format: html }
+    defaults: { sortBy: ~, _format: html }
     path: /f/{forum_name}/{sortBy}.{_format}
     methods: [GET]
     requirements: { sortBy: "%submission_sort_modes%", _format: html|atom }

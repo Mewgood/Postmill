@@ -40,24 +40,18 @@ final class Criteria {
 
     private $maxPerPage = 25;
 
-    /**
-     * @var User|null
-     */
-    private $user;
-
-    public function __construct(string $sortBy, User $user = null) {
-        if (!\in_array($sortBy, Submission::SORT_OPTIONS, true)) {
+    public function __construct(?string $sortBy) {
+        if ($sortBy && !\in_array($sortBy, Submission::SORT_OPTIONS, true)) {
             throw new \InvalidArgumentException("Unknown sort mode '$sortBy'");
         }
 
         $this->sortBy = $sortBy;
-        $this->user = $user;
     }
 
     /**
-     * @return string One of App\Entity\Submission::SORT_* fields
+     * @return string|null One of App\Entity\Submission::SORT_* fields, or NULL
      */
-    public function getSortBy(): string {
+    public function getSortBy(): ?string {
         return $this->sortBy;
     }
 
@@ -68,31 +62,15 @@ final class Criteria {
         return $this->view;
     }
 
-    public function getUser(): User {
-        if (!$this->user) {
-            throw new \BadMethodCallException('No user was set');
-        }
-
-        return $this->user;
-    }
-
     public function showFeatured(): self {
         return $this->setView(self::VIEW_FEATURED);
     }
 
     public function showSubscribed(): self {
-        if (!$this->user) {
-            throw new \BadMethodCallException('No user was set');
-        }
-
         return $this->setView(self::VIEW_SUBSCRIBED);
     }
 
     public function showModerated(): self {
-        if (!$this->user) {
-            throw new \BadMethodCallException('No user was set');
-        }
-
         return $this->setView(self::VIEW_MODERATED);
     }
 
@@ -130,13 +108,7 @@ final class Criteria {
      * @return int exclusions, as a bit field
      */
     public function getExclusions(): int {
-        $exclude = $this->exclude;
-
-        if (!$this->user) {
-            $exclude &= ~self::EXCLUDE_HIDDEN_FORUMS;
-        }
-
-        return $exclude;
+        return $this->exclude;
     }
 
     /**

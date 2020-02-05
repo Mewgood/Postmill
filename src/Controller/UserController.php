@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\DataObject\UserData;
 use App\Entity\Forum;
+use App\Entity\Site;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Form\ConfirmDeletionType;
@@ -35,6 +36,7 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 /**
  * @Entity("user", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
+ * @Entity("site", expr="repository.findCurrentSite()")
  */
 final class UserController extends AbstractController {
     use TargetPathTrait;
@@ -112,13 +114,14 @@ final class UserController extends AbstractController {
         ]);
     }
 
-    public function registration(Request $request, EntityManagerInterface $em, AuthenticationHelper $auth): Response {
+    public function registration(Site $site, Request $request, EntityManagerInterface $em, AuthenticationHelper $auth): Response {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('front');
         }
 
         $data = new UserData();
         $data->setLocale($request->getLocale());
+        $data->setFrontPageSortMode($site->getDefaultSortMode());
 
         $form = $this->createForm(UserType::class, $data);
         $form->handleRequest($request);

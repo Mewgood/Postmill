@@ -43,7 +43,7 @@ final class ForumController extends AbstractController {
     /**
      * Show the front page of a given forum.
      */
-    public function front(Forum $forum, string $sortBy, string $_format): Response {
+    public function front(Forum $forum, ?string $sortBy, string $_format): Response {
         $criteria = (new Criteria($sortBy))
             ->showForums($forum)
             ->stickiesFirst();
@@ -52,12 +52,12 @@ final class ForumController extends AbstractController {
 
         return $this->render("forum/forum.$_format.twig", [
             'forum' => $forum,
-            'sort_by' => $sortBy,
+            'sort_by' => $this->submissionFinder->getSortMode($sortBy),
             'submissions' => $submissions,
         ]);
     }
 
-    public function multi(ForumRepository $fr, string $names, string $sortBy): Response {
+    public function multi(ForumRepository $fr, string $names, ?string $sortBy): Response {
         $names = array_map(Forum::class.'::normalizeName', explode('+', $names));
         $forums = $fr->findByNormalizedName($names);
 
@@ -72,7 +72,7 @@ final class ForumController extends AbstractController {
 
         return $this->render('forum/multi.html.twig', [
             'forums' => $names,
-            'sort_by' => $sortBy,
+            'sort_by' => $this->submissionFinder->getSortMode($sortBy),
             'submissions' => $submissions,
         ]);
     }

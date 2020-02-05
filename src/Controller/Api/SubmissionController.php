@@ -30,7 +30,7 @@ final class SubmissionController extends AbstractController {
             return $this->json(['message' => 'unknown sort mode'], 400);
         }
 
-        $criteria = new Criteria($sortBy, $this->getUser());
+        $criteria = new Criteria($sortBy);
 
         switch ($request->query->get('filter', $this->getUser()->getFrontPage())) {
         case Submission::FRONT_FEATURED:

@@ -13,22 +13,20 @@ use PHPUnit\Framework\TestCase;
  */
 class CriteriaTest extends TestCase {
     public function testDefaults(): void {
-        $user = new User('u', 'p');
-        $criteria = new Criteria(Submission::SORT_HOT, $user);
+        $criteria = new Criteria(Submission::SORT_HOT);
 
         $this->assertEquals(Submission::SORT_HOT, $criteria->getSortBy());
         $this->assertEquals(Criteria::VIEW_ALL, $criteria->getView());
         $this->assertEquals(0, $criteria->getExclusions());
         $this->assertFalse($criteria->getStickiesFirst());
         $this->assertEquals(25, $criteria->getMaxPerPage());
-        $this->assertSame($user, $criteria->getUser());
     }
 
     /**
      * @doesNotPerformAssertions
      * @dataProvider provideSortModes
      */
-    public function testAcceptsValidSortModes(string $sortMode): void {
+    public function testAcceptsValidSortModes(?string $sortMode): void {
         new Criteria($sortMode);
     }
 
@@ -40,12 +38,6 @@ class CriteriaTest extends TestCase {
             Criteria::EXCLUDE_HIDDEN_FORUMS,
             $criteria->getExclusions() & Criteria::EXCLUDE_HIDDEN_FORUMS
         );
-    }
-
-    public function testExcludeWithoutUserSetResultsInNoExclusion(): void {
-        $criteria = (new Criteria(Submission::SORT_HOT))->excludeHiddenForums();
-
-        $this->assertEquals(0, $criteria->getExclusions());
     }
 
     public function testExcludeHiddenForumsCannotBeCalledTwice(): void {
@@ -134,34 +126,16 @@ class CriteriaTest extends TestCase {
         new Criteria('poop');
     }
 
-    /**
-     * @dataProvider provideMethodsThatNeedUser
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage No user was set
-     */
-    public function testMethodsThatNeedUserSetThrowExceptionWhenNoUserIsSet(string $method): void {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('No user was set');
-
-        (new Criteria(Submission::SORT_HOT))->$method();
-    }
-
-    public function provideMethodsThatNeedUser(): iterable {
-        yield ['getUser'];
-        yield ['showModerated'];
-        yield ['showSubscribed'];
-    }
-
     public function provideGettersThatCannotBeAccessedBeforeMutatorHasBeenCalled(): iterable {
         yield ['getForums'];
         yield ['getUsers'];
     }
 
     public function provideSortModes(): iterable {
-        return array_map(function ($mode) {
+        yield from array_map(function ($mode) {
             return [$mode];
         }, Submission::SORT_OPTIONS);
+        yield [null];
     }
 
     public function provideViewMethodMatrix(): iterable {
@@ -181,8 +155,6 @@ class CriteriaTest extends TestCase {
     }
 
     private function createCriteria(): Criteria {
-        $user = new User('u', 'p');
-
-        return new Criteria(Submission::SORT_HOT, $user);
+        return new Criteria(Submission::SORT_HOT);
     }
 }
