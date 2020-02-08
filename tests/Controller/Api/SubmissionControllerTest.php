@@ -14,13 +14,10 @@ class SubmissionControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(200);
 
-        $this->assertArraySubset([
-            'entries' => [
-                ['id' => 3],
-                ['id' => 2],
-                ['id' => 1],
-            ],
-        ], json_decode($client->getResponse()->getContent(), true));
+        $this->assertSame([3, 2, 1], array_column(
+            json_decode($client->getResponse()->getContent(), true)['entries'],
+            'id'
+        ));
     }
 
     public function testCannotListSubmissionsWithInvalidSortMode(): void {
@@ -83,18 +80,14 @@ class SubmissionControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(201);
 
-        $response = json_decode($client->getResponse()->getContent(), true);
+        $data = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertIsInt($response['id']);
-        $this->assertArraySubset([
-            'title' => 'A submission posted via the API',
-            'body' => 'very cool',
-            'renderedBody' => "<p>very cool</p>\n",
-            'forum' => [
-                'id' => 2,
-                'name' => 'news',
-            ],
-        ], $response);
+        $this->assertIsInt($data['id']);
+        $this->assertEquals('A submission posted via the API', $data['title']);
+        $this->assertEquals('very cool', $data['body']);
+        $this->assertEquals("<p>very cool</p>\n", $data['renderedBody']);
+        $this->assertEquals(2, $data['forum']['id']);
+        $this->assertEquals('news', $data['forum']['name']);
     }
 
     public function testUpdateSubmission(): void {
@@ -112,11 +105,10 @@ class SubmissionControllerTest extends WebTestCase {
 
         $client->request('GET', '/api/submissions/3');
 
-        $this->assertArraySubset([
-            'url' => 'http://www.example.com/',
-            'title' => 'updated title',
-            'body' => 'updated body',
-        ], json_decode($client->getResponse()->getContent(), true));
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertEquals('http://www.example.com/', $data['url']);
+        $this->assertEquals('updated title', $data['title']);
+        $this->assertEquals('updated body', $data['body']);
     }
 
     public function testSoftDeleteOwnSubmission(): void {
@@ -128,12 +120,11 @@ class SubmissionControllerTest extends WebTestCase {
         $client->request('GET', '/api/submissions/3');
 
         self::assertResponseStatusCodeSame(200);
-        $this->assertArraySubset([
-            'id' => 3,
-            'title' => '',
-            'body' => '',
-            'visibility' => 'deleted',
-        ], json_decode($client->getResponse()->getContent(), true));
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertEquals(3, $data['id']);
+        $this->assertSame('', $data['title']);
+        $this->assertNull($data['body']);
+        $this->assertEquals('deleted', $data['visibility']);
     }
 
     public function testCannotDeleteSubmissionOfOtherUser(): void {

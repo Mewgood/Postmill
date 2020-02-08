@@ -5,6 +5,7 @@ namespace App\Tests\EventListener;
 use App\Entity\User;
 use App\Event\UserUpdated;
 use App\EventListener\LocaleListener;
+use App\Tests\Fixtures\TranslatorInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,8 +16,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Contracts\Translation\LocaleAwareInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @covers \App\EventListener\LocaleListener
@@ -43,7 +42,7 @@ class LocaleListenerTest extends TestCase {
     private $security;
 
     /**
-     * @var TranslatorInterface|LocaleAwareInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $translator;
 
@@ -54,10 +53,7 @@ class LocaleListenerTest extends TestCase {
 
         $this->security = $this->createMock(Security::class);
 
-        $this->translator = $this->createMock([
-            TranslatorInterface::class,
-            LocaleAwareInterface::class,
-        ]);
+        $this->translator = $this->createMock(TranslatorInterface::class);
 
         $this->requestStack = new RequestStack();
         $this->requestStack->push($this->request);

@@ -66,11 +66,13 @@ class UserTest extends TestCase {
 
     /**
      * @dataProvider invalidEmailAddressProvider
-     * @expectedException \InvalidArgumentException
      *
      * @param string $input
      */
     public function testNormalizeFailsOnInvalidEmailAddress($input): void {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid email address');
+
         User::normalizeEmail($input);
     }
 

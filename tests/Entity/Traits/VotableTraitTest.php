@@ -3,6 +3,7 @@
 namespace App\Tests\Entity\Traits;
 
 use App\Entity\Contracts\VotableInterface;
+use App\Entity\Exception\BadVoteChoiceException;
 use App\Entity\Traits\VotableTrait;
 use App\Entity\User;
 use App\Entity\Vote;
@@ -60,12 +61,10 @@ class VotableTraitTest extends TestCase {
         $this->assertCount(0, $this->votable->getVotes());
     }
 
-    /**
-     * @expectedException \App\Entity\Exception\BadVoteChoiceException
-     */
     public function testCannotGiveIncorrectVote(): void {
-        $user = new User('u', 'p');
+        $this->expectException(BadVoteChoiceException::class);
 
+        $user = new User('u', 'p');
         $this->votable->vote(69, $user, null);
     }
 
@@ -93,13 +92,11 @@ class VotableTraitTest extends TestCase {
         $this->votable->vote(VotableInterface::VOTE_UP, $user, null);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Bad IP address
-     */
     public function testThrowsExceptionOnBadIpAddress(): void {
-        $user = new User('u', 'p');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Bad IP address');
 
+        $user = new User('u', 'p');
         $this->votable->vote(VotableInterface::VOTE_UP, $user, 'poop');
     }
 

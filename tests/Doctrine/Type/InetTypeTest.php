@@ -43,12 +43,12 @@ class InetTypeTest extends TestCase {
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testDoesNotWorkWithNonPostgresPlatforms(): void {
         /** @var \PHPUnit\Framework\MockObject\MockObject|MySqlPlatform $platform */
         $platform = $this->createMock(MySqlPlatform::class);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Platform must be PostgreSQL');
 
         $this->type->convertToDatabaseValue('::1', $platform);
     }

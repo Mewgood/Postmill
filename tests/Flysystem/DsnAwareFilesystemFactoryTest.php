@@ -35,11 +35,10 @@ class DsnAwareFilesystemFactoryTest extends TestCase {
         $this->assertEquals('your-region', $adapter->getClient()->getRegion());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown filesystem 'poop'
-     */
     public function testThrowsOnUnrecognizedAdapter(): void {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Unknown filesystem 'poop'");
+
         DsnAwareFilesystemFactory::createFilesystem('poop://crap');
     }
 }

@@ -84,5 +84,7 @@ class SiteControllerTest extends WebTestCase {
         $form = $crawler->selectButton('Save')->form($settings);
 
         $client->submit($form);
+
+        self::ensureKernelShutdown();
     }
 }

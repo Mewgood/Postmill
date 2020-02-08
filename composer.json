@@ -21,7 +21,6 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo_pgsql": "*",
-        "dama/doctrine-test-bundle": "^6.3",
         "eightpoints/guzzle-bundle": "^8.0",
         "embed/embed": "^3.4",
         "ezyang/htmlpurifier": "^4.8",
@@ -70,6 +69,7 @@
         "willdurand/js-translation-bundle": "^3.0"
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^6.3",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "friendsofphp/php-cs-fixer": "^2.3",
         "symfony/debug-pack": "^1.0",

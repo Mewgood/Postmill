@@ -70,12 +70,11 @@ class UserControllerTest extends WebTestCase {
 
         $client->request('GET', '/api/users/2/preferences');
 
-        $this->assertArraySubset([
-            'frontPage' => 'all',
-            'frontPageSortMode' => 'active',
-            'openExternalLinksInNewTab' => true,
-            'preferredFonts' => 'DejaVu Sans Mono, monospace',
-        ], json_decode($client->getResponse()->getContent(), true));
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertEquals('all', $data['frontPage']);
+        $this->assertEquals('active', $data['frontPageSortMode']);
+        $this->assertTrue($data['openExternalLinksInNewTab']);
+        $this->assertEquals('DejaVu Sans Mono, monospace', $data['preferredFonts']);
     }
 
     public function testUserSubmissions(): void {
@@ -84,12 +83,10 @@ class UserControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(200);
 
-        $this->assertArraySubset([
-            'entries' => [
-                ['id' => 2],
-                ['id' => 1],
-            ],
-        ], json_decode($client->getResponse()->getContent(), true));
+        $this->assertSame([2, 1], array_column(
+            json_decode($client->getResponse()->getContent(), true)['entries'],
+            'id'
+        ));
     }
 
     public function testUserModeratorList(): void {

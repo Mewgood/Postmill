@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\WebTestCase;
 
 /**
  * @covers \App\Controller\MessageController
@@ -22,7 +22,7 @@ class MessageControllerTest extends WebTestCase {
 
         $crawler = $client->request('GET', '/messages');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'This is a message. There are many like it, but this one originates from a fixture.',
             $crawler->filter('tbody tr td:nth-child(1)')->text()
         );
@@ -35,9 +35,9 @@ class MessageControllerTest extends WebTestCase {
             'PHP_AUTH_PW' => 'example3',
         ]);
 
-        $crawler = $client->request('GET', '/messages');
+        $client->request('GET', '/messages');
 
-        $this->assertContains('There are no messages to display.', $crawler->filter('main p')->text());
+        self::assertSelectorTextContains('main p', 'There are no messages to display.');
     }
 
     public function testMustBeLoggedInToViewMessageList(): void {
@@ -60,11 +60,11 @@ class MessageControllerTest extends WebTestCase {
             'PHP_AUTH_PW' => $password,
         ]);
 
-        $crawler = $client->request('GET', '/messages/thread/1');
+        $client->request('GET', '/messages/thread/1');
 
-        $this->assertContains(
-            'This is a message. There are many like it, but this one originates from a fixture.',
-            $crawler->filter('.message__body p')->text()
+        self::assertSelectorTextContains(
+            '.message__body p',
+            'This is a message. There are many like it, but this one originates from a fixture.'
         );
     }
 
@@ -83,26 +83,21 @@ class MessageControllerTest extends WebTestCase {
         $client = self::createClient();
         $client->request('GET', '/messages/thread/1');
 
-        $this->assertTrue($client->getResponse()->isRedirect());
-        $this->assertStringEndsWith('/login', $client->getResponse()->headers->get('Location'));
+        self::assertResponseRedirects('/login');
     }
 
     public function testCanReply(): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => 'emma',
-            'PHP_AUTH_PW' => 'goodshit',
-        ]);
-        $client->followRedirects();
-
+        $client = self::createAdminClient();
         $crawler = $client->request('GET', '/messages/thread/1');
 
         $form = $crawler->filter('form[name="message"] button')->form([
             'message[body]' => 'aaa',
         ]);
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
+        $crawler = $client->followRedirect();
 
-        $this->assertContains('aaa', $crawler->filter('.message__body')->eq(2)->text());
+        $this->assertStringContainsString('aaa', $crawler->filter('.message__body')->eq(2)->text());
     }
 
     public function authProvider() {

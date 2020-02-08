@@ -11,5 +11,5 @@ services:
     App\Form\Extension\CaptchaBypassExtension:
         $bypass: true
 
-    App\Tests\Fixtures\:
-        resource: '../tests/Fixtures'
+    App\Tests\Fixtures\Database\:
+        resource: '../tests/Fixtures/Database'

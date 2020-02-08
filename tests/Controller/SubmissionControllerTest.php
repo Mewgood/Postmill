@@ -70,13 +70,12 @@ class SubmissionControllerTest extends WebTestCase {
         $client = self::createClient();
         $client->request('GET', '/f/news/1.json');
 
-        $this->assertArraySubset([
-            'url' => 'http://www.example.com/some/thing',
-            'title' => 'A submission with a URL and body',
-            'body' => 'This is a body.',
-            'timestamp' => '2017-03-03T03:03:00+00:00',
-            'renderedBody' => "<p>This is a body.</p>\n",
-        ], json_decode($client->getResponse()->getContent(), true));
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertEquals('http://www.example.com/some/thing', $data['url']);
+        $this->assertEquals('A submission with a URL and body', $data['title']);
+        $this->assertEquals('This is a body.', $data['body']);
+        $this->assertEquals('2017-03-03T03:03:00+00:00', $data['timestamp']);
+        $this->assertEquals("<p>This is a body.</p>\n", $data['renderedBody']);
     }
 
     public function testSubmissionShortcut(): void {
@@ -99,8 +98,8 @@ class SubmissionControllerTest extends WebTestCase {
         ]));
 
         $this->assertEquals('http://edited.url.example/', $crawler->filter('.submission__link')->attr('href'));
-        $this->assertContains('Edited submission title', $crawler->filter('.submission__link')->text());
-        $this->assertContains('Edited body', $crawler->filter('.submission__body')->text());
+        self::assertSelectorTextContains('.submission__link', 'Edited submission title');
+        self::assertSelectorTextContains('.submission__body', 'Edited body');
     }
 
     public function testDeletingOwnSubmissionWithCommentsResultsInSoftDeletion(): void {
@@ -132,14 +131,14 @@ class SubmissionControllerTest extends WebTestCase {
 
         $crawler = $client->request('GET', '/f/cats/3');
         $crawler = $client->click($crawler->selectLink('Delete')->link());
-        $crawler = $client->submit($crawler->selectButton('Delete')->form([
+        $client->submit($crawler->selectButton('Delete')->form([
             'delete_reason[reason]' => 'some reason',
         ]));
 
-        $this->assertContains('The submission was deleted.', $crawler->filter('.alert__text')->text());
+        self::assertSelectorTextContains('.alert__text', 'The submission was deleted.');
 
-        $crawler = $client->request('GET', '/f/cats/3');
-        $this->assertContains('[deleted]', $crawler->filter('.submission__link')->text());
+        $client->request('GET', '/f/cats/3');
+        self::assertSelectorTextContains('.submission__link', '[deleted]');
     }
 
     public function testSubmissionLocking(): void {
@@ -150,12 +149,12 @@ class SubmissionControllerTest extends WebTestCase {
         $crawler = $client->submit($crawler->selectButton('Lock')->form());
         $this->assertCount(1, $crawler->filter('.submission--locked'));
         $this->assertCount(1, $crawler->filter('.submission__locked-icon'));
-        $this->assertContains('The submission was locked.', $crawler->filter('.alert__text')->text());
+        self::assertSelectorTextContains('.alert__text', 'The submission was locked.');
 
         $crawler = $client->submit($crawler->selectButton('Unlock')->form());
         $this->assertCount(0, $crawler->filter('.submission--locked'));
         $this->assertCount(0, $crawler->filter('.submission__locked-icon'));
-        $this->assertContains('The submission was unlocked.', $crawler->filter('.alert__text')->text());
+        self::assertSelectorTextContains('.alert__text', 'The submission was unlocked.');
     }
 
     public function testSubmissionPinning(): void {
@@ -166,12 +165,12 @@ class SubmissionControllerTest extends WebTestCase {
         $crawler = $client->submit($crawler->selectButton('Pin')->form());
         $this->assertCount(1, $crawler->filter('.submission--sticky'));
         $this->assertCount(1, $crawler->filter('.submission__sticky-icon'));
-        $this->assertContains('The submission was pinned.', $crawler->filter('.alert__text')->text());
+        self::assertSelectorTextContains('.alert__text', 'The submission was pinned.');
 
         $crawler = $client->submit($crawler->selectButton('Unpin')->form());
         $this->assertCount(0, $crawler->filter('.submission--sticky'));
         $this->assertCount(0, $crawler->filter('.submission__sticky-icon'));
-        $this->assertContains('The submission was unpinned.', $crawler->filter('.alert__text')->text());
+        self::assertSelectorTextContains('.alert__text', 'The submission was unpinned.');
     }
 
     /**
@@ -198,6 +197,7 @@ class SubmissionControllerTest extends WebTestCase {
         ]);
 
         $client->submit($form);
+        self::ensureKernelShutdown();
 
         $client = self::createUserClient();
         $client->request('GET', '/notifications');

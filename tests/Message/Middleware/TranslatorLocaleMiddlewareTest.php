@@ -4,11 +4,10 @@ namespace App\Tests\Message\Middleware;
 
 use App\Message\Middleware\TranslatorLocaleMiddleware;
 use App\Message\Stamp\RequestInfoStamp;
+use App\Tests\Fixtures\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Test\Middleware\MiddlewareTestCase;
-use Symfony\Contracts\Translation\LocaleAwareInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @covers \App\Message\Middleware\TranslatorLocaleMiddleware
@@ -16,10 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TranslatorLocaleMiddlewareTest extends MiddlewareTestCase {
     public function testSetsAndRestoresLocale(): void {
         /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject $translator */
-        $translator = $this->createMock([
-            TranslatorInterface::class,
-            LocaleAwareInterface::class,
-        ]);
+        $translator = $this->createMock(TranslatorInterface::class);
         $translator
             ->expects($this->once())
             ->method('getLocale')

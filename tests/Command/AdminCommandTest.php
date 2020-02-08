@@ -39,7 +39,7 @@ class AdminCommandTest extends KernelTestCase {
             'user' => ['zach', 'third'],
         ]);
 
-        $this->assertContains('2 user(s) were admined', $tester->getDisplay());
+        $this->assertStringContainsString('2 user(s) were admined', $tester->getDisplay());
 
         $this->assertTrue($this->users->findOneByUsername('zach')->isAdmin());
         $this->assertTrue($this->users->findOneByUsername('third')->isAdmin());
@@ -53,7 +53,7 @@ class AdminCommandTest extends KernelTestCase {
             '--remove' => true,
         ]);
 
-        $this->assertContains('1 user(s) were de-admined', $tester->getDisplay());
+        $this->assertStringContainsString('1 user(s) were de-admined', $tester->getDisplay());
 
         $this->assertFalse($this->users->findOneByUsername('emma')->isAdmin());
     }

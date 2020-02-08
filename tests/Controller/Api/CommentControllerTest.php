@@ -14,13 +14,10 @@ class CommentControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(200);
 
-        $this->assertArraySubset([
-            'entries' => [
-                ['id' => 3],
-                ['id' => 2],
-                ['id' => 1],
-            ],
-        ], json_decode($client->getResponse()->getContent(), true));
+        $this->assertSame([3, 2, 1], array_column(
+            json_decode($client->getResponse()->getContent(), true)['entries'],
+            'id'
+        ));
     }
 
     public function testCanReadComment(): void {

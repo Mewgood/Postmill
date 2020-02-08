@@ -61,6 +61,7 @@ class WikiControllerTest extends WebTestCase {
 
         $crawler = $client->request('GET', '/wiki');
         $client->submit($crawler->selectButton('Lock')->form());
+        self::ensureKernelShutdown();
 
         $client = self::createUserClient();
         $client->request('GET', '/wiki/_edit/index');

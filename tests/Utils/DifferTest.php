@@ -13,7 +13,7 @@ class DifferTest extends TestCase {
      * @dataProvider provideDiffs
      */
     public function testDiff(array $expected, string $from, string $to): void {
-        $this->assertEquals($expected, Differ::diff($from, $to), '', 0.0, 10, true);
+        $this->assertEqualsCanonicalizing($expected, Differ::diff($from, $to));
     }
 
     public function provideDiffs(): iterable {

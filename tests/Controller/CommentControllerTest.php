@@ -73,31 +73,24 @@ class CommentControllerTest extends WebTestCase {
         $client = self::createClient();
         $client->request('GET', '/f/cats/3/-/comment/3.json');
 
-        $this->assertArraySubset([
-            'id' => 3,
-            'body' => 'YET ANOTHER BORING COMMENT.',
-            'timestamp' => '2017-05-03T01:00:00+00:00',
-            'user' => [
-                'id' => 2,
-                'username' => 'zach',
-            ],
-            'submission' => [
-                'id' => 3,
-                'forum' => [
-                    'id' => 1,
-                    'name' => 'cats',
-                ],
-            ],
-            'visibility' => 'visible',
-            'editedAt' => null,
-            'userFlag' => 'none',
-            'netScore' => 1,
-            'upvotes' => 1,
-            'downvotes' => 0,
-            'parentId' => null,
-            'replyCount' => 0,
-            'renderedBody' => "<p>YET ANOTHER BORING COMMENT.</p>\n",
-        ], json_decode($client->getResponse()->getContent(), true));
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertEquals(3, $data['id']);
+        $this->assertEquals('YET ANOTHER BORING COMMENT.', $data['body']);
+        $this->assertEquals('2017-05-03T01:00:00+00:00', $data['timestamp']);
+        $this->assertEquals(2, $data['user']['id']);
+        $this->assertEquals('zach', $data['user']['username']);
+        $this->assertEquals(3, $data['submission']['id']);
+        $this->assertEquals(1, $data['submission']['forum']['id']);
+        $this->assertEquals('cats', $data['submission']['forum']['name']);
+        $this->assertEquals('visible', $data['visibility']);
+        $this->assertNull($data['editedAt']);
+        $this->assertEquals('none', $data['userFlag']);
+        $this->assertEquals(1, $data['netScore']);
+        $this->assertEquals(1, $data['upvotes']);
+        $this->assertEquals(0, $data['downvotes']);
+        $this->assertNull($data['parentId']);
+        $this->assertEquals(0, $data['replyCount']);
+        $this->assertEquals("<p>YET ANOTHER BORING COMMENT.</p>\n", $data['renderedBody']);
     }
 
     public function testCanEditOwnComment(): void {
@@ -157,6 +150,7 @@ class CommentControllerTest extends WebTestCase {
         ]);
 
         $client->submit($form);
+        self::ensureKernelShutdown();
 
         $client = self::createUserClient();
         $client->request('GET', '/notifications');

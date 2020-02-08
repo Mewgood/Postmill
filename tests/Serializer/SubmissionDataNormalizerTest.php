@@ -65,9 +65,7 @@ class SubmissionDataNormalizerTest extends TestCase {
 
         $normalized = $this->normalizer->normalize($data);
 
-        $this->assertArraySubset([
-            'thumbnail_1x' => 'http://localhost/1x/foo.png',
-            'thumbnail_2x' => 'http://localhost/2x/foo.png',
-        ], $normalized);
+        $this->assertEquals('http://localhost/1x/foo.png', $normalized['thumbnail_1x']);
+        $this->assertEquals('http://localhost/2x/foo.png', $normalized['thumbnail_2x']);
     }
 }
