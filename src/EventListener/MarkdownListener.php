@@ -6,8 +6,8 @@ use App\Entity\User;
 use App\Event\MarkdownCacheEvent;
 use App\Event\MarkdownInitEvent;
 use App\Markdown\AppExtension;
-use League\CommonMark\Ext\Strikethrough\StrikethroughExtension;
-use League\CommonMark\Ext\Table\TableExtension;
+use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
+use League\CommonMark\Extension\Table\TableExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
