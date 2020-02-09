@@ -62,8 +62,8 @@ class SubmissionDataTest extends TestCase {
         $data->$setter('http://www.example.com');
         $data->updateSubmission($submission, $user);
 
-        $this->assertEquals('http://www.example.com', $submission->{$getter}());
-        $this->assertEquals(time(), $submission->getEditedAt()->getTimestamp());
+        $this->assertSame('http://www.example.com', $submission->{$getter}());
+        $this->assertSame(time(), $submission->getEditedAt()->getTimestamp());
     }
 
     public function provideMethodsThatUpdateTheEditableAtProperty(): iterable {

@@ -17,7 +17,7 @@ class UserTest extends TestCase {
      * @param string $input
      */
     public function testCanNormalizeUsername($expected, $input): void {
-        $this->assertEquals($expected, User::normalizeUsername($input));
+        $this->assertSame($expected, User::normalizeUsername($input));
     }
 
     /**
@@ -27,7 +27,7 @@ class UserTest extends TestCase {
      * @param string $input
      */
     public function testCanNormalizeEmail($expected, $input): void {
-        $this->assertEquals($expected, User::normalizeEmail($input));
+        $this->assertSame($expected, User::normalizeEmail($input));
     }
 
     public function testNewUserIsNotBanned(): void {

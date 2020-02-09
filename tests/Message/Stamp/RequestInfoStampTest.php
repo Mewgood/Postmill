@@ -26,8 +26,8 @@ class RequestInfoStampTest extends TestCase {
 
         $stamp = RequestInfoStamp::createFromRequest($request);
 
-        $this->assertEquals('nb', $stamp->getLocale());
-        $this->assertEquals('127.0.0.2', $stamp->getClientIp());
-        $this->assertEquals(['127.0.0.2', '10.0.0.69'], $stamp->getClientIps());
+        $this->assertSame('nb', $stamp->getLocale());
+        $this->assertSame('127.0.0.2', $stamp->getClientIp());
+        $this->assertSame(['127.0.0.2', '10.0.0.69'], $stamp->getClientIps());
     }
 }

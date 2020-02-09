@@ -22,7 +22,7 @@ class NamingStrategyTest extends TestCase {
      * @dataProvider nameProvider
      */
     public function testNamesAreCorrectlyTransformed($to, $from): void {
-        $this->assertEquals($to, $this->namingStrategy->classToTableName($from));
+        $this->assertSame($to, $this->namingStrategy->classToTableName($from));
     }
 
     public function nameProvider(): iterable {

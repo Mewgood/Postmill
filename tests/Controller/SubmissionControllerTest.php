@@ -23,9 +23,9 @@ class SubmissionControllerTest extends WebTestCase {
 
         $crawler = $client->submit($form);
 
-        $this->assertEquals('Making a submission', $crawler->filter('.submission__link')->text());
-        $this->assertEquals('http://www.foo.example/', $crawler->filter('.submission__link')->attr('href'));
-        $this->assertEquals("<p>This is a test submission</p>\n<p>a new line</p>\n", $crawler->filter('.submission__body')->html());
+        $this->assertSame('Making a submission', $crawler->filter('.submission__link')->text());
+        $this->assertSame('http://www.foo.example/', $crawler->filter('.submission__link')->attr('href'));
+        $this->assertSame("<p>This is a test submission</p>\n<p>a new line</p>\n", $crawler->filter('.submission__body')->html());
     }
 
     public function testCanCreateSubmissionWithImage(): void {
@@ -43,7 +43,7 @@ class SubmissionControllerTest extends WebTestCase {
 
         $crawler = $client->submit($form);
 
-        $this->assertEquals(
+        $this->assertSame(
             'http://localhost/submission_images/a91d6c2201d32b8c39bff1143a5b29e74b740248c5d65810ddcbfa16228d49e9.png',
             $crawler->filter('.submission__link')->attr('href')
         );
@@ -71,11 +71,11 @@ class SubmissionControllerTest extends WebTestCase {
         $client->request('GET', '/f/news/1.json');
 
         $data = json_decode($client->getResponse()->getContent(), true);
-        $this->assertEquals('http://www.example.com/some/thing', $data['url']);
-        $this->assertEquals('A submission with a URL and body', $data['title']);
-        $this->assertEquals('This is a body.', $data['body']);
-        $this->assertEquals('2017-03-03T03:03:00+00:00', $data['timestamp']);
-        $this->assertEquals("<p>This is a body.</p>\n", $data['renderedBody']);
+        $this->assertSame('http://www.example.com/some/thing', $data['url']);
+        $this->assertSame('A submission with a URL and body', $data['title']);
+        $this->assertSame('This is a body.', $data['body']);
+        $this->assertSame('2017-03-03T03:03:00+00:00', $data['timestamp']);
+        $this->assertSame("<p>This is a body.</p>\n", $data['renderedBody']);
     }
 
     public function testSubmissionShortcut(): void {
@@ -97,7 +97,7 @@ class SubmissionControllerTest extends WebTestCase {
             'submission[body]' => 'Edited body',
         ]));
 
-        $this->assertEquals('http://edited.url.example/', $crawler->filter('.submission__link')->attr('href'));
+        $this->assertSame('http://edited.url.example/', $crawler->filter('.submission__link')->attr('href'));
         self::assertSelectorTextContains('.submission__link', 'Edited submission title');
         self::assertSelectorTextContains('.submission__body', 'Edited body');
     }

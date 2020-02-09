@@ -12,17 +12,17 @@ class CommentControllerTest extends WebTestCase {
         $client = self::createClient();
         $crawler = $client->request('GET', '/comments');
 
-        $this->assertEquals(
+        $this->assertSame(
             "<p>YET ANOTHER BORING COMMENT.</p>\n",
             $crawler->filter('.comment__body')->eq(0)->html()
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             "<p>This is a reply to the previous comment.</p>\n",
             $crawler->filter('.comment__body')->eq(1)->html()
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             "<p>This is a comment body. It is quite neat.</p>\n<p><em>markdown</em></p>\n",
             $crawler->filter('.comment__body')->eq(2)->html()
         );
@@ -38,7 +38,7 @@ class CommentControllerTest extends WebTestCase {
             'reply_to_submission_3[comment]' => 'i think that is a neat idea!',
         ]));
 
-        $this->assertEquals("<p>i think that is a neat idea!</p>\n", $crawler->filter('.comment__body')->html());
+        $this->assertSame("<p>i think that is a neat idea!</p>\n", $crawler->filter('.comment__body')->html());
         $this->assertCount(0, $crawler->selectLink('Parent'));
     }
 
@@ -52,7 +52,7 @@ class CommentControllerTest extends WebTestCase {
             'reply_to_comment_3[comment]' => 'squirrel',
         ]));
 
-        $this->assertEquals("<p>squirrel</p>\n", $crawler->filter('.comment__body')->html());
+        $this->assertSame("<p>squirrel</p>\n", $crawler->filter('.comment__body')->html());
         $this->assertCount(1, $crawler->selectLink('Parent'));
     }
 
@@ -66,7 +66,7 @@ class CommentControllerTest extends WebTestCase {
         ]));
 
         $this->assertTrue($client->getRequest()->isMethod('POST'));
-        $this->assertEquals('The comment must not be empty.', $crawler->filter('.form-error-list li')->text());
+        $this->assertSame('The comment must not be empty.', $crawler->filter('.form-error-list li')->text());
     }
 
     public function testCommentJson(): void {
@@ -74,23 +74,23 @@ class CommentControllerTest extends WebTestCase {
         $client->request('GET', '/f/cats/3/-/comment/3.json');
 
         $data = json_decode($client->getResponse()->getContent(), true);
-        $this->assertEquals(3, $data['id']);
-        $this->assertEquals('YET ANOTHER BORING COMMENT.', $data['body']);
-        $this->assertEquals('2017-05-03T01:00:00+00:00', $data['timestamp']);
-        $this->assertEquals(2, $data['user']['id']);
-        $this->assertEquals('zach', $data['user']['username']);
-        $this->assertEquals(3, $data['submission']['id']);
-        $this->assertEquals(1, $data['submission']['forum']['id']);
-        $this->assertEquals('cats', $data['submission']['forum']['name']);
-        $this->assertEquals('visible', $data['visibility']);
+        $this->assertSame(3, $data['id']);
+        $this->assertSame('YET ANOTHER BORING COMMENT.', $data['body']);
+        $this->assertSame('2017-05-03T01:00:00+00:00', $data['timestamp']);
+        $this->assertSame(2, $data['user']['id']);
+        $this->assertSame('zach', $data['user']['username']);
+        $this->assertSame(3, $data['submission']['id']);
+        $this->assertSame(1, $data['submission']['forum']['id']);
+        $this->assertSame('cats', $data['submission']['forum']['name']);
+        $this->assertSame('visible', $data['visibility']);
         $this->assertNull($data['editedAt']);
-        $this->assertEquals('none', $data['userFlag']);
-        $this->assertEquals(1, $data['netScore']);
-        $this->assertEquals(1, $data['upvotes']);
-        $this->assertEquals(0, $data['downvotes']);
+        $this->assertSame('none', $data['userFlag']);
+        $this->assertSame(1, $data['netScore']);
+        $this->assertSame(1, $data['upvotes']);
+        $this->assertSame(0, $data['downvotes']);
         $this->assertNull($data['parentId']);
-        $this->assertEquals(0, $data['replyCount']);
-        $this->assertEquals("<p>YET ANOTHER BORING COMMENT.</p>\n", $data['renderedBody']);
+        $this->assertSame(0, $data['replyCount']);
+        $this->assertSame("<p>YET ANOTHER BORING COMMENT.</p>\n", $data['renderedBody']);
     }
 
     public function testCanEditOwnComment(): void {
@@ -103,7 +103,7 @@ class CommentControllerTest extends WebTestCase {
             'comment[comment]' => 'edited comment',
         ]));
 
-        $this->assertEquals("<p>edited comment</p>\n", $crawler->filter('.comment__body')->html());
+        $this->assertSame("<p>edited comment</p>\n", $crawler->filter('.comment__body')->html());
     }
 
     public function testCanHardDeleteOwnCommentWithoutReply(): void {

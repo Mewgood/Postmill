@@ -61,7 +61,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
 
         self::assertResponseIsSuccessful("URL: $url; expected: $expectedLocation");
 
-        $this->assertEquals(
+        $this->assertSame(
             "http://localhost{$expectedLocation}",
             $client->getHistory()->current()->getUri(),
             "URL: $url; expected: $expectedLocation"

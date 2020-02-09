@@ -15,11 +15,11 @@ class CriteriaTest extends TestCase {
     public function testDefaults(): void {
         $criteria = new Criteria(Submission::SORT_HOT);
 
-        $this->assertEquals(Submission::SORT_HOT, $criteria->getSortBy());
-        $this->assertEquals(Criteria::VIEW_ALL, $criteria->getView());
-        $this->assertEquals(0, $criteria->getExclusions());
+        $this->assertSame(Submission::SORT_HOT, $criteria->getSortBy());
+        $this->assertSame(Criteria::VIEW_ALL, $criteria->getView());
+        $this->assertSame(0, $criteria->getExclusions());
         $this->assertFalse($criteria->getStickiesFirst());
-        $this->assertEquals(25, $criteria->getMaxPerPage());
+        $this->assertSame(25, $criteria->getMaxPerPage());
     }
 
     /**
@@ -34,7 +34,7 @@ class CriteriaTest extends TestCase {
         $criteria = $this->createCriteria();
         $criteria->excludeHiddenForums();
 
-        $this->assertEquals(
+        $this->assertSame(
             Criteria::EXCLUDE_HIDDEN_FORUMS,
             $criteria->getExclusions() & Criteria::EXCLUDE_HIDDEN_FORUMS
         );
@@ -58,7 +58,7 @@ class CriteriaTest extends TestCase {
     public function testFeaturedView(): void {
         $criteria = $this->createCriteria()->showFeatured();
 
-        $this->assertEquals(Criteria::VIEW_FEATURED, $criteria->getView());
+        $this->assertSame(Criteria::VIEW_FEATURED, $criteria->getView());
     }
 
     public function testForumView(): void {
@@ -67,20 +67,20 @@ class CriteriaTest extends TestCase {
 
         $criteria = $this->createCriteria()->showForums($forum1, $forum2);
 
-        $this->assertEquals(Criteria::VIEW_FORUMS, $criteria->getView());
-        $this->assertEquals([$forum1, $forum2], $criteria->getForums());
+        $this->assertSame(Criteria::VIEW_FORUMS, $criteria->getView());
+        $this->assertSame([$forum1, $forum2], $criteria->getForums());
     }
 
     public function testMaxPerPage(): void {
         $criteria = $this->createCriteria()->setMaxPerPage(69);
 
-        $this->assertEquals(69, $criteria->getMaxPerPage());
+        $this->assertSame(69, $criteria->getMaxPerPage());
     }
 
     public function testModeratedView(): void {
         $criteria = $this->createCriteria()->showModerated();
 
-        $this->assertEquals(Criteria::VIEW_MODERATED, $criteria->getView());
+        $this->assertSame(Criteria::VIEW_MODERATED, $criteria->getView());
     }
 
     /**
@@ -96,7 +96,7 @@ class CriteriaTest extends TestCase {
         $criteria = $this->createCriteria();
         $criteria->showSubscribed();
 
-        $this->assertEquals(Criteria::VIEW_SUBSCRIBED, $criteria->getView());
+        $this->assertSame(Criteria::VIEW_SUBSCRIBED, $criteria->getView());
     }
 
     public function testUserView(): void {
@@ -106,8 +106,8 @@ class CriteriaTest extends TestCase {
         $criteria = new Criteria(Submission::SORT_HOT);
         $criteria->showUsers($user1, $user2);
 
-        $this->assertEquals(Criteria::VIEW_USERS, $criteria->getView());
-        $this->assertEquals([$user1, $user2], $criteria->getUsers());
+        $this->assertSame(Criteria::VIEW_USERS, $criteria->getView());
+        $this->assertSame([$user1, $user2], $criteria->getUsers());
     }
 
     /**

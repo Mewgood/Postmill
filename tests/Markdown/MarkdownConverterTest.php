@@ -59,7 +59,7 @@ class MarkdownConverterTest extends TestCase {
         $crawler = new Crawler($output);
         $crawler = $crawler->filterXPath('//p/a[not(@target)]');
 
-        $this->assertEquals('link', $crawler->html());
+        $this->assertSame('link', $crawler->html());
     }
 
     public function testLinksHaveTargetWithOpenExternalLinksInNewTabOption(): void {
@@ -70,6 +70,6 @@ class MarkdownConverterTest extends TestCase {
         $crawler = new Crawler($output);
         $crawler = $crawler->filterXPath('//p/a[contains(@target,"_blank")]');
 
-        $this->assertEquals('link', $crawler->html());
+        $this->assertSame('link', $crawler->html());
     }
 }

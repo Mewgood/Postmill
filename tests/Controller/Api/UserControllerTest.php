@@ -71,10 +71,10 @@ class UserControllerTest extends WebTestCase {
         $client->request('GET', '/api/users/2/preferences');
 
         $data = json_decode($client->getResponse()->getContent(), true);
-        $this->assertEquals('all', $data['frontPage']);
-        $this->assertEquals('active', $data['frontPageSortMode']);
+        $this->assertSame('all', $data['frontPage']);
+        $this->assertSame('active', $data['frontPageSortMode']);
         $this->assertTrue($data['openExternalLinksInNewTab']);
-        $this->assertEquals('DejaVu Sans Mono, monospace', $data['preferredFonts']);
+        $this->assertSame('DejaVu Sans Mono, monospace', $data['preferredFonts']);
     }
 
     public function testUserSubmissions(): void {

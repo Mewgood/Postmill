@@ -28,7 +28,7 @@ class ForumControllerTest extends WebTestCase {
         self::assertSelectorTextContains('main h1', '/f/dogs');
         self::assertSelectorTextContains('.forum-title', 'dogs & puppies');
         self::assertSelectorTextContains('.forum-sidebar-content p', 'rules: post pups');
-        $this->assertEquals('the doggo forum', $crawler->filter('meta[name="description"]')->attr('content'));
+        $this->assertSame('the doggo forum', $crawler->filter('meta[name="description"]')->attr('content'));
     }
 
     public function testCanEditForum(): void {

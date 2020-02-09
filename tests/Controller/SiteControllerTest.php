@@ -13,7 +13,7 @@ class SiteControllerTest extends WebTestCase {
         $client->request('GET', '/site/health_check');
 
         self::assertResponseIsSuccessful();
-        self::assertEquals('It works!', $client->getResponse()->getContent());
+        $this->assertSame('It works!', $client->getResponse()->getContent());
     }
 
     public function testCanChangeSiteName(): void {
@@ -24,7 +24,7 @@ class SiteControllerTest extends WebTestCase {
         $client = self::createClient();
         $crawler = $client->request('GET', '/');
 
-        $this->assertEquals('Crap Site', $crawler->filter('title')->text());
+        $this->assertSame('Crap Site', $crawler->filter('title')->text());
     }
 
     public function testCanDisableWiki(): void {

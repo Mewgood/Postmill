@@ -72,54 +72,54 @@ class AppExtensionTest extends TestCase {
             ->method('getCurrentSiteName')
             ->willReturn('Postmill');
 
-        $this->assertEquals('Postmill', $this->extension->getSiteName());
+        $this->assertSame('Postmill', $this->extension->getSiteName());
     }
 
     public function testGetAppBranch(): void {
-        $this->assertEquals('6.9', $this->extension->getAppBranch());
+        $this->assertSame('6.9', $this->extension->getAppBranch());
     }
 
     public function testGetAppVersion(): void {
-        $this->assertEquals('v4.2.0', $this->extension->getAppVersion());
+        $this->assertSame('v4.2.0', $this->extension->getAppVersion());
     }
 
     public function testGetNamesForNonAliasedFont(): void {
-        $this->assertEquals(
+        $this->assertSame(
             ['Comic Sans MS'],
             $this->extension->getFontNames('Comic Sans MS')
         );
     }
 
     public function testGetNamesForAliasFont(): void {
-        $this->assertEquals(
+        $this->assertSame(
             ['Roboto', 'sans-serif'],
             $this->extension->getFontNames('default')
         );
     }
 
     public function testGetFontList(): void {
-        $this->assertEquals(
+        $this->assertSame(
             ['default', 'roboto', 'ubuntu'],
             $this->extension->getFontList()
         );
     }
 
     public function testGetFontEntrypoint(): void {
-        $this->assertEquals(
+        $this->assertSame(
             'fonts/roboto',
             $this->extension->getFontEntrypoint('Roboto')
         );
     }
 
     public function testGetThemeList(): void {
-        $this->assertEquals(
+        $this->assertSame(
             ['_default', 'postmill', 'postmill-classic'],
             $this->extension->getThemeList()
         );
     }
 
     public function testGetThemeEntrypoint(): void {
-        $this->assertEquals(
+        $this->assertSame(
             'themes/postmill',
             $this->extension->getThemeEntrypoint('postmill')
         );
@@ -140,14 +140,14 @@ class AppExtensionTest extends TestCase {
     public function testGetUploadUrlInRequestContext(): void {
         $this->requestStack->push(Request::create('http://localhost/'));
 
-        $this->assertEquals(
+        $this->assertSame(
             'http://localhost/root/submission_images/foo.jpg',
             $this->extension->getUploadUrl('submission_images/foo.jpg')
         );
     }
 
     public function testGetUploadOutsideRequestContext(): void {
-        $this->assertEquals(
+        $this->assertSame(
             '/root/submission_images/foo.jpg',
             $this->extension->getUploadUrl('submission_images/foo.jpg')
         );

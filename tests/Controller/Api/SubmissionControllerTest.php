@@ -83,11 +83,11 @@ class SubmissionControllerTest extends WebTestCase {
         $data = json_decode($client->getResponse()->getContent(), true);
 
         $this->assertIsInt($data['id']);
-        $this->assertEquals('A submission posted via the API', $data['title']);
-        $this->assertEquals('very cool', $data['body']);
-        $this->assertEquals("<p>very cool</p>\n", $data['renderedBody']);
-        $this->assertEquals(2, $data['forum']['id']);
-        $this->assertEquals('news', $data['forum']['name']);
+        $this->assertSame('A submission posted via the API', $data['title']);
+        $this->assertSame('very cool', $data['body']);
+        $this->assertSame("<p>very cool</p>\n", $data['renderedBody']);
+        $this->assertSame(2, $data['forum']['id']);
+        $this->assertSame('news', $data['forum']['name']);
     }
 
     public function testUpdateSubmission(): void {
@@ -106,9 +106,9 @@ class SubmissionControllerTest extends WebTestCase {
         $client->request('GET', '/api/submissions/3');
 
         $data = json_decode($client->getResponse()->getContent(), true);
-        $this->assertEquals('http://www.example.com/', $data['url']);
-        $this->assertEquals('updated title', $data['title']);
-        $this->assertEquals('updated body', $data['body']);
+        $this->assertSame('http://www.example.com/', $data['url']);
+        $this->assertSame('updated title', $data['title']);
+        $this->assertSame('updated body', $data['body']);
     }
 
     public function testSoftDeleteOwnSubmission(): void {
@@ -121,10 +121,10 @@ class SubmissionControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(200);
         $data = json_decode($client->getResponse()->getContent(), true);
-        $this->assertEquals(3, $data['id']);
+        $this->assertSame(3, $data['id']);
         $this->assertSame('', $data['title']);
         $this->assertNull($data['body']);
-        $this->assertEquals('deleted', $data['visibility']);
+        $this->assertSame('deleted', $data['visibility']);
     }
 
     public function testCannotDeleteSubmissionOfOtherUser(): void {

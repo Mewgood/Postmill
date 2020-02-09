@@ -19,24 +19,24 @@ class HashingVersionStrategyTest extends TestCase {
     }
 
     public function testGetVersion(): void {
-        $this->assertEquals(
+        $this->assertSame(
             '1052d25a298fce69',
             $this->strategy->getVersion('garbage.bin')
         );
     }
 
     public function testApplyVersion(): void {
-        $this->assertEquals(
+        $this->assertSame(
             'garbage.bin?1052d25a298fce69',
             $this->strategy->applyVersion('garbage.bin')
         );
     }
 
     public function testGetVersionReturnsEmptyStringOnNonExistentFile(): void {
-        $this->assertEquals('', $this->strategy->getVersion('nonexist.ing'));
+        $this->assertSame('', $this->strategy->getVersion('nonexist.ing'));
     }
 
     public function testApplyVersionReturnsUnmodifiedPathOnNonExistentFile(): void {
-        $this->assertEquals('nonexist.ing', $this->strategy->applyVersion('nonexist.ing'));
+        $this->assertSame('nonexist.ing', $this->strategy->applyVersion('nonexist.ing'));
     }
 }

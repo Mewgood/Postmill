@@ -45,7 +45,7 @@ class FixCharsetListenerTest extends TestCase {
 
         (new FixCharsetListener())->fixResponseCharset($this->event);
 
-        $this->assertEquals($expected, $this->response->headers->get('Content-Type'));
+        $this->assertSame($expected, $this->response->headers->get('Content-Type'));
     }
 
     public function provideCharsets(): iterable {

@@ -71,7 +71,7 @@ class CommentControllerTest extends WebTestCase {
 
         $client->request('GET', '/api/comments/3');
 
-        $this->assertEquals(
+        $this->assertSame(
             'this is the new comment body',
             json_decode($client->getResponse()->getContent(), true)['body']
         );

@@ -71,14 +71,14 @@ class LocaleListenerTest extends TestCase {
         $this->request->headers->set('Accept-Language', 'fr, de');
         $this->listener->onKernelRequest($this->getRequestEvent());
 
-        $this->assertEquals('en', $this->request->getLocale());
+        $this->assertSame('en', $this->request->getLocale());
     }
 
     public function testSetsLocaleFromAcceptLanguageHeader(): void {
         $this->request->headers->set('Accept-Language', 'de, nb-NO, en');
         $this->listener->onKernelRequest($this->getRequestEvent());
 
-        $this->assertEquals('nb', $this->request->getLocale());
+        $this->assertSame('nb', $this->request->getLocale());
     }
 
     public function testSetsLocaleOnRequestFromSession(): void {
@@ -88,7 +88,7 @@ class LocaleListenerTest extends TestCase {
 
         $this->listener->onKernelRequest($this->getRequestEvent());
 
-        $this->assertEquals('sv', $this->request->getLocale());
+        $this->assertSame('sv', $this->request->getLocale());
     }
 
     public function testSetsLocaleOnLogin(): void {
@@ -110,7 +110,7 @@ class LocaleListenerTest extends TestCase {
         $event = new InteractiveLoginEvent($this->request, $token);
         $this->listener->onInteractiveLogin($event);
 
-        $this->assertEquals('nb', $this->request->getLocale());
+        $this->assertSame('nb', $this->request->getLocale());
     }
 
     public function testSessionIsUpdatedWhenChangingLocalePreference(): void {
@@ -127,7 +127,7 @@ class LocaleListenerTest extends TestCase {
 
         $this->listener->onUserUpdated(new UserUpdated($before, $after));
 
-        $this->assertEquals('nb', $this->request->getSession()->get('_locale'));
+        $this->assertSame('nb', $this->request->getSession()->get('_locale'));
     }
 
     /**

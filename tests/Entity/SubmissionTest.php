@@ -45,9 +45,9 @@ class SubmissionTest extends TestCase {
         $this->assertNull($submission->getImage());
         $this->assertNull($submission->getUrl());
         $this->assertFalse($submission->isSticky());
-        $this->assertEquals(Submission::MEDIA_URL, $submission->getMediaType());
-        $this->assertEquals(UserFlags::FLAG_NONE, $submission->getUserFlag());
-        $this->assertEquals(Submission::VISIBILITY_DELETED, $submission->getVisibility());
+        $this->assertSame(Submission::MEDIA_URL, $submission->getMediaType());
+        $this->assertSame(UserFlags::FLAG_NONE, $submission->getUserFlag());
+        $this->assertSame(Submission::VISIBILITY_DELETED, $submission->getVisibility());
     }
 
     public function testCannotSetBogusUserFlag(): void {

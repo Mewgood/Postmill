@@ -22,7 +22,7 @@ This is a test of the markdown endpoint.
 EOMARKDOWN
         );
 
-        $this->assertEquals(<<<EOHTML
+        $this->assertSame(<<<EOHTML
 <h1>This is a test</h1>
 <p>This is a test of the markdown endpoint.</p>
 <ol>

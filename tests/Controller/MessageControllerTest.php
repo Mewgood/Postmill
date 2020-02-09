@@ -26,7 +26,7 @@ class MessageControllerTest extends WebTestCase {
             'This is a message. There are many like it, but this one originates from a fixture.',
             $crawler->filter('tbody tr td:nth-child(1)')->text()
         );
-        $this->assertEquals('1', trim($crawler->filter('tbody tr td:nth-child(3)')->text()));
+        $this->assertSame('1', trim($crawler->filter('tbody tr td:nth-child(3)')->text()));
     }
 
     public function testMessageListIsEmptyForUserWithNoMessages(): void {

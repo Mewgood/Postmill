@@ -37,7 +37,7 @@ class CommentDataTest extends TestCase {
         $data->setBody('bar');
         $data->updateComment($this->comment, $this->comment->getUser());
 
-        $this->assertEquals(new \DateTime('@'.time()), $this->comment->getEditedAt());
+        $this->assertSame(time(), $this->comment->getEditedAt()->getTimestamp());
         $this->assertFalse($this->comment->isModerated());
 
         sleep(5);
@@ -45,7 +45,7 @@ class CommentDataTest extends TestCase {
         $data->setBody('baz');
         $data->updateComment($this->comment, new User('u', 'p'));
 
-        $this->assertEquals(new \DateTime('@'.time()), $this->comment->getEditedAt());
+        $this->assertSame(time(), $this->comment->getEditedAt()->getTimestamp());
         $this->assertTrue($this->comment->isModerated());
     }
 }

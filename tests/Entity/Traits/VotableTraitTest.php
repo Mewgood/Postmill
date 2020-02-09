@@ -29,32 +29,32 @@ class VotableTraitTest extends TestCase {
 
         $user = new User('u', 'p');
 
-        $this->assertEquals(0, $votable->getNetScore());
-        $this->assertEquals(0, $votable->getUpvotes());
-        $this->assertEquals(0, $votable->getDownvotes());
+        $this->assertSame(0, $votable->getNetScore());
+        $this->assertSame(0, $votable->getUpvotes());
+        $this->assertSame(0, $votable->getDownvotes());
 
         $votable->vote(VotableInterface::VOTE_UP, $user, null);
 
-        $this->assertEquals(1, $votable->getNetScore());
-        $this->assertEquals(1, $votable->getUpvotes());
-        $this->assertEquals(0, $votable->getDownvotes());
+        $this->assertSame(1, $votable->getNetScore());
+        $this->assertSame(1, $votable->getUpvotes());
+        $this->assertSame(0, $votable->getDownvotes());
 
         $votable->vote(VotableInterface::VOTE_DOWN, $user, null);
 
-        $this->assertEquals(-1, $votable->getNetScore());
-        $this->assertEquals(0, $votable->getUpvotes());
-        $this->assertEquals(1, $votable->getDownvotes());
+        $this->assertSame(-1, $votable->getNetScore());
+        $this->assertSame(0, $votable->getUpvotes());
+        $this->assertSame(1, $votable->getDownvotes());
     }
 
     public function testVoteCollectionHasCorrectProperties(): void {
         $user = new User('u', 'p');
 
         $this->votable->vote(VotableInterface::VOTE_UP, $user, null);
-        $this->assertEquals(VotableInterface::VOTE_UP, $this->votable->getVotes()->first()->getChoice());
+        $this->assertSame(VotableInterface::VOTE_UP, $this->votable->getVotes()->first()->getChoice());
         $this->assertCount(1, $this->votable->getVotes());
 
         $this->votable->vote(VotableInterface::VOTE_DOWN, $user, null);
-        $this->assertEquals(VotableInterface::VOTE_DOWN, $this->votable->getVotes()->first()->getChoice());
+        $this->assertSame(VotableInterface::VOTE_DOWN, $this->votable->getVotes()->first()->getChoice());
         $this->assertCount(1, $this->votable->getVotes());
 
         $this->votable->vote(VotableInterface::VOTE_NONE, $user, null);
@@ -77,9 +77,9 @@ class VotableTraitTest extends TestCase {
 
         $user3 = new User('u', 'p');
 
-        $this->assertEquals(VotableInterface::VOTE_UP, $this->votable->getUserChoice($user1));
-        $this->assertEquals(VotableInterface::VOTE_DOWN, $this->votable->getUserChoice($user2));
-        $this->assertEquals(VotableInterface::VOTE_NONE, $this->votable->getUserChoice($user3));
+        $this->assertSame(VotableInterface::VOTE_UP, $this->votable->getUserChoice($user1));
+        $this->assertSame(VotableInterface::VOTE_DOWN, $this->votable->getUserChoice($user2));
+        $this->assertSame(VotableInterface::VOTE_NONE, $this->votable->getUserChoice($user3));
     }
 
     /**

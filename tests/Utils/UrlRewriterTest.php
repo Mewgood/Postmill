@@ -28,7 +28,7 @@ class UrlRewriterTest extends TestCase {
      * @dataProvider provideUrls
      */
     public function testCanRewriteUrls(string $expected, string $url): void {
-        $this->assertEquals($expected, $this->rewriter->rewrite($url), "expected $expected, url: $url");
+        $this->assertSame($expected, $this->rewriter->rewrite($url), "expected $expected, url: $url");
     }
 
     public function provideUrls(): iterable {

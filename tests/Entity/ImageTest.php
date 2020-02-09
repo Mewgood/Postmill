@@ -11,14 +11,14 @@ use PHPUnit\Framework\TestCase;
 class ImageTest extends TestCase {
     public function testAcceptsFilename(): void {
         $image = new Image('a.png', 420, 69);
-        $this->assertEquals('a.png', $image->getFileName());
-        $this->assertEquals('a.png', (string) $image);
+        $this->assertSame('a.png', $image->getFileName());
+        $this->assertSame('a.png', (string) $image);
     }
 
     public function testConstructorWithDimensions(): void {
         $image = new Image('a.png', 420, 69);
-        $this->assertEquals(420, $image->getWidth());
-        $this->assertEquals(69, $image->getHeight());
+        $this->assertSame(420, $image->getWidth());
+        $this->assertSame(69, $image->getHeight());
     }
 
     public function testConstructorWithoutDimensions(): void {

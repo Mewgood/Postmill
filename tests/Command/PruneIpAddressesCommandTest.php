@@ -41,7 +41,7 @@ class PruneIpAddressesCommandTest extends KernelTestCase {
         $this->assertIpCount(0, SubmissionVote::class);
 
         $this->assertStringContainsString('Pruned IPs for 7 entities.', $tester->getDisplay());
-        $this->assertEquals(0, $tester->getStatusCode());
+        $this->assertSame(0, $tester->getStatusCode());
     }
 
     public function testDryRun(): void {
@@ -58,7 +58,7 @@ class PruneIpAddressesCommandTest extends KernelTestCase {
         $this->assertIpCount(1, SubmissionVote::class);
 
         $this->assertStringContainsString('Pruned IPs for 7 entities', $tester->getDisplay());
-        $this->assertEquals(0, $tester->getStatusCode());
+        $this->assertSame(0, $tester->getStatusCode());
     }
 
     public function testPruneOlderThanGivenTime(): void {
@@ -75,7 +75,7 @@ class PruneIpAddressesCommandTest extends KernelTestCase {
         $this->assertIpCount(1, SubmissionVote::class);
 
         $this->assertStringContainsString('Pruned IPs for 3 entities', $tester->getDisplay());
-        $this->assertEquals(0, $tester->getStatusCode());
+        $this->assertSame(0, $tester->getStatusCode());
     }
 
     public function testCannotProvideFutureTimeAsMaxAgeOption(): void {
@@ -86,7 +86,7 @@ class PruneIpAddressesCommandTest extends KernelTestCase {
         ]);
 
         $this->assertStringContainsString('max-age option cannot be a future time', $tester->getDisplay());
-        $this->assertEquals(1, $tester->getStatusCode());
+        $this->assertSame(1, $tester->getStatusCode());
     }
 
     private function assertIpCount(int $count, string $entityClass): void {

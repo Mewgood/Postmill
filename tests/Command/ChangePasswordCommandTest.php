@@ -36,8 +36,8 @@ class ChangePasswordCommandTest extends KernelTestCase {
             'user' => 'emma',
         ]);
 
-        $this->assertEquals('tortilla', $this->users->loadUserByUsername('emma')->getPassword());
-        $this->assertEquals(0, $tester->getStatusCode());
+        $this->assertSame('tortilla', $this->users->loadUserByUsername('emma')->getPassword());
+        $this->assertSame(0, $tester->getStatusCode());
     }
 
     public function testChangesPasswordWhenLookingUpByUserId(): void {
@@ -48,8 +48,8 @@ class ChangePasswordCommandTest extends KernelTestCase {
             '--find-by-id' => true,
         ]);
 
-        $this->assertEquals('password', $this->users->loadUserByUsername('emma')->getPassword());
-        $this->assertEquals(0, $tester->getStatusCode());
+        $this->assertSame('password', $this->users->loadUserByUsername('emma')->getPassword());
+        $this->assertSame(0, $tester->getStatusCode());
     }
 
     public function testFailsOnNonExistentUser(): void {
@@ -59,6 +59,6 @@ class ChangePasswordCommandTest extends KernelTestCase {
         ]);
 
         $this->assertStringContainsString('No such user "george"', $tester->getDisplay(true));
-        $this->assertEquals(1, $tester->getStatusCode());
+        $this->assertSame(1, $tester->getStatusCode());
     }
 }

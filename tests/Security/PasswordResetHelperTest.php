@@ -71,7 +71,7 @@ class PasswordResetHelperTest extends TestCase {
             ->willReturn('irrelevant');
 
         $helper = new PasswordResetHelper($this->urlGenerator, 'no-reply@example.com', 'secret');
-        $this->assertEquals('irrelevant', $helper->generateResetUrl($user));
+        $this->assertSame('irrelevant', $helper->generateResetUrl($user));
     }
 
     public function testDeniesExpiredLinks(): void {

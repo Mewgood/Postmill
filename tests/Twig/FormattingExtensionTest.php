@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 class FormattingExtensionTest extends TestCase {
     public function testSearchHighlighting(): void {
-        $this->assertEquals(
+        $this->assertSame(
             'foo <mark>bar</mark>',
             FormattingExtension::highlightSearch('foo &lt;b&gt;bar&lt;/b&gt;')
         );

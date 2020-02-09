@@ -11,12 +11,9 @@ use PHPUnit\Framework\TestCase;
 class SluggerTest extends TestCase {
     /**
      * @dataProvider inputProvider
-     *
-     * @param string $expected
-     * @param string $input
      */
-    public function testCanSlugifyInputs($expected, $input): void {
-        $this->assertEquals($expected, Slugger::slugify($input));
+    public function testCanSlugifyInputs(string $expected, string $input): void {
+        $this->assertSame($expected, Slugger::slugify($input));
     }
 
     public function inputProvider() {

@@ -31,8 +31,8 @@ class DsnAwareFilesystemFactoryTest extends TestCase {
         $adapter = $filesystem->getAdapter();
 
         $this->assertInstanceOf(AwsS3Adapter::class, $adapter);
-        $this->assertEquals('bucket-name', $adapter->getBucket());
-        $this->assertEquals('your-region', $adapter->getClient()->getRegion());
+        $this->assertSame('bucket-name', $adapter->getBucket());
+        $this->assertSame('your-region', $adapter->getClient()->getRegion());
     }
 
     public function testThrowsOnUnrecognizedAdapter(): void {
