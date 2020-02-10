@@ -17,6 +17,17 @@
         '%timestamp%': relative_time(user.created, { time_format: 'none', natural: true })
       })|raw }}
       </small>
+
+      {% if user is same as(app.user) or is_granted('ROLE_ADMIN') %}
+        <br>
+        <small class="fg-muted text-sm">
+	  {%- if user.whitelisted -%}
+	    {{ 'label.whitelisted'|trans -}}
+	  {%- else -%}
+	    {{ 'label.not_whitelisted'|trans -}}
+	  {%- endif -%}
+        </small>
+      {% endif %}
     </p>
 
     {% if user.biography is not empty %}

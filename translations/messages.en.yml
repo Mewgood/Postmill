@@ -283,6 +283,7 @@ label.name: Name
 label.never: Never
 label.new_password: New password
 label.none: None
+label.not_whitelisted: Not whitelisted
 label.notify_on_mentions: Notify on mentions
 label.notify_on_reply: Notify on reply
 label.open_external_links_in_new_tab: Open external links in new tab
