@@ -131,11 +131,13 @@
       {{- 'action.log_in'|trans -}}
     </a>
   </li>
-  <li>
-    <a href="{{ path('registration') }}" class="site-nav__link {{ active == 'registration' ? 'site-nav__link--active' }}">
-      {{- 'action.sign_up'|trans -}}
-    </a>
-  </li>
+  {% if registration_open() %}
+    <li>
+      <a href="{{ path('registration') }}" class="site-nav__link {{ active == 'registration' ? 'site-nav__link--active' }}">
+        {{- 'action.sign_up'|trans -}}
+      </a>
+    </li>
+  {% endif %}
 {% endblock site_nav_user_menu_logged_out %}
 
 {% block site_nav_user_menu_logged_in %}

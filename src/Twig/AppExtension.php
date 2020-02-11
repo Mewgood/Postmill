@@ -76,6 +76,7 @@ class AppExtension extends AbstractExtension {
         return [
             new TwigFunction('site_name', [$this, 'getSiteName']),
             new Twigfunction('site_theme', [$this, 'getSiteTheme']),
+            new TwigFunction('registration_open', [$this, 'isRegistrationOpen']),
             new TwigFunction('app_branch', [$this, 'getAppBranch']),
             new TwigFunction('app_version', [$this, 'getAppVersion']),
             new TwigFunction('font_list', [$this, 'getFontList']),
@@ -99,6 +100,10 @@ class AppExtension extends AbstractExtension {
 
     public function getSiteTheme(): ?Theme {
         return $this->siteRepository->findCurrentSite()->getDefaultTheme();
+    }
+
+    public function isRegistrationOpen(): bool {
+        return $this->siteRepository->findCurrentSite()->isRegistrationOpen();
     }
 
     public function getAppBranch(): ?string {

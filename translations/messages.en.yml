@@ -125,6 +125,7 @@ flash.page_locked: The page was locked.
 flash.page_unlocked: The page was unlocked.
 flash.purge_comment_warning: The comment and all its replies will be irreversably deleted.
 flash.purge_submission_warning: The submission and all its comments will be irreversably deleted.
+flash.registration_closed: Sign-ups have been disabled by the administrator.
 flash.reset_password_email_sent: A reset email has been sent to the address you specified.
 flash.site_settings_saved: The settings have been saved.
 flash.submission_deleted: The submission was deleted.
@@ -229,6 +230,7 @@ label.all: All
 label.allow_private_messages: Allow private messages
 label.any: Any
 label.appearance: Appearance
+label.appearance_and_behavior: Appearance & behavior
 label.author: Author
 label.auto_fetch_submission_titles: Auto-fetch submission titles
 label.background_image: Background image
@@ -343,6 +345,7 @@ log.unban: '%user% unbanned %banned%. Reason: "%reason%"'
 
 login.remember_me: Keep me logged in
 login.reset_password: Reset password?
+login.no_account: No account?
 
 markdown.allowed: Markdown allowed.
 markdown.another_paragraph: Another paragraph
@@ -446,6 +449,7 @@ site_footer.version: '%version% (%branch%)'
 site_settings.default_sort_mode: Default sort mode
 site_settings.forum_create_role: Who can create new forums?
 site_settings.image_upload_role: Who can upload images?
+site_settings.registration_open: Enable sign-ups
 site_settings.site_name: Site name
 site_settings.site_theme: Site theme
 site_settings.site_theme_help: This will be the theme that is used across the site, unless overridden by forum settings or the user's choice.

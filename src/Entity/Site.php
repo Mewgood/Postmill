@@ -32,6 +32,13 @@ class Site {
     private $siteName = 'Postmill';
 
     /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @var bool
+     */
+    private $registrationOpen = true;
+
+    /**
      * @ORM\Column(type="text", options={"default": Submission::SORT_HOT})
      *
      * @var string
@@ -87,6 +94,14 @@ class Site {
 
     public function setSiteName(string $siteName): void {
         $this->siteName = $siteName;
+    }
+
+    public function isRegistrationOpen(): bool {
+        return $this->registrationOpen;
+    }
+
+    public function setRegistrationOpen(bool $registrationOpen): void {
+        $this->registrationOpen = $registrationOpen;
     }
 
     public function getDefaultSortMode(): string {

@@ -3,7 +3,9 @@
 namespace App\Tests\Controller;
 
 use App\Entity\User;
+use App\Repository\SiteRepository;
 use App\Tests\WebTestCase;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @covers \App\Controller\UserController
@@ -49,6 +51,20 @@ class UserControllerTest extends WebTestCase {
         self::createUserClient()->request('GET', '/registration');
 
         self::assertResponseRedirects('/');
+    }
+
+    public function testCannotSignUpIfRegistrationsAreDisabled(): void {
+        $client = self::createClient();
+
+        /** @var \App\Entity\Site $site */
+        $site = self::$container->get(SiteRepository::class)->findCurrentSite();
+        $site->setRegistrationOpen(false);
+        self::$container->get(EntityManagerInterface::class)->flush();
+
+        $client->request('GET', '/registration');
+
+        self::assertResponseStatusCodeSame(403);
+        self::assertSelectorTextContains('.alert', 'disabled by the administrator');
     }
 
     public function testCanChangeOwnUsernameAndRemainLoggedIn(): void {

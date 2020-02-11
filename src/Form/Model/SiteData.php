@@ -18,6 +18,11 @@ final class SiteData {
     public $siteName;
 
     /**
+     * @var bool
+     */
+    public $registrationOpen;
+
+    /**
      * @Assert\Choice({Submission::SORT_HOT, Submission::SORT_ACTIVE, Submission::SORT_NEW})
      * @Assert\NotBlank()
      *
@@ -62,6 +67,7 @@ final class SiteData {
     public static function createFromSite(Site $site): self {
         $self = new self();
         $self->siteName = $site->getSiteName();
+        $self->registrationOpen = $site->isRegistrationOpen();
         $self->defaultSortMode = $site->getDefaultSortMode();
         $self->defaultTheme = $site->getDefaultTheme();
         $self->wikiEnabled = $site->isWikiEnabled();
@@ -74,6 +80,7 @@ final class SiteData {
 
     public function updateSite(Site $site): void {
         $site->setSiteName($this->siteName);
+        $site->setRegistrationOpen($this->registrationOpen);
         $site->setDefaultSortMode($this->defaultSortMode);
         $site->setDefaultTheme($this->defaultTheme);
         $site->setWikiEnabled($this->wikiEnabled);

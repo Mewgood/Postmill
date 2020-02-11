@@ -24,6 +24,10 @@ final class SiteSettingsType extends AbstractType {
             ->add('siteName', TextType::class, [
                 'label' => 'site_settings.site_name',
             ])
+            ->add('registrationOpen', CheckboxType::class, [
+                'label' => 'site_settings.registration_open',
+                'required' => false,
+            ])
             ->add('defaultSortMode', ChoiceType::class, [
                 'choices' => [
                     'submission.sort_by_hot' => Submission::SORT_HOT,

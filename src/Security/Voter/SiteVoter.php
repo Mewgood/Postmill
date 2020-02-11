@@ -10,11 +10,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class SiteVoter extends Voter {
     public const ATTRIBUTES = [
+        self::REGISTER,
         self::CREATE_FORUM,
         self::UPLOAD_IMAGE,
         self::VIEW_WIKI,
     ];
 
+    public const REGISTER = 'register';
     public const CREATE_FORUM = 'create_forum';
     public const UPLOAD_IMAGE = 'upload_image';
     public const VIEW_WIKI = 'view_wiki';
@@ -56,6 +58,8 @@ final class SiteVoter extends Voter {
             return $this->decide($token, $subject->getImageUploadRole());
         case self::VIEW_WIKI:
             return $subject->isWikiEnabled();
+        case self::REGISTER:
+            return $subject->isRegistrationOpen();
         default:
             throw new \InvalidArgumentException("Unknown attribute '$attribute'");
         }

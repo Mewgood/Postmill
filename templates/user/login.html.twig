@@ -64,4 +64,16 @@
       {% endif %}
     </div>
   </form>
-{% endblock %}
+
+  <h2>{{ 'login.no_account'|trans }}</h2>
+
+  <p class="no-margin">
+    {% if registration_open() %}
+      <a href="{{ path('registration') }}" class="button button--secondary">
+        {{- 'action.sign_up'|trans -}}
+      </a>
+    {% else %}
+      {{ 'flash.registration_closed'|trans }}
+    {% endif %}
+  </p>
+{% endblock body %}

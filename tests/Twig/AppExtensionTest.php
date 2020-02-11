@@ -75,6 +75,21 @@ class AppExtensionTest extends TestCase {
         $this->assertSame('Postmill', $this->extension->getSiteName());
     }
 
+    /**
+     * @dataProvider provideBooleanStates
+     */
+    public function testRegistrationOpen(bool $registrationOpen): void {
+        $site = new Site();
+        $site->setRegistrationOpen($registrationOpen);
+
+        $this->siteRepository
+            ->expects($this->once())
+            ->method('findCurrentSite')
+            ->willReturn($site);
+
+        $this->assertSame($registrationOpen, $this->extension->isRegistrationOpen());
+    }
+
     public function testGetAppBranch(): void {
         $this->assertSame('6.9', $this->extension->getAppBranch());
     }
@@ -151,5 +166,10 @@ class AppExtensionTest extends TestCase {
             '/root/submission_images/foo.jpg',
             $this->extension->getUploadUrl('submission_images/foo.jpg')
         );
+    }
+
+    public function provideBooleanStates(): iterable {
+        yield [true];
+        yield [false];
     }
 }

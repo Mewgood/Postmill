@@ -91,6 +91,9 @@ final class UserController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("register", subject="site", statusCode=403)
+     */
     public function registration(Site $site, Request $request, EntityManagerInterface $em, AuthenticationHelper $auth): Response {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('front');

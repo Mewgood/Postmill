@@ -124,6 +124,7 @@ flash.notifications_cleared: Notifikasjonene dine har blitt fjernet.
 flash.page_locked: Siden ble låst.
 flash.page_unlocked: Siden ble låst opp.
 flash.purge_submission_warning: Innlegget og all dets kommentarer vil bli fjernet.
+flash.registration_closed: Registrering har blitt stengt av administratoren.
 flash.reset_password_email_sent: En epost har blitt sendt til adressen du oppga.
 flash.site_settings_saved: Innstillingene har blitt lagret.
 flash.submission_deleted: Innlegget ble slettet.
@@ -228,6 +229,7 @@ label.all: Alle
 label.allow_private_messages: Tillat private meldinger
 label.any: Hvilke som helst
 label.appearance: Utseende
+label.appearance_and_behavior: Utseende og oppførsel
 label.author: Forfatter
 label.auto_fetch_submission_titles: Hent innleggstitler automatisk
 label.background_image: Bakgrunnsbilde
@@ -339,6 +341,7 @@ log.submission_lock: '%user% låste innlegget «%title%» av %author%'
 log.submission_unlock: '%user% åpnet innlegget «%title%» av %author%'
 log.unban: '%user% fjernet utestengelsen av %banned%. Årsak: «%reason%»'
 
+login.no_account: Ingen konto?
 login.remember_me: Husk meg
 login.reset_password: Glemt passord?
 
@@ -441,13 +444,14 @@ role.whitelisted: Hvitelistede
 site_footer.app: Kjører %app% %version%
 site_footer.version: '%version% (%branch%)'
 
+site_settings.forum_create_role: Hvem kan opprette nye fora?
+site_settings.image_upload_role: Hvem kan laste opp bilder?
+site_settings.registration_open: Åpen registrering
 site_settings.site_name: Navn på nettstedet
 site_settings.site_theme: Globalt fargetema
 site_settings.site_theme_help: Dette vil være temaet som er brukt globalt, med mindre det er overstyrt av fora eller brukerinnstillinger.
-site_settings.wiki_enabled: Åpne wikien
-site_settings.forum_create_role: Hvem kan opprette nye fora?
-site_settings.image_upload_role: Hvem kan laste opp bilder?
 site_settings.wiki_edit_role: Hvem kan redigere wikien?
+site_settings.wiki_enabled: Åpne wikien
 
 submission_form.create: Send innlegg
 submission_form.edit: Rediger innlegg
