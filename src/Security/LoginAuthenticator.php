@@ -67,6 +67,10 @@ final class LoginAuthenticator extends AbstractGuardAuthenticator {
     }
 
     public function start(Request $request, AuthenticationException $authException = null) {
+        if ($request->isMethod('GET') && !$request->isXmlHttpRequest()) {
+            $this->saveTargetPath($request->getSession(), 'main', $request->getUri());
+        }
+
         return new RedirectResponse($this->urlGenerator->generate('login'));
     }
 
