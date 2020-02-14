@@ -127,8 +127,6 @@ final class LoginAuthenticator extends AbstractGuardAuthenticator {
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey) {
-        $this->rateLimit->reset($request->getClientIp());
-
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
 
         if ($targetPath) {
