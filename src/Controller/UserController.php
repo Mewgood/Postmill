@@ -107,7 +107,7 @@ final class UserController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $data->toUser();
+            $user = $data->toUser($request->getClientIp());
 
             $em->persist($user);
             $em->flush();

@@ -9,3 +9,4 @@
 'The name must contain only contain letters, numbers, and underscores.': 'The name must contain only contain letters, numbers, and underscores.'
 'You cannot post more. Wait a while before trying again.': 'You cannot post more. Wait a while before trying again.'
 'You have been banned from this forum.': 'You have been banned from this forum.'
+user.rate_limit: You cannot create new accounts at this time. Please try again later.

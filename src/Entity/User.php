@@ -92,6 +92,13 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     private $lastSeen;
 
     /**
+     * @ORM\Column(type="inet", nullable=true)
+     *
+     * @var string|null
+     */
+    private $registrationIp;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
      * @var bool
@@ -385,6 +392,18 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
 
     public function setLastSeen(?\DateTime $lastSeen): void {
         $this->lastSeen = $lastSeen;
+    }
+
+    public function getRegistrationIp(): ?string {
+        return $this->registrationIp;
+    }
+
+    public function setRegistrationIp(?string $ip): void {
+        if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
+            throw new \InvalidArgumentException('$ip must be NULL or valid IP address');
+        }
+
+        $this->registrationIp = $ip;
     }
 
     public function isAdmin(): bool {

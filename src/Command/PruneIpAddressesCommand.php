@@ -7,6 +7,7 @@ use App\Entity\CommentVote;
 use App\Entity\Message;
 use App\Entity\Submission;
 use App\Entity\SubmissionVote;
+use App\Entity\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -89,6 +90,7 @@ class PruneIpAddressesCommand extends Command {
         $count += $this->clearIpsForEntity(Submission::class, $maxTime);
         $count += $this->clearIpsForEntity(SubmissionVote::class, $maxTime);
         $count += $this->clearIpsForEntity(Message::class, $maxTime);
+        $count += $this->clearIpsForEntity(User::class, $maxTime, 'registrationIp', 'created');
 
         if ($input->getOption('dry-run')) {
             $this->manager->rollback();

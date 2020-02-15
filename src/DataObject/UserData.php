@@ -6,12 +6,16 @@ use App\Entity\Submission;
 use App\Entity\Theme;
 use App\Entity\User;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
+use App\Validator\Constraints\RateLimit;
 use App\Validator\Constraints\Unique;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @RateLimit(entityClass="App\Entity\User", max="3", period="1 hour",
+ *     timestampField="created", ipField="registrationIp", errorPath="username",
+ *     message="user.rate_limit", groups={"registration"})
  * @Unique("normalizedUsername", idFields={"id"}, errorPath="username",
  *     entityClass="App\Entity\User", groups={"registration", "edit"})
  */
@@ -247,11 +251,12 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $user->setAdmin($this->admin);
     }
 
-    public function toUser(): User {
+    public function toUser(?string $ip): User {
         $user = new User($this->username, $this->password);
         $user->setEmail($this->email);
         $user->setBiography($this->biography);
         $user->setAdmin($this->admin);
+        $user->setRegistrationIp($ip);
 
         $settings = [
             'showCustomStylesheets',
