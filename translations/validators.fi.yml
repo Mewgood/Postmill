@@ -1,3 +1,2 @@
-'No such user.': 'Käyttäjää ei ole.'
-'The comment must not be empty.': 'Kommentti ei saa olla tyhjä.'
-'The name must contain only contain letters, numbers, and underscores.': 'Nimi saa sisältää vain kirjaimia A-Z, numeroita ja alaviivoja.'
+comment.empty: Kommentti ei saa olla tyhjä.
+forum.name_characters: Nimi saa sisältää vain kirjaimia A-Z, numeroita ja alaviivoja.

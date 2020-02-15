@@ -1,11 +1,9 @@
-'A forum by that name already exists.': 'Diskutejo kun tiu nomo jam eksistas.'
-'Missing CIDR mask.': 'Mankas CIDR-n maskon.'
-'No such user.': 'Neniu tia uzanto.'
-'That name is already taken.': 'Tiu nomo eksistas jam.'
-'That user is already a moderator.': 'Tiu uzanto jam estas kontrolanto.'
-'The CIDR mask is not valid.': 'La CIDR masko ne estas valida.'
-'The IP address is not valid.': 'La IP adreso ne estas valida.'
-'The comment must not be empty.': 'La komento ne devas esti malplena.'
-'The name must contain only contain letters, numbers, and underscores.': 'La nomo devas enhavi nur signojn, nombrojn, kaj substrekojn.'
-'You cannot post more. Wait a while before trying again.': 'Vi ne povas afiŝi pli. Atendu mallongan tempon antaŭ provi ree.'
-'You have been banned from this forum.': 'Vi estis forbarita de ĉi tiu diskutejo.'
+comment.empty: La komento ne devas esti malplena.
+forum.banned: Vi estis forbarita de ĉi tiu diskutejo.
+forum.duplicate_name: Diskutejo kun tiu nomo jam eksistas.
+forum.name_characters: La nomo devas enhavi nur signojn, nombrojn, kaj substrekojn.
+ip.cidr_missing: Mankas CIDR-n maskon.
+ip.invalid: La IP adreso ne estas valida.
+ip.invalid_cidr_mask: La CIDR masko ne estas valida.
+ratelimit.error: Vi ne povas afiŝi pli. Atendu mallongan tempon antaŭ provi ree.
+user.already_moderator: Tiu uzanto jam estas kontrolanto.

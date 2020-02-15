@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Unique({"forum", "user"}, entityClass="App\Entity\Moderator",
- *     message="That user is already a moderator.", errorPath="user")
+ *     message="user.already_moderator", errorPath="user")
  */
 class ModeratorData {
     /**

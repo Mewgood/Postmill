@@ -1,4 +1,3 @@
-'No such user.': 'Ingen slik bruker.'
-'The comment must not be empty.': 'Kommentaren må ikke være tom.'
-'The name must contain only contain letters, numbers, and underscores.': 'Navnet må inneholde kun bokstaver, tall og understreker.'
+comment.empty: Kommentaren må ikke være tom.
+forum.name_characters: Navnet må inneholde kun bokstaver, tall og understreker.
 user.rate_limit: Du kan ikke opprette nye kontoer for øyeblikket. Vennligst prøv igjen senere.

@@ -1,12 +1,10 @@
-'A forum by that name already exists.': 'A forum by that name already exists.'
-'Missing CIDR mask.': 'Missing CIDR mask.'
-'No such user.': 'No such user.'
-'That name is already taken.': 'That name is already taken.'
-'That user is already a moderator.': 'That user is already a moderator.'
-'The CIDR mask is not valid.': 'The CIDR mask is not valid.'
-'The IP address is not valid.': 'The IP address is not valid.'
-'The comment must not be empty.': 'The comment must not be empty.'
-'The name must contain only contain letters, numbers, and underscores.': 'The name must contain only contain letters, numbers, and underscores.'
-'You cannot post more. Wait a while before trying again.': 'You cannot post more. Wait a while before trying again.'
-'You have been banned from this forum.': 'You have been banned from this forum.'
+comment.empty: The comment must not be empty.
+forum.banned: You have been banned from this forum.
+forum.duplicate_name: A forum by that name already exists.
+forum.name_characters: The name must contain only letters, numbers, and underscores.
+ip.cidr_missing: Missing CIDR mask.
+ip.invalid: The IP address is not valid.
+ip.invalid_cidr_mask: The CIDR mask is not valid.
+ratelimit.error: You cannot post more. Wait a while before trying again.
+user.already_moderator: That user is already a moderator.
 user.rate_limit: You cannot create new accounts at this time. Please try again later.

@@ -26,8 +26,8 @@ class CommentData implements NormalizeMarkdownInterface {
     private $id;
 
     /**
-     * @Assert\NotBlank(message="The comment must not be empty.")
-     * @Assert\Regex("/[[:graph:]]/u", message="The comment must not be empty.")
+     * @Assert\NotBlank(message="comment.empty")
+     * @Assert\Regex("/[[:graph:]]/u", message="comment.empty")
      * @Assert\Length(max=Comment::MAX_BODY_LENGTH)
      *
      * @Groups({"comment:read", "comment:update"})

@@ -20,7 +20,7 @@ class RateLimit extends Constraint {
 
     public $entityClass;
     public $errorPath;
-    public $message = 'You cannot post more. Wait a while before trying again.';
+    public $message = 'ratelimit.error';
     public $max;
     public $timestampField = 'timestamp';
     public $userField = 'user';

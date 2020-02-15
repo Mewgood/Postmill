@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @Unique("normalizedName", idFields={"id"}, groups={"create", "update"},
  *     entityClass="App\Entity\Forum", errorPath="name",
- *     message="A forum by that name already exists.")
+ *     message="forum.duplicate_name")
  */
 class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface {
     /**
@@ -30,7 +30,7 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
      * @Assert\NotBlank(groups={"create", "update"})
      * @Assert\Length(min=3, max=25, groups={"create", "update"})
      * @Assert\Regex("/^\w+$/",
-     *     message="The name must contain only contain letters, numbers, and underscores.",
+     *     message="forum.name_characters",
      *     groups={"create", "update"}
      * )
      *

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  */
 class NotForumBanned extends Constraint {
-    public $message = 'You have been banned from this forum.';
+    public $message = 'forum.banned';
     public $forumPath;
     public $errorPath;
 
