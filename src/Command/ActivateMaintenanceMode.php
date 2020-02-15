@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Repository\SiteRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -10,20 +11,20 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ActivateMaintenanceMode extends Command {
     /**
-     * @var string
+     * @var SiteRepository
      */
-    private $siteName;
+    private $sites;
 
     /**
      * @var string
      */
     private $includeFilePath;
 
-    public function __construct(string $siteName, string $includeFilePath) {
+    public function __construct(SiteRepository $sites) {
         parent::__construct();
 
-        $this->siteName = $siteName;
-        $this->includeFilePath = $includeFilePath;
+        $this->sites = $sites;
+        $this->includeFilePath = __DIR__.'/../../var/maintenance.php';
     }
 
     public function configure(): void {
@@ -68,7 +69,7 @@ EOHELP
     }
 
     private function writeIncludeFile($message): void {
-        $title = $this->siteName;
+        $title = $this->sites->getCurrentSiteName();
         $img = base64_encode(file_get_contents(__DIR__.'/../../public/apple-touch-icon-precomposed.png'));
         $message = nl2br($message ?: 'The site will return shortly.');
 

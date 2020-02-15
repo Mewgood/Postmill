@@ -25,10 +25,10 @@ class MarkdownConverter {
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
-        CacheItemPoolInterface $cacheItemPool
+        CacheItemPoolInterface $markdownCache
     ) {
         $this->dispatcher = $dispatcher;
-        $this->cacheItemPool = $cacheItemPool;
+        $this->cacheItemPool = $markdownCache;
     }
 
     public function convertToHtml(string $markdown): string {

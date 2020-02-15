@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\IpUtils;
 
 /**
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\IpUtils;
  */
 final class IpRateLimit {
     /**
-     * @var AdapterInterface
+     * @var CacheItemPoolInterface
      */
     private $cache;
 
@@ -35,18 +35,22 @@ final class IpRateLimit {
     private $interval;
 
     public function __construct(
-        AdapterInterface $cache,
+        CacheItemPoolInterface $rateLimitCache,
         array $ipWhitelist,
         string $prefix,
         int $maxHits,
-        \DateInterval $interval
+        string $interval
     ) {
-        $this->cache = $cache;
+        $this->cache = $rateLimitCache;
         // FIXME: $ipWhitelist shouldn't contain null values
         $this->ipWhitelist = array_filter($ipWhitelist, 'is_string');
         $this->prefix = $prefix;
         $this->maxHits = $maxHits;
-        $this->interval = $interval;
+        $this->interval = @\DateInterval::createFromDateString($interval);
+
+        if (!$this->interval) {
+            throw new \InvalidArgumentException("Bad interval '$interval'");
+        }
     }
 
     public function isExceeded(string $ip): bool {

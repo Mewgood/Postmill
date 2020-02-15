@@ -4,6 +4,7 @@ namespace App\Message\Handler;
 
 use App\Entity\User;
 use App\Message\SendPasswordResetEmail;
+use App\Repository\SiteRepository;
 use App\Repository\UserRepository;
 use App\Security\PasswordResetHelper;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -25,6 +26,11 @@ final class SendPasswordResetEmailHandler implements MessageHandlerInterface {
     private $mailer;
 
     /**
+     * @var SiteRepository
+     */
+    private $sites;
+
+    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -39,25 +45,20 @@ final class SendPasswordResetEmailHandler implements MessageHandlerInterface {
      */
     private $noReplyAddress;
 
-    /**
-     * @var string
-     */
-    private $siteName;
-
     public function __construct(
         PasswordResetHelper $helper,
         MailerInterface $mailer,
+        SiteRepository $sites,
         UserRepository $users,
         TranslatorInterface $translator,
-        string $noReplyAddress,
-        string $siteName
+        string $noReplyAddress
     ) {
         $this->mailer = $mailer;
         $this->helper = $helper;
+        $this->sites = $sites;
         $this->users = $users;
         $this->translator = $translator;
         $this->noReplyAddress = $noReplyAddress;
-        $this->siteName = $siteName;
     }
 
     public function __invoke(SendPasswordResetEmail $message): void {
@@ -74,11 +75,13 @@ final class SendPasswordResetEmailHandler implements MessageHandlerInterface {
             ];
         }, $users);
 
+        $siteName = $this->sites->getCurrentSiteName();
+
         $mail = (new TemplatedEmail())
             ->to(new Address($message->getEmailAddress(), $users[0]->getUsername()))
-            ->from(new Address($this->noReplyAddress, $this->siteName))
+            ->from(new Address($this->noReplyAddress, $siteName))
             ->subject($this->translator->trans('reset_password_email.subject', [
-                '%site_name%' => $this->siteName,
+                '%site_name%' => $siteName,
             ]))
             ->textTemplate('reset_password/email.txt.twig')
             ->context(['links' => $links])

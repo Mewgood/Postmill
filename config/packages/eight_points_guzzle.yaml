@@ -1,3 +1,6 @@
+services:
+    GuzzleHttp\ClientInterface $submissionImageClient: "@eight_points_guzzle.client.submission_image_client"
+
 eight_points_guzzle:
     clients:
         submission_image_client:

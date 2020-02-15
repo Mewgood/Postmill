@@ -1,15 +1,8 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/service_container.html
 
-imports:
-    - ./ratelimit.yaml
-
 parameters:
     env(TRUSTED_HOSTS): ''
-    days_to_keep_logs: 7
-    fonts_config: "%env(json:file:resolve:APP_FONTS)%"
-    themes_config: "%env(json:file:resolve:APP_THEMES)%"
-    ratelimit_ip_whitelist: "%env(csv:RATELIMIT_WHITELIST)%"
     submission_sort_modes: active|hot|new|top|controversial|most_commented
     number_regex: '[1-9][0-9]{0,17}'
     username_regex: '\w{3,25}|!deleted\d+'
@@ -21,17 +14,19 @@ services:
         autoconfigure: true
         autowire: true
         bind:
+            $appBranch: "%env(APP_BRANCH)%"
+            $appVersion: "%env(APP_VERSION)%"
             $batchSize: "%env(BATCH_SIZE)%"
             $defaultLocale: "%env(APP_LOCALE)%"
-            $fontsConfig: "%fonts_config%"
-            $themesConfig: "%themes_config%"
+            $fontsConfig: "%env(json:file:resolve:APP_FONTS)%"
+            $themesConfig: "%env(json:file:resolve:APP_THEMES)%"
             $noReplyAddress: "%env(NO_REPLY_ADDRESS)%"
             $secret: "%env(APP_SECRET)%"
-            $siteName: '@=service("App\\Repository\\SiteRepository").getCurrentSiteName()'
             $uploadRoot: "%env(resolve:UPLOAD_ROOT)%"
             bool $enableExperimentalRestApi: "%env(bool:ENABLE_EXPERIMENTAL_REST_API)%"
             bool $makeFirstUserAdmin: "%env(bool:MAKE_FIRST_USER_ADMIN)%"
             array $availableLocales: "%env(csv:AVAILABLE_LOCALES)%"
+            array $ipWhitelist: "%env(csv:RATELIMIT_WHITELIST)%"
             array $trustedHosts: "%env(csv:TRUSTED_HOSTS)%"
         public: false
 
@@ -41,46 +36,23 @@ services:
         resource: '../src/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../src/{DependencyInjection,Entity,Migrations}'
+        exclude: '../src/{Entity,Migrations,Kernel.php}'
 
-    # controllers are imported separately to make sure they're public
-    # and have a tag that allows actions to type-hint services
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
-        public: true
         tags: ['controller.service_arguments']
 
-    App\Command\ActivateMaintenanceMode:
-        $includeFilePath: "%kernel.project_dir%/var/maintenance.php"
-
     App\Doctrine\Listener\DomainEventsListener:
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    App\Markdown\MarkdownConverter:
-        $cacheItemPool: "@cache.markdown"
-
-    App\Message\Handler\DownloadSubmissionImageHandler:
-        $httpClient: "@eight_points_guzzle.client.submission_image_client"
+        tags: ['doctrine.event_subscriber']
 
     App\Security\AuthenticationHelper:
         $rememberMeServices: "@security.authentication.rememberme.services.simplehash.main"
 
-    App\Security\LoginAuthenticator:
-        $rateLimit: "@postmill.ratelimit.login"
-
-    App\Twig\AppExtension:
-        $branch: "%env(APP_BRANCH)%"
-        $version: "%env(APP_VERSION)%"
-
-    App\Utils\IpRateLimitFactory:
-        $cache: "@cache.ratelimit"
-        $ipWhitelist: "%ratelimit_ip_whitelist%"
-
-    App\Utils\IpRateLimit:
+    App\Utils\IpRateLimit $loginRateLimit:
         class: App\Utils\IpRateLimit
-        factory: ['@App\Utils\IpRateLimitFactory', create]
-        abstract: true
-
-    App\Validator\Constraints\RateLimitValidator:
-        $ipWhitelist: "%ratelimit_ip_whitelist%"
+        arguments:
+            $prefix: login
+            $maxHits: 20
+            $interval: 10 minutes

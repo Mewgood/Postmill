@@ -33,12 +33,12 @@ class AppExtension extends AbstractExtension {
     /**
      * @var string|null
      */
-    private $branch;
+    private $appBranch;
 
     /**
      * @var string|null
      */
-    private $version;
+    private $appVersion;
 
     /**
      * @var array
@@ -56,8 +56,8 @@ class AppExtension extends AbstractExtension {
         RequestStack $requestStack,
         SiteRepository $siteRepository,
         UrlRewriter $urlRewriter,
-        ?string $branch,
-        ?string $version,
+        ?string $appBranch,
+        ?string $appVersion,
         array $fontsConfig,
         array $themesConfig,
         string $uploadRoot
@@ -65,8 +65,8 @@ class AppExtension extends AbstractExtension {
         $this->requestStack = $requestStack;
         $this->siteRepository = $siteRepository;
         $this->urlRewriter = $urlRewriter;
-        $this->branch = $branch;
-        $this->version = $version;
+        $this->appBranch = $appBranch;
+        $this->appVersion = $appVersion;
         $this->fontsConfig = $fontsConfig;
         $this->themesConfig = $themesConfig;
         $this->uploadRoot = $uploadRoot;
@@ -107,11 +107,11 @@ class AppExtension extends AbstractExtension {
     }
 
     public function getAppBranch(): ?string {
-        return $this->branch;
+        return $this->appBranch;
     }
 
     public function getAppVersion(): ?string {
-        return $this->version;
+        return $this->appVersion;
     }
 
     public function getFontList(): array {

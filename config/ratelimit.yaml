@@ -1,7 +1,0 @@
-services:
-    postmill.ratelimit.login:
-        parent: App\Utils\IpRateLimit
-        arguments:
-            $prefix: 'login'
-            $maxHits: 20
-            $interval: '10 minutes'

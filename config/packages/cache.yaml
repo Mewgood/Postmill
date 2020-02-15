@@ -1,6 +1,10 @@
 parameters:
     markdown_cache_time: 86400
 
+services:
+    Psr\Cache\CacheItemPoolInterface $markdownCache: "@cache.markdown"
+    Psr\Cache\CacheItemPoolInterface $rateLimitCache: "@cache.ratelimit"
+
 framework:
     cache:
         pools:

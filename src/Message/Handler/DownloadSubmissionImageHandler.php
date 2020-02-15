@@ -8,7 +8,7 @@ use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
 use Embed\Exceptions\EmbedException;
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
@@ -23,7 +23,7 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $entityManager;
 
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $httpClient;
 
@@ -43,14 +43,14 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $validator;
 
     public function __construct(
-        Client $httpClient,
+        ClientInterface $submissionImageClient,
         EntityManagerInterface $entityManager,
         ImageRepository $images,
         LoggerInterface $logger,
         ValidatorInterface $validator
     ) {
         $this->entityManager = $entityManager;
-        $this->httpClient = $httpClient;
+        $this->httpClient = $submissionImageClient;
         $this->images = $images;
         $this->logger = $logger;
         $this->validator = $validator;

@@ -56,12 +56,12 @@ final class LoginAuthenticator extends AbstractGuardAuthenticator {
 
     public function __construct(
         CsrfTokenManagerInterface $csrfTokenManager,
-        IpRateLimit $rateLimit,
+        IpRateLimit $loginRateLimit,
         UserPasswordEncoderInterface $passwordEncoder,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->csrfTokenManager = $csrfTokenManager;
-        $this->rateLimit = $rateLimit;
+        $this->rateLimit = $loginRateLimit;
         $this->urlGenerator = $urlGenerator;
         $this->passwordEncoder = $passwordEncoder;
     }
