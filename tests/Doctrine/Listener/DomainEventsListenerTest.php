@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\EventListener;
+namespace App\Tests\Doctrine\Listener;
 
 use App\Doctrine\Listener\DomainEventsListener;
 use App\Entity\Contracts\VisibilityInterface;
