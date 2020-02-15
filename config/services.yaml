@@ -53,7 +53,7 @@ services:
     App\Command\ActivateMaintenanceMode:
         $includeFilePath: "%kernel.project_dir%/var/maintenance.php"
 
-    App\EventListener\DomainEventsListener:
+    App\Doctrine\Listener\DomainEventsListener:
         tags:
             - { name: doctrine.event_subscriber }
 

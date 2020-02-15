@@ -2,6 +2,7 @@
 
 namespace App\Tests\EventListener;
 
+use App\Doctrine\Listener\DomainEventsListener;
 use App\Entity\Contracts\VisibilityInterface;
 use App\Entity\Forum;
 use App\Entity\Submission;
@@ -11,7 +12,6 @@ use App\Event\ForumUpdated;
 use App\Event\SubmissionCreated;
 use App\Event\SubmissionDeleted;
 use App\Event\SubmissionUpdated;
-use App\EventListener\DomainEventsListener;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @covers \App\EventListener\DomainEventsListener
+ * @covers \App\Doctrine\Listener\DomainEventsListener
  */
 class DomainEventsListenerTest extends TestCase {
     public function testDispatchesCreateEvent(): void {
