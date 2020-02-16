@@ -3,6 +3,7 @@
 namespace App\Validator\Constraints;
 
 use App\Entity\Forum;
+use App\Entity\User;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -63,13 +64,11 @@ class NotForumBannedValidator extends ConstraintValidator {
         }
 
         $token = $this->tokenStorage->getToken();
+        $user = $token ? $token->getUser() : null;
 
-        if (!$token) {
+        if (!$token || !$user instanceof User) {
             return;
         }
-
-        /** @var \App\Entity\User $user */
-        $user = $token->getUser();
 
         if ($forum->userIsBanned($user)) {
             $this->context->buildViolation($constraint->message)

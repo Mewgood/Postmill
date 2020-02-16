@@ -9,8 +9,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class NotForumBanned extends Constraint {
     public $message = 'forum.banned';
-    public $forumPath;
-    public $errorPath;
+    public $forumPath = '';
+    public $errorPath = '';
 
     public const FORUM_BANNED_ERROR = 'eeb18913-1b45-47d6-b676-39aec0059487';
 
