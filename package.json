@@ -17,6 +17,7 @@
         "highlight.js": "^9.15.8",
         "jquery": "^3.4.1",
         "lodash-es": "^4.17.15",
+        "markdown-it": "^10.0.0",
         "normalize.css": "^8.0.1",
         "regenerator-runtime": "^0.13.3",
         "select2": "^4.0.7",

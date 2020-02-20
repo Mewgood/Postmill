@@ -5,12 +5,6 @@ fetch_title:
     methods: [POST]
     options: { expose: true }
 
-markdown_preview:
-    controller: App\Controller\AjaxController::markdownPreview
-    path: /md
-    methods: [POST]
-    options: { expose: true }
-
 user_popper:
     controller: App\Controller\AjaxController::userPopper
     path: /_up/{username}

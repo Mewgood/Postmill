@@ -39,17 +39,6 @@ final class AjaxController extends AbstractController {
         }
     }
 
-    /**
-     * @IsGranted("ROLE_USER")
-     */
-    public function markdownPreview(Request $request, MarkdownConverter $converter): Response {
-        if ($request->getContentType() !== 'html') {
-            throw new BadRequestHttpException('Expected HTML request body');
-        }
-
-        return new Response($converter->convertToHtml($request->getContent()));
-    }
-
     public function userPopper(User $user): Response {
         return $this->render('ajax/user_popper.html.twig', [
             'user' => $user,
