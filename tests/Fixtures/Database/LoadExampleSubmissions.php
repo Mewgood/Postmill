@@ -5,6 +5,7 @@ namespace App\Tests\Fixtures\Database;
 use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Tests\Fixtures\Utils\TimeMocker;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -20,14 +21,14 @@ class LoadExampleSubmissions extends AbstractFixture implements DependentFixture
             /** @var User $user */
             $user = $this->getReference('user-'.$data['user']);
 
+            TimeMocker::mock(Submission::class, $data['timestamp']);
             $submission = new Submission(
                 $data['title'],
                 $data['url'],
                 $data['body'],
                 $forum,
                 $user,
-                $data['ip'],
-                $data['timestamp']
+                $data['ip']
             );
 
             $this->addReference('submission-'.++$i, $submission);

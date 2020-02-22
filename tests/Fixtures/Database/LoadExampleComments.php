@@ -5,6 +5,7 @@ namespace App\Tests\Fixtures\Database;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Tests\Fixtures\Utils\TimeMocker;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -22,7 +23,8 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
                 ? $this->getReference('comment-'.$data['parent'])
                 : $this->getReference('submission-'.$data['submission']);
 
-            $comment = new Comment($data['body'], $user, $parent, $data['ip'], $data['timestamp']);
+            TimeMocker::mock(Comment::class, $data['timestamp']);
+            $comment = new Comment($data['body'], $user, $parent, $data['ip']);
 
             $this->addReference('comment-'.++$i, $comment);
 

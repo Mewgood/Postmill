@@ -58,13 +58,12 @@ class WikiPage {
         string $path,
         string $title,
         string $body,
-        User $user,
-        \DateTime $timestamp = null
+        User $user
     ) {
         $this->setPath($path);
         $this->revisions = new ArrayCollection();
 
-        new WikiRevision($this, $title, $body, $user, $timestamp);
+        new WikiRevision($this, $title, $body, $user);
     }
 
     public function getId(): ?int {

@@ -164,14 +164,13 @@ class Forum implements BackgroundImage, DomainEvents {
         string $title,
         string $description,
         string $sidebar,
-        User $user = null,
-        \DateTime $created = null
+        User $user = null
     ) {
         $this->setName($name);
         $this->title = $title;
         $this->description = $description;
         $this->sidebar = $sidebar;
-        $this->created = $created ?: new \DateTime('@'.time());
+        $this->created = new \DateTime('@'.time());
         $this->bans = new ArrayCollection();
         $this->moderators = new ArrayCollection();
         $this->submissions = new ArrayCollection();
@@ -179,7 +178,7 @@ class Forum implements BackgroundImage, DomainEvents {
         $this->logEntries = new ArrayCollection();
 
         if ($user) {
-            $this->addModerator(new Moderator($this, $user, $this->created));
+            $this->addModerator(new Moderator($this, $user));
             $this->subscribe($user);
         }
     }

@@ -157,7 +157,7 @@ class Comment implements DomainEvents, Visibility, Votable {
     /**
      * @param Submission|Comment $parent
      */
-    public function __construct(string $body, User $user, $parent, ?string $ip, \DateTime $timestamp = null) {
+    public function __construct(string $body, User $user, $parent, ?string $ip) {
         if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
             throw new \InvalidArgumentException('Invalid IP address');
         }
@@ -184,7 +184,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         $this->submission = $submission;
         $this->parent = $parent;
         $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
-        $this->timestamp = $timestamp ?: new \DateTime('@'.time());
+        $this->timestamp = new \DateTime('@'.time());
         $this->children = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->notifications = new ArrayCollection();

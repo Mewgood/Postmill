@@ -3,7 +3,9 @@
 namespace App\Tests\Fixtures\Database;
 
 use App\Entity\Forum;
+use App\Entity\ForumSubscription;
 use App\Entity\Moderator;
+use App\Tests\Fixtures\Utils\TimeMocker;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -11,20 +13,23 @@ use Doctrine\Persistence\ObjectManager;
 class LoadExampleForums extends AbstractFixture implements DependentFixtureInterface {
     public function load(ObjectManager $manager): void {
         foreach ($this->provideForums() as $data) {
+            TimeMocker::mock(Forum::class, $data['created']);
+            TimeMocker::mock(ForumSubscription::class, $data['created']);
+            TimeMocker::mock(Moderator::class, $data['created']);
+
             $forum = new Forum(
                 $data['name'],
                 $data['title'],
                 $data['description'],
                 $data['sidebar'],
-                null,
-                $data['created']
+                null
             );
 
             $forum->setFeatured($data['featured']);
 
             foreach ($data['moderators'] as $username) {
                 /* @noinspection PhpParamsInspection */
-                new Moderator($forum, $this->getReference('user-'.$username), $data['created']);
+                new Moderator($forum, $this->getReference('user-'.$username));
             }
 
             foreach ($data['subscribers'] as $username) {

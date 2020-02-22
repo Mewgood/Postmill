@@ -66,8 +66,7 @@ class UserBan {
         string $reason,
         bool $banned,
         User $bannedBy,
-        \DateTime $expiresAt = null,
-        \DateTime $timestamp = null
+        \DateTime $expiresAt = null
     ) {
         if (!$banned && $expiresAt) {
             throw new \DomainException('Unbans cannot have expiry times');
@@ -79,8 +78,7 @@ class UserBan {
         $this->banned = $banned;
         $this->bannedBy = $bannedBy;
         $this->expiresAt = $expiresAt;
-        $this->timestamp = $timestamp ?:
-            \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
     }
 
     public function getId(): Uuid {

@@ -77,8 +77,7 @@ class ForumBan {
         string $reason,
         bool $banned,
         User $bannedBy,
-        \DateTime $expiresAt = null,
-        \DateTime $timestamp = null
+        \DateTime $expiresAt = null
     ) {
         if (!$banned && $expiresAt) {
             throw new \DomainException('Unbans cannot have expiry times');
@@ -94,8 +93,7 @@ class ForumBan {
 
         // since the last ban takes precedence, and because timestamps are used
         // for sorting, we'll use microseconds to hopefully avoid collisions
-        $this->timestamp = $timestamp ?:
-            \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
     }
 
     public function getId(): Uuid {

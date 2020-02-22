@@ -66,15 +66,14 @@ class IpBan {
         string $reason,
         ?User $user,
         User $bannedBy,
-        \DateTime $expiryDate = null,
-        \DateTime $timestamp = null
+        \DateTime $expiryDate = null
     ) {
         $this->ip = $ip;
         $this->reason = $reason;
         $this->user = $user;
         $this->bannedBy = $bannedBy;
         $this->expiryDate = $expiryDate;
-        $this->timestamp = $timestamp ?: new \DateTime();
+        $this->timestamp = new \DateTime('@'.time());
     }
 
     public function getId(): ?int {

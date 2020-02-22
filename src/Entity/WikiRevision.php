@@ -58,16 +58,14 @@ class WikiRevision {
         WikiPage $page,
         string $title,
         string $body,
-        User $user,
-        \DateTime $timestamp = null
+        User $user
     ) {
         $this->id = Uuid::uuid4();
         $this->page = $page;
         $this->title = $title;
         $this->body = $body;
         $this->user = $user;
-        $this->timestamp = $timestamp ?:
-            \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
 
         $this->page->addRevision($this);
     }

@@ -317,10 +317,10 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      */
     private $preferredFonts;
 
-    public function __construct(string $username, string $password, \DateTime $created = null) {
+    public function __construct(string $username, string $password) {
         $this->setUsername($username);
         $this->password = $password;
-        $this->created = $created ?: new \DateTime('@'.time());
+        $this->created = new \DateTime('@'.time());
         $this->notifications = new ArrayCollection();
         $this->submissions = new ArrayCollection();
         $this->submissionVotes = new ArrayCollection();

@@ -273,8 +273,7 @@ class Submission implements DomainEvents, Visibility, Votable {
         ?string $body,
         Forum $forum,
         User $user,
-        ?string $ip,
-        \DateTime $timestamp = null
+        ?string $ip
     ) {
         if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
             throw new \InvalidArgumentException("Invalid IP address '$ip'");
@@ -290,7 +289,7 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->forum = $forum;
         $this->user = $user;
         $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
-        $this->timestamp = $timestamp ?? new \DateTime('@'.time());
+        $this->timestamp = new \DateTime('@'.time());
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->mentions = new ArrayCollection();
