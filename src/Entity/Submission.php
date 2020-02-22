@@ -146,16 +146,16 @@ class Submission implements DomainEvents, Visibility, Votable {
     private $commentCount = 0;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $timestamp;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $lastActive;
 
@@ -226,9 +226,9 @@ class Submission implements DomainEvents, Visibility, Votable {
     private $ranking;
 
     /**
-     * @ORM\Column(type="datetimetz", nullable=true)
+     * @ORM\Column(type="datetimetz_immutable", nullable=true)
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $editedAt;
 
@@ -289,7 +289,7 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->forum = $forum;
         $this->user = $user;
         $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
-        $this->timestamp = new \DateTime('@'.time());
+        $this->timestamp = new \DateTimeImmutable('@'.time());
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->mentions = new ArrayCollection();
@@ -402,11 +402,11 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->commentCount = \count($this->comments->matching($criteria));
     }
 
-    public function getTimestamp(): \DateTime {
+    public function getTimestamp(): \DateTimeImmutable {
         return $this->timestamp;
     }
 
-    public function getLastActive(): \DateTime {
+    public function getLastActive(): \DateTimeImmutable {
         return $this->lastActive;
     }
 
@@ -419,9 +419,10 @@ class Submission implements DomainEvents, Visibility, Votable {
         $lastComment = $this->comments->matching($criteria)->first();
 
         if ($lastComment) {
-            $this->lastActive = clone $lastComment->getTimestamp();
+            \assert($lastComment instanceof Comment);
+            $this->lastActive = $lastComment->getTimestamp();
         } else {
-            $this->lastActive = clone $this->getTimestamp();
+            $this->lastActive = $this->getTimestamp();
         }
     }
 
@@ -539,11 +540,15 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->ranking = $this->getTimestamp()->getTimestamp() + $advantage;
     }
 
-    public function getEditedAt(): ?\DateTime {
+    public function getEditedAt(): ?\DateTimeImmutable {
         return $this->editedAt;
     }
 
-    public function setEditedAt(?\DateTime $editedAt): void {
+    public function setEditedAt(?\DateTimeInterface $editedAt): void {
+        if ($editedAt instanceof \DateTime) {
+            $editedAt = \DateTimeImmutable::createFromMutable($editedAt);
+        }
+
         $this->editedAt = $editedAt;
     }
 

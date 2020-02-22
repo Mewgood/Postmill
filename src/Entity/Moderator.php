@@ -38,9 +38,9 @@ class Moderator {
     private $user;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $timestamp;
 
@@ -48,7 +48,7 @@ class Moderator {
         $this->id = Uuid::uuid4();
         $this->forum = $forum;
         $this->user = $user;
-        $this->timestamp = new \DateTime('@'.time());
+        $this->timestamp = new \DateTimeImmutable('@'.time());
         $forum->getModerators()->add($this);
         $user->getModeratorTokens()->add($this);
     }
@@ -65,7 +65,7 @@ class Moderator {
         return $this->user;
     }
 
-    public function getTimestamp(): \DateTime {
+    public function getTimestamp(): \DateTimeImmutable {
         return $this->timestamp;
     }
 

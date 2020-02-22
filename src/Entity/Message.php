@@ -42,9 +42,9 @@ class Message {
     private $body;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $timestamp;
 
@@ -70,7 +70,7 @@ class Message {
         $this->sender = $sender;
         $this->body = $body;
         $this->ip = $sender->isWhitelistedOrAdmin() ? null : $ip;
-        $this->timestamp = new \DateTime('@'.time());
+        $this->timestamp = new \DateTimeImmutable('@'.time());
         $this->notify();
 
         $thread->addMessage($this);
@@ -92,7 +92,7 @@ class Message {
         return $this->body;
     }
 
-    public function getTimestamp(): \DateTime {
+    public function getTimestamp(): \DateTimeImmutable {
         return $this->timestamp;
     }
 

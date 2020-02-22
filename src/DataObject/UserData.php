@@ -65,7 +65,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
     /**
      * @Groups({"user:read"})
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $created;
 
@@ -326,7 +326,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $this->email = $email;
     }
 
-    public function getCreated(): ?\DateTime {
+    public function getCreated(): ?\DateTimeImmutable {
         return $this->created;
     }
 

@@ -87,9 +87,9 @@ class Forum implements BackgroundImage, DomainEvents {
     private $submissions;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $created;
 
@@ -170,7 +170,7 @@ class Forum implements BackgroundImage, DomainEvents {
         $this->title = $title;
         $this->description = $description;
         $this->sidebar = $sidebar;
-        $this->created = new \DateTime('@'.time());
+        $this->created = new \DateTimeImmutable('@'.time());
         $this->bans = new ArrayCollection();
         $this->moderators = new ArrayCollection();
         $this->submissions = new ArrayCollection();
@@ -292,7 +292,7 @@ class Forum implements BackgroundImage, DomainEvents {
         return $this->submissions;
     }
 
-    public function getCreated(): \DateTime {
+    public function getCreated(): \DateTimeImmutable {
         return $this->created;
     }
 

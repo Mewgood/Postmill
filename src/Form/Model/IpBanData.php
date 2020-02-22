@@ -25,7 +25,7 @@ class IpBanData {
     public $reason;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeInterface|null
      */
     public $expiryDate;
 

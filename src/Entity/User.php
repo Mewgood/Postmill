@@ -78,16 +78,16 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     private $normalizedEmail;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $created;
 
     /**
-     * @ORM\Column(type="datetimetz", nullable=true)
+     * @ORM\Column(type="datetimetz_immutable", nullable=true)
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $lastSeen;
 
@@ -320,7 +320,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     public function __construct(string $username, string $password) {
         $this->setUsername($username);
         $this->password = $password;
-        $this->created = new \DateTime('@'.time());
+        $this->created = new \DateTimeImmutable('@'.time());
         $this->notifications = new ArrayCollection();
         $this->submissions = new ArrayCollection();
         $this->submissionVotes = new ArrayCollection();
@@ -382,15 +382,19 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         return $this->normalizedEmail;
     }
 
-    public function getCreated(): \DateTime {
+    public function getCreated(): \DateTimeImmutable {
         return $this->created;
     }
 
-    public function getLastSeen(): ?\DateTime {
+    public function getLastSeen(): ?\DateTimeImmutable {
         return $this->lastSeen;
     }
 
-    public function setLastSeen(?\DateTime $lastSeen): void {
+    public function setLastSeen(?\DateTimeInterface $lastSeen): void {
+        if ($lastSeen instanceof \DateTime) {
+            $lastSeen = \DateTimeImmutable::createFromMutable($lastSeen);
+        }
+
         $this->lastSeen = $lastSeen;
     }
 

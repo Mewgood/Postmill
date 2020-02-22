@@ -49,9 +49,9 @@ abstract class ForumLogEntry {
     private $wasAdmin;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $timestamp;
 
@@ -62,7 +62,7 @@ abstract class ForumLogEntry {
         $this->forum = $forum;
         $this->user = $user;
         $this->wasAdmin = !$forum->userIsModerator($user, false);
-        $this->timestamp = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
     }
 
     public function getId(): Uuid {
@@ -81,7 +81,7 @@ abstract class ForumLogEntry {
         return $this->wasAdmin;
     }
 
-    public function getTimestamp(): \DateTime {
+    public function getTimestamp(): \DateTimeImmutable {
         return $this->timestamp;
     }
 }

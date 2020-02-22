@@ -43,7 +43,7 @@ class SubmissionPage implements PageInterface {
 
     /**
      * @Assert\NotBlank(groups={"active"})
-     * @Assert\DateTime(format=\DateTime::RFC3339, groups={"active"})
+     * @Assert\DateTime(format=\DateTimeInterface::RFC3339, groups={"active"})
      *
      * @Groups({"active"})
      */

@@ -40,9 +40,9 @@ class WikiRevision {
     private $page;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $timestamp;
 
@@ -65,7 +65,7 @@ class WikiRevision {
         $this->title = $title;
         $this->body = $body;
         $this->user = $user;
-        $this->timestamp = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
 
         $this->page->addRevision($this);
     }
@@ -86,7 +86,7 @@ class WikiRevision {
         return $this->page;
     }
 
-    public function getTimestamp(): \DateTime {
+    public function getTimestamp(): \DateTimeImmutable {
         return $this->timestamp;
     }
 

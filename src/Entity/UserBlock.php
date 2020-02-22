@@ -44,9 +44,9 @@ class UserBlock {
     private $comment;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $timestamp;
 
@@ -59,7 +59,7 @@ class UserBlock {
         $this->blocker = $blocker;
         $this->blocked = $blocked;
         $this->comment = $comment;
-        $this->timestamp = new \DateTime('@'.time());
+        $this->timestamp = new \DateTimeImmutable('@'.time());
     }
 
     public function getId(): Uuid {
@@ -78,7 +78,7 @@ class UserBlock {
         return $this->comment;
     }
 
-    public function getTimestamp(): \DateTime {
+    public function getTimestamp(): \DateTimeImmutable {
         return $this->timestamp;
     }
 }

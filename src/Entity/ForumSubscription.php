@@ -37,9 +37,9 @@ class ForumSubscription {
     private $forum;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $subscribedAt;
 
@@ -47,7 +47,7 @@ class ForumSubscription {
         $this->id = Uuid::uuid4();
         $this->user = $user;
         $this->forum = $forum;
-        $this->subscribedAt = new \DateTime('@'.time());
+        $this->subscribedAt = new \DateTimeImmutable('@'.time());
     }
 
     public function getId(): Uuid {
@@ -62,7 +62,7 @@ class ForumSubscription {
         return $this->forum;
     }
 
-    public function getSubscribedAt(): \DateTime {
+    public function getSubscribedAt(): \DateTimeImmutable {
         return $this->subscribedAt;
     }
 }

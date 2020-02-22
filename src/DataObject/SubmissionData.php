@@ -77,14 +77,14 @@ class SubmissionData implements NormalizeMarkdownInterface {
     /**
      * @Groups("submission:read")
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $timestamp;
 
     /**
      * @Groups("submission:read")
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $lastActive;
 
@@ -150,7 +150,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
     /**
      * @Groups("submission:read")
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $editedAt;
 
@@ -224,7 +224,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
             $this->title !== $submission->getTitle() ||
             $this->body !== $submission->getBody()
         ) {
-            $this->editedAt = new \DateTime('@'.time());
+            $this->editedAt = new \DateTimeImmutable('@'.time());
             $this->moderated = $this->moderated || $editingUser !== $submission->getUser();
         }
 
@@ -285,11 +285,11 @@ class SubmissionData implements NormalizeMarkdownInterface {
         return $this->commentCount;
     }
 
-    public function getTimestamp(): ?\DateTime {
+    public function getTimestamp(): ?\DateTimeImmutable {
         return $this->timestamp;
     }
 
-    public function getLastActive(): ?\DateTime {
+    public function getLastActive(): ?\DateTimeImmutable {
         return $this->lastActive;
     }
 
@@ -337,7 +337,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
         $this->sticky = $sticky;
     }
 
-    public function getEditedAt(): ?\DateTime {
+    public function getEditedAt(): ?\DateTimeImmutable {
         return $this->editedAt;
     }
 

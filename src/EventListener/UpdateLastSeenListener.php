@@ -41,7 +41,7 @@ final class UpdateLastSeenListener implements EventSubscriberInterface {
             return;
         }
 
-        $user->setLastSeen(new \DateTime('@'.time()));
+        $user->setLastSeen(new \DateTimeImmutable('@'.time()));
 
         // this should be safe since login occurs at the beginning of a request
         $this->manager->flush();

@@ -19,7 +19,7 @@ class CommentPage implements PageInterface {
     public $id;
 
     /**
-     * @Assert\DateTime(format=\DateTime::RFC3339, groups={"pager"})
+     * @Assert\DateTime(format=\DateTimeInterface::RFC3339, groups={"pager"})
      * @Assert\NotBlank(groups={"pager"})
      *
      * @Groups("pager")
@@ -42,6 +42,6 @@ class CommentPage implements PageInterface {
         }
 
         $this->id = (string) $entity->getId();
-        $this->timestamp = $entity->getTimestamp()->format(\DateTime::RFC3339);
+        $this->timestamp = $entity->getTimestamp()->format(\DateTimeInterface::RFC3339);
     }
 }

@@ -49,9 +49,9 @@ class Comment implements DomainEvents, Visibility, Votable {
     private $body;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $timestamp;
 
@@ -108,9 +108,9 @@ class Comment implements DomainEvents, Visibility, Votable {
     private $ip;
 
     /**
-     * @ORM\Column(type="datetimetz", nullable=true)
+     * @ORM\Column(type="datetimetz_immutable", nullable=true)
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $editedAt;
 
@@ -184,7 +184,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         $this->submission = $submission;
         $this->parent = $parent;
         $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
-        $this->timestamp = new \DateTime('@'.time());
+        $this->timestamp = new \DateTimeImmutable('@'.time());
         $this->children = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->notifications = new ArrayCollection();
@@ -211,7 +211,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         $this->body = $body;
     }
 
-    public function getTimestamp(): \DateTime {
+    public function getTimestamp(): \DateTimeImmutable {
         return $this->timestamp;
     }
 
@@ -319,11 +319,15 @@ class Comment implements DomainEvents, Visibility, Votable {
         return $this->ip;
     }
 
-    public function getEditedAt(): ?\DateTime {
+    public function getEditedAt(): ?\DateTimeImmutable {
         return $this->editedAt;
     }
 
-    public function setEditedAt(?\DateTime $editedAt): void {
+    public function setEditedAt(?\DateTimeInterface $editedAt): void {
+        if ($editedAt instanceof \DateTime) {
+            $editedAt = \DateTimeImmutable::createFromMutable($editedAt);
+        }
+
         $this->editedAt = $editedAt;
     }
 

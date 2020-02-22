@@ -25,9 +25,9 @@ class ModeratorData {
     /**
      * @Groups({"moderator:forum-side", "moderator:user-side"})
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
-    public $since;
+    private $since;
 
     public function __construct(Moderator $moderator = null) {
         if ($moderator) {
@@ -35,5 +35,9 @@ class ModeratorData {
             $this->user = $moderator->getUser();
             $this->since = $moderator->getTimestamp();
         }
+    }
+
+    public function getSince(): \DateTimeImmutable {
+        return $this->since;
     }
 }

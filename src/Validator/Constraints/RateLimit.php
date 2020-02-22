@@ -38,8 +38,8 @@ class RateLimit extends Constraint {
 
         $period = \DateInterval::createFromDateString($options['period']);
 
-        $d2 = new \DateTime('@'.time());
-        $d1 = (clone $d2)->sub($period);
+        $d2 = new \DateTimeImmutable('@'.time());
+        $d1 = $d2->sub($period);
 
         if ($d2 <= $d1) {
             throw new ConstraintDefinitionException(

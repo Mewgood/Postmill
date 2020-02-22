@@ -17,7 +17,7 @@ class ForumBanData {
     private $reason;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $expiryTime;
 
@@ -37,11 +37,15 @@ class ForumBanData {
         $this->reason = $reason;
     }
 
-    public function getExpiryTime(): ?\DateTime {
+    public function getExpiryTime(): ?\DateTimeImmutable {
         return $this->expiryTime;
     }
 
-    public function setExpiryTime(?\DateTime $expiryTime): void {
+    public function setExpiryTime(?\DateTimeInterface $expiryTime): void {
+        if ($expiryTime instanceof \DateTime) {
+            $expiryTime = \DateTimeImmutable::createFromMutable($expiryTime);
+        }
+
         $this->expiryTime = $expiryTime;
     }
 }

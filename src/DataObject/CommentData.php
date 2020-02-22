@@ -39,7 +39,7 @@ class CommentData implements NormalizeMarkdownInterface {
     /**
      * @Groups("comment:read")
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $timestamp;
 
@@ -88,7 +88,7 @@ class CommentData implements NormalizeMarkdownInterface {
     /**
      * @Groups("comment:read")
      *
-     * @var \DateTime|null
+     * @var \DateTimeImmutable|null
      */
     private $editedAt;
 
@@ -162,7 +162,7 @@ class CommentData implements NormalizeMarkdownInterface {
 
         if ($this->body !== $comment->getBody()) {
             $comment->setBody($this->body);
-            $comment->setEditedAt(new \DateTime('@'.time()));
+            $comment->setEditedAt(new \DateTimeImmutable('@'.time()));
 
             if (!$comment->isModerated()) {
                 $comment->setModerated($comment->getUser() !== $editingUser);
@@ -182,7 +182,7 @@ class CommentData implements NormalizeMarkdownInterface {
         $this->body = $body;
     }
 
-    public function getTimestamp(): ?\DateTime {
+    public function getTimestamp(): ?\DateTimeImmutable {
         return $this->timestamp;
     }
 
@@ -214,7 +214,7 @@ class CommentData implements NormalizeMarkdownInterface {
         return $this->visibility;
     }
 
-    public function getEditedAt(): ?\DateTime {
+    public function getEditedAt(): ?\DateTimeImmutable {
         return $this->editedAt;
     }
 

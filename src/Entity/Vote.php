@@ -28,9 +28,9 @@ abstract class Vote {
     private $upvote;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetimetz_immutable")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $timestamp;
 
@@ -72,7 +72,7 @@ abstract class Vote {
         $this->upvote = $choice === VotableInterface::VOTE_UP;
         $this->user = $user;
         $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
-        $this->timestamp = new \DateTime('@'.time());
+        $this->timestamp = new \DateTimeImmutable('@'.time());
     }
 
     public function getId(): ?int {
@@ -93,7 +93,7 @@ abstract class Vote {
         return $this->ip;
     }
 
-    public function getTimestamp(): \DateTime {
+    public function getTimestamp(): \DateTimeImmutable {
         return $this->timestamp;
     }
 
