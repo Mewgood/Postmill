@@ -60,7 +60,7 @@ comments.not_logged_in_register_link_label: inscrire
 comments.parent: Parent
 comments.permalink: Permalien
 comments.reply: Répondre
-comments.return_to_forum: ← Retourner sur %forum%
+comments.return_to_forum: Retourner sur %forum%
 comments.thread_return: Voir tous les commentaires
 comments.viewing_thread: Affichage d'un seul fil de commentaire.
 

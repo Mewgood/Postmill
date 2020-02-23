@@ -80,7 +80,7 @@ comments.parent: Parent
 comments.permalink: Permalink
 comments.reply: Reply
 comments.replying_to_comment: Replying to %user% (%id%)
-comments.return_to_forum: ← Return to %forum%
+comments.return_to_forum: Return to %forum%
 comments.thread_return: View all comments
 comments.viewing_thread: Viewing a single comment thread.
 

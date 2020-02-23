@@ -80,7 +80,7 @@ comments.parent: Forelder
 comments.permalink: Permalenke
 comments.reply: Svar
 comments.replying_to_comment: Svarer til %user% (%id%)
-comments.return_to_forum: ← Gå tilbake til %forum%
+comments.return_to_forum: Gå tilbake til %forum%
 comments.thread_return: Vis alle kommentarer
 comments.viewing_thread: Viser en enkelt kommentartråd.
 
