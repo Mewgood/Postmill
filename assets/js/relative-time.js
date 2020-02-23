@@ -1,4 +1,4 @@
-import { distanceInWords, distanceInWordsToNow, isBefore } from 'date-fns';
+import { formatDistance, formatDistanceToNow, isBefore, parseISO } from 'date-fns';
 import translator from 'bazinga-translator';
 
 /**
@@ -7,7 +7,7 @@ import translator from 'bazinga-translator';
 export function makeTimesRelative(el) {
     loadDateFnsLocale().then(locale => {
         el.querySelectorAll('.js-relative-time').forEach(el => {
-            const relativeTime = distanceInWordsToNow(el.dateTime, {
+            const relativeTime = formatDistanceToNow(parseISO(el.dateTime), {
                 addSuffix: true,
                 locale,
             });
@@ -18,10 +18,10 @@ export function makeTimesRelative(el) {
         });
 
         el.querySelectorAll('.js-relative-time-diff').forEach(el => {
-            const timeA = el.dateTime;
-            const timeB = el.getAttribute('data-compare-to');
+            const timeA = parseISO(el.dateTime);
+            const timeB = parseISO(el.getAttribute('data-compare-to'));
 
-            const relativeTime = distanceInWords(timeA, timeB, { locale });
+            const relativeTime = formatDistance(timeA, timeB, { locale });
 
             const format = isBefore(timeB, timeA)
                 ? 'time.later_format'
@@ -45,7 +45,7 @@ function loadDateFnsLocale(lang = document.documentElement.lang || 'en') {
     }
 
     return import(`date-fns/locale/${lang}/index.js`)
-        .then(locale => locale)
+        .then(({ default: locale }) => locale)
         .catch(() => {
             const i = lang.indexOf('-');
 
