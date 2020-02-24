@@ -6,6 +6,10 @@ if [ "${1#-}" != "$1" ]; then
     set -- php-fpm "$@"
 fi
 
+if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
+    RUN_MIGRATIONS=1
+fi
+
 if [ -n "$SU_USER" ] && [ "$(id -u)" -eq 0 ]; then
     setfacl -R -m u:www-data:rwX -m u:"$SU_USER":rwX $POSTMILL_WRITE_DIRS
     setfacl -dR -m u:www-data:rwX -m u:"$SU_USER":rwX $POSTMILL_WRITE_DIRS
@@ -13,7 +17,7 @@ if [ -n "$SU_USER" ] && [ "$(id -u)" -eq 0 ]; then
     set -- su-exec "$SU_USER" "$@"
 fi
 
-if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
+if [ -n "$RUN_MIGRATIONS" ]; then
     echo "Waiting for db to be ready..."
     until bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; do
         sleep 1

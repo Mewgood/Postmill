@@ -116,7 +116,8 @@ ENV APP_BRANCH=${APP_BRANCH} \
         /app/var/cache/prod/pools \
         /app/var/log \
         /app/var/sessions \
-    "
+    " \
+    SU_USER=www-data
 
 RUN set -eux; \
     apk add --no-cache \
@@ -127,11 +128,10 @@ RUN set -eux; \
         echo 'opcache.validate_timestamps = Off'; \
         echo 'realpath_cache_size = 4096K'; \
         echo 'realpath_cache_ttl = 600'; \
-        # Uncomment and change version number when preloading becomes stable
-        #if php -r 'die(PHP_VERSION_ID >= 70401 ? 0 : 1);'; then \
-        #    echo 'opcache.preload = /app/var/cache/prod/srcApp_KernelProdContainer.preload.php'; \
-        #    echo 'opcache.preload_user = www-data'; \
-        #fi; \
+        if php -r 'die(PHP_VERSION_ID >= 70403 ? 0 : 1);'; then \
+            echo 'opcache.preload = /app/var/cache/prod/srcApp_KernelProdContainer.preload.php'; \
+            echo 'opcache.preload_user = "${SU_USER}"'; \
+        fi; \
     } >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
     cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
     composer install \
