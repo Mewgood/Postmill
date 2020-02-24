@@ -1,4 +1,4 @@
-import { formatDistance, formatDistanceToNow, isBefore, parseISO } from 'date-fns';
+import { formatDistanceStrict, isBefore, parseISO } from 'date-fns';
 import translator from 'bazinga-translator';
 
 /**
@@ -7,7 +7,10 @@ import translator from 'bazinga-translator';
 export function makeTimesRelative(el) {
     loadDateFnsLocale().then(locale => {
         el.querySelectorAll('.js-relative-time').forEach(el => {
-            const relativeTime = formatDistanceToNow(parseISO(el.dateTime), {
+            const then = parseISO(el.dateTime);
+            const now = new Date();
+
+            const relativeTime = formatDistanceStrict(then, now, {
                 addSuffix: true,
                 locale,
             });
@@ -21,7 +24,7 @@ export function makeTimesRelative(el) {
             const timeA = parseISO(el.dateTime);
             const timeB = parseISO(el.getAttribute('data-compare-to'));
 
-            const relativeTime = formatDistance(timeA, timeB, { locale });
+            const relativeTime = formatDistanceStrict(timeA, timeB, { locale });
 
             const format = isBefore(timeB, timeA)
                 ? 'time.later_format'
