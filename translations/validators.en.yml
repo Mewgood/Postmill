@@ -7,4 +7,5 @@ ip.invalid: The IP address is not valid.
 ip.invalid_cidr_mask: The CIDR mask is not valid.
 ratelimit.error: You cannot post more. Wait a while before trying again.
 user.already_moderator: That user is already a moderator.
+user.none_by_username: No such user
 user.rate_limit: You cannot create new accounts at this time. Please try again later.

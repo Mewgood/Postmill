@@ -1,3 +1,4 @@
 comment.empty: Kommentaren må ikke være tom.
 forum.name_characters: Navnet må inneholde kun bokstaver, tall og understreker.
+user.none_by_username: Ingen slik bruker
 user.rate_limit: Du kan ikke opprette nye kontoer for øyeblikket. Vennligst prøv igjen senere.

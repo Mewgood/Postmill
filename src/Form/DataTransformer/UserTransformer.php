@@ -5,6 +5,7 @@ namespace App\Form\DataTransformer;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * Transforms usernames into {@link User} objects and vice versa.
@@ -28,10 +29,19 @@ class UserTransformer implements DataTransformerInterface {
     }
 
     public function reverseTransform($value): ?User {
-        if ((string) $value !== '') {
-            return $this->userRepository->loadUserByUsername($value);
+        if ($value === null || $value === '') {
+            return null;
         }
 
-        return null;
+        $user = $this->userRepository->loadUserByUsername($value);
+
+        if (!$user) {
+            $e = new TransformationFailedException('No such user');
+            $e->setInvalidMessage('user.none_by_username');
+
+            throw $e;
+        }
+
+        return $user;
     }
 }
