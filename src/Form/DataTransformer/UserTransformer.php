@@ -25,6 +25,10 @@ class UserTransformer implements DataTransformerInterface {
             return $value->getUsername();
         }
 
+        if ($value !== null) {
+            throw new \InvalidArgumentException('$value must be '.User::class.' or null');
+        }
+
         return null;
     }
 
