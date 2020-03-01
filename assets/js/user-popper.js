@@ -45,15 +45,15 @@ const elements = [...document.querySelectorAll(TARGETS)].filter(el => (
 ));
 
 tippy(elements, {
+    allowHTML: true,
     content: '…',
     delay: 250,
-    flipOnUpdate: true,
     interactive: true,
     theme: 'postmill',
 
     // props that keep this desktop-only
     appendTo: document.body,
-    aria: null,
+    aria: { content: null },
     touch: false,
     trigger: 'mouseenter',
 
