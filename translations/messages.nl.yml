@@ -26,7 +26,6 @@ ban_list.timestamp: Tijd
 ban_list.user: Gebruiker
 ban_list.user_none: geen
 
-banned.message: Je bent verbannen!
 banned.title: Verbannen
 
 comments.comments: Reacties

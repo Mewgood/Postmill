@@ -33,7 +33,6 @@ ban_list.timestamp: Hora
 ban_list.user: Usuário
 ban_list.user_none: nenhum
 
-banned.message: Você foi banido!
 banned.title: Banido
 
 comments.comments: Comentários

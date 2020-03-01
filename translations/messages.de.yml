@@ -25,7 +25,6 @@ ban_list.timestamp: Zeit
 ban_list.user: Benutzer
 ban_list.user_none: kein
 
-banned.message: Du wurdest gesperrt!
 banned.title: Gesperrt
 
 comments.comments: Kommentare

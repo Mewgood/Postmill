@@ -83,6 +83,8 @@ class UserBan {
         $this->bannedBy = $bannedBy;
         $this->expires = $expires;
         $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+
+        $user->addBan($this);
     }
 
     public function getId(): Uuid {

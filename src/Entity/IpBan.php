@@ -88,6 +88,10 @@ class IpBan {
         return $this->ip;
     }
 
+    public function isRangeBan(): bool {
+        return strpos($this->ip, '/') !== false;
+    }
+
     public function getReason(): string {
         return $this->reason;
     }

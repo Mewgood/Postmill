@@ -61,8 +61,14 @@ ban_list.timestamp: Time
 ban_list.user: User
 ban_list.user_none: none
 
-banned.message: You are banned!
+banned.banned_account: Your account has been banned.
+banned.banned_ip: '{1} Your IP address, %ip%, has been banned.|]1,Inf[ Your IP address, %ip%, has %formatted_count% bans on record:'
+banned.set_on_date: Ban set on %date%.
+banned.set_on_date_for_range: IP range ban set on %date%.
 banned.title: Banned
+banned.whitelisted: These bans won't apply to you, as you are whitelisted.
+banned.will_expire: This ban will expire on %date%.
+banned.will_not_expire: This ban will not expire.
 
 comments.comments: Comments
 comments.context.comment_reply: Reply to comment by %comment_author% in %submission_title% by %submission_author%

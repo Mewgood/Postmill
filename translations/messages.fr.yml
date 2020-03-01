@@ -44,7 +44,6 @@ ban_list.timestamp: Heure
 ban_list.user: Compte
 ban_list.user_none: aucun
 
-banned.message: Vous êtes banni!
 banned.title: Banni
 
 comments.comments: Commentaires

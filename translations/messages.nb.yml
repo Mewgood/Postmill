@@ -61,8 +61,14 @@ ban_list.timestamp: Tid
 ban_list.user: Bruker
 ban_list.user_none: ingen
 
-banned.message: Du har blitt utestengt!
+banned.banned_account: Din konto har blitt utestengt
+banned.banned_ip: '{1} Din IP-adresse, %ip%, har blitt utestengt.|]1,Inf[ Din IP-adresse, %ip%, har %formatted_count% aktive utestengelser:'
+banned.set_on_date: Utestengelse siden %date%.
+banned.set_on_date_for_range: Utestengelse for IP-subnett siden %date%.
 banned.title: Utestengt
+banned.whitelisted: Disse utestengelsene vil ikke påvirke deg, ettersom du har blitt hvitelistet.
+banned.will_expire: Denne utestengelsen vil utløpe på %date%.
+banned.will_not_expire: Denne utestengelsen vil ikke utløpe.
 
 comments.comments: Kommentarer
 comments.context.comment_reply: Reply to comment by %comment_author% in %submission_title% by %submission_author%

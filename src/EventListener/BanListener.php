@@ -2,15 +2,14 @@
 
 namespace App\EventListener;
 
-use App\Controller\BanLandingPageController;
 use App\Entity\User;
 use App\Repository\IpBanRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Show the user a landing page if they are banned.
@@ -22,14 +21,14 @@ final class BanListener implements EventSubscriberInterface {
     private $repository;
 
     /**
-     * @var AuthorizationCheckerInterface
+     * @var Security
      */
-    private $authorizationChecker;
+    private $security;
 
     /**
-     * @var TokenStorageInterface
+     * @var UrlGeneratorInterface
      */
-    private $tokenStorage;
+    private $urlGenerator;
 
     public static function getSubscribedEvents(): array {
         return [
@@ -41,12 +40,12 @@ final class BanListener implements EventSubscriberInterface {
 
     public function __construct(
         IpBanRepository $repository,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
+        Security $security,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->repository = $repository;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function onKernelRequest(RequestEvent $event): void {
@@ -60,12 +59,12 @@ final class BanListener implements EventSubscriberInterface {
             return;
         }
 
-        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
-            /* @var User $user */
-            $user = $this->tokenStorage->getToken()->getUser();
+        if ($this->security->isGranted('ROLE_USER')) {
+            $user = $this->security->getUser();
+            \assert($user instanceof User);
 
             if ($user->isBanned()) {
-                $this->setController($request);
+                $event->setResponse($this->getRedirectResponse());
 
                 return;
             }
@@ -77,11 +76,11 @@ final class BanListener implements EventSubscriberInterface {
         }
 
         if ($this->repository->ipIsBanned($request->getClientIp())) {
-            $this->setController($request);
+            $event->setResponse($this->getRedirectResponse());
         }
     }
 
-    private function setController(Request $request): void {
-        $request->attributes->set('_controller', BanLandingPageController::class);
+    private function getRedirectResponse(): RedirectResponse {
+        return new RedirectResponse($this->urlGenerator->generate('banned'));
     }
 }

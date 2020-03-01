@@ -43,7 +43,6 @@ ban_list.timestamp: Tiempo
 ban_list.user: Usuaria
 ban_list.user_none: ninguna
 
-banned.message: ¡Has sido vetada!
 banned.title: Vetada
 
 comments.comments: Comentarios

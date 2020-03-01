@@ -27,7 +27,6 @@ ban_list.timestamp: Aika
 ban_list.user: Käyttäjä
 ban_list.user_none: ei ole
 
-banned.message: Olet saanut porttikiellon.
 banned.title: Bannattu
 
 comments.comments: Kommentit

@@ -28,8 +28,21 @@ class IpBanRepository extends ServiceEntityRepository {
         return $bans;
     }
 
+    public function findActiveBans(string $ip): array {
+        $now = new \DateTimeImmutable('@'.time());
+
+        $qb = $this->createQueryBuilder('b');
+        $qb
+            ->where('InetContainsOrEquals(b.ip, :ip) = TRUE')
+            ->andWhere($qb->expr()->orX('b.expires IS NULL', 'b.expires >= :now'))
+            ->setParameter('ip', $ip, 'inet')
+            ->setParameter('now', $now, Types::DATETIMETZ_IMMUTABLE);
+
+        return $qb->getQuery()->execute();
+    }
+
     public function ipIsBanned(string $ip): bool {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('@'.time());
 
         $qb = $this->createQueryBuilder('b');
         $qb
