@@ -27,6 +27,7 @@ final class IpBanType extends AbstractType {
                 'label' => 'label.ip_address',
             ])
             ->add('reason', TextType::class, [
+                'help' => 'help.ban_reason',
                 'label' => 'label.reason_for_banning',
             ])
             ->add('expiryDate', DateTimeType::class, [

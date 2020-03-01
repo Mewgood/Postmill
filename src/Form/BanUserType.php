@@ -16,6 +16,7 @@ class BanUserType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('reason', TextareaType::class, [
+                'help' => 'help.ban_reason',
                 'label' => 'label.reason',
             ])
             ->add('expiresAt', DateTimeType::class, [

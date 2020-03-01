@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ForumBanType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder->add('reason', TextareaType::class, [
+            'help' => $options['intent'] === 'ban' ? 'help.ban_reason_logged' : null,
             'label' => 'label.reason',
         ]);
 
