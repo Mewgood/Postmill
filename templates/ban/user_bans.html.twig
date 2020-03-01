@@ -30,8 +30,8 @@
       <td class="table__shrink">{{ user_link(item.bannedBy) }}</td>
       <td class="table__shrink">{{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}</td>
       <td class="table__shrink">
-        {% if item.expiresAt %}
-          {{ relative_time(item.expiresAt, { date_format: 'short', time_format: 'short' }) }}
+        {% if item.expires %}
+          {{ relative_time(item.expires, { date_format: 'short', time_format: 'short' }) }}
         {% else %}
           <small class="fg-muted text-sm">{{ 'label.never'|trans }}</small>
         {% endif %}

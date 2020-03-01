@@ -18,7 +18,7 @@ class ForumBanType extends AbstractType {
         ]);
 
         if ($options['intent'] === 'ban') {
-            $builder->add('expiryTime', DateTimeType::class, [
+            $builder->add('expires', DateTimeType::class, [
                 'label' => 'label.expires',
                 'date_widget' => 'single_text',
                 'time_widget' => 'single_text',

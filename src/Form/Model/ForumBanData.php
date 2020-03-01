@@ -19,10 +19,10 @@ class ForumBanData {
     /**
      * @var \DateTimeImmutable|null
      */
-    private $expiryTime;
+    private $expires;
 
     public function toBan(Forum $forum, User $user, User $bannedBy): ForumBan {
-        return new ForumBan($forum, $user, $this->reason, true, $bannedBy, $this->expiryTime);
+        return new ForumBan($forum, $user, $this->reason, true, $bannedBy, $this->expires);
     }
 
     public function toUnban(Forum $forum, User $user, User $bannedBy): ForumBan {
@@ -37,15 +37,15 @@ class ForumBanData {
         $this->reason = $reason;
     }
 
-    public function getExpiryTime(): ?\DateTimeImmutable {
-        return $this->expiryTime;
+    public function getExpires(): ?\DateTimeImmutable {
+        return $this->expires;
     }
 
-    public function setExpiryTime(?\DateTimeInterface $expiryTime): void {
-        if ($expiryTime instanceof \DateTime) {
-            $expiryTime = \DateTimeImmutable::createFromMutable($expiryTime);
+    public function setExpires(?\DateTimeInterface $expires): void {
+        if ($expires instanceof \DateTime) {
+            $expires = \DateTimeImmutable::createFromMutable($expires);
         }
 
-        $this->expiryTime = $expiryTime;
+        $this->expires = $expires;
     }
 }

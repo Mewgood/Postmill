@@ -39,8 +39,8 @@
         <td class="table__shrink"><label for="ban_{{ item.id }}">{{ item.ip }}</label></td>
         <td class="table__shrink">{{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}</td>
         <td class="table__shrink">
-          {% if item.expiryDate %}
-            {{ relative_time(item.expiryDate, { date_format: 'short', time_format: 'short' }) }}
+          {% if item.expires %}
+            {{ relative_time(item.expires, { date_format: 'short', time_format: 'short' }) }}
           {% else %}
             <small class="fg-muted text-sm">{{ 'ban_list.expires_never'|trans }}</small>
           {% endif %}

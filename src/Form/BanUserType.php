@@ -19,7 +19,7 @@ class BanUserType extends AbstractType {
                 'help' => 'help.ban_reason',
                 'label' => 'label.reason',
             ])
-            ->add('expiresAt', DateTimeType::class, [
+            ->add('expires', DateTimeType::class, [
                 'date_widget' => 'single_text',
                 'label' => 'label.expires',
                 'required' => false,

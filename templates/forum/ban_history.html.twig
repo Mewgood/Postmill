@@ -29,8 +29,8 @@
         {{ relative_time(item.timestamp, { date_format: 'short', time_format: 'none' }) }}
       </td>
       <td class="table__shrink">
-        {% if item.expiryTime %}
-          {{ relative_time(item.expiryTime, { date_format: 'short' }) }}
+        {% if item.expires %}
+          {{ relative_time(item.expires, { date_format: 'short' }) }}
         {% else %}
           <small class="fg-muted text-sm">{{ 'label.never'|trans }}</small>
         {% endif %}

@@ -65,11 +65,11 @@ class ForumBan {
     private $timestamp;
 
     /**
-     * @ORM\Column(type="datetimetz_immutable", nullable=true)
+     * @ORM\Column(name="expires_at", type="datetimetz_immutable", nullable=true)
      *
      * @var \DateTimeImmutable|null
      */
-    private $expiresAt;
+    private $expires;
 
     public function __construct(
         Forum $forum,
@@ -77,14 +77,14 @@ class ForumBan {
         string $reason,
         bool $banned,
         User $bannedBy,
-        \DateTimeInterface $expiresAt = null
+        \DateTimeInterface $expires = null
     ) {
-        if (!$banned && $expiresAt) {
+        if (!$banned && $expires) {
             throw new \DomainException('Unbans cannot have expiry times');
         }
 
-        if ($expiresAt instanceof \DateTime) {
-            $expiresAt = \DateTimeImmutable::createFromMutable($expiresAt);
+        if ($expires instanceof \DateTime) {
+            $expires = \DateTimeImmutable::createFromMutable($expires);
         }
 
         $this->id = Uuid::uuid4();
@@ -93,7 +93,7 @@ class ForumBan {
         $this->reason = $reason;
         $this->banned = $banned;
         $this->bannedBy = $bannedBy;
-        $this->expiresAt = $expiresAt;
+        $this->expires = $expires;
 
         // since the last ban takes precedence, and because timestamps are used
         // for sorting, we'll use microseconds to hopefully avoid collisions
@@ -128,15 +128,15 @@ class ForumBan {
         return $this->timestamp;
     }
 
-    public function getExpiryTime(): ?\DateTimeImmutable {
-        return $this->expiresAt;
+    public function getExpires(): ?\DateTimeImmutable {
+        return $this->expires;
     }
 
     public function isExpired(): bool {
-        if ($this->expiresAt === null) {
+        if ($this->expires === null) {
             return false;
         }
 
-        return $this->expiresAt->getTimestamp() < time();
+        return $this->expires->getTimestamp() < time();
     }
 }

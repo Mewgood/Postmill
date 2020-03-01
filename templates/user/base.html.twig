@@ -76,8 +76,8 @@
 
         <dt>{{ 'label.expires'|trans }}</dt>
         <dd>
-          {%- if active_ban.expiresAt -%}
-            {{ relative_time(active_ban.expiresAt) }}
+          {%- if active_ban.expires -%}
+            {{ relative_time(active_ban.expires) }}
           {%- else -%}
             <small class="fg-muted text-md">{{ 'label.never'|trans }}</small>
           {%- endif -%}

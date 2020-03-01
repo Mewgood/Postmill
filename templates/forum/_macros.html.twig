@@ -80,7 +80,7 @@
     {{ 'log.ban'|trans({
       '%user%': user_link(entry.user, {flag: entry.wasAdmin ? 'admin' : 'moderator'}),
       '%banned%': user_link(entry.ban.user),
-      '%expires%': entry.ban.expiryTime ? relative_time_diff(entry.ban.expiryTime, entry.ban.timestamp) : 'label.never'|trans,
+      '%expires%': entry.ban.expires ? relative_time_diff(entry.ban.expires, entry.ban.timestamp) : 'label.never'|trans,
       '%reason%': entry.ban.reason|e,
     })|raw }}
     {% if entry.ban.expired %}</del>{% endif %}

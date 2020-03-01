@@ -34,7 +34,7 @@ class ForumBanRepository extends ServiceEntityRepository {
             ->where('b.timestamp IS NULL')
             ->andWhere('m.banned = TRUE')
             ->andWhere('m.forum = :forum')
-            ->andWhere('m.expiresAt IS NULL OR m.expiresAt >= :now')
+            ->andWhere('m.expires IS NULL OR m.expires >= :now')
             ->orderBy('m.timestamp', 'DESC')
             ->setParameter('forum', $forum)
             ->setParameter('now', $now, Types::DATETIMETZ_IMMUTABLE);
@@ -61,7 +61,7 @@ class ForumBanRepository extends ServiceEntityRepository {
             ->where('b.timestamp IS NULL')
             ->andWhere('m.banned = TRUE')
             ->andWhere('m.user = :user')
-            ->andWhere('m.expiresAt IS NULL OR m.expiresAt >= :now')
+            ->andWhere('m.expires IS NULL OR m.expires >= :now')
             ->orderBy('m.timestamp', 'DESC')
             ->setParameter('user', $user)
             ->setParameter('now', $now, Types::DATETIMETZ_IMMUTABLE);

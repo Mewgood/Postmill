@@ -55,28 +55,28 @@ class IpBan {
     private $timestamp;
 
     /**
-     * @ORM\Column(type="datetimetz_immutable", nullable=true)
+     * @ORM\Column(name="expiry_date", type="datetimetz_immutable", nullable=true)
      *
      * @var \DateTimeImmutable
      */
-    private $expiryDate;
+    private $expires;
 
     public function __construct(
         string $ip,
         string $reason,
         ?User $user,
         User $bannedBy,
-        \DateTimeInterface $expiryDate = null
+        \DateTimeInterface $expires = null
     ) {
-        if ($expiryDate instanceof \DateTime) {
-            $expiryDate = \DateTimeImmutable::createFromMutable($expiryDate);
+        if ($expires instanceof \DateTime) {
+            $expires = \DateTimeImmutable::createFromMutable($expires);
         }
 
         $this->ip = $ip;
         $this->reason = $reason;
         $this->user = $user;
         $this->bannedBy = $bannedBy;
-        $this->expiryDate = $expiryDate;
+        $this->expires = $expires;
         $this->timestamp = new \DateTimeImmutable('@'.time());
     }
 
@@ -104,7 +104,7 @@ class IpBan {
         return $this->timestamp;
     }
 
-    public function getExpiryDate(): ?\DateTimeImmutable {
-        return $this->expiryDate;
+    public function getExpires(): ?\DateTimeImmutable {
+        return $this->expires;
     }
 }

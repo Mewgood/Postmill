@@ -27,7 +27,7 @@ class IpBanData {
     /**
      * @var \DateTimeInterface|null
      */
-    public $expiryDate;
+    public $expires;
 
     /**
      * @var User|null
@@ -40,7 +40,7 @@ class IpBanData {
             $this->reason,
             $this->user,
             $bannedBy,
-            $this->expiryDate
+            $this->expires
         );
     }
 }

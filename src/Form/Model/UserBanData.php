@@ -25,14 +25,14 @@ class UserBanData {
      */
     public $reason;
 
-    public $expiresAt;
+    public $expires;
 
     public function __construct(iterable $ips = null) {
         $this->ips = $ips;
     }
 
     public function toUserBan(User $user, User $bannedBy, bool $ban): UserBan {
-        return new UserBan($user, $this->reason, $ban, $bannedBy, $this->expiresAt);
+        return new UserBan($user, $this->reason, $ban, $bannedBy, $this->expires);
     }
 
     /**
@@ -40,7 +40,7 @@ class UserBanData {
      */
     public function toIpBans(User $user, User $bannedBy): iterable {
         foreach ($this->ips as $ip) {
-            yield new IpBan($ip, $this->reason, $user, $bannedBy, $this->expiresAt);
+            yield new IpBan($ip, $this->reason, $user, $bannedBy, $this->expires);
         }
     }
 

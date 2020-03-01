@@ -105,8 +105,8 @@ class ForumControllerTest extends WebTestCase {
 
         $client->submit($crawler->selectButton('Ban')->form([
             'forum_ban[reason]' => 'troll',
-            'forum_ban[expiryTime][date]' => '3017-07-07',
-            'forum_ban[expiryTime][time]' => '12:00',
+            'forum_ban[expires][date]' => '3017-07-07',
+            'forum_ban[expires][time]' => '12:00',
         ]));
 
         self::assertResponseRedirects('/f/news/bans');
