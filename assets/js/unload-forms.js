@@ -10,13 +10,14 @@ const FIELDS = [
 ].map(f => '.form ' + f).join(', ');
 
 const widgetsChanged = new Set();
-let hasBeforeUnloadListener = false;
 
 function onBeforeUnload(event) {
-    event.preventDefault();
-    event.returnValue = "Leave the page? You'll lose your changes.";
+    if (widgetsChanged.size > 0) {
+        event.preventDefault();
+        event.returnValue = "Leave the page? You'll lose your changes.";
 
-    return event.returnValue;
+        return event.returnValue;
+    }
 }
 
 function onChange(event) {
@@ -32,26 +33,15 @@ function onChange(event) {
     } else if (widgetsChanged.has(fieldEl)) {
         widgetsChanged.delete(fieldEl);
     }
-
-    if (!hasBeforeUnloadListener && widgetsChanged.size > 0) {
-        addEventListener('beforeunload', onBeforeUnload);
-
-        hasBeforeUnloadListener = true;
-    } else if (hasBeforeUnloadListener && widgetsChanged.size === 0) {
-        removeEventListener('beforeunload', onBeforeUnload);
-
-        hasBeforeUnloadListener = false;
-    }
 }
 
 function onSubmit(event) {
     if (event.target.closest('.form')) {
         removeEventListener('beforeunload', onBeforeUnload);
-
-        hasBeforeUnloadListener = false;
     }
 }
 
+addEventListener('beforeunload', onBeforeUnload);
 addEventListener('change', onChange);
 addEventListener('input', onChange);
 addEventListener('submit', onSubmit);
