@@ -5,43 +5,46 @@ namespace App\Tests\EventListener;
 use App\EventListener\PagerfantaExceptionListener;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * @covers \App\EventListener\PagerfantaExceptionListener
  */
 class PagerfantaExceptionListenerTest extends TestCase {
     public function testSetsExceptionOnPagerfantaException(): void {
-        $pagerException = new OutOfRangeCurrentPageException();
+        $e = new OutOfRangeCurrentPageException();
 
-        $event = $this->createMock(ExceptionEvent::class);
-        $event
-            ->expects($this->once())
-            ->method('getThrowable')
-            ->willReturn($pagerException);
-        $event
-            ->expects($this->once())
-            ->method('setThrowable')
-            ->with(
-                $this->callback(function (NotFoundHttpException $e) use ($pagerException) {
-                    return $e->getPrevious() === $pagerException;
-                })
-            );
+        /** @var HttpKernelInterface|\PHPUnit\Framework\MockObject\MockObject $kernel */
+        $kernel = $this->createMock(HttpKernelInterface::class);
+        $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $e);
 
         (new PagerfantaExceptionListener())->onKernelException($event);
+
+        $this->assertInstanceOf(NotFoundHttpException::class, $event->getThrowable());
+        $this->assertSame($e, $event->getThrowable()->getPrevious());
     }
 
     public function testIgnoresExceptionIfNotPagerfanta(): void {
-        $event = $this->createMock(ExceptionEvent::class);
-        $event
-            ->expects($this->once())
-            ->method('getThrowable')
-            ->willReturn(new \Exception());
-        $event
-            ->expects($this->never())
-            ->method('setThrowable');
+        $e = new \Exception();
+        $event = $this->createExceptionEvent($e);
 
         (new PagerfantaExceptionListener())->onKernelException($event);
+
+        $this->assertSame($e, $event->getThrowable());
+    }
+
+    private function createExceptionEvent(\Throwable $throwable): ExceptionEvent {
+        /** @var HttpKernelInterface|\PHPUnit\Framework\MockObject\MockObject $kernel */
+        $kernel = $this->createMock(HttpKernelInterface::class);
+
+        return new ExceptionEvent(
+            $kernel,
+            new Request(),
+            HttpKernelInterface::MASTER_REQUEST,
+            $throwable
+        );
     }
 }
