@@ -120,7 +120,6 @@ heading.message_reply: "%sender% respondeu %timestamp%"
 heading.message_thread: "%sender% escreveu para %receiver% %timestamp%"
 heading.multi_forum_view: Visulização multi fórum
 
-help.block_users: Bloquear usuários impede que eles lhe enviem mensagens privadas, e você não receberá notificações quando eles lhe responderem.
 help.delete_forum_warning: Todo o conteúdo deste fórum será apagado permanentemente!
 help.forum_description: Uma curta descrição dp fórum. Motores de busca vão mostrar esta descrição nos resultados.
 

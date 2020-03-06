@@ -30,14 +30,35 @@ class CriteriaTest extends TestCase {
         new Criteria($sortMode);
     }
 
-    public function testExcludeHiddenForums(): void {
+    /**
+     * @dataProvider provideExcludeMethods
+     */
+    public function testExcludeHiddenForums(string $method, int $flag): void {
         $criteria = $this->createCriteria();
-        $criteria->excludeHiddenForums();
+        $criteria->$method();
 
-        $this->assertSame(
-            Criteria::EXCLUDE_HIDDEN_FORUMS,
-            $criteria->getExclusions() & Criteria::EXCLUDE_HIDDEN_FORUMS
-        );
+        $this->assertSame($flag, $criteria->getExclusions() & $flag);
+    }
+
+    /**
+     * @dataProvider provideExcludeMethods
+     */
+    public function testExcludeMethodsCannotBeCalledTwice(string $method): void {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('This method was already called');
+
+        $this->createCriteria()->$method()->$method();
+    }
+
+    public function testExcludeMethodsCanBeCombined(): void {
+        $criteria = $this->createCriteria();
+        $flags = 0;
+        foreach ($this->provideExcludeMethods() as [$method, $flag]) {
+            $criteria->$method();
+            $flags += $flag;
+        }
+
+        $this->assertSame($flags, $criteria->getExclusions());
     }
 
     public function testExcludeHiddenForumsCannotBeCalledTwice(): void {
@@ -124,6 +145,11 @@ class CriteriaTest extends TestCase {
         $this->expectExceptionMessage("Unknown sort mode 'poop");
 
         new Criteria('poop');
+    }
+
+    public function provideExcludeMethods(): iterable {
+        yield ['excludeHiddenForums', Criteria::EXCLUDE_HIDDEN_FORUMS];
+        yield ['excludeBlockedUsers', Criteria::EXCLUDE_BLOCKED_USERS];
     }
 
     public function provideGettersThatCannotBeAccessedBeforeMutatorHasBeenCalled(): iterable {

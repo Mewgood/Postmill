@@ -7,6 +7,7 @@ use App\Entity\ForumSubscription;
 use App\Entity\Moderator;
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Entity\UserBlock;
 use App\Pagination\Adapter\DoctrineAdapter;
 use App\Pagination\DTO\SubmissionPage;
 use App\Pagination\Pager;
@@ -204,9 +205,21 @@ final class SubmissionFinder {
         }
 
         $user = $this->getUser(false);
-        if ($user && $criteria->getExclusions() & Criteria::EXCLUDE_HIDDEN_FORUMS) {
-            $qb->andWhere('s.forum NOT IN (SELECT hf FROM '.User::class.' u JOIN u.hiddenForums AS hf WHERE u = :user)');
-            $qb->setParameter('user', $user);
+
+        if ($user) {
+            $exclusions = $criteria->getExclusions();
+
+            if ($exclusions & Criteria::EXCLUDE_HIDDEN_FORUMS) {
+                $qb->andWhere('s.forum NOT IN (SELECT hf FROM '.User::class.' u JOIN u.hiddenForums AS hf WHERE u = :user)');
+            }
+
+            if ($exclusions & Criteria::EXCLUDE_BLOCKED_USERS) {
+                $qb->andWhere('s.user NOT IN (SELECT IDENTITY(ub.blocked) FROM '.UserBlock::class.' ub WHERE ub.blocker = :user)');
+            }
+
+            if ($exclusions) {
+                $qb->setParameter('user', $user);
+            }
         }
     }
 

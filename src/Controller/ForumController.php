@@ -46,7 +46,8 @@ final class ForumController extends AbstractController {
     public function front(Forum $forum, ?string $sortBy, string $_format): Response {
         $criteria = (new Criteria($sortBy))
             ->showForums($forum)
-            ->stickiesFirst();
+            ->stickiesFirst()
+            ->excludeBlockedUsers();
 
         $submissions = $this->submissionFinder->find($criteria);
 
@@ -66,7 +67,8 @@ final class ForumController extends AbstractController {
         }
 
         $criteria = (new Criteria($sortBy))
-            ->showForums(...$forums);
+            ->showForums(...$forums)
+            ->excludeBlockedUsers();
 
         $submissions = $this->submissionFinder->find($criteria);
 

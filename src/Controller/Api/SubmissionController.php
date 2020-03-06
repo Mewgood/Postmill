@@ -34,16 +34,22 @@ final class SubmissionController extends AbstractController {
 
         switch ($request->query->get('filter', $this->getUser()->getFrontPage())) {
         case Submission::FRONT_FEATURED:
-            $criteria->showFeatured()->excludeHiddenForums();
+            $criteria
+                ->showFeatured()
+                ->excludeHiddenForums();
             break;
         case Submission::FRONT_SUBSCRIBED:
-            $criteria->showSubscribed();
+            $criteria
+                ->showSubscribed()
+                ->excludeBlockedUsers();
             break;
         case Submission::FRONT_MODERATED:
             $criteria->showModerated();
             break;
         case Submission::FRONT_ALL:
-            $criteria->excludeHiddenForums();
+            $criteria
+                ->excludeHiddenForums()
+                ->excludeBlockedUsers();
             break;
         default:
             return $this->json(['message' => 'unknown filter mode', 400]);

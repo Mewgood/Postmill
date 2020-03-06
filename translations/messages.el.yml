@@ -124,7 +124,6 @@ heading.message_reply: "%sender% απάντησε στον %timestamp%"
 heading.message_thread: "%sender% έγραψε στον %receiver% %timestamp%"
 heading.multi_forum_view: Εμφάνιση πολλαπλών φόρουμ
 
-help.block_users: Ο αποκλεισμός χρηστών τους εμποδίζει να σας στέλνουν προσωπικά μηνύματα και δεν θα λαμβάνετε ειδοποιήσεις όταν σας απαντούν.
 help.delete_forum_warning: Όλο το περιεχόμενο σε αυτό το φόρουμ θα διαγραφεί για πάντα!
 help.forum_description: Σύντομη περιγραφή του φόρουμ. Οι μηχανές αναζήτησης θα παρουσιάσουν αυτήν την περιγραφή στα αποτελέσματά τους.
 

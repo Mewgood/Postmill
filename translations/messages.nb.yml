@@ -207,7 +207,7 @@ heading.whitelisting: Hvitelisting
 help.allow_private_messages: Om deaktivert, så vil kun administratorer, dine med-moderatorer og moderatorer av fora du nylig har deltatt i kunne sende deg private meldinger.
 help.ban_reason: Dette vil ikke vises til den utestengte brukeren.
 help.ban_reason_logged: Dette vil ikke vises til den utestengte brukeren, men det vil vises i den offentlige moderasjonsloggen.
-help.block_users: Å blokkere brukere forhindrer dem i å sende deg private meldinger, og du vil heller ikke bli varslet når de svarer deg.
+help.blocking_users: Blokkering av brukere skjuler postene deres, forhindrer dem i å sende deg private meldinger, og du vil ikke bli varslet når de svarer på postene dine. De kan fortsatt se de offentlige postene dine.
 help.delete_forum_warning: All innhold på dette forumet vil bli permanent slettet!
 help.forum_description: En kort beskrivelse av dette forumet. Søkemotorer vil vise dette i sine resultarer.
 help.forum_is_featured: Dette forumet vises på forsiden.

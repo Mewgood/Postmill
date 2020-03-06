@@ -139,7 +139,6 @@ heading.message_reply: "%sender% a répondu %timestamp%"
 heading.message_thread: "%sender% a écrit à %receiver% %timestamp%"
 heading.multi_forum_view: Vue multi-forum
 
-help.block_users: Bloquer un utilisateur l'empêche de vous envoyer des messages privés, et vous ne recevrez pas de notifications lorsqu'ils vous répondent.
 help.delete_forum_warning: Tout le contenu de ce forum sera supprimé pour toujours!
 help.forum_description: Une courte description du forum. Les moteurs de recherche afficheront cette description dans leurs résultats.
 help.will_appear_in_the_url: Apparaîtra dans l'URL.

@@ -15,7 +15,7 @@ final class Criteria {
     public const VIEW_USERS = 6;
 
     public const EXCLUDE_HIDDEN_FORUMS = 1;
-    //public const EXCLUDE_BLOCKED_USERS = 2; // TODO
+    public const EXCLUDE_BLOCKED_USERS = 2;
 
     /**
      * @var string
@@ -120,6 +120,16 @@ final class Criteria {
         }
 
         $this->exclude |= self::EXCLUDE_HIDDEN_FORUMS;
+
+        return $this;
+    }
+
+    public function excludeBlockedUsers(): self {
+        if ($this->exclude & self::EXCLUDE_BLOCKED_USERS) {
+            throw new \BadMethodCallException('This method was already called');
+        }
+
+        $this->exclude |= self::EXCLUDE_BLOCKED_USERS;
 
         return $this;
     }

@@ -208,7 +208,7 @@ heading.whitelisting: Whitelisting
 help.allow_private_messages: If disabled, only admins, co-moderators, and moderators of forums you've recently participated in will be able to send you private messages.
 help.ban_reason: This will not be displayed to the banned user.
 help.ban_reason_logged: This will not be displayed to the banned user, but it will be displayed in the public moderation log.
-help.block_users: Blocking users prevents them from sending you private messages, and you won't receive notifications when they reply to you.
+help.blocking_users: Blocking a user hides their posts, prevents them from sending you private messages, and you won't receive notifications when they reply to you. They can still view your public posts.
 help.delete_forum_warning: All content on this forum will be irreversibly deleted!
 help.forum_description: A short description of the forum. Search engines will present this description in their results.
 help.forum_is_featured: This forum is featured.

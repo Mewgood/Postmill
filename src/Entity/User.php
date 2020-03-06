@@ -226,7 +226,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     private $preferredTheme;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserBlock", mappedBy="blocker", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="UserBlock", mappedBy="blocker", cascade={"persist"}, fetch="EXTRA_LAZY", orphanRemoval=true)
      * @ORM\OrderBy({"timestamp": "DESC"})
      *
      * @var UserBlock[]|Collection|Selectable
@@ -626,6 +626,8 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     }
 
     public function isBlocking(self $user): bool {
+        $this->blocks->get(-1); // hydrate collection
+
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('blocked', $user));
 

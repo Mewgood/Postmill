@@ -57,6 +57,7 @@ final class FrontController extends AbstractController {
     public function featured(?string $sortBy, string $_format): Response {
         $criteria = (new Criteria($sortBy))
             ->showFeatured()
+            ->excludeBlockedUsers()
             ->excludeHiddenForums();
 
         $submissions = $this->submissionFinder->find($criteria);
@@ -81,6 +82,7 @@ final class FrontController extends AbstractController {
         }
 
         $criteria = (new Criteria($sortBy))
+            ->excludeBlockedUsers()
             ->showSubscribed();
 
         $submissions = $this->submissionFinder->find($criteria);
@@ -94,6 +96,7 @@ final class FrontController extends AbstractController {
 
     public function all(?string $sortBy, string $_format): Response {
         $criteria = (new Criteria($sortBy))
+            ->excludeBlockedUsers()
             ->excludeHiddenForums();
 
         $submissions = $this->submissionFinder->find($criteria);

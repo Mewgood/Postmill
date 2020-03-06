@@ -7,7 +7,7 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {{ alert('help.block_users'|trans, 'info') }}
+  {{ alert('help.blocking_users'|trans, 'info') }}
 
   {% embed '_layouts/table_pagination.html.twig' with { items: blocks } %}
     {% block header %}

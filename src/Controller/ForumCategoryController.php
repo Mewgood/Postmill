@@ -38,7 +38,8 @@ class ForumCategoryController extends AbstractController {
 
         $criteria = (new Criteria($sortBy))
             ->showForums(...$category->getForums())
-            ->excludeHiddenForums();
+            ->excludeHiddenForums()
+            ->excludeBlockedUsers();
 
         $submissions = $this->submissionFinder->find($criteria);
 

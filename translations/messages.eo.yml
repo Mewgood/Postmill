@@ -162,7 +162,6 @@ heading.this_user_is_banned: Ĉi tiu uzanto estas forbarita!
 heading.you_were_mentioned: Vi estis menciita de %user%
 
 help.allow_private_messages: Se malebligita, nur administrantoj, kunkontrolantoj kaj kontrolantoj de diskutejoj, in kiuj vi antaŭ ne longe partoprenis povos sendi al vi privatajn mesaĝojn.
-help.block_users: Bloki uzantoj evitas, ke ili sendu al vi privatajn mesaĝojn, kaj vi ne ricevos avizojn, kiam ili respondos al vi.
 help.delete_forum_warning: Ĉiu enhavo en ĉi tiu diskutejo senrevene estos forigita
 help.forum_description: Mallonga priskrivo de la diskutejo. Retserĉiloj montros ĉi tiun priskrivon en siaj rezultoj
 help.forum_is_featured: Ĉi tiu diskutejo estas elstarigita.
