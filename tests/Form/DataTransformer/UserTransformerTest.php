@@ -8,6 +8,9 @@ use App\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * @covers \App\Form\DataTransformer\UserTransformer
+ */
 class UserTransformerTest extends TestCase {
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|UserRepository

@@ -68,6 +68,20 @@ class IpBan {
         User $bannedBy,
         \DateTimeInterface $expires = null
     ) {
+        [$network, $mask] = array_pad(explode('/', $ip), 2, null);
+
+        if (!filter_var($network, FILTER_VALIDATE_IP)) {
+            throw new \InvalidArgumentException('$ip must be valid IP with optional CIDR range');
+        }
+
+        if ($mask !== null && (
+            !is_numeric($mask) ||
+            $mask < 0 ||
+            $mask > (strpos($network, ':') !== false ? 128 : 32)
+        )) {
+            throw new \InvalidArgumentException('Invalid CIDR mask');
+        }
+
         if ($expires instanceof \DateTime) {
             $expires = \DateTimeImmutable::createFromMutable($expires);
         }
@@ -85,11 +99,15 @@ class IpBan {
     }
 
     public function getIp(): string {
-        return $this->ip;
+        if (strpos($this->ip, ':') !== false) {
+            return explode('/128', $this->ip)[0];
+        }
+
+        return explode('/32', $this->ip)[0];
     }
 
     public function isRangeBan(): bool {
-        return strpos($this->ip, '/') !== false;
+        return strpos($this->getIp(), '/') !== false;
     }
 
     public function getReason(): string {
