@@ -23,13 +23,15 @@ use App\Repository\UserRepository;
 use App\Security\AuthenticationHelper;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface as Validator;
 
 /**
  * @Entity("user", expr="repository.findOneOrRedirectToCanonical(username, 'username')")
@@ -94,7 +96,7 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("register", subject="site", statusCode=403)
      */
-    public function registration(Site $site, Request $request, EntityManagerInterface $em, AuthenticationHelper $auth): Response {
+    public function registration(Site $site, Request $request, EntityManager $em, AuthenticationHelper $auth): Response {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('front');
         }
@@ -131,7 +133,7 @@ final class UserController extends AbstractController {
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
-    public function editUser(EntityManagerInterface $em, User $user, Request $request): Response {
+    public function editUser(EntityManager $em, User $user, Request $request): Response {
         $data = new UserData($user);
 
         $form = $this->createForm(UserType::class, $data);
@@ -188,7 +190,7 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
-    public function userSettings(EntityManagerInterface $em, User $user, Request $request): Response {
+    public function userSettings(EntityManager $em, User $user, Request $request): Response {
         $data = new UserData($user);
 
         $form = $this->createForm(UserSettingsType::class, $data);
@@ -214,7 +216,7 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
-    public function editBiography(EntityManagerInterface $em, User $user, Request $request): Response {
+    public function editBiography(EntityManager $em, User $user, Request $request): Response {
         $data = new UserData($user);
 
         $form = $this->createForm(UserBiographyType::class, $data);
@@ -252,7 +254,7 @@ final class UserController extends AbstractController {
      * @Security("not user.isBlocking(blockee)", statusCode=403)
      * @Security("user !== blockee", statusCode=403)
      */
-    public function block(User $blockee, Request $request, EntityManagerInterface $em): Response {
+    public function block(User $blockee, Request $request, EntityManager $em): Response {
         \assert($this->getUser() instanceof User);
 
         $data = new UserBlockData();
@@ -281,7 +283,7 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function unblock(User $user, EntityManagerInterface $em, Request $request): Response {
+    public function unblock(User $user, EntityManager $em, Request $request): Response {
         $this->validateCsrf('unblock', $request->request->get('token'));
 
         \assert($this->getUser() instanceof User);
@@ -315,7 +317,7 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function clearNotifications(Request $request, NotificationRepository $repository, EntityManagerInterface $em): Response {
+    public function clearNotifications(Request $request, NotificationRepository $repository, EntityManager $em): Response {
         $this->validateCsrf('clear_notifications', $request->request->get('token'));
 
         $ids = array_filter((array) $request->request->get('id'), function ($id) {
@@ -334,7 +336,7 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
      */
-    public function whitelist(Request $request, User $user, EntityManagerInterface $em, bool $whitelist): Response {
+    public function whitelist(Request $request, User $user, EntityManager $em, bool $whitelist): Response {
         $this->validateCsrf('whitelist', $request->request->get('token'));
 
         $user->setWhitelisted($whitelist);
@@ -373,7 +375,7 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
-    public function hideForum(EntityManagerInterface $em, Request $request, User $user, Forum $forum, bool $hide): Response {
+    public function hideForum(EntityManager $em, Request $request, User $user, Forum $forum, bool $hide): Response {
         $this->validateCsrf('hide_forum', $request->request->get('token'));
 
         if ($hide) {
@@ -396,14 +398,24 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function toggleNightMode(EntityManagerInterface $em, Request $request, bool $enabled): Response {
-        $this->validateCsrf('toggle_night_mode', $request->request->get('token'));
+    public function changeNightMode(EntityManager $em, Request $request, Validator $validator): Response {
+        \assert($this->getUser() instanceof User);
 
-        $this->getUser()->setNightMode($enabled);
+        $this->validateCsrf('night_mode', $request->request->get('token'));
+
+        $data = new UserData($this->getUser());
+        $data->setNightMode($request->request->get('nightMode'));
+        $errors = $validator->validate($data);
+
+        if (\count($errors) > 0) {
+            throw new BadRequestHttpException('Invalid data');
+        }
+
+        $data->updateUser($this->getUser());
         $em->flush();
 
         if ($request->getRequestFormat() === 'json') {
-            return $this->json(['night_mode' => $enabled]);
+            return $this->json(['nightMode' => $this->getUser()->getNightMode()]);
         }
 
         if ($request->headers->has('Referer')) {

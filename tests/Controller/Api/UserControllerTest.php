@@ -52,6 +52,7 @@ class UserControllerTest extends WebTestCase {
             'preferredFonts' => null,
             'timezone' => 'UTC',
             'poppersEnabled' => true,
+            'nightMode' => 'auto',
         ], json_decode($client->getResponse()->getContent(), true));
     }
 

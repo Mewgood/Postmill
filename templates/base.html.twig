@@ -1,9 +1,10 @@
 {% use '_layouts/site_nav.html.twig' %}
 {% from '_macros/alert.html.twig' import alert_classes, alert_icon %}
 <!DOCTYPE html>
-<html class="no-js {{ (app.user.nightMode ?? false) ? 'dark-mode' : 'light-mode' }}"
+<html class="no-js"
       lang="{{ app.request.locale|replace({'_': '-'}) }}"
-      prefix="og: http://ogp.me/ns#">
+      prefix="og: http://ogp.me/ns#"
+      data-night-mode="{{ app.user.nightMode ?? 'auto' }}">
   <head>
     <meta charset="UTF-8" />
     <title>{% block title %}{{ site_name() }}{% endblock %}</title>

@@ -104,6 +104,16 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
     private $frontPageSortMode;
 
     /**
+     * @Assert\Choice({User::NIGHT_MODE_LIGHT, User::NIGHT_MODE_DARK, User::NIGHT_MODE_AUTO}, groups={"settings"}, strict=true)
+     * @Assert\NotBlank(groups={"settings"})
+     *
+     * @Groups("user:preferences")
+     *
+     * @var string|null
+     */
+    private $nightMode = User::NIGHT_MODE_AUTO;
+
+    /**
      * @Groups("user:preferences")
      *
      * @var bool|null
@@ -209,6 +219,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
             $this->timezone = $user->getTimezone();
             $this->frontPage = $user->getFrontPage();
             $this->frontPageSortMode = $user->getFrontPageSortMode();
+            $this->nightMode = $user->getNightMode();
             $this->showCustomStylesheets = $user->isShowCustomStylesheets();
             $this->preferredTheme = $user->getPreferredTheme();
             $this->openExternalLinksInNewTab = $user->openExternalLinksInNewTab();
@@ -236,6 +247,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $user->setTimezone($this->timezone);
         $user->setFrontPage($this->frontPage);
         $user->setFrontPageSortMode($this->frontPageSortMode);
+        $user->setNightMode($this->nightMode);
         $user->setShowCustomStylesheets($this->showCustomStylesheets);
         $user->setPreferredTheme($this->preferredTheme);
         $user->setOpenExternalLinksInNewTab($this->openExternalLinksInNewTab);
@@ -257,6 +269,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $user->setBiography($this->biography);
         $user->setAdmin($this->admin);
         $user->setRegistrationIp($ip);
+        $user->setNightMode($this->nightMode);
 
         $settings = [
             'showCustomStylesheets',
@@ -360,6 +373,14 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
 
     public function setFrontPageSortMode(?string $frontPageSortMode): void {
         $this->frontPageSortMode = $frontPageSortMode;
+    }
+
+    public function getNightMode(): ?string {
+        return $this->nightMode;
+    }
+
+    public function setNightMode(?string $nightMode): void {
+        $this->nightMode = $nightMode;
     }
 
     public function getShowCustomStylesheets() {

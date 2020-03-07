@@ -259,6 +259,7 @@ label.compare: Sammenlign
 label.confirm_forum_name: Bekreft forumnavn
 label.confirm_username: Bekreft brukernavn
 label.creation_date: Opprettet
+label.dark: Mørk
 label.date: Dato
 label.default: Forhåndsvalgt
 label.delete_account_confirmation: Jeg forstår at det ikke er mulig å gjenopprette denne kontoen når den er borte.
@@ -284,6 +285,7 @@ label.language: Språk
 label.last_message: Siste melding
 label.last_revised: Sist revidert
 label.let_forums_override_preferred_theme: La fora overstyre mitt valgte tema
+label.light: Lys
 label.media_type: Mediatype
 label.message: Melding
 label.moderated: Moderert
@@ -291,6 +293,7 @@ label.moderates: Modererer
 label.name: Navn
 label.never: Aldri
 label.new_password: Nytt passord
+label.night_mode: Nattmodus
 label.none: Ingen
 label.notify_on_mentions: Varsle på nevnelser
 label.notify_on_reply: Varsle på svar
@@ -320,6 +323,7 @@ label.sidebar: Sidelinje
 label.sort_by: Sorter på
 label.sort_by_mode: 'Sort by: %mode%'
 label.source_code: Source code
+label.system_preference: Systeminnstilling
 label.submission_votes: Submission votes
 label.submission_votes_short: SV
 label.submissions: Submissions

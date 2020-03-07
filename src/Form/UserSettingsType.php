@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\DataObject\UserData;
 use App\Entity\Submission;
+use App\Entity\User;
 use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -97,6 +98,14 @@ final class UserSettingsType extends AbstractType {
             ])
             ->add('preferredFonts', TextType::class, [
                 'required' => false,
+            ])
+            ->add('nightMode', ChoiceType::class, [
+                'choices' => [
+                    'label.system_preference' => User::NIGHT_MODE_AUTO,
+                    'label.light' => User::NIGHT_MODE_LIGHT,
+                    'label.dark' => User::NIGHT_MODE_DARK,
+                ],
+                'label' => 'label.night_mode',
             ])
             ->add('preferredTheme', ThemeSelectorType::class, [
                 'label' => 'label.preferred_theme',

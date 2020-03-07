@@ -33,6 +33,10 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         'ROLE_USER',
     ];
 
+    public const NIGHT_MODE_LIGHT = 'light';
+    public const NIGHT_MODE_DARK = 'dark';
+    public const NIGHT_MODE_AUTO = 'auto';
+
     /**
      * @ORM\Column(type="bigint")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -197,11 +201,11 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     private $notifications;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="text", options={"default": User::NIGHT_MODE_AUTO})
      *
-     * @var bool
+     * @var string
      */
-    private $nightMode = false;
+    private $nightMode = self::NIGHT_MODE_AUTO;
 
     /**
      * @ORM\Column(type="boolean", options={"default": true})
@@ -578,11 +582,22 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         return $notifications;
     }
 
-    public function isNightMode(): bool {
+    public function getNightMode(): string {
         return $this->nightMode;
     }
 
-    public function setNightMode(bool $nightMode): void {
+    public function setNightMode(string $nightMode): void {
+        if (!\in_array($nightMode, [
+            self::NIGHT_MODE_AUTO,
+            self::NIGHT_MODE_DARK,
+            self::NIGHT_MODE_LIGHT,
+        ], true)) {
+            throw new \InvalidArgumentException(sprintf(
+                '$nightMode must be one of %s::NIGHT_MODE_* constants',
+                __METHOD__
+            ));
+        }
+
         $this->nightMode = $nightMode;
     }
 

@@ -1,4 +1,20 @@
-.light-mode:root .dark-mode-only,
-.dark-mode:root .light-mode-only {
+:root[data-night-mode="light"] .dark-mode-only,
+:root[data-night-mode="dark"] .light-mode-only {
   display: none;
+}
+
+:root[data-night-mode="auto"] {
+  .dark-mode-only {
+    display: none;
+  }
+
+  @media screen and (prefers-color-scheme: dark) {
+    .dark-mode-only {
+      display: unset;
+    }
+
+    .light-mode-only {
+      display: none;
+    }
+  }
 }

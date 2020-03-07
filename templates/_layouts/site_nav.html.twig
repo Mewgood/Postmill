@@ -222,19 +222,19 @@
   </li>
   <li><hr></li>
   <li>
-    <form action="{{ app.user.nightMode ? path('night_mode_off') : path('night_mode_on') }}"
-          method="POST"
-          class="js-night-mode-form">
-      <input type="hidden" name="token" value="{{ csrf_token('toggle_night_mode') }}">
-      <button class="menu-item unbuttonize">
-        <span class="light-mode-only">
-          {{ icon('moon-inv') }}
-          {{ 'nav.dark_mode'|trans }}
-        </span>
-        <span class="dark-mode-only">
-          {{ icon('sun-inv') }}
-          {{ 'nav.light_mode'|trans }}
-        </span>
+    <form action="{{ path('change_night_mode') }}" method="POST" class="js-night-mode-form">
+      <input type="hidden" name="token" value="{{ csrf_token('night_mode') }}">
+      <button name="nightMode"
+              value="{{ constant('App\\Entity\\User::NIGHT_MODE_DARK') }}"
+              class="menu-item unbuttonize light-mode-only">
+        {{ icon('moon-inv') }}
+        {{ 'nav.dark_mode'|trans }}
+      </button>
+      <button name="nightMode"
+              value="{{ constant('App\\Entity\\User::NIGHT_MODE_LIGHT') }}"
+              class="menu-item unbuttonize dark-mode-only">
+        {{ icon('sun-inv') }}
+        {{ 'nav.light_mode'|trans }}
       </button>
     </form>
   </li>

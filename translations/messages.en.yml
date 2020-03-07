@@ -260,6 +260,7 @@ label.compare: Compare
 label.confirm_forum_name: Confirm forum name
 label.confirm_username: Confirm username
 label.creation_date: Creation date
+label.dark: Dark
 label.date: Date
 label.default: Default
 label.delete_account_confirmation: I understand there's no way of retrieving this account once it's gone.
@@ -285,6 +286,7 @@ label.language: Language
 label.last_message: Last message
 label.last_revised: Last revised
 label.let_forums_override_preferred_theme: Let forums override preferred theme
+label.light: Light
 label.media_type: Media type
 label.message: Message
 label.moderated: Moderated
@@ -292,6 +294,7 @@ label.moderates: Moderates
 label.name: Name
 label.never: Never
 label.new_password: New password
+label.night_mode: Night mode
 label.none: None
 label.not_whitelisted: Not whitelisted
 label.notify_on_mentions: Notify on mentions
@@ -322,6 +325,7 @@ label.sidebar: Sidebar
 label.sort_by: Sort by
 label.sort_by_mode: 'Sort by: %mode%'
 label.source_code: Source code
+label.system_preference: System preference
 label.submission_votes: Submission votes
 label.submission_votes_short: SV
 label.submissions: Submissions

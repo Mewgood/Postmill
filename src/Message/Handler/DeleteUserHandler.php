@@ -123,7 +123,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $user->setLocale('en');
         $user->setBiography(null);
         $user->setAllowPrivateMessages(false);
-        $user->setNightMode(false);
+        $user->setNightMode('auto');
         $user->setNotifyOnReply(false);
         $user->setNotifyOnReply(false);
         $user->setOpenExternalLinksInNewTab(true);

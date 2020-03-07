@@ -1,24 +1,26 @@
 import Router from 'fosjsrouting';
 import { fetch } from './lib/http';
 
-function toggleNightMode(formEl) {
-    document.documentElement.classList.toggle('light-mode');
-    const isDark = document.documentElement.classList.toggle('dark-mode');
+function toggleNightMode(buttonEl, formEl) {
+    document.documentElement.setAttribute('data-night-mode', buttonEl.value);
 
-    const route = isDark ? 'night_mode_on' : 'night_mode_off';
+    const path = Router.generate('change_night_mode', { _format: 'json' });
+    const body = new FormData(formEl);
+    body.append(buttonEl.name, buttonEl.value);
 
-    fetch(Router.generate(route, { _format: 'json' }), {
-        body: new FormData(formEl),
-        method: 'POST',
-    });
+    fetch(path, { body, method: 'POST' });
 }
 
 addEventListener('submit', event => {
-    const formEl = event.target.closest('.js-night-mode-form');
-
-    if (formEl) {
+    if (event.target.closest('.js-night-mode-form')) {
         event.preventDefault();
-
-        toggleNightMode(formEl);
     }
 });
+
+addEventListener('click', event => {
+    const buttonEl = event.target.closest('.js-night-mode-form button');
+
+    if (buttonEl) {
+        toggleNightMode(buttonEl, event.target.closest('.js-night-mode-form'));
+    }
+}, true);

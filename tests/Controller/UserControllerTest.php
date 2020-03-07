@@ -167,11 +167,13 @@ class UserControllerTest extends WebTestCase {
         $client->followRedirects();
 
         $crawler = $client->request('GET', '/');
+        self::assertSelectorExists('html[data-night-mode="auto"]');
+
         $crawler = $client->submit($crawler->selectButton('Dark mode')->form());
-        self::assertSelectorExists('html.dark-mode');
+        self::assertSelectorExists('html[data-night-mode="dark"]');
 
         $client->submit($crawler->selectButton('Light mode')->form());
-        self::assertSelectorExists('html.light-mode');
+        self::assertSelectorExists('html[data-night-mode="light"]');
     }
 
     public function testCanClearSingleNotification(): void {

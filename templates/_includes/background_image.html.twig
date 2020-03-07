@@ -5,13 +5,25 @@
   {% cspstyle %}
     <style>
       {% if light_bg %}
-        .light-mode:root {
+        :root[data-night-mode="light"],
+        :root[data-night-mode="auto"] {
           --bg-image: url({{ upload_url('submission_images/'~light_bg)|e('css') }});
         }
       {% endif %}
       {% if dark_bg %}
-        .dark-mode:root {
+        :root[data-night-mode="dark"] {
           --bg-image: url({{ upload_url('submission_images/'~dark_bg)|e('css') }});
+        }
+        @media screen and (prefers-color-scheme: dark) {
+          :root[data-night-mode="auto"] {
+            --bg-image: url({{ upload_url('submission_images/'~dark_bg)|e('css') }});
+          }
+        }
+      {% else %}
+        @media screen and (prefers-color-scheme: dark) {
+          :root[data-night-mode="auto"] {
+            --bg-image: unset;
+          }
         }
       {% endif %}
       {% if mode is constant('App\\Entity\\Contracts\\BackgroundImageInterface::BACKGROUND_CENTER') %}
