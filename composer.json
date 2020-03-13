@@ -85,6 +85,9 @@
         "symfony/polyfill-php71": "*",
         "symfony/polyfill-php72": "*"
     },
+    "conflict": {
+        "doctrine/orm": ">=2.7.1"
+    },
     "scripts": {
         "auto-scripts": {
             "requirements-checker": "script",

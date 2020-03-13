@@ -25,6 +25,18 @@ class VoteControllerTest extends WebTestCase {
         self::assertSelectorTextContains('.vote__net-score', '0');
     }
 
+    /**
+     * @see https://gitlab.com/postmill/Postmill/-/issues/57
+     */
+    public function testCanSwitchVoteChoice(): void {
+        $client = self::createUserClient();
+        $crawler = $client->request('GET', '/f/cats/3');
+
+        $client->submit($crawler->filter('.vote__down')->form());
+
+        self::assertResponseRedirects();
+    }
+
     public function testJsonVote(): void {
         $client = self::createUserClient();
 
