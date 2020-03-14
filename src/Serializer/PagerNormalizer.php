@@ -11,7 +11,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class PagerNormalizer implements
     NormalizerInterface,
     NormalizerAwareInterface,
-    CacheableSupportsMethodInterface {
+    CacheableSupportsMethodInterface
+{
     use NormalizerAwareTrait;
 
     public function normalize($object, string $format = null, array $context = []): array {
