@@ -20,38 +20,35 @@
 
   {{ submission(submission, {show_body: true}) }}
 
-  <header class="flex flex--guttered">
-    <h2>{{ 'comments.comments'|trans }}</h2>
-
-    <ul class="flex unlistify" role="navigation">
-      {% for view in ['nested', 'linear'] %}
-        <li>
-          <a href="{{ path('submission', { forum_name: forum.name, submission_id: submission.id, slug: submission.title|slugify, commentView: view }) }}"
-             class="discreet-tab {{ comment_view == view ? 'discreet-tab--active' }}">
-            {{- ('comments.'~view)|trans -}}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  </header>
+  <h2>{{ 'comments.comments'|trans }}</h2>
 
   {{ comment_form(submission) }}
 
-  <div class="submission-comments">
-    {% if comment_view == 'nested' %}
-      {% for comment in submission.topLevelComments %}
-        {{ comment(comment, { recurse: true }) }}
-      {% endfor %}
-    {% else %}
-      {% for comment in submission.comments %}
-        {{ comment(comment, { post_numbers: true }) }}
-      {% endfor %}
+  {% with {
+    comments: comment_view == 'nested' ? submission.topLevelComments : submission.comments,
+    options: { recurse: comment_view == 'nested', post_numbers: comment_view == 'linear' },
+  } %}
+    {% if comments is not empty %}
+      <div class="flex flex--slim-gutters">
+        <ul class="flex unlistify no-margin">
+          {% for view in ['nested', 'linear'] %}
+            <li>
+              <a href="{{ path('submission', { forum_name: forum.name, submission_id: submission.id, slug: submission.title|slugify, commentView: view }) }}"
+                 class="tab {{ comment_view == view ? 'tab--active' }}">
+                {{- ('comments.'~view)|trans -}}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     {% endif %}
-  </div>
 
-  {% if submission.topLevelComments is empty %}
-    {% include '_includes/empty.html.twig' %}
-  {% endif %}
+    {% for comment in comments %}
+      {{ comment(comment, options) }}
+    {% else %}
+      {{ include('_includes/empty.html.twig', with_context=false) }}
+    {% endfor %}
+  {% endwith %}
 
   <div class="js-update-comment-count"
        data-comment-count="{{ submission.comments|length }}"
