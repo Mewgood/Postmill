@@ -46,8 +46,9 @@ final class SubmissionType extends AbstractType {
             $builder->add('email', HoneypotType::class);
         }
 
-        /** @var SubmissionData $data */
         $data = $builder->getData();
+        \assert($data instanceof SubmissionData);
+
         $editing = $data->getId() !== null;
 
         $builder

@@ -73,10 +73,10 @@ final class Paginator {
             $groups = (array) $group;
             $next = $request->query->get('next');
 
-            /** @var PageInterface $page */
             $page = $this->normalizer->denormalize($next, $pageDataClass, null, [
                 'groups' => $groups,
             ]);
+            \assert($page instanceof PageInterface);
 
             if (\count($this->validator->validate($page, null, $groups)) === 0) {
                 return $page;

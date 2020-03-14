@@ -338,8 +338,8 @@ class Forum implements BackgroundImage, DomainEvents {
             ->orderBy(['timestamp' => 'DESC'])
             ->setMaxResults(1);
 
-        /** @var ForumBan|null $ban */
-        $ban = $this->bans->matching($criteria)->first() ?: null;
+        $ban = $this->bans->matching($criteria)->first();
+        \assert(!$ban || $ban instanceof ForumBan);
 
         if (!$ban || !$ban->isBan()) {
             return false;

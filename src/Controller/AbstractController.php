@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -77,8 +78,8 @@ abstract class AbstractController extends BaseAbstractController {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         \assert($request !== null);
 
-        /** @var \Symfony\Component\Serializer\Serializer $serializer */
         $serializer = $this->container->get('serializer');
+        \assert($serializer instanceof SerializerInterface);
 
         $data = $serializer->deserialize($request->getContent(), $type, 'json', [
             'groups' => $options['denormalization_groups'] ?? [],
@@ -100,8 +101,8 @@ abstract class AbstractController extends BaseAbstractController {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         \assert($request !== null);
 
-        /** @var \Symfony\Component\Serializer\Serializer $serializer */
         $serializer = $this->container->get('serializer');
+        \assert($serializer instanceof SerializerInterface);
 
         $serializer->deserialize($request->getContent(), $type, 'json', [
             'groups' => $options['denormalization_groups'] ?? [],

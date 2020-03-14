@@ -105,8 +105,7 @@ final class SubmissionFinder {
      * Get the submission ordering currently in use.
      */
     public function getSortMode(?string $sortBy): string {
-        /** @var User|null $user */
-        $user = $this->security->getUser();
+        $user = $this->getUser(false);
 
         return $sortBy
             ?? ($user ? $user->getFrontPageSortMode() : null)

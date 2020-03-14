@@ -88,8 +88,8 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     }
 
     public function __invoke(DeleteUser $message): void {
-        /** @var User|null $user */
         $user = $this->entityManager->find(User::class, $message->getUserId());
+        \assert(!$user || $user instanceof User);
 
         if (!$user) {
             throw new UnrecoverableMessageHandlingException('User not found');
@@ -163,7 +163,6 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     }
 
     public function removeSubmissions(User $user): bool {
-        /** @var Submission[] $submissions */
         $submissions = $this->submissions->findBy([
             'user' => $user,
             'visibility' => Submission::VISIBILITY_VISIBLE,
@@ -172,6 +171,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $dispatchAgain = false;
 
         foreach ($submissions as $submission) {
+            \assert($submission instanceof Submission);
             $dispatchAgain = true;
 
             if (\count($submission->getComments()) > 0) {
@@ -189,7 +189,6 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     }
 
     public function removeComments(User $user): bool {
-        /** @var Comment[] $comments */
         $comments = $this->comments->findBy([
             'visibility' => Comment::VISIBILITY_VISIBLE,
             'user' => $user,
@@ -198,6 +197,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $dispatchAgain = false;
 
         foreach ($comments as $comment) {
+            \assert($comment instanceof Comment);
             $dispatchAgain = true;
 
             if (\count($comment->getChildren()) > 0) {
@@ -219,7 +219,6 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     }
 
     public function removeSubmissionVotes(User $user): bool {
-        /** @var Submission[] $submissions */
         $submissions = $this->entityManager->createQueryBuilder()
             ->select('s')
             ->from(Submission::class, 's')
@@ -234,6 +233,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $dispatchAgain = false;
 
         foreach ($submissions as $submission) {
+            \assert($submission instanceof Submission);
             $dispatchAgain = true;
 
             $submission->vote(VotableInterface::VOTE_NONE, $user, null);
@@ -245,7 +245,6 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     }
 
     public function removeCommentVotes(User $user): bool {
-        /** @var Comment[] $comments */
         $comments = $this->entityManager->createQueryBuilder()
             ->select('c')
             ->from(Comment::class, 'c')
@@ -260,6 +259,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $dispatchAgain = false;
 
         foreach ($comments as $comment) {
+            \assert($comment instanceof Comment);
             $dispatchAgain = true;
 
             $comment->vote(VotableInterface::VOTE_NONE, $user, null);
@@ -271,7 +271,6 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     }
 
     public function removeMessages(User $user): bool {
-        /** @var Message[] $messages */
         $messages = $this->messages->findBy([
             'sender' => $user,
         ], ['timestamp' => 'DESC'], $this->batchSize);
@@ -279,6 +278,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $dispatchAgain = false;
 
         foreach ($messages as $message) {
+            \assert($message instanceof Message);
             $dispatchAgain = true;
 
             $thread = $message->getThread();

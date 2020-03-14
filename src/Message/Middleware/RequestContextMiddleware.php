@@ -19,8 +19,8 @@ final class RequestContextMiddleware implements MiddlewareInterface {
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope {
-        /** @var RequestInfoStamp|null $requestInfo */
         $requestInfo = $envelope->last(RequestInfoStamp::class);
+        \assert(!$requestInfo || $requestInfo instanceof RequestInfoStamp);
 
         if ($requestInfo) {
             $oldContext = clone $this->requestContext;
