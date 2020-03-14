@@ -25,7 +25,7 @@ final class VoteController extends AbstractController {
             throw $this->createNotFoundException('Entity not found');
         }
 
-        $em->transactional(function () use ($votable, $choice, $request) {
+        $em->transactional(function () use ($votable, $choice, $request): void {
             $votable->vote($choice, $this->getUser(), $request->getClientIp());
         });
 

@@ -5,7 +5,6 @@ namespace App\Tests\Entity;
 use App\Entity\IpBan;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * @covers \App\Entity\IpBan

@@ -17,7 +17,7 @@ class TimeMocker {
             throw new \InvalidArgumentException('Cannot mock functions for non-namespaced classes');
         }
 
-        if (function_exists("$namespace\\time") || function_exists("$namespace\\microtime")) {
+        if (\function_exists("$namespace\\time") || \function_exists("$namespace\\microtime")) {
             return;
         }
 
