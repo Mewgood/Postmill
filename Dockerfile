@@ -129,7 +129,7 @@ RUN set -eux; \
         echo 'realpath_cache_size = 4096K'; \
         echo 'realpath_cache_ttl = 600'; \
         if php -r 'die(PHP_VERSION_ID >= 70403 ? 0 : 1);'; then \
-            echo 'opcache.preload = /app/var/cache/prod/srcApp_KernelProdContainer.preload.php'; \
+            echo 'opcache.preload = /app/var/cache/prod/App_KernelProdContainer.preload.php'; \
             echo 'opcache.preload_user = "${SU_USER}"'; \
         fi; \
     } >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
