@@ -78,7 +78,6 @@ RUN set -eux; \
         awk 'system("[ -e /usr/local/lib/" $1 " ]") != 0 { print "so:" $1 }' \
     )"; \
     apk add --no-cache $RUNTIME_DEPS; \
-    apk del --no-network .build-deps; \
     pecl clear-cache;
 
 WORKDIR /app
@@ -116,10 +115,13 @@ ENV APP_BRANCH=${APP_BRANCH} \
         /app/var/cache/prod/pools \
         /app/var/log \
         /app/var/sessions \
+        /tmp \
     " \
     SU_USER=www-data
 
 RUN set -eux; \
+    apk add --no-cache --virtual .build-deps \
+        git; \
     apk add --no-cache \
         acl \
         su-exec; \
@@ -142,9 +144,10 @@ RUN set -eux; \
         --prefer-dist; \
     sed -i '/^APP_BRANCH\|APP_VERSION/d' .env; \
     composer dump-env prod; \
-    composer clear-cache; \
     mkdir -p $POSTMILL_WRITE_DIRS; \
-    chown -R www-data:www-data $POSTMILL_WRITE_DIRS;
+    chown -R www-data:www-data $POSTMILL_WRITE_DIRS; \
+    composer clear-cache; \
+    apk del --no-network .build-deps;
 
 VOLUME /app/public/media/cache
 VOLUME /app/public/submission_images
@@ -178,7 +181,6 @@ FROM postmill_php_base AS postmill_php_debug
 
 RUN set -eux; \
     chmod -R go=u /tmp; \
-    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS; \
     apk add --no-cache git; \
     cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
     pecl install xdebug; \
