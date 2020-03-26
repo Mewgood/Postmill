@@ -26,7 +26,5 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
         dql:
-            numeric_functions:
-                tuple: App\Doctrine\DQL\TupleFunction
             string_functions:
                 InetContainsOrEquals: App\Doctrine\DQL\InetContainsOrEqualsFunction

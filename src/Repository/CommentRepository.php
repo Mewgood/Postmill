@@ -4,12 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use App\Entity\Forum;
+use App\Entity\Page\CommentPage;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Pagination\Adapter\DoctrineAdapter;
-use App\Pagination\DTO\CommentPage;
 use App\Pagination\Pager;
-use App\Pagination\Paginator;
+use App\Pagination\PaginatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,14 +23,14 @@ class CommentRepository extends ServiceEntityRepository {
     private $authorizationChecker;
 
     /**
-     * @var Paginator
+     * @var PaginatorInterface
      */
     private $paginator;
 
     public function __construct(
         ManagerRegistry $registry,
         AuthorizationCheckerInterface $authorizationChecker,
-        Paginator $paginator
+        PaginatorInterface $paginator
     ) {
         parent::__construct($registry, Comment::class);
 

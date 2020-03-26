@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pagination\DTO;
+namespace App\Entity\Page;
 
 use App\Entity\Submission;
 use App\Pagination\PageInterface;

@@ -5,13 +5,14 @@ namespace App\SubmissionFinder;
 use App\Entity\Forum;
 use App\Entity\ForumSubscription;
 use App\Entity\Moderator;
+use App\Entity\Page\SubmissionPage;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
 use App\Pagination\Adapter\DoctrineAdapter;
-use App\Pagination\DTO\SubmissionPage;
 use App\Pagination\Pager;
-use App\Pagination\Paginator;
+use App\Pagination\PaginatorInterface;
+use App\Pagination\QueryReader\QueryReaderInterface;
 use App\Repository\SiteRepository;
 use App\Repository\SubmissionRepository;
 use Doctrine\DBAL\Types\Types;
@@ -27,7 +28,12 @@ final class SubmissionFinder {
     private $entityManager;
 
     /**
-     * @var Paginator
+     * @var QueryReaderInterface
+     */
+    private $queryReader;
+
+    /**
+     * @var PaginatorInterface
      */
     private $paginator;
 
@@ -53,7 +59,8 @@ final class SubmissionFinder {
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        Paginator $paginator,
+        PaginatorInterface $paginator,
+        QueryReaderInterface $queryReader,
         RequestStack $requestStack,
         Security $security,
         SiteRepository $sites,
@@ -61,6 +68,7 @@ final class SubmissionFinder {
     ) {
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
+        $this->queryReader = $queryReader;
         $this->requestStack = $requestStack;
         $this->security = $security;
         $this->sites = $sites;
@@ -114,7 +122,7 @@ final class SubmissionFinder {
 
     private function getPage(Criteria $criteria): ?SubmissionPage {
         $sortBy = $this->getSortMode($criteria->getSortBy());
-        $page = $this->paginator->getPage(SubmissionPage::class, $sortBy);
+        $page = $this->queryReader->getFromRequest(SubmissionPage::class, $sortBy);
 
         \assert($page instanceof SubmissionPage || $page === null);
 

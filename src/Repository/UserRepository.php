@@ -3,13 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Page\UserContributionsPage;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Pagination\Adapter\DoctrineAdapter;
 use App\Pagination\Adapter\UnionAdapter;
-use App\Pagination\DTO\UserContributionsPage;
 use App\Pagination\Pager;
-use App\Pagination\Paginator;
+use App\Pagination\PaginatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -28,7 +28,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UserRepository extends ServiceEntityRepository implements UserLoaderInterface {
     /**
-     * @var Paginator
+     * @var PaginatorInterface
      */
     private $paginator;
 
@@ -44,7 +44,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
 
     public function __construct(
         ManagerRegistry $registry,
-        Paginator $paginator,
+        PaginatorInterface $paginator,
         RequestStack $requestStack,
         UrlGeneratorInterface $urlGenerator
     ) {
