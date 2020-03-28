@@ -9,7 +9,12 @@
 
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title no-margin break-text">
-      <a href="{{ path('user', {username: user.username}) }}" class="user-bio__user-link">{{ user.username }}</a>
+      <a href="{{ path('user', {username: user.username}) }}">{{ user.username }}</a>
+      {% if user.admin %}
+        <span title="{{ 'user_flag.admin'|trans }}">
+          {{ icon('wrench', 'user_flag.admin'|trans, '', 'text-sm') }}
+        </span>
+      {% endif %}
     </h1>
 
     <p>

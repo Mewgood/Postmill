@@ -24,6 +24,11 @@
   <section class="sidebar__section sidebar-card">
     <h1 class="sidebar__title forum-title break-text">
       <a href="{{ path('forum', {forum_name: forum.name}) }}">{{ forum.title }}</a>
+      {% if forum.featured %}
+        <span class="fg-orange" title="{{ 'help.forum_is_featured'|trans }}">
+          {{- icon('star', '⭐') -}}
+        </span>
+      {% endif %}
     </h1>
 
     {% if is_granted('ROLE_USER') %}

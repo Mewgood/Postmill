@@ -251,6 +251,12 @@
       "css": "left-small",
       "code": 59422,
       "src": "typicons"
+    },
+    {
+      "uid": "5bb103cd29de77e0e06a52638527b575",
+      "css": "wrench",
+      "code": 59424,
+      "src": "fontawesome"
     }
   ]
 }
