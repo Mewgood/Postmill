@@ -50,6 +50,13 @@ background.center: Center
 background.fit_to_page: Fit to page
 background.tile: Tile
 
+bad_phrase.help: This tool lets you ban phrases of text from being posted. It can be used to prevent spam, or to suppress dissent.
+bad_phrase.phrase: Phrase
+bad_phrase.phrase_to_ban: Phrase to ban
+bad_phrase.title: Bad phrases
+bad_phrase.type_text: Text
+bad_phrase.type_regex: Regex
+
 ban_add.title: Ban an IP address
 
 ban_list.banned_by: Banned by
@@ -336,6 +343,7 @@ label.timezone: Time zone
 label.title: Title
 label.to: To
 label.toolbox: Toolbox
+label.type: Type
 label.unban: Unban
 label.unban_associated_ips: Remove associated IP bans
 label.upload_image: Upload image
@@ -387,6 +395,7 @@ nav.ban_history: Ban history
 nav.bans: Bans
 nav.block_list: Block list
 nav.block_user: Block user
+nav.censorship: Censorship
 nav.comments: Comments
 nav.dark_mode: Dark mode
 nav.delete_forum: Delete forum

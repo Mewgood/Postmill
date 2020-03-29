@@ -5,12 +5,14 @@ namespace App\Form\Model;
 use App\Entity\User;
 use App\Entity\WikiPage;
 use App\Entity\WikiRevision;
+use App\Validator\Constraints\NoBadPhrases;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class WikiData {
     /**
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=80)
+     * @NoBadPhrases()
      *
      * @var string|null
      */
@@ -19,6 +21,7 @@ class WikiData {
     /**
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=250000)
+     * @NoBadPhrases()
      *
      * @var string|null
      */

@@ -8,6 +8,7 @@ use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserFlags;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
+use App\Validator\Constraints\NoBadPhrases;
 use App\Validator\Constraints\NotForumBanned;
 use App\Validator\Constraints\RateLimit;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -29,6 +30,7 @@ class CommentData implements NormalizeMarkdownInterface {
      * @Assert\NotBlank(message="comment.empty")
      * @Assert\Regex("/[[:graph:]]/u", message="comment.empty")
      * @Assert\Length(max=Comment::MAX_BODY_LENGTH)
+     * @NoBadPhrases()
      *
      * @Groups({"comment:read", "comment:update"})
      *

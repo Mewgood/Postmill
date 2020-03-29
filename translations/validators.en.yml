@@ -1,3 +1,6 @@
+bad_phrase.match: The field contains a banned word or phrase.
+bad_phrase.invalid_regex: The field must contain a valid regular expression, without delimiters.
+bad_phrase.must_not_match_empty: The regex must not match an empty string.
 comment.empty: The comment must not be empty.
 forum.banned: You have been banned from this forum.
 forum.duplicate_name: A forum by that name already exists.

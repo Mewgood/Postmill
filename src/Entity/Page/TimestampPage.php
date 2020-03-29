@@ -2,13 +2,11 @@
 
 namespace App\Entity\Page;
 
-use App\Entity\Comment;
-use App\Entity\Submission;
 use App\Pagination\PageInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UserContributionsPage implements PageInterface {
+class TimestampPage implements PageInterface {
     /**
      * @Assert\NotBlank(groups={"pager"})
      * @Assert\DateTime(format=\DateTimeInterface::RFC3339, groups={"pager"})
@@ -18,12 +16,8 @@ class UserContributionsPage implements PageInterface {
     public $timestamp;
 
     public function populateFromPagerEntity($entity): void {
-        if (!$entity instanceof Comment && !$entity instanceof Submission) {
-            throw new \InvalidArgumentException(sprintf(
-                '$entity must be instance of %s or %s',
-                Comment::class,
-                Submission::class
-            ));
+        if (!\is_object($entity) || !\is_callable([$entity, 'getTimestamp'])) {
+            throw new \TypeError('$entity must be object with getTimestamp() method');
         }
 
         $this->timestamp = $entity->getTimestamp();

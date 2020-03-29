@@ -1,3 +1,6 @@
+bad_phrase.match: Feltet inneholder et forbudt ord eller frase.
+bad_phrase.invalid_regex: Feltet må inneholde et gyldig RegExp-uttrykk, uten avgrensningstegn.
+bad_phrase.must_not_match_empty: RegExp-utrykket må ikke matche en tom tekststreng.
 comment.empty: Kommentaren må ikke være tom.
 forum.name_characters: Navnet må inneholde kun bokstaver, tall og understreker.
 user.none_by_username: Ingen slik bruker

@@ -5,12 +5,14 @@ namespace App\Form\Model;
 use App\Entity\Message;
 use App\Entity\MessageThread;
 use App\Entity\User;
+use App\Validator\Constraints\NoBadPhrases;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MessageData {
     /**
      * @Assert\NotBlank()
      * @Assert\Length(max="10000")
+     * @NoBadPhrases()
      *
      * @var string|null
      */

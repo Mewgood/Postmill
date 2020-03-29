@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
-use App\Entity\Page\UserContributionsPage;
+use App\Entity\Page\TimestampPage;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Pagination\Adapter\DoctrineAdapter;
@@ -138,7 +138,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             new DoctrineAdapter($commentsQuery)
         );
 
-        $pager = $this->paginator->paginate($adapter, 25, UserContributionsPage::class);
+        $pager = $this->paginator->paginate($adapter, 25, TimestampPage::class);
 
         $this->hydrateContributions($pager);
 

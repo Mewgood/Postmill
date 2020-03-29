@@ -1,0 +1,14 @@
+bad_phrase_list:
+    path: /site/bad_phrases
+    controller: App\Controller\BadPhraseController::list
+    methods: [GET]
+
+bad_phrase_add:
+    path: /site/bad_phrases/add
+    controller: App\Controller\BadPhraseController::add
+    methods: [POST]
+
+bad_phrase_remove:
+    path: /site/bad_phrases/remove
+    controller: App\Controller\BadPhraseController::remove
+    methods: [POST]

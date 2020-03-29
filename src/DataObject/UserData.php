@@ -6,6 +6,7 @@ use App\Entity\Submission;
 use App\Entity\Theme;
 use App\Entity\User;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
+use App\Validator\Constraints\NoBadPhrases;
 use App\Validator\Constraints\RateLimit;
 use App\Validator\Constraints\Unique;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,6 +32,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
      * @Assert\Length(min=3, max=25, groups={"registration", "edit"})
      * @Assert\NotBlank(groups={"registration", "edit"})
      * @Assert\Regex("/^\w+$/", groups={"registration", "edit"})
+     * @NoBadPhrases(groups={"registration", "edit"})
      *
      * @Groups({"user:read", "abbreviated_relations"})
      *
@@ -136,6 +138,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
 
     /**
      * @Assert\Length(max=300, groups={"edit_biography"})
+     * @NoBadPhrases(groups={"edit_biography"})
      *
      * @Groups({"user:read"})
      *

@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Entity\UserFlags;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
 use App\Utils\Slugger;
+use App\Validator\Constraints\NoBadPhrases;
 use App\Validator\Constraints\NotForumBanned;
 use App\Validator\Constraints\RateLimit;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -29,6 +30,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
     /**
      * @Assert\NotBlank(groups={"create", "update"})
      * @Assert\Length(max=Submission::MAX_TITLE_LENGTH, groups={"create", "update"})
+     * @NoBadPhrases(groups={"create", "update"})
      *
      * @Groups({"submission:read", "submission:create", "submission:update"})
      *
@@ -39,6 +41,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
     /**
      * @Assert\Length(max=Submission::MAX_URL_LENGTH, charset="8bit", groups={"url"})
      * @Assert\Url(protocols={"http", "https"}, groups={"url"})
+     * @NoBadPhrases(groups={"url"})
      *
      * @Groups({"submission:read", "submission:create", "submission:update"})
      *
@@ -50,6 +53,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
 
     /**
      * @Assert\Length(max=Submission::MAX_BODY_LENGTH, groups={"create", "update"})
+     * @NoBadPhrases(groups={"create", "update"})
      *
      * @Groups({"submission:read", "submission:create", "submission:update"})
      *
