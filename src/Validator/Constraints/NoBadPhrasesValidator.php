@@ -4,6 +4,8 @@ namespace App\Validator\Constraints;
 
 use App\Entity\BadPhrase;
 use App\Repository\BadPhraseRepository;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -14,8 +16,14 @@ class NoBadPhrasesValidator extends ConstraintValidator {
      */
     private $badPhrases;
 
-    public function __construct(BadPhraseRepository $badPhrases) {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(BadPhraseRepository $badPhrases, ?LoggerInterface $logger) {
         $this->badPhrases = $badPhrases;
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public function validate($value, Constraint $constraint): void {
@@ -38,11 +46,21 @@ class NoBadPhrasesValidator extends ConstraintValidator {
         }
 
         foreach ($this->buildMatchingRegexes() as $regex) {
-            if (preg_match($regex, $value)) {
+            $success = @preg_match($regex, $value);
+
+            if ($success) {
                 $this->context->buildViolation($constraint->message)
                     ->setCode(NoBadPhrases::CONTAINS_BAD_PHRASE_ERROR)
                     ->addViolation();
                 break;
+            }
+
+            if ($success === false) {
+                $this->logger->error('Regex matching failed', [
+                    'error' => preg_last_error_msg(),
+                    'pattern' => $regex,
+                    'subject' => $value,
+                ]);
             }
         }
     }
@@ -64,7 +82,12 @@ class NoBadPhrasesValidator extends ConstraintValidator {
                 $part = '(?:(?i)\b'.preg_quote($entry->getPhrase(), '@').'\b)';
                 break;
             case BadPhrase::TYPE_REGEX:
-                $part = '(?:'.addcslashes($entry->getPhrase(), '@').')';
+                $part = '(?:'.addcslashes($entry->getPhrase(), '@');
+                if (preg_match('@\(\?[A-Za-z]*?x[A-Za-z]*\).*[^\\\\]#@', $part)) {
+                    // handle (?x) with comment
+                    $part .= "\n";
+                }
+                $part .= ')';
                 break;
             default:
                 throw new \DomainException('Unknown phrase type');
@@ -91,6 +114,10 @@ class NoBadPhrasesValidator extends ConstraintValidator {
             $regex .= '@u';
             $regexes[] = $regex;
         }
+
+        $this->logger->debug('"Bad phrase" regex(es) built', [
+            'regexes' => $regexes,
+        ]);
 
         return $regexes;
     }

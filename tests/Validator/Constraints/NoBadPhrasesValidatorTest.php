@@ -82,9 +82,10 @@ class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
                 new BadPhrase('tea', BadPhrase::TYPE_TEXT),
                 new BadPhrase('coffee', BadPhrase::TYPE_TEXT),
                 new BadPhrase('[bs]ad', BadPhrase::TYPE_REGEX),
+                new BadPhrase('(?x) should # not break', BadPhrase::TYPE_REGEX),
             ]);
 
-        return new NoBadPhrasesValidator($repository);
+        return new NoBadPhrasesValidator($repository, null);
     }
 
     public function provideBannedWords(): iterable {
@@ -92,6 +93,7 @@ class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
         yield ['coffee'];
         yield ['bad'];
         yield ['sad'];
+        yield ['should'];
     }
 
     public function provideEmptyStringable(): iterable {

@@ -51,6 +51,7 @@
         "symfony/monolog-bundle": "^3.0",
         "symfony/orm-pack": "^1.0",
         "symfony/polyfill-ctype": "^1.11",
+        "symfony/polyfill-php80": "^1.15",
         "symfony/requirements-checker": "^1.0",
         "symfony/security-bundle": "^5.0",
         "symfony/serializer-pack": "^1.0",
