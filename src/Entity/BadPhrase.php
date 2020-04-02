@@ -51,6 +51,18 @@ class BadPhrase {
             throw new \InvalidArgumentException("Invalid type '$phraseType'");
         }
 
+        if ($phraseType === self::TYPE_REGEX) {
+            $return = @preg_match('@'.addcslashes($phrase, '@').'@', '');
+
+            if ($return === 1) {
+                throw new \DomainException('Regex must not match empty string');
+            }
+
+            if ($return !== 0) {
+                throw new \DomainException('Bad regex', preg_last_error());
+            }
+        }
+
         $this->id = Uuid::uuid4();
         $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6F', microtime(true)));
         $this->phrase = $phrase;
