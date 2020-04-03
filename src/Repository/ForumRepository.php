@@ -1,7 +1,6 @@
 <?php
 
-/** @noinspection SqlRedundantOrderingDirection */
-/** @noinspection SqlResolve */
+/** @noinspection SqlDialectInspection */
 
 namespace App\Repository;
 

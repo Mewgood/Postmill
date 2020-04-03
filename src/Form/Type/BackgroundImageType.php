@@ -79,14 +79,12 @@ class BackgroundImageType extends AbstractType {
             if ($form->get('removeLightBackgroundImage')->isClicked()) {
                 $data->setLightBackgroundImage(null);
 
-                /* @noinspection PhpDeprecationInspection */
                 $event->stopPropagation();
             }
 
             if ($form->get('removeDarkBackgroundImage')->isClicked()) {
                 $data->setDarkBackgroundImage(null);
 
-                /* @noinspection PhpDeprecationInspection */
                 $event->stopPropagation();
             }
         });
