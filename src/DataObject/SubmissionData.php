@@ -62,7 +62,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
     private $body;
 
     /**
-     * @Assert\Choice(Submission::MEDIA_TYPES, strict=true, groups={"media"})
+     * @Assert\Choice(Submission::MEDIA_TYPES, groups={"media"})
      * @Assert\NotBlank(groups={"media"})
      *
      * @Groups("submission:read")

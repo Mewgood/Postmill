@@ -41,7 +41,7 @@ final class SiteData {
     public $wikiEnabled;
 
     /**
-     * @Assert\Choice(User::ROLES, strict=true)
+     * @Assert\Choice(User::ROLES)
      * @Assert\NotBlank()
      *
      * @var string
@@ -49,7 +49,7 @@ final class SiteData {
     public $forumCreateRole;
 
     /**
-     * @Assert\Choice(User::ROLES, strict=true)
+     * @Assert\Choice(User::ROLES)
      * @Assert\NotBlank()
      *
      * @var string
@@ -57,7 +57,7 @@ final class SiteData {
     public $imageUploadRole;
 
     /**
-     * @Assert\Choice(User::ROLES, strict=true)
+     * @Assert\Choice(User::ROLES)
      * @Assert\NotBlank()
      *
      * @var string

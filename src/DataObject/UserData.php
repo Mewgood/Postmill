@@ -86,7 +86,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
     private $timezone;
 
     /**
-     * @Assert\Choice(Submission::FRONT_PAGE_OPTIONS, groups={"settings"}, strict=true)
+     * @Assert\Choice(Submission::FRONT_PAGE_OPTIONS, groups={"settings"})
      * @Assert\NotBlank(groups={"settings"})
      *
      * @Groups("user:preferences")
@@ -96,7 +96,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
     private $frontPage;
 
     /**
-     * @Assert\Choice({Submission::SORT_ACTIVE, Submission::SORT_HOT, Submission::SORT_NEW}, groups={"settings"}, strict=true)
+     * @Assert\Choice({Submission::SORT_ACTIVE, Submission::SORT_HOT, Submission::SORT_NEW}, groups={"settings"})
      * @Assert\NotBlank(groups={"settings"})
      *
      * @Groups("user:preferences")
@@ -106,7 +106,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
     private $frontPageSortMode;
 
     /**
-     * @Assert\Choice({User::NIGHT_MODE_LIGHT, User::NIGHT_MODE_DARK, User::NIGHT_MODE_AUTO}, groups={"settings"}, strict=true)
+     * @Assert\Choice({User::NIGHT_MODE_LIGHT, User::NIGHT_MODE_DARK, User::NIGHT_MODE_AUTO}, groups={"settings"})
      * @Assert\NotBlank(groups={"settings"})
      *
      * @Groups("user:preferences")
