@@ -29,11 +29,11 @@ final class UserVoter extends Voter {
         $this->moderators = $moderators;
     }
 
-    protected function supports($attribute, $subject): bool {
+    protected function supports(string $attribute, $subject): bool {
         return $subject instanceof User && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$subject instanceof User) {
             throw new \InvalidArgumentException('$subject must be '.User::class);
         }

@@ -83,9 +83,10 @@ class MentionsListener implements EventSubscriberInterface {
     }
 
     /**
-     * @return \App\Entity\User[]
+     * @return User[]
+     * @noinspection PhpComposerExtensionStubsInspection
      */
-    private function getUsersToNotify(string $html) {
+    private function getUsersToNotify(string $html): array {
         $document = new \DOMDocument('1.0', 'UTF-8');
         $document->loadHTML($html);
 

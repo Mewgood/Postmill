@@ -35,7 +35,7 @@ abstract class AbstractController extends BaseAbstractController {
     }
 
     protected function createNamedForm(
-        $name,
+        string $name,
         $type = FormType::class,
         $data = null,
         array $options = []

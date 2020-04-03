@@ -17,11 +17,11 @@ final class SubmissionVoter extends Voter {
         'purge',
     ];
 
-    protected function supports($attribute, $subject) {
+    protected function supports(string $attribute, $subject): bool {
         return $subject instanceof Submission && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$token->getUser() instanceof User) {
             return false;
         }

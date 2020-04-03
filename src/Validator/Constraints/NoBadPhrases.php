@@ -17,7 +17,7 @@ class NoBadPhrases extends Constraint {
 
     public $message = 'bad_phrase.match';
 
-    public function getTargets() {
+    public function getTargets(): array {
         return [Constraint::CLASS_CONSTRAINT, Constraint::PROPERTY_CONSTRAINT];
     }
 }

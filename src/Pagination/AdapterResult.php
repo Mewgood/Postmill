@@ -22,6 +22,9 @@ class AdapterResult {
         return $this->entries;
     }
 
+    /**
+     * @return object|mixed|null
+     */
     public function getPagerEntity() {
         return $this->pagerEntity;
     }

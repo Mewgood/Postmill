@@ -17,11 +17,11 @@ final class CommentVoter extends Voter {
         $this->decisionManager = $decisionManager;
     }
 
-    protected function supports($attribute, $subject): bool {
+    protected function supports(string $attribute, $subject): bool {
         return $subject instanceof Comment && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$token->getUser() instanceof User) {
             return false;
         }

@@ -6,11 +6,11 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
 final class TsvectorType extends Type {
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) {
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string {
         return 'TSVECTOR';
     }
 
-    public function getName() {
+    public function getName(): string {
         return 'tsvector';
     }
 

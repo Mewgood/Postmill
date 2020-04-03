@@ -9,11 +9,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 final class MessageVoter extends Voter {
     public const ATTRIBUTES = ['delete'];
 
-    protected function supports($attribute, $subject) {
+    protected function supports(string $attribute, $subject): bool {
         return $subject instanceof Message && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$subject instanceof Message) {
             throw new \InvalidArgumentException('$subject must be '.Message::class);
         }

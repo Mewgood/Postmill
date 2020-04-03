@@ -26,7 +26,7 @@ class IpWithCidr extends Constraint {
     public $invalidCidrMessage = 'ip.invalid_cidr_mask';
     public $missingCidrMessage = 'ip.cidr_missing';
 
-    public function getTargets() {
+    public function getTargets(): array {
         return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }
 }

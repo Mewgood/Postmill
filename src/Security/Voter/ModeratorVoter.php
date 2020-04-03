@@ -7,11 +7,11 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ModeratorVoter extends Voter {
-    protected function supports($attribute, $subject) {
+    protected function supports(string $attribute, $subject): bool {
         return $attribute === 'remove' && $subject instanceof Moderator;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$subject instanceof Moderator) {
             throw new \InvalidArgumentException('$subject must be '.Moderator::class);
         }

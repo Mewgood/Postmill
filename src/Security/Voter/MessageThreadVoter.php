@@ -20,11 +20,11 @@ final class MessageThreadVoter extends Voter {
         $this->decisionManager = $decisionManager;
     }
 
-    protected function supports($attribute, $subject) {
+    protected function supports(string $attribute, $subject): bool {
         return $subject instanceof MessageThread && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$subject instanceof MessageThread) {
             throw new \InvalidArgumentException('$subject must be '.MessageThread::class);
         }

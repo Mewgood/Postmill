@@ -34,7 +34,7 @@ final class MarkdownListener implements EventSubscriberInterface {
         $this->tokenStorage = $tokenStorage;
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array {
         return [
             MarkdownInitEvent::class => ['onMarkdownInit'],
             MarkdownCacheEvent::class => ['onMarkdownCache'],
@@ -73,7 +73,7 @@ final class MarkdownListener implements EventSubscriberInterface {
         }
     }
 
-    private function shouldOpenExternalLinksInNewTab() {
+    private function shouldOpenExternalLinksInNewTab(): bool {
         $token = $this->tokenStorage->getToken();
         $user = $token ? $token->getUser() : null;
 

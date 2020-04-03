@@ -334,7 +334,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $this->plainPassword = $plainPassword;
     }
 
-    public function getEmail() {
+    public function getEmail(): ?string {
         return $this->email;
     }
 
@@ -346,7 +346,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         return $this->created;
     }
 
-    public function getLocale() {
+    public function getLocale(): ?string {
         return $this->locale;
     }
 
@@ -362,7 +362,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $this->timezone = $timezone;
     }
 
-    public function getFrontPage() {
+    public function getFrontPage(): ?string {
         return $this->frontPage;
     }
 
@@ -386,7 +386,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $this->nightMode = $nightMode;
     }
 
-    public function getShowCustomStylesheets() {
+    public function getShowCustomStylesheets(): ?bool {
         return $this->showCustomStylesheets;
     }
 

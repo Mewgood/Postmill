@@ -632,7 +632,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     /**
      * @return Pagerfanta|UserBlock[]
      */
-    public function getPaginatedBlocks(int $page, int $maxPerPage = 25) {
+    public function getPaginatedBlocks(int $page, int $maxPerPage = 25): Pagerfanta {
         $pager = new Pagerfanta(new DoctrineCollectionAdapter($this->blocks));
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($page);

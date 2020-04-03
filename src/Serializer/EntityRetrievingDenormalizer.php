@@ -17,10 +17,8 @@ final class EntityRetrievingDenormalizer implements DenormalizerInterface {
 
     /**
      * @param mixed $data
-     *
-     * @return object|null
      */
-    public function denormalize($data, string $type, string $format = null, array $context = []) {
+    public function denormalize($data, string $type, string $format = null, array $context = []): ?object {
         return $this->entityManager->find($type, $data);
     }
 

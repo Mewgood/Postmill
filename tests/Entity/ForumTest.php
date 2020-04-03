@@ -115,7 +115,7 @@ class ForumTest extends TestCase {
         $this->assertFalse($this->forum->userIsBanned($user));
     }
 
-    public function nonPrivilegedProvider() {
+    public function nonPrivilegedProvider(): iterable {
         yield [null];
         yield [$this->createMock(UserInterface::class)];
         yield ['anon.'];

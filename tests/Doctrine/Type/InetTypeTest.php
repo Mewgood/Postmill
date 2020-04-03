@@ -53,7 +53,7 @@ class InetTypeTest extends TestCase {
         $this->type->convertToDatabaseValue('::1', $platform);
     }
 
-    public function inetProvider() {
+    public function inetProvider(): iterable {
         yield ['::1', '::1'];
         yield ['::1/128', '::1/128'];
         yield ['aaaa::aaaa/128', 'aaaa::aaaa/128'];

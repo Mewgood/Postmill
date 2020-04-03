@@ -43,7 +43,7 @@ final class LocaleListener implements EventSubscriberInterface {
      */
     private $defaultLocale;
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array {
         return [
             RequestEvent::class => ['onKernelRequest', 20],
             InteractiveLoginEvent::class => ['onInteractiveLogin'],

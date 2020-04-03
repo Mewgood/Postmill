@@ -31,12 +31,12 @@ final class WikiVoter extends Voter {
         $this->siteRepository = $siteRepository;
     }
 
-    protected function supports($attribute, $subject): bool {
+    protected function supports(string $attribute, $subject): bool {
         return $subject instanceof WikiPage &&
             \in_array($attribute, self::ATTRIBUTES, true);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$token->getUser() instanceof User) {
             return false;
         }

@@ -100,7 +100,7 @@ class MessageControllerTest extends WebTestCase {
         $this->assertStringContainsString('aaa', $crawler->filter('.message__body')->eq(2)->text());
     }
 
-    public function authProvider() {
+    public function authProvider(): iterable {
         yield ['emma', 'goodshit'];
         yield ['zach', 'example2'];
     }

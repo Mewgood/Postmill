@@ -16,7 +16,7 @@ class SluggerTest extends TestCase {
         $this->assertSame($expected, Slugger::slugify($input));
     }
 
-    public function inputProvider() {
+    public function inputProvider(): iterable {
         yield ['feature-request-title-excerpt-in-the-url', '[Feature Request] Title excerpt in the URL'];
         yield ['free-market-capitalism-summed-up-by-one-gif', 'Free market capitalism summed up by one gif'];
         yield ['socialism-isn-t-capitalism', 'Socialism isn\'t capitalism'];
