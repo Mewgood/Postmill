@@ -63,7 +63,7 @@ final class SearchRepository {
             }
         }
 
-        usort($results, function ($a, $b) {
+        usort($results, static function ($a, $b) {
             return $b['search_rank'] <=> $a['search_rank'];
         });
 

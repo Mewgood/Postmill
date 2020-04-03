@@ -79,7 +79,7 @@ final class SubmissionType extends AbstractType {
                         'label.url' => Submission::MEDIA_URL,
                         'label.image' => Submission::MEDIA_IMAGE,
                     ],
-                    'choice_name' => function ($key) {
+                    'choice_name' => static function ($key) {
                         return $key;
                     },
                     'data' => Submission::MEDIA_URL,
@@ -107,7 +107,7 @@ final class SubmissionType extends AbstractType {
                 'class' => Forum::class,
                 'choice_label' => 'name',
                 'label' => 'label.forum',
-                'query_builder' => function (EntityRepository $repository) {
+                'query_builder' => static function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('f')
                         ->orderBy('f.name', 'ASC');
                 },

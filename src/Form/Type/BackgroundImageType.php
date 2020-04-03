@@ -72,7 +72,7 @@ class BackgroundImageType extends AbstractType {
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, static function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $form->getData();
 
@@ -132,7 +132,7 @@ class BackgroundImageType extends AbstractType {
         $resolver->setDefaults([
             'data_class' => BackgroundImageInterface::class,
             'inherit_data' => true,
-            'validation_groups' => function (FormInterface $form) {
+            'validation_groups' => static function (FormInterface $form) {
                 if (
                     !$form->get('removeLightBackgroundImage')->isClicked() &&
                     !$form->get('removeDarkBackgroundImage')->isClicked()

@@ -357,7 +357,7 @@ class Submission implements DomainEvents, Visibility, Votable {
 
         $comments = $this->comments->matching($criteria)->toArray();
 
-        usort($comments, function (Comment $a, Comment $b) {
+        usort($comments, static function (Comment $a, Comment $b) {
             return $b->getNetScore() <=> $a->getNetScore();
         });
 

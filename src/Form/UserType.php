@@ -76,7 +76,7 @@ final class UserType extends AbstractType {
         $resolver->setDefaults([
             'data_class' => UserData::class,
             'honeypot' => true,
-            'validation_groups' => function (FormInterface $form) {
+            'validation_groups' => static function (FormInterface $form) {
                 if ($form->getData()->getId() !== null) {
                     $groups[] = 'edit';
                 } else {

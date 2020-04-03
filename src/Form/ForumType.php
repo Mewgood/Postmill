@@ -50,7 +50,7 @@ final class ForumType extends AbstractType {
                 'class' => ForumCategory::class,
                 'choice_label' => 'name',
                 'label' => 'label.category',
-                'query_builder' => function (EntityRepository $repository) {
+                'query_builder' => static function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('fc')
                         ->orderBy('fc.name', 'ASC');
                 },
@@ -71,7 +71,7 @@ final class ForumType extends AbstractType {
         $resolver->setDefaults([
             'data_class' => ForumData::class,
             'honeypot' => true,
-            'validation_groups' => function (FormInterface $form) {
+            'validation_groups' => static function (FormInterface $form) {
                 $editing = $form->getData() && $form->getData()->getId();
 
                 return $editing ? ['update'] : ['create'];

@@ -35,7 +35,7 @@ final class CommentType extends AbstractType {
             'data_class' => CommentData::class,
             'forum' => null, // for UserFlagTrait
             'honeypot' => true,
-            'validation_groups' => function (FormInterface $form) {
+            'validation_groups' => static function (FormInterface $form) {
                 $groups = ['Default'];
 
                 if ($form->getData() && $form->getData()->getId()) {

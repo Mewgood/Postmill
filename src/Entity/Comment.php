@@ -235,7 +235,7 @@ class Comment implements DomainEvents, Visibility, Votable {
     public function getChildren(): array {
         $children = $this->children->toArray();
 
-        usort($children, function (self $a, self $b) {
+        usort($children, static function (self $a, self $b) {
             return $b->getNetScore() <=> $a->getNetScore();
         });
 

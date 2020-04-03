@@ -137,8 +137,8 @@ final class UserSettingsType extends AbstractType {
             $localeChoices[Locales::getName($locale, $locale)] = $locale;
         }
 
-        uksort($localeChoices, function ($a, $b) {
-            [$a, $b] = array_map(function ($key) {
+        uksort($localeChoices, static function ($a, $b) {
+            [$a, $b] = array_map(static function ($key) {
                 return transliterator_transliterate(
                     'NFKD; Latin; Latin/US-ASCII; [:Nonspacing Mark:] Remove; Lower',
                     $key

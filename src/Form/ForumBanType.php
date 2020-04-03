@@ -31,7 +31,7 @@ class ForumBanType extends AbstractType {
         $resolver->setDefaults([
             'data_class' => ForumBanData::class,
             'intent' => null,
-            'validation_groups' => function (FormInterface $form) {
+            'validation_groups' => static function (FormInterface $form) {
                 return [$form->getConfig()->getOption('intent')];
             },
         ]);

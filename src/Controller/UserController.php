@@ -320,7 +320,7 @@ final class UserController extends AbstractController {
     public function clearNotifications(Request $request, NotificationRepository $repository, EntityManager $em): Response {
         $this->validateCsrf('clear_notifications', $request->request->get('token'));
 
-        $ids = array_filter((array) $request->request->get('id'), function ($id) {
+        $ids = array_filter((array) $request->request->get('id'), static function ($id) {
             return is_numeric($id) && \is_int(+$id);
         });
 

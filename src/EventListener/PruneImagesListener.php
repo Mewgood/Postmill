@@ -58,7 +58,7 @@ class PruneImagesListener implements EventSubscriberInterface {
     }
 
     public function onDeleteForum(ForumDeleted $event): void {
-        $images = array_map(function (Image $image) {
+        $images = array_map(static function (Image $image) {
             return $image->getFileName();
         }, array_filter([
             $event->getForum()->getLightBackgroundImage(),

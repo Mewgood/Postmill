@@ -52,7 +52,7 @@ class ForumController extends AbstractController {
             'normalization_groups' => ['forum:read'],
             'denormalization_groups' => ['forum:update'],
             'validation_groups' => ['update'],
-        ], function (ForumData $data) use ($forum, $em): void {
+        ], static function (ForumData $data) use ($forum, $em): void {
             $before = clone $forum;
             $data->updateForum($forum);
 

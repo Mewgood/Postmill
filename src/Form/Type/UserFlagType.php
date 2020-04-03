@@ -35,7 +35,7 @@ final class UserFlagType extends AbstractType {
             'choices' => [
                 'none' => UserFlags::FLAG_NONE,
             ],
-            'choice_label' => function ($key, $name) {
+            'choice_label' => static function ($key, $name) {
                 return "user_flag.{$name}_label";
             },
             'label' => 'user_flag.post_as_label',

@@ -89,7 +89,7 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
 
             $image = $this->images->findOrCreateFromPath($tempFile);
 
-            $this->entityManager->transactional(function () use ($submission, $image): void {
+            $this->entityManager->transactional(static function () use ($submission, $image): void {
                 $submission->setImage($image);
             });
         } catch (\RuntimeException $e) {

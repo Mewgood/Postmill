@@ -56,7 +56,7 @@ final class UserController extends AbstractController {
             'normalization_groups' => ['user:preferences'],
             'denormalization_groups' => ['user:preferences'],
             'validation_groups' => ['settings'],
-        ], function (UserData $data) use ($em, $user): void {
+        ], static function (UserData $data) use ($em, $user): void {
             $data->updateUser($user);
 
             $em->flush();
@@ -81,7 +81,7 @@ final class UserController extends AbstractController {
     public function readModeratedForums(User $user): Response {
         // TODO: pagination
         return $this->json([
-            'entries' => $user->getModeratorTokens()->map(function ($token) {
+            'entries' => $user->getModeratorTokens()->map(static function ($token) {
                 return new ModeratorData($token);
             }),
         ], 200, [], [

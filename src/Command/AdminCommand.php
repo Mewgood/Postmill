@@ -45,7 +45,7 @@ Examples:
 - Giving admin privileges to emma and zach:
   <info>php %command.full_name% emma zach</info>
 
-- Taking admin privileges from bob: 
+- Taking admin privileges from bob:
   <info>php %command.full_name% bob --remove</info>
 EOF
 )
@@ -67,7 +67,7 @@ EOF
             return 1;
         }
 
-        $this->manager->transactional(function () use ($users, $remove): void {
+        $this->manager->transactional(static function () use ($users, $remove): void {
             foreach ($users as $user) {
                 $user->setAdmin(!$remove);
             }

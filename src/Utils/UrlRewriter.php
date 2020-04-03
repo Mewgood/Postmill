@@ -36,7 +36,7 @@ class UrlRewriter {
 
             $this->regex = sprintf(
                 self::REGEX_TEMPLATE,
-                implode('|', array_map(function ($host) {
+                implode('|', array_map(static function ($host) {
                     return str_replace('\*', '.*', preg_quote($host, '!'));
                 }, $trustedHosts))
             );

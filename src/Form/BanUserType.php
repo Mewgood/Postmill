@@ -37,14 +37,14 @@ class BanUserType extends AbstractType {
         ;
 
         $builder->get('ips')->addModelTransformer(new CallbackTransformer(
-            function ($value) {
+            static function ($value) {
                 if ($value instanceof \Traversable) {
                     $value = iterator_to_array($value);
                 }
 
                 return implode(', ', (array) $value);
             },
-            function ($value) {
+            static function ($value) {
                 return preg_split('/[,;\r\n\t ]+/', $value, -1, PREG_SPLIT_NO_EMPTY);
             }
         ));
@@ -53,7 +53,7 @@ class BanUserType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => UserBanData::class,
-            'validation_groups' => function (FormInterface $form) {
+            'validation_groups' => static function (FormInterface $form) {
                 $groups = ['ban_user'];
 
                 if ($form->get('ban_ip')->getData()) {

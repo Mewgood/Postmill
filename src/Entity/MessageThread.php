@@ -59,7 +59,7 @@ class MessageThread {
      * @return User[]
      */
     public function getOtherParticipants(User $self): array {
-        return $this->participants->filter(function (User $user) use ($self) {
+        return $this->participants->filter(static function (User $user) use ($self) {
             return $user !== $self;
         })->getValues();
     }

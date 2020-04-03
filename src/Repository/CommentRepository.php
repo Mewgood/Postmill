@@ -80,7 +80,7 @@ class CommentRepository extends ServiceEntityRepository {
      * @return Pager|Comment[]
      */
     public function findPaginatedByForum(Forum $forum): Pager {
-        return $this->findPaginated(function (QueryBuilder $qb) use ($forum): void {
+        return $this->findPaginated(static function (QueryBuilder $qb) use ($forum): void {
             $qb->join('c.submission', 's', 'WITH', 's.forum = :forum');
             $qb->setParameter('forum', $forum);
         });
@@ -90,7 +90,7 @@ class CommentRepository extends ServiceEntityRepository {
      * @return Pager|Comment[]
      */
     public function findPaginatedByUser(User $user): Pager {
-        return $this->findPaginated(function (QueryBuilder $qb) use ($user): void {
+        return $this->findPaginated(static function (QueryBuilder $qb) use ($user): void {
             $qb->andWhere('c.user = :user')->setParameter('user', $user);
         });
     }

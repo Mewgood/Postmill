@@ -116,7 +116,7 @@ final class BanController extends AbstractController {
     public function unbanIps(Request $request, IpBanRepository $repository, EntityManagerInterface $em): Response {
         $this->validateCsrf('unban_ips', $request->request->get('token'));
 
-        $ids = array_filter((array) $request->request->get('ban'), function ($id) {
+        $ids = array_filter((array) $request->request->get('ban'), static function ($id) {
             return \is_int(+$id);
         });
 
