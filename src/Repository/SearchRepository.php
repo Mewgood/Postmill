@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use App\Entity\Submission;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,8 +119,8 @@ final class SearchRepository {
             ->from($table, 'e')
             ->from('plainto_tsquery(:query::TEXT)', 'search_query')
             ->where('search_doc @@ search_query')
-            ->setParameter('entity', self::ENTITY_TYPES[$entityClass], Type::TEXT)
-            ->setParameter('query', $options['query'], Type::TEXT)
+            ->setParameter('entity', self::ENTITY_TYPES[$entityClass], Types::TEXT)
+            ->setParameter('query', $options['query'], Types::TEXT)
             ->orderBy('search_rank', 'DESC')
             ->setMaxResults(self::MAX_PER_PAGE);
 
