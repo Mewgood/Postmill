@@ -21,10 +21,13 @@
         "normalize.css": "^8.0.1",
         "regenerator-runtime": "^0.13.3",
         "select2": "^4.0.13",
-        "tippy.js": "6.0.0",
+        "tippy.js": "^6.1.0",
         "typeface-roboto": "^0.0.75",
         "typeface-roboto-mono": "^0.0.75",
         "typeface-ubuntu": "^0.0.65"
+    },
+    "resolutions": {
+        "@babel/parser": "7.7.5"
     },
     "scripts": {
         "build-dev": "encore dev",
