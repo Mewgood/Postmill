@@ -103,6 +103,13 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/featured/top.atom'];
         yield ['/featured/controversial.atom'];
         yield ['/featured/most_commented.atom'];
+        yield ['/c/pets'];
+        yield ['/c/pets/hot'];
+        yield ['/c/pets/new'];
+        yield ['/c/pets/active'];
+        yield ['/c/pets/top'];
+        yield ['/c/pets/controversial'];
+        yield ['/c/pets/most_commented'];
         yield ['/f/news'];
         yield ['/f/news/hot'];
         yield ['/f/news/new'];

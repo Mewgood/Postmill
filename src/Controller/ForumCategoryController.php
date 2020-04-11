@@ -33,7 +33,7 @@ class ForumCategoryController extends AbstractController {
         $this->submissionFinder = $submissionFinder;
     }
 
-    public function category(ForumCategory $category, string $sortBy): Response {
+    public function category(ForumCategory $category, ?string $sortBy): Response {
         $forums = $this->forums->findForumsInCategory($category);
 
         $criteria = (new Criteria($sortBy))
