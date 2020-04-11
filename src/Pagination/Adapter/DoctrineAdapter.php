@@ -56,22 +56,21 @@ final class DoctrineAdapter implements AdapterInterface {
      * ~~~
      * (a, b, c) <= (3, 4, 5)
      * becomes
-     * (a <= 3) AND (a = 3 OR b <= 4) AND (a = 3 AND b = 4 OR c <= 5)
+     * (a <= 3) AND (a < 3 OR b <= 4) AND (a < 3 AND b < 4 OR c <= 5)
      * ~~~
      *
      * @param string[] $elements
      */
     private function mangleQuery(QueryBuilder $qb, array $elements, bool $desc): void
     {
-        $cmp = $desc ? 'lte' : 'gte';
         $i = 0;
 
-        $expr = $qb->expr()->andX(...array_map(static function ($field) use ($cmp, $elements, $qb, &$i) {
-            $expr[] = $qb->expr()->andX(...array_map(static function ($field) use ($qb) {
-                return $qb->expr()->eq($field[0], $field[1]);
+        $expr = $qb->expr()->andX(...array_map(static function ($field) use ($desc, $elements, $qb, &$i) {
+            $expr[] = $qb->expr()->andX(...array_map(static function ($field) use ($desc, $qb) {
+                return $qb->expr()->{$desc ? 'lt' : 'gt'}($field[0], $field[1]);
             }, array_slice($elements, 0, $i++)));
 
-            $expr[] = $qb->expr()->{$cmp}($field[0], $field[1]);
+            $expr[] = $qb->expr()->{$desc ? 'lte' : 'gte'}($field[0], $field[1]);
 
             return $qb->expr()->orX(...$expr);
         }, $elements));
