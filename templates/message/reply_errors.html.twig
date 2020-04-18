@@ -3,7 +3,7 @@
 {% block title thread.title %}
 
 {% block body %}
-  <h1 class="page-heading"><a href="{{ path('message', {id: thread.id}) }}">{{ thread.title }}</a></h1>
+  <h1 class="page-heading"><a href="{{ path('message_thread', {id: thread.id}) }}">{{ thread.title }}</a></h1>
 
   {{ include('message/_form.html.twig', {form: form}, with_context=false) }}
 {% endblock %}
