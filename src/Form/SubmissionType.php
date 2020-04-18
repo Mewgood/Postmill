@@ -153,6 +153,8 @@ final class SubmissionType extends AbstractType {
                 if (\in_array($mediaType, Submission::MEDIA_TYPES, true)) {
                     $groups[] = $mediaType;
                 }
+            } else {
+                $groups[] = 'url';
             }
         } else {
             $groups[] = 'edit';
