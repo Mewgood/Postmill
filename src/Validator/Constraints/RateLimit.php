@@ -19,7 +19,7 @@ class RateLimit extends Constraint {
     ];
 
     public $entityClass;
-    public $errorPath;
+    public $errorPath = '';
     public $message = 'ratelimit.error';
     public $max;
     public $timestampField = 'timestamp';

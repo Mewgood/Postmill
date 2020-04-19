@@ -205,6 +205,35 @@ class SubmissionControllerTest extends WebTestCase {
         self::assertSelectorTextContains('.comment__body', 'You will be notified about this comment.');
     }
 
+    /**
+     * @link https://gitlab.com/postmill/Postmill/-/issues/59
+     *
+     * @group time-sensitive
+     */
+    public function testNonWhitelistedUsersGetErrorWhenPostingRapidly(): void {
+        $client = self::createUserClient();
+
+        for ($i = 0; $i < 3; $i++) {
+            $crawler = $client->request('GET', '/submit/cats');
+            $client->submit($crawler->selectButton('Create submission')->form([
+                'submission[title]' => 'post '.$i,
+            ]));
+            $client->followRedirect();
+            self::assertSelectorTextContains('.submission__title', 'post '.$i);
+        }
+
+        $crawler = $client->request('GET', '/submit/cats');
+        $client->submit($crawler->selectButton('Create submission')->form([
+            'submission[title]' => 'will not be posted',
+        ]));
+
+        self::assertResponseStatusCodeSame(200);
+        self::assertSelectorTextContains(
+            '.form-error-list li',
+            'You cannot post more. Wait a while before trying again.'
+        );
+    }
+
     public function selfDeleteReferrerProvider(): iterable {
         yield ['http://localhost/', '/'];
         yield ['http://localhost/f/cats', '/f/cats'];
