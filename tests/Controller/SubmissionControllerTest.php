@@ -206,7 +206,7 @@ class SubmissionControllerTest extends WebTestCase {
     }
 
     /**
-     * @link https://gitlab.com/postmill/Postmill/-/issues/59
+     * @see https://gitlab.com/postmill/Postmill/-/issues/59
      *
      * @group time-sensitive
      */

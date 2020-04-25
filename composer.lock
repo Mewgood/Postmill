@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ef6db0b63e3f86c4b8a273800342d98",
+    "content-hash": "99f1ba23916a17de916d56ee404407be",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3622,6 +3622,59 @@
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "time": "2020-02-18T18:59:58+00:00"
+        },
+        {
+            "name": "postmill/pagerwave",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/postmill/PagerWave.git",
+                "reference": "a1cc8369467c9f6f9ffe0e9dab14bed3ddf08875"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/postmill%2FPagerWave/repository/archive.zip?sha=a1cc8369467c9f6f9ffe0e9dab14bed3ddf08875",
+                "reference": "a1cc8369467c9f6f9ffe0e9dab14bed3ddf08875",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.7",
+                "ext-pdo": "*",
+                "ext-pdo_sqlite": "*",
+                "phpunit/phpunit": "^8.5",
+                "symfony/http-foundation": "^3.4|^4.4|^5.0"
+            },
+            "suggest": {
+                "doctrine/collections": "To paginate Doctrine collection objects",
+                "doctrine/orm": "To paginate Doctrine ORM query builders",
+                "symfony/http-foundation": "To read parameters and generate URLs using Symfony Request objects"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PagerWave\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Zlib"
+            ],
+            "authors": [
+                {
+                    "name": "Emma",
+                    "email": "emma1312@protonmail.ch"
+                }
+            ],
+            "description": "Key-set pagination for PHP",
+            "time": "2020-04-25T18:44:54+00:00"
         },
         {
             "name": "psr/cache",
@@ -9841,6 +9894,7 @@
                 "monolog",
                 "productivity"
             ],
+            "abandoned": true,
             "time": "2019-10-24T07:13:31+00:00"
         },
         {

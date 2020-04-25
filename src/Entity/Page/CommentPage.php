@@ -2,46 +2,29 @@
 
 namespace App\Entity\Page;
 
-use App\Entity\Comment;
-use App\Pagination\PageInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
+use PagerWave\DefinitionGroupTrait;
+use PagerWave\DefinitionInterface as Definition;
+use PagerWave\Validator\ValidatingDefinitionInterface as ValidatingDefinition;
 
-class CommentPage implements PageInterface {
-    /**
-     * @Assert\Range(min=1, max=PHP_INT_MAX, groups={"pager"})
-     * @Assert\NotBlank(groups={"pager"})
-     *
-     * @Groups("pager")
-     *
-     * @var string
-     */
-    public $id;
+final class CommentPage implements Definition, ValidatingDefinition {
+    use DefinitionGroupTrait;
 
-    /**
-     * @Assert\DateTime(format=\DateTimeInterface::RFC3339, groups={"pager"})
-     * @Assert\NotBlank(groups={"pager"})
-     *
-     * @Groups("pager")
-     *
-     * @var string
-     */
-    public $timestamp;
-
-    public function getPaginationFields(string $group): array {
+    public function getFieldNames(): array {
         return ['timestamp', 'id'];
     }
 
-    public function getSortOrder(string $group): string {
-        return self::SORT_DESC;
+    public function isFieldDescending(string $fieldName): bool {
+        return true;
     }
 
-    public function populateFromPagerEntity($entity): void {
-        if (!$entity instanceof Comment) {
-            throw new \InvalidArgumentException('$entity must be instance of '.Comment::class);
+    public function isFieldValid(string $fieldName, $value): bool {
+        switch ($fieldName) {
+        case 'timestamp':
+            return strtotime($value) !== false;
+        case 'id':
+            return is_numeric($value) && \is_int(+$value);
+        default:
+            return false;
         }
-
-        $this->id = (string) $entity->getId();
-        $this->timestamp = $entity->getTimestamp()->format(\DateTimeInterface::RFC3339);
     }
 }

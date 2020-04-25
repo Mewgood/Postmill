@@ -2,13 +2,13 @@
 
 namespace App\Serializer;
 
-use App\Pagination\Pager;
+use PagerWave\CursorInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class PagerNormalizer implements
+final class CursorNormalizer implements
     NormalizerInterface,
     NormalizerAwareInterface,
     CacheableSupportsMethodInterface
@@ -16,20 +16,18 @@ final class PagerNormalizer implements
     use NormalizerAwareTrait;
 
     public function normalize($object, string $format = null, array $context = []): array {
-        \assert($object instanceof Pager);
+        \assert($object instanceof CursorInterface);
 
         $entries = iterator_to_array($object);
 
         return array_filter([
             'entries' => $this->normalizer->normalize($entries, $format, $context),
-            'nextPage' => $object->hasNextPage()
-                ? http_build_query($object->getNextPageParams())
-                : null,
+            'nextPage' => $object->hasNextPage() ? $object->getNextPageUrl() : null,
         ]);
     }
 
     public function supportsNormalization($data, string $format = null): bool {
-        return $data instanceof Pager;
+        return $data instanceof CursorInterface;
     }
 
     public function hasCacheableSupportsMethod(): bool {

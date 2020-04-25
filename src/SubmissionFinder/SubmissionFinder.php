@@ -9,15 +9,14 @@ use App\Entity\Page\SubmissionPage;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
-use App\Pagination\Adapter\DoctrineAdapter;
-use App\Pagination\Pager;
-use App\Pagination\PaginatorInterface;
-use App\Pagination\QueryReader\QueryReaderInterface;
 use App\Repository\SiteRepository;
 use App\Repository\SubmissionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use PagerWave\Adapter\DoctrineAdapter;
+use PagerWave\CursorInterface;
+use PagerWave\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 
@@ -26,11 +25,6 @@ final class SubmissionFinder {
      * @var EntityManagerInterface
      */
     private $entityManager;
-
-    /**
-     * @var QueryReaderInterface
-     */
-    private $queryReader;
 
     /**
      * @var PaginatorInterface
@@ -60,7 +54,6 @@ final class SubmissionFinder {
     public function __construct(
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator,
-        QueryReaderInterface $queryReader,
         RequestStack $requestStack,
         Security $security,
         SiteRepository $sites,
@@ -68,7 +61,6 @@ final class SubmissionFinder {
     ) {
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
-        $this->queryReader = $queryReader;
         $this->requestStack = $requestStack;
         $this->security = $security;
         $this->sites = $sites;
@@ -80,27 +72,24 @@ final class SubmissionFinder {
      *
      * @throws NoSubmissionsException if there are no submissions
      */
-    public function find(Criteria $criteria): Pager {
+    public function find(Criteria $criteria): CursorInterface {
         $qb = $this->entityManager->createQueryBuilder()
             ->select('s')
             ->from(Submission::class, 's')
             ->where('s.visibility = :visibility')
             ->setParameter('visibility', Submission::VISIBILITY_VISIBLE);
 
-        $page = $this->getPage($criteria);
-
         $this->addTimeClause($qb);
-        $this->addStickyClause($qb, $criteria, $page);
+        $this->addStickyClause($qb, $criteria);
         $this->filter($qb, $criteria);
 
         $results = $this->paginator->paginate(
             new DoctrineAdapter($qb),
             $criteria->getMaxPerPage(),
-            SubmissionPage::class,
-            $this->getSortMode($criteria->getSortBy())
+            new SubmissionPage($this->getSortMode($criteria->getSortBy()))
         );
 
-        if ($page && \count($results) === 0) {
+        if (!$this->isOnFirstPage() && \count($results) === 0) {
             throw new NoSubmissionsException();
         }
 
@@ -120,13 +109,11 @@ final class SubmissionFinder {
             ?? $this->sites->findCurrentSite()->getDefaultSortMode();
     }
 
-    private function getPage(Criteria $criteria): ?SubmissionPage {
-        $sortBy = $this->getSortMode($criteria->getSortBy());
-        $page = $this->queryReader->getFromRequest(SubmissionPage::class, $sortBy);
+    private function isOnFirstPage(): bool {
+        $request = $this->requestStack->getCurrentRequest();
+        \assert($request !== null);
 
-        \assert($page instanceof SubmissionPage || $page === null);
-
-        return $page;
+        return !$request->query->get('next');
     }
 
     private function addTimeClause(QueryBuilder $qb): void {
@@ -162,9 +149,9 @@ final class SubmissionFinder {
         }
     }
 
-    private function addStickyClause(QueryBuilder $qb, Criteria $criteria, ?SubmissionPage $page): void {
+    private function addStickyClause(QueryBuilder $qb, Criteria $criteria): void {
         if ($criteria->getStickiesFirst()) {
-            if (!$page) {
+            if ($this->isOnFirstPage()) {
                 // Order by stickies on page 1.
                 $qb->addOrderBy('s.sticky', 'DESC');
             } else {

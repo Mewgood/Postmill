@@ -34,6 +34,7 @@
         "nelmio/security-bundle": "^2.7",
         "pagerfanta/pagerfanta": "^2.1",
         "php-http/guzzle6-adapter": "^2.0",
+        "postmill/pagerwave": "^1.0",
         "ramsey/uuid": "^3.7",
         "ramsey/uuid-doctrine": "^1.4",
         "sebastian/diff": "^3.0",

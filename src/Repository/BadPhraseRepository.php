@@ -4,11 +4,11 @@ namespace App\Repository;
 
 use App\Entity\BadPhrase;
 use App\Entity\Page\TimestampPage;
-use App\Pagination\Adapter\DoctrineAdapter;
-use App\Pagination\Pager;
-use App\Pagination\PaginatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use PagerWave\Adapter\DoctrineAdapter;
+use PagerWave\CursorInterface;
+use PagerWave\PaginatorInterface;
 
 class BadPhraseRepository extends ServiceEntityRepository {
     /**
@@ -24,9 +24,9 @@ class BadPhraseRepository extends ServiceEntityRepository {
         $this->paginator = $paginator;
     }
 
-    public function findPaginated(): Pager {
+    public function findPaginated(): CursorInterface {
         $adapter = new DoctrineAdapter($this->createQueryBuilder('bp'));
 
-        return $this->paginator->paginate($adapter, 50, TimestampPage::class);
+        return $this->paginator->paginate($adapter, 50, new TimestampPage());
     }
 }

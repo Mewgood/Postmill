@@ -7,12 +7,12 @@ use App\Entity\Forum;
 use App\Entity\Page\CommentPage;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Pagination\Adapter\DoctrineAdapter;
-use App\Pagination\Pager;
-use App\Pagination\PaginatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use PagerWave\Adapter\DoctrineAdapter;
+use PagerWave\CursorInterface;
+use PagerWave\PaginatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -59,9 +59,9 @@ class CommentRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pager|Comment[]
+     * @return CursorInterface|Comment[]
      */
-    public function findPaginated(callable $queryModifier = null): Pager {
+    public function findPaginated(callable $queryModifier = null): CursorInterface {
         $qb = $this->createQueryBuilder('c')
             ->where('c.visibility = :visibility')
             ->setParameter('visibility', Comment::VISIBILITY_VISIBLE);
@@ -70,16 +70,17 @@ class CommentRepository extends ServiceEntityRepository {
             $queryModifier($qb);
         }
 
-        $pager = $this->paginator->paginate(new DoctrineAdapter($qb), 25, CommentPage::class);
-        $this->hydrate(...$pager);
+        $cursor = $this->paginator->paginate(new DoctrineAdapter($qb), 25, new CommentPage());
 
-        return $pager;
+        $this->hydrate(...$cursor);
+
+        return $cursor;
     }
 
     /**
-     * @return Pager|Comment[]
+     * @return CursorInterface|Comment[]
      */
-    public function findPaginatedByForum(Forum $forum): Pager {
+    public function findPaginatedByForum(Forum $forum): CursorInterface {
         return $this->findPaginated(static function (QueryBuilder $qb) use ($forum): void {
             $qb->join('c.submission', 's', 'WITH', 's.forum = :forum');
             $qb->setParameter('forum', $forum);
@@ -87,9 +88,9 @@ class CommentRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pager|Comment[]
+     * @return CursorInterface|Comment[]
      */
-    public function findPaginatedByUser(User $user): Pager {
+    public function findPaginatedByUser(User $user): CursorInterface {
         return $this->findPaginated(static function (QueryBuilder $qb) use ($user): void {
             $qb->andWhere('c.user = :user')->setParameter('user', $user);
         });

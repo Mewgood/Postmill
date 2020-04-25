@@ -3,95 +3,54 @@
 namespace App\Entity\Page;
 
 use App\Entity\Submission;
-use App\Pagination\PageInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
+use PagerWave\DefinitionGroupTrait;
+use PagerWave\DefinitionInterface;
+use PagerWave\Validator\ValidatingDefinitionInterface;
 
-class SubmissionPage implements PageInterface {
-    public const SORT_FIELD_MAP = [
-        Submission::SORT_HOT => ['ranking', 'id'],
-        Submission::SORT_NEW => ['id'],
-        Submission::SORT_ACTIVE => ['lastActive', 'id'],
-        Submission::SORT_TOP => ['netScore', 'id'],
-        Submission::SORT_CONTROVERSIAL => ['netScore', 'id'],
-        Submission::SORT_MOST_COMMENTED => ['commentCount', 'id'],
-    ];
+final class SubmissionPage implements DefinitionInterface, ValidatingDefinitionInterface {
+    use DefinitionGroupTrait;
 
-    public const SORT_ORDER = [
-        Submission::SORT_HOT => PageInterface::SORT_DESC,
-        Submission::SORT_NEW => PageInterface::SORT_DESC,
-        Submission::SORT_ACTIVE => PageInterface::SORT_DESC,
-        Submission::SORT_TOP => PageInterface::SORT_DESC,
-        Submission::SORT_CONTROVERSIAL => PageInterface::SORT_ASC,
-        Submission::SORT_MOST_COMMENTED => PageInterface::SORT_DESC,
+    private const SORT_MAP = [
+        Submission::SORT_HOT => ['ranking' => true, 'id' => true],
+        Submission::SORT_NEW => ['id' => true],
+        Submission::SORT_ACTIVE => ['lastActive' => true, 'id' => true],
+        Submission::SORT_TOP => ['netScore' => true, 'id' => true],
+        Submission::SORT_CONTROVERSIAL => ['netScore' => false, 'id' => false],
+        Submission::SORT_MOST_COMMENTED => ['commentCount' => true, 'id' => true],
     ];
 
     /**
-     * @Assert\NotBlank(groups={"hot", "new", "active", "top", "controversial", "most_commented"})
-     * @Assert\Range(min=1, groups={"hot", "new", "active", "top", "controversial", "most_commented"})
-     *
-     * @Groups({"hot", "new", "active", "top", "controversial", "most_commented"})
+     * @var string
      */
-    public $id;
+    private $sortBy;
 
-    /**
-     * @Assert\NotBlank(groups={"hot"})
-     *
-     * @Groups({"hot"})
-     */
-    public $ranking;
-
-    /**
-     * @Assert\NotBlank(groups={"active"})
-     * @Assert\DateTime(format=\DateTimeInterface::RFC3339, groups={"active"})
-     *
-     * @Groups({"active"})
-     */
-    public $lastActive;
-
-    /**
-     * @Assert\NotBlank(groups={"top", "controversial"})
-     * @Assert\Range(min=-2147483648, max=2147483647, groups={"top", "controversial"})
-     *
-     * @Groups({"top", "controversial"})
-     */
-    public $netScore;
-
-    /**
-     * @Assert\NotBlank(groups={"most_commented"})
-     * @Assert\Range(min=0, max=2147483647, groups={"most_commented"})
-     *
-     * @Groups({"most_commented"})
-     */
-    public $commentCount;
-
-    public function getPaginationFields(string $group): array {
-        if (!isset(self::SORT_FIELD_MAP[$group])) {
-            throw new \InvalidArgumentException("Unknown group '$group'");
+    public function __construct(string $sortBy) {
+        if (!isset(self::SORT_MAP[$sortBy])) {
+            throw new \InvalidArgumentException("Invalid parameter value ('$sortBy')");
         }
 
-        return self::SORT_FIELD_MAP[$group];
+        $this->sortBy = $sortBy;
     }
 
-    public function getSortOrder(string $group): string {
-        if (!isset(self::SORT_ORDER[$group])) {
-            throw new \InvalidArgumentException("Unknown group '$group'");
-        }
-
-        return self::SORT_ORDER[$group];
+    public function getFieldNames(): array {
+        return array_keys(self::SORT_MAP[$this->sortBy]);
     }
 
-    public function populateFromPagerEntity($entity): void {
-        if (!$entity instanceof Submission) {
-            throw new \InvalidArgumentException(
-                '$entity must be instance of '.Submission::class
-            );
-        }
+    public function isFieldDescending(string $fieldName): bool {
+        return self::SORT_MAP[$this->sortBy][$fieldName];
+    }
 
-        $this->id = $entity->getId();
-        $this->ranking = $entity->getRanking();
-        $this->lastActive = $entity->getLastActive();
-        $this->netScore = $entity->getNetScore();
-        $this->commentCount = $entity->getCommentCount();
+    public function isFieldValid(string $fieldName, $value): bool {
+        switch ($fieldName) {
+        case 'ranking':
+        case 'id':
+        case 'netScore':
+        case 'commentCount':
+            return is_numeric($value) && \is_int(+$value);
+        case 'lastActive':
+            return strtotime($value) !== false;
+        default:
+            return false;
+        }
     }
 }

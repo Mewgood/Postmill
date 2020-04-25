@@ -6,15 +6,15 @@ use App\Entity\Comment;
 use App\Entity\Page\TimestampPage;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Pagination\Adapter\DoctrineAdapter;
-use App\Pagination\Adapter\UnionAdapter;
-use App\Pagination\Pager;
-use App\Pagination\PaginatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 use Pagerfanta\Adapter\DoctrineSelectableAdapter;
 use Pagerfanta\Pagerfanta;
+use PagerWave\Adapter\DoctrineAdapter;
+use PagerWave\Adapter\UnionAdapter;
+use PagerWave\CursorInterface;
+use PagerWave\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -114,9 +114,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * at the same second, and if they were to appear on separate pages. This is
      * an edge case, so we don't really care.
      *
-     * @return Pager|Submission[]|Comment[]
+     * @return CursorInterface|Submission[]|Comment[]
      */
-    public function findContributions(User $user): Pager {
+    public function findContributions(User $user): CursorInterface {
         $submissionsQuery = $this->_em->createQueryBuilder()
             ->select('s')
             ->from(Submission::class, 's')
@@ -138,11 +138,11 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             new DoctrineAdapter($commentsQuery)
         );
 
-        $pager = $this->paginator->paginate($adapter, 25, TimestampPage::class);
+        $cursor = $this->paginator->paginate($adapter, 25, new TimestampPage());
 
-        $this->hydrateContributions($pager);
+        $this->hydrateContributions($cursor);
 
-        return $pager;
+        return $cursor;
     }
 
     /**

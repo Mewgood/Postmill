@@ -2,8 +2,9 @@
 
 namespace App\Tests\EventListener;
 
-use App\EventListener\PagerfantaExceptionListener;
+use App\EventListener\PaginationExceptionListener;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
+use PagerWave\Exception\InvalidQueryException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -11,9 +12,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * @covers \App\EventListener\PagerfantaExceptionListener
+ * @covers \App\EventListener\PaginationExceptionListener
  */
-class PagerfantaExceptionListenerTest extends TestCase {
+class PaginationExceptionListenerTest extends TestCase {
     public function testSetsExceptionOnPagerfantaException(): void {
         $e = new OutOfRangeCurrentPageException();
 
@@ -21,7 +22,20 @@ class PagerfantaExceptionListenerTest extends TestCase {
         $kernel = $this->createMock(HttpKernelInterface::class);
         $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $e);
 
-        (new PagerfantaExceptionListener())->onKernelException($event);
+        (new PaginationExceptionListener())->onKernelException($event);
+
+        $this->assertInstanceOf(NotFoundHttpException::class, $event->getThrowable());
+        $this->assertSame($e, $event->getThrowable()->getPrevious());
+    }
+
+    public function testSetsExceptionOnPagerWaveException(): void {
+        $e = new InvalidQueryException();
+
+        /** @var HttpKernelInterface|\PHPUnit\Framework\MockObject\MockObject $kernel */
+        $kernel = $this->createMock(HttpKernelInterface::class);
+        $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $e);
+
+        (new PaginationExceptionListener())->onKernelException($event);
 
         $this->assertInstanceOf(NotFoundHttpException::class, $event->getThrowable());
         $this->assertSame($e, $event->getThrowable()->getPrevious());
@@ -31,7 +45,7 @@ class PagerfantaExceptionListenerTest extends TestCase {
         $e = new \Exception();
         $event = $this->createExceptionEvent($e);
 
-        (new PagerfantaExceptionListener())->onKernelException($event);
+        (new PaginationExceptionListener())->onKernelException($event);
 
         $this->assertSame($e, $event->getThrowable());
     }
