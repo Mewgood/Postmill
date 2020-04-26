@@ -36,7 +36,7 @@ class InetTypeTest extends TestCase {
     /**
      * @dataProvider inetProvider
      */
-    public function testCanConvertValueToDatabaseType($value, $expected): void {
+    public function testCanConvertValueToDatabaseType(?string $expected, ?string $value): void {
         $this->assertSame(
             $expected,
             $this->type->convertToDatabaseValue($value, $this->platform)
@@ -57,7 +57,7 @@ class InetTypeTest extends TestCase {
         yield ['::1', '::1'];
         yield ['::1/128', '::1/128'];
         yield ['aaaa::aaaa/128', 'aaaa::aaaa/128'];
-//        yield ['aaaa::aaaa/16', 'aaaa::/16'];
+//        yield ['aaaa::/16', 'aaaa::aaaa/16'];
         yield ['127.0.0.1/32', '127.0.0.1/32'];
         yield ['127.255.0.0/16', '127.255.0.0/16'];
         yield [null, null];

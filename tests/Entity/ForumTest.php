@@ -24,6 +24,7 @@ class ForumTest extends TestCase {
 
     /**
      * @dataProvider nonPrivilegedProvider
+     * @param mixed $nonPrivilegedUser
      */
     public function testRandomsAreNotModerators($nonPrivilegedUser): void {
         $this->assertFalse($this->forum->userIsModerator($nonPrivilegedUser));
@@ -50,6 +51,7 @@ class ForumTest extends TestCase {
 
     /**
      * @dataProvider nonPrivilegedProvider
+     * @param $nonPrivilegedUser mixed
      */
     public function testRandomsCanNotDeleteForum($nonPrivilegedUser): void {
         $this->assertFalse($this->forum->userCanDelete($nonPrivilegedUser));

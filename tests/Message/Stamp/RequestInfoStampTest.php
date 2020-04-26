@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RequestInfoStampTest extends TestCase {
     public function testStampCreation(): void {
+        /** @var Request|\PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this->getMockBuilder(Request::class)
             ->enableOriginalConstructor()
-            ->setMethods(['getLocale', 'getClientIps'])
+            ->onlyMethods(['getLocale', 'getClientIps'])
             ->getMock();
         $request
             ->expects($this->once())

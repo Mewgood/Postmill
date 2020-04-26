@@ -270,7 +270,6 @@ class UserControllerTest extends WebTestCase {
     }
 
     private function changeUser(): void {
-        /** @noinspection MissingService */
         $em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
         /** @var User $user */
         $user = $em->find(User::class, '1');

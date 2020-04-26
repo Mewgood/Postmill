@@ -21,10 +21,13 @@ class NamingStrategyTest extends TestCase {
     /**
      * @dataProvider nameProvider
      */
-    public function testNamesAreCorrectlyTransformed($to, $from): void {
+    public function testNamesAreCorrectlyTransformed(string $to, string $from): void {
         $this->assertSame($to, $this->namingStrategy->classToTableName($from));
     }
 
+    /**
+     * @noinspection ClassConstantCanBeUsedInspection
+     */
     public function nameProvider(): iterable {
         yield ['comments', 'App\Entity\Comment'];
         yield ['comment_votes', 'App\Entity\CommentVote'];

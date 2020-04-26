@@ -35,7 +35,7 @@ class DomainEventsListenerTest extends TestCase {
         $dispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with($this->callback(function ($event) {
+            ->with($this->callback(static function ($event) {
                 return $event instanceof SubmissionCreated;
             }));
 
@@ -55,7 +55,7 @@ class DomainEventsListenerTest extends TestCase {
         $dispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with($this->callback(function ($event) {
+            ->with($this->callback(static function ($event) {
                 return $event instanceof ForumDeleted;
             }));
 
@@ -86,7 +86,7 @@ class DomainEventsListenerTest extends TestCase {
         $dispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with($this->callback(function ($event) {
+            ->with($this->callback(static function ($event) {
                 return $event instanceof ForumUpdated &&
                     $event->getBefore()->getName() === 'John' &&
                     $event->getAfter()->getName() === 'Paul';

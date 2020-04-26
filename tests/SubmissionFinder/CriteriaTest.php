@@ -158,7 +158,7 @@ class CriteriaTest extends TestCase {
     }
 
     public function provideSortModes(): iterable {
-        yield from array_map(function ($mode) {
+        yield from array_map(static function ($mode) {
             return [$mode];
         }, Submission::SORT_OPTIONS);
         yield [null];

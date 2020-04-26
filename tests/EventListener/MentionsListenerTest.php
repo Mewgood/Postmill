@@ -74,7 +74,7 @@ EOF
         /** @var UserRepository|\PHPUnit\Framework\MockObject\MockObject $userRepository */
         $userRepository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findByNormalizedUsername'])
+            ->addMethods(['findByNormalizedUsername'])
             ->getMock();
         $userRepository
             ->expects($this->once())

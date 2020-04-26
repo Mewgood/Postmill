@@ -54,6 +54,7 @@ class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
 
     /**
      * @dataProvider provideEmptyStringable
+     * @param string|bool|int|object $stringable
      */
     public function testDoesNotRaiseOnEmptyStringable($stringable): void {
         $this->validator->validate($stringable, new NoBadPhrases());

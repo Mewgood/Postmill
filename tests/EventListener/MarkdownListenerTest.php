@@ -44,12 +44,12 @@ class MarkdownListenerTest extends TestCase {
 
         $listener = new MarkdownListener($extension, $tokenStorage);
 
-        $event = new MarkdownInitEvent($environment, []);
+        $event = new MarkdownInitEvent($environment);
         $listener->onMarkdownInit($event);
         $this->assertArrayHasKey('HTML.TargetBlank', $event->getHtmlPurifierConfig());
         $this->assertTrue($event->getHtmlPurifierConfig()['HTML.TargetBlank']);
 
-        $event = new MarkdownInitEvent($environment, []);
+        $event = new MarkdownInitEvent($environment);
         $listener->onMarkdownInit($event);
         $this->assertArrayNotHasKey('HTML.TargetBlank', $event->getHtmlPurifierConfig());
     }

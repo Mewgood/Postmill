@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Utils;
+namespace App\Tests\Markdown;
 
 use App\Entity\User;
 use App\EventListener\MarkdownListener;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  * @covers \App\Markdown\MarkdownConverter
  */
 class MarkdownConverterTest extends TestCase {
-    private function createMarkdownConverter(bool $externalLinksOpenInNewTab) {
+    private function createMarkdownConverter(bool $externalLinksOpenInNewTab): MarkdownConverter {
         $user = $this->createMock(User::class);
         $user
             ->method('openExternalLinksInNewTab')

@@ -44,7 +44,7 @@ class UpdateLastSeenListenerTest extends TestCase {
         $user
             ->expects($this->once())
             ->method('setLastSeen')
-            ->with($this->callback(function ($parameter) {
+            ->with($this->callback(static function ($parameter) {
                 return $parameter instanceof \DateTimeImmutable &&
                     $parameter->getTimestamp() === time();
             }));

@@ -39,6 +39,7 @@ class SubmissionControllerTest extends WebTestCase {
             'submission[mediaType]' => 'image',
             'submission[forum]' => '2',
         ]);
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $form['submission[image]']->upload(__DIR__.'/../Resources/120px-12-Color-SVG.svg.png');
 
         $crawler = $client->submit($form);
@@ -58,6 +59,7 @@ class SubmissionControllerTest extends WebTestCase {
             'submission[mediaType]' => 'image',
             'submission[forum]' => '2',
         ]);
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $form['submission[image]']->upload(__DIR__.'/../Resources/garbage.bin');
 
         $client->submit($form);

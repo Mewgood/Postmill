@@ -16,7 +16,7 @@ class RequestContextMiddlewareTest extends MiddlewareTestCase {
     public function testSetsAndRestoresRequestContext(): void {
         /** @var RequestContext|\PHPUnit\Framework\MockObject\MockObject $requestContext */
         $requestContext = $this->getMockBuilder(RequestContext::class)
-            ->setMethods(['getHost', 'setHost'])
+            ->onlyMethods(['getHost', 'setHost'])
             ->getMock();
         $requestContext
             ->expects($this->once())
@@ -34,7 +34,7 @@ class RequestContextMiddlewareTest extends MiddlewareTestCase {
         /** @var Request|\PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this->getMockBuilder(Request::class)
             ->enableOriginalConstructor()
-            ->setMethods(['getHost'])
+            ->onlyMethods(['getHost'])
             ->getMock();
         $request
             ->method('getHost')
