@@ -18,6 +18,6 @@ final class TimestampPage implements Definition, ValidatingDefinition {
     }
 
     public function isFieldValid(string $fieldName, $value): bool {
-        return strtotime($value) !== false;
+        return (bool) @\DateTime::createFromFormat(\DateTime::ATOM, $value);
     }
 }

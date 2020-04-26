@@ -20,7 +20,7 @@ final class CommentPage implements Definition, ValidatingDefinition {
     public function isFieldValid(string $fieldName, $value): bool {
         switch ($fieldName) {
         case 'timestamp':
-            return strtotime($value) !== false;
+            return (bool) @\DateTime::createFromFormat(\DateTime::ATOM, $value);
         case 'id':
             return is_numeric($value) && \is_int(+$value);
         default:

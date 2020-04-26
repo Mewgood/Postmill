@@ -48,7 +48,7 @@ final class SubmissionPage implements DefinitionInterface, ValidatingDefinitionI
         case 'commentCount':
             return is_numeric($value) && \is_int(+$value);
         case 'lastActive':
-            return strtotime($value) !== false;
+            return (bool) @\DateTime::createFromFormat(\DateTime::ATOM, $value);
         default:
             return false;
         }
