@@ -9,7 +9,14 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class CommentVoter extends Voter {
-    public const ATTRIBUTES = ['delete_own', 'edit'];
+    public const ATTRIBUTES = [
+        'view',
+        'delete_own',
+        'edit',
+        'mod_delete',
+        'purge',
+        'restore',
+    ];
 
     private $decisionManager;
 
@@ -22,30 +29,75 @@ final class CommentVoter extends Voter {
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
-        if (!$token->getUser() instanceof User) {
+        if ($attribute === 'view') {
+            return $this->canView($subject, $token);
+        }
+
+        $user = $token->getUser();
+
+        if (!$user instanceof User) {
             return false;
         }
 
         switch ($attribute) {
         case 'delete_own':
-            return $this->canDeleteOwn($subject, $token);
+            return $this->canDeleteOwn($subject, $user);
+        case 'mod_delete':
+            return $this->canModDelete($subject, $user);
         case 'edit':
             return $this->canEdit($subject, $token);
+        case 'purge':
+            return $this->canPurge($subject, $user);
+        case 'restore':
+            return $this->canRestore($subject, $user);
         default:
             throw new \InvalidArgumentException('Unknown attribute '.$attribute);
         }
     }
 
-    private function canDeleteOwn(Comment $comment, TokenInterface $token): bool {
-        if ($comment->getVisibility() === Comment::VISIBILITY_DELETED) {
+    private function canView(Comment $comment, TokenInterface $token): bool {
+        if (\in_array($comment->getVisibility(), [
+            Comment::VISIBILITY_VISIBLE,
+            Comment::VISIBILITY_SOFT_DELETED,
+        ], true)) {
+            return true;
+        }
+
+        $user = $token->getUser();
+
+        if ($user === $comment->getUser()) {
+            return true;
+        }
+
+        return $comment->getSubmission()->getForum()->userIsModerator($user);
+    }
+
+    private function canDeleteOwn(Comment $comment, User $user): bool {
+        if ($comment->getVisibility() !== Comment::VISIBILITY_VISIBLE) {
             return false;
         }
 
-        return $comment->getUser() === $token->getUser();
+        if ($comment->getUser() !== $user) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function canModDelete(Comment $comment, User $user): bool {
+        if ($comment->getVisibility() !== Comment::VISIBILITY_VISIBLE) {
+            return false;
+        }
+
+        if (!$comment->getSubmission()->getForum()->userIsModerator($user)) {
+            return false;
+        }
+
+        return true;
     }
 
     private function canEdit(Comment $comment, TokenInterface $token): bool {
-        if ($comment->getVisibility() === Comment::VISIBILITY_DELETED) {
+        if ($comment->getVisibility() === Comment::VISIBILITY_SOFT_DELETED) {
             return false;
         }
 
@@ -58,5 +110,21 @@ final class CommentVoter extends Voter {
         }
 
         return $comment->getUser() === $token->getUser();
+    }
+
+    private function canRestore(Comment $comment, User $user): bool {
+        if ($comment->getVisibility() !== Comment::VISIBILITY_TRASHED) {
+            return false;
+        }
+
+        if (!$comment->getSubmission()->getForum()->userIsModerator($user)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function canPurge(Comment $comment, User $user): bool {
+        return $comment->isTrashed() && $user->isAdmin();
     }
 }

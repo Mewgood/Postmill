@@ -114,6 +114,10 @@
         route: 'delete_forum',
         condition: is_granted('delete', forum),
       },
+      ('nav.trash'|trans): {
+        route: 'forum_trash',
+        condition: is_granted('moderator', forum),
+      },
     } %}
 
     <ul class="no-margin unlistify sidebar__no-padding">

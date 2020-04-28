@@ -73,15 +73,7 @@ final class SubmissionFinder {
      * @throws NoSubmissionsException if there are no submissions
      */
     public function find(Criteria $criteria): CursorInterface {
-        $qb = $this->entityManager->createQueryBuilder()
-            ->select('s')
-            ->from(Submission::class, 's')
-            ->where('s.visibility = :visibility')
-            ->setParameter('visibility', Submission::VISIBILITY_VISIBLE);
-
-        $this->addTimeClause($qb);
-        $this->addStickyClause($qb, $criteria);
-        $this->filter($qb, $criteria);
+        $qb = $this->getQueryBuilder($criteria);
 
         $results = $this->paginator->paginate(
             new DoctrineAdapter($qb),
@@ -96,6 +88,20 @@ final class SubmissionFinder {
         $this->submissions->hydrate(...$results);
 
         return $results;
+    }
+
+    public function getQueryBuilder(Criteria $criteria): QueryBuilder {
+        $qb = $this->entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(Submission::class, 's')
+            ->where('s.visibility = :visibility')
+            ->setParameter('visibility', $criteria->getVisibility());
+
+        $this->addTimeClause($qb);
+        $this->addStickyClause($qb, $criteria);
+        $this->filter($qb, $criteria);
+
+        return $qb;
     }
 
     /**

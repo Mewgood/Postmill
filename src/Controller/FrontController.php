@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Submission;
+use App\Repository\TrashRepository;
 use App\Repository\ForumRepository;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
@@ -122,6 +123,27 @@ final class FrontController extends AbstractController {
             'forums' => $forums,
             'sort_by' => $this->submissionFinder->getSortMode($sortBy),
             'submissions' => $submissions,
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     */
+    public function trash(TrashRepository $trash): Response {
+        $forums = $this->forums->findModeratedForumNames($this->getUser());
+
+        return $this->render('front/trash.html.twig', [
+            'forums' => $forums,
+            'trash' => $trash->findTrashForUser($this->getUser()),
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function globalTrash(TrashRepository $trash): Response {
+        return $this->render('front/trash.html.twig', [
+            'trash' => $trash->findTrash(),
         ]);
     }
 }

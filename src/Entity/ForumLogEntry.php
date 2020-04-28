@@ -11,9 +11,11 @@ use Ramsey\Uuid\Uuid;
  * @ORM\DiscriminatorColumn(name="action_type", type="text")
  * @ORM\DiscriminatorMap({
  *     "comment_deletion": "ForumLogCommentDeletion",
+ *     "comment_restored": "ForumLogCommentRestored",
  *     "submission_deletion": "ForumLogSubmissionDeletion",
  *     "ban": "ForumLogBan",
- *     "submission_lock": "ForumLogSubmissionLock"
+ *     "submission_lock": "ForumLogSubmissionLock",
+ *     "submission_restored": "ForumLogSubmissionRestored",
  * })
  */
 abstract class ForumLogEntry {

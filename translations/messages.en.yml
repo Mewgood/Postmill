@@ -7,6 +7,7 @@ action.compare: Compare
 action.create: Create
 action.delete: Delete
 action.delete_account: Delete account
+action.delete_thread: Delete thread
 action.dismiss: Dismiss
 action.downvote: Downvote
 action.edit: Edit
@@ -21,6 +22,7 @@ action.pin: Pin
 action.post: Post
 action.purge: Purge
 action.remove: Remove
+action.restore: Restore
 action.retract_downvote: Retract downvote
 action.retract_upvote: Retract upvote
 action.save: Save
@@ -119,6 +121,8 @@ edit_user.title: Editing user %username%
 
 flash.account_deletion_in_progress: The account is being deleted.
 flash.ban_added: The IP address has been banned.
+flash.comment_purged: The comment was purged.
+flash.comment_restored: The comment was restored.
 flash.delete_account_warning: Once you delete your account, you will never, ever be able to get it back!
 flash.delete_someone_elses_account_warning: You are deleting someone else's account! Once you do this, they will never, ever be able to get their account back.
 flash.editing_biography_of_other_user: You are editing the biography of another user.
@@ -136,8 +140,6 @@ flash.notification_cleared: The notification was successfully cleared.
 flash.notifications_cleared: Your notifications have been cleared.
 flash.page_locked: The page was locked.
 flash.page_unlocked: The page was unlocked.
-flash.purge_comment_warning: The comment and all its replies will be irreversably deleted.
-flash.purge_submission_warning: The submission and all its comments will be irreversably deleted.
 flash.registration_closed: Sign-ups have been disabled by the administrator.
 flash.reset_password_email_sent: A reset email has been sent to the address you specified.
 flash.site_settings_saved: The settings have been saved.
@@ -146,6 +148,8 @@ flash.submission_edited: The submission was edited.
 flash.submission_is_locked: The submission is locked. You cannot post new comments.
 flash.submission_locked: The submission was locked.
 flash.submission_pinned: The submission was pinned.
+flash.submission_purged: The submission was purged.
+flash.submission_restored: The submission was restored.
 flash.submission_unlocked: The submission was unlocked.
 flash.submission_unpinned: The submission was unpinned.
 flash.too_many_characters: You entered too many characters (max %max%, %count% entered)
@@ -220,6 +224,7 @@ help.delete_forum_warning: All content on this forum will be irreversibly delete
 help.forum_description: A short description of the forum. Search engines will present this description in their results.
 help.forum_is_featured: This forum is featured.
 help.forum_is_hidden: You have chosen to hide this forum.
+help.front_trash: This page shows posts that were deleted by a moderator in the forums you moderate.
 help.hidden_forums: By marking forums as hidden, you won't see submissions from those forums when browsing the "featured" and "all" submission listings. You can still subscribe to and moderate forums you choose to hide.
 help.hidden_forums_no_comment_hiding: Comments posted to hidden forums will still be displayed in the "recent comments" listing.
 help.notify_on_mentions: Get notifications when someone links to your user profile.
@@ -357,9 +362,11 @@ label.whitelisted: Whitelisted
 log.ban: '%user% banned %banned% (expires: %expires%). Reason: "%reason%"'
 log.comment_deletion: '%user% deleted comment by %author% in "%submission%"'
 log.comment_deletion_with_reason: '%user% deleted comment by %author% in "%submission%". Reason: "%reason%"'
+log.comment_restored: '%user% restored comment by %author% in "%submission%"'
 log.submission_deletion: '%user% deleted submission "%title%" by %author%'
 log.submission_deletion_with_reason: '%user% deleted submission "%title%" by %author%. Reason: "%reason%"'
 log.submission_lock: '%user% locked submission "%title%" by %author%'
+log.submission_restored: '%user% restored submission "%title%" by %author%'
 log.submission_unlock: '%user% unlocked submission "%title%" by %author%'
 log.unban: '%user% unbanned %banned%. Reason: "%reason%"'
 
@@ -428,6 +435,7 @@ nav.search: Search
 nav.site_settings: Site settings
 nav.submissions: Submissions
 nav.submit: Submit
+nav.trash: Trash
 nav.user: User
 nav.user_bans: User bans
 nav.user_settings: User settings
@@ -470,6 +478,8 @@ site_footer.version: '%version% (%branch%)'
 site_settings.default_sort_mode: Default sort mode
 site_settings.forum_create_role: Who can create new forums?
 site_settings.image_upload_role: Who can upload images?
+site_settings.trash_enabled: Enable trash
+site_settings.trash_enabled_help: Move posts deleted by moderators to the trash, where they can later be restored.
 site_settings.registration_open: Enable sign-ups
 site_settings.site_name: Site name
 site_settings.site_theme: Site theme
@@ -481,6 +491,7 @@ submission_form.create: Create submission
 submission_form.edit: Edit submission
 
 submission.comments: '{0} No comments|{1} %count% comment|[1,Inf[ %count% comments'
+submission.deleted_by_moderator: Deleted by a moderator
 submission.edit_info: (edited %edited_at%)
 submission.info_with_forum_name: Submitted by %submitter% %timestamp% in %forum%
 submission.info_without_forum_name: Submitted by %submitter% %timestamp%
@@ -517,6 +528,7 @@ title.create_forum_category: Create forum category
 title.create_submission: Create submission
 title.delete_account: Delete account
 title.delete_comment: Delete comment
+title.delete_comment_thread: Delete comment thread
 title.delete_forum: Delete forum %forum%
 title.delete_submission: Delete submission
 title.editing_biography_for_user: Editing biography for %user%
@@ -531,14 +543,13 @@ title.list_of_users: 'List of users, page #%page%'
 title.manage_forum_categories: Manage forum categories
 title.messages: Messages
 title.notifications: Notifications
-title.purge_comment: Purge comment
-title.purge_submission: Purge submission
 title.recent_comments: Recent comments
 title.recent_comments_forum: Recent comments in %forum%
 title.showing_ban_history_for_user_in_forum: Showing ban history for %user% in %forum%
 title.showing_moderation_log_for_forum: Showing moderation log for %forum%
 title.showing_revision: 'Showing revision #%revision% of page %path%'
 title.site_settings: Site settings
+title.site_wide_trash: Site-wide trash
 title.unban_user: Unbanning %user%
 title.unbanning_user_from_forum: Unbanning %user% from %forum%
 title.user_forum_bans: "%user%'s forum bans"

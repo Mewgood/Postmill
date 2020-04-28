@@ -6,6 +6,7 @@ action.clear_all: Forigi ĉion
 action.compare: Kompari
 action.create: Krei
 action.delete: Forigi
+action.delete_thread: Forigi kun respondoj
 action.dismiss: Forgesi
 action.downvote: Kontraŭvoĉdoni
 action.edit: Redakti
@@ -95,7 +96,6 @@ flash.notification_cleared: La avizo estis sukcese vakigita.
 flash.notifications_cleared: Viaj sciigoj ĵus estis forigitaj.
 flash.page_locked: La paĝo estis ŝlosita.
 flash.page_unlocked: La paĝo estis malŝlosita.
-flash.purge_submission_warning: La afiŝo kaj ĉiuj siaj komentoj estos daŭre forigitaj.
 flash.reset_password_email_sent: Restariga retletero sendiĝis al la adreso, kiun vi specifis.
 flash.submission_deleted: La afiŝo foriĝis.
 flash.submission_edited: La afiŝo redaktiĝis.

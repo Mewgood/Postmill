@@ -2,7 +2,9 @@
 
 namespace App\Tests\Controller;
 
+use App\Repository\SiteRepository;
 use App\Tests\WebTestCase;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @covers \App\Controller\SubmissionController
@@ -127,11 +129,16 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertTrue($client->getResponse()->isNotFound());
     }
 
-    public function testSoftDeletingSubmissionOfOtherUser(): void {
+    public function testTrashingSubmissionOfOtherUser(): void {
         $client = self::createAdminClient();
         $client->followRedirects();
 
+        self::$container->get(SiteRepository::class)->findCurrentSite()->setTrashEnabled(true);
+        self::$container->get(EntityManagerInterface::class)->flush();
+
         $crawler = $client->request('GET', '/f/cats/3');
+        self::assertSelectorNotExists('.submission__trashed-icon');
+
         $crawler = $client->click($crawler->selectLink('Delete')->link());
         $client->submit($crawler->selectButton('Delete')->form([
             'delete_reason[reason]' => 'some reason',
@@ -140,7 +147,7 @@ class SubmissionControllerTest extends WebTestCase {
         self::assertSelectorTextContains('.alert__text', 'The submission was deleted.');
 
         $client->request('GET', '/f/cats/3');
-        self::assertSelectorTextContains('.submission__link', '[deleted]');
+        self::assertSelectorExists('.submission__trashed-icon');
     }
 
     public function testSubmissionLocking(): void {
@@ -234,6 +241,36 @@ class SubmissionControllerTest extends WebTestCase {
             '.form-error-list li',
             'You cannot post more. Wait a while before trying again.'
         );
+    }
+
+    public function testCanRestoreDeletedSubmissions(): void {
+        $client = self::createUserClient();
+
+        $crawler = $client->request('GET', '/f/cats/4');
+        self::assertSelectorExists('.submission__trashed-icon');
+
+        $client->submit($crawler->filter('.submission')->selectButton('Restore')->form());
+        self::assertResponseRedirects();
+
+        $client->followRedirect();
+        self::assertSelectorNotExists('.submission__trashed-icon');
+    }
+
+    public function testLoggedOutUsersCannotAccessTrashedSubmissions(): void {
+        $client = self::createClient();
+        $client->request('GET', '/f/cats/4');
+
+        self::assertResponseStatusCodeSame(403);
+    }
+
+    public function testNonModeratorNonSubmitterUserCannotAccessTrashedSubmissions(): void {
+        $client = self::createClient([], [
+            'PHP_AUTH_USER' => 'third',
+            'PHP_AUTH_PW' => 'example3',
+        ]);
+        $client->request('GET', '/f/cats/4');
+
+        self::assertResponseStatusCodeSame(403);
     }
 
     public function selfDeleteReferrerProvider(): iterable {

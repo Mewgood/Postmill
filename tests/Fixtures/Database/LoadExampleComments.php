@@ -26,6 +26,10 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
             TimeMocker::mock(Comment::class, $data['timestamp']);
             $comment = new Comment($data['body'], $user, $parent, $data['ip']);
 
+            if ($data['trashed'] ?? false) {
+                $comment->trash();
+            }
+
             $this->addReference('comment-'.++$i, $comment);
 
             $manager->persist($comment);
@@ -57,6 +61,15 @@ class LoadExampleComments extends AbstractFixture implements DependentFixtureInt
             'user' => 'zach',
             'timestamp' => new \DateTime('2017-05-03 01:00'),
             'ip' => '255.241.124.124',
+        ];
+
+        yield [
+            'body' => 'trashed comment',
+            'submission' => 3,
+            'user' => 'third',
+            'timestamp' => new \DateTime('2020-03-15 06:00:09'),
+            'ip' => null,
+            'trashed' => true,
         ];
     }
 

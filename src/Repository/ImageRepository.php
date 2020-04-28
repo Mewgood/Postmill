@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Contracts\VisibilityInterface;
 use App\Entity\Forum;
 use App\Entity\Image;
 use App\Entity\Submission;
@@ -60,8 +61,9 @@ class ImageRepository extends ServiceEntityRepository {
             ->andWhere('i IN (?1)')
             ->andWhere('i NOT IN (SELECT IDENTITY(f1.lightBackgroundImage) FROM '.Forum::class.' f1 WHERE f1.lightBackgroundImage IS NOT NULL)')
             ->andWhere('i NOT IN (SELECT IDENTITY(f2.darkBackgroundImage) FROM '.Forum::class.' f2 WHERE f2.darkBackgroundImage IS NOT NULL)')
-            ->andWhere('i NOT IN (SELECT IDENTITY(s.image) FROM '.Submission::class.' s WHERE s.image IS NOT NULL)')
+            ->andWhere('i NOT IN (SELECT IDENTITY(s.image) FROM '.Submission::class.' s WHERE s.image IS NOT NULL AND s.visibility <> ?2)')
             ->setParameter(1, $images)
+            ->setParameter(2, VisibilityInterface::VISIBILITY_SOFT_DELETED)
             ->getQuery()
             ->execute();
     }

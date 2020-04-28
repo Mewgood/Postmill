@@ -7,6 +7,7 @@ use App\Entity\Contracts\VisibilityInterface as Visibility;
 use App\Entity\Contracts\VotableInterface as Votable;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Exception\SubmissionLockedException;
+use App\Entity\Traits\VisibilityTrait;
 use App\Entity\Traits\VotableTrait;
 use App\Event\CommentCreated;
 use App\Event\CommentUpdated;
@@ -25,6 +26,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  * })
  */
 class Comment implements DomainEvents, Visibility, Votable {
+    use VisibilityTrait;
     use VotableTrait {
         vote as private realVote;
         getNetScore as private getRealNetScore;
@@ -242,6 +244,17 @@ class Comment implements DomainEvents, Visibility, Votable {
         return $children;
     }
 
+    /**
+     * @return Comment[]|iterable
+     */
+    public function getChildrenRecursive(int &$startIndex = 0): iterable {
+        foreach ($this->children as $child) {
+            // each yielded key must be unique, lol
+            yield $startIndex++ => $child;
+            yield from $child->getChildrenRecursive($startIndex);
+        }
+    }
+
     public function getReplyCount(): int {
         return \count($this->children);
     }
@@ -302,14 +315,44 @@ class Comment implements DomainEvents, Visibility, Votable {
         return $this->visibility;
     }
 
+    public function isThreadVisible(): bool {
+        if ($this->isVisible()) {
+            return true;
+        }
+
+        // TODO: avoid doing this more than once for an entire comment tree
+        foreach ($this->getChildrenRecursive() as $child) {
+            if ($child->isVisible()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Delete a comment without deleting its replies.
      */
     public function softDelete(): void {
-        $this->visibility = self::VISIBILITY_DELETED;
+        $this->visibility = self::VISIBILITY_SOFT_DELETED;
         $this->body = '';
         $this->userFlag = UserFlags::FLAG_NONE;
         $this->mentions->clear();
+        $this->submission->updateCommentCount();
+        $this->submission->updateRanking();
+        $this->submission->updateLastActive();
+    }
+
+    public function trash(): void {
+        $this->visibility = self::VISIBILITY_TRASHED;
+        $this->mentions->clear();
+        $this->submission->updateCommentCount();
+        $this->submission->updateRanking();
+        $this->submission->updateLastActive();
+    }
+
+    public function restore(): void {
+        $this->visibility = self::VISIBILITY_VISIBLE;
         $this->submission->updateCommentCount();
         $this->submission->updateRanking();
         $this->submission->updateLastActive();

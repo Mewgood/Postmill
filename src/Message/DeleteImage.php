@@ -6,13 +6,13 @@ class DeleteImage {
     /**
      * @var string[]
      */
-    private $images;
+    private $fileNames;
 
-    public function __construct(string ...$images) {
-        $this->images = $images;
+    public function __construct(string ...$fileNames) {
+        $this->fileNames = $fileNames;
     }
 
-    public function getImages(): array {
-        return $this->images;
+    public function getFileNames(): array {
+        return $this->fileNames;
     }
 }

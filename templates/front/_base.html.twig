@@ -22,13 +22,15 @@
 
 {% block body %}
   <nav class="flex flex--guttered">
-    {{ front_post_types('submissions') }}
+    {% block front_post_nav %}
+      {{ front_post_types('submissions') }}
 
-    <ul class="unlistify flex">
-      {{ submission_filter(block('listing'), sort_by) }}
-      {{ submission_sort(sort_by) }}
-      {{ submission_time(sort_by) }}
-    </ul>
+      <ul class="unlistify flex">
+        {{ submission_filter(block('listing'), sort_by) }}
+        {{ submission_sort(sort_by) }}
+        {{ submission_time(sort_by) }}
+      </ul>
+    {% endblock front_post_nav %}
   </nav>
 
   {% block front_alerts '' %}

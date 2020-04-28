@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Submission;
+use App\Entity\User;
 use App\Utils\Slugger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseAbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -14,13 +15,23 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @method \App\Entity\User|null getUser()
+ * @method User|null getUser()
  */
 abstract class AbstractController extends BaseAbstractController {
     public static function getSubscribedServices(): array {
         return [
             'validator' => ValidatorInterface::class,
         ] + parent::getSubscribedServices();
+    }
+
+    protected function getUserOrThrow(): User {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw new \BadMethodCallException('User is not logged in');
+        }
+
+        return $user;
     }
 
     /**

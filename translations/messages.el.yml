@@ -1,6 +1,7 @@
 action.ban: Απαγόρευση
 action.block: Αποκλεισμός
 action.delete: Διέγραψε
+action.delete_thread: Διαγραφή με απαντήσεις
 action.downvote: Κατοψηφίσει
 action.edit: Επεξεργασία
 action.global_ban: Πλήρης απαγόρευση

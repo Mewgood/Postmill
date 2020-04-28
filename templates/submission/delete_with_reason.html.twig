@@ -2,7 +2,7 @@
 {% from '_macros/alert.html.twig' import alert %}
 {% from '_macros/form.html.twig' import button_row %}
 
-{% block title purge ? 'title.purge_submission'|trans : 'title.delete_submission'|trans %}
+{% block title 'title.delete_submission'|trans %}
 
 {% block body %}
   {% from 'submission/_macros.html.twig' import submission %}
@@ -14,10 +14,6 @@
   {{ form_start(form) }}
     {{ form_row(form.reason) }}
 
-    {% if purge %}
-      {{ alert('flash.purge_submission_warning'|trans, 'warn') }}
-    {% endif %}
-
-    {{ button_row(purge ? 'action.purge'|trans : 'action.delete'|trans) }}
+    {{ button_row('action.delete'|trans) }}
   {{ form_end(form) }}
 {% endblock %}

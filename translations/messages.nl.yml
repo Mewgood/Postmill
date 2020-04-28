@@ -1,5 +1,6 @@
 action.ban: Verbanning
 action.delete: Verwijder
+action.delete_thread: Verwijder inclusief reacties
 action.downvote: '-1'
 action.edit: Bewerk
 action.log_in: Log in

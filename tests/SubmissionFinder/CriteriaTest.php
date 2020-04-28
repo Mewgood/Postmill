@@ -147,6 +147,26 @@ class CriteriaTest extends TestCase {
         new Criteria('poop');
     }
 
+    public function testDefaultVisibilityIsVisible(): void {
+        $this->assertSame(
+            Submission::VISIBILITY_VISIBLE,
+            $this->createCriteria()->getVisibility()
+        );
+    }
+
+    public function testCanSetTrashedVisibility(): void {
+        $this->assertSame(
+            Submission::VISIBILITY_TRASHED,
+            $this->createCriteria()->trashed()->getVisibility()
+        );
+    }
+
+    public function testCannotSetTrashedVisibilityMultipleTimes(): void {
+        $this->expectException(\BadMethodCallException::class);
+
+        $this->createCriteria()->trashed()->trashed();
+    }
+
     public function provideExcludeMethods(): iterable {
         yield ['excludeHiddenForums', Criteria::EXCLUDE_HIDDEN_FORUMS];
         yield ['excludeBlockedUsers', Criteria::EXCLUDE_BLOCKED_USERS];

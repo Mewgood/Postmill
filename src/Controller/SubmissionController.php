@@ -7,9 +7,10 @@ namespace App\Controller;
 use App\DataObject\SubmissionData;
 use App\Entity\Comment;
 use App\Entity\Forum;
-use App\Entity\ForumLogSubmissionDeletion;
 use App\Entity\ForumLogSubmissionLock;
+use App\Entity\ForumLogSubmissionRestored;
 use App\Entity\Submission;
+use App\Event\DeleteSubmission;
 use App\Form\DeleteReasonType;
 use App\Form\SubmissionType;
 use App\Message\NewSubmission;
@@ -21,6 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
  * @Entity("forum", expr="repository.findOneOrRedirectToCanonical(forum_name, 'forum_name')")
@@ -46,6 +48,8 @@ final class SubmissionController extends AbstractController {
     /**
      * Show a submission's comment page.
      *
+     * @IsGranted("view", subject="submission", statusCode=403)
+     *
      * @Cache(smaxage="10 seconds")
      */
     public function submission(Forum $forum, Submission $submission, string $commentView): Response {
@@ -58,6 +62,9 @@ final class SubmissionController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("view", subject="submission", statusCode=403)
+     */
     public function submissionJson(Forum $forum, Submission $submission): Response {
         return $this->json($submission, 200, [], [
             'groups' => ['submission:read', 'abbreviated_relations'],
@@ -66,6 +73,9 @@ final class SubmissionController extends AbstractController {
 
     /**
      * Show a single comment and its replies.
+     *
+     * @IsGranted("view", subject="submission", statusCode=403)
+     * @IsGranted("view", subject="comment", statusCode=403)
      */
     public function commentPermalink(Forum $forum, Submission $submission, Comment $comment): Response {
         $this->comments->hydrate(...$submission->getComments());
@@ -79,6 +89,7 @@ final class SubmissionController extends AbstractController {
 
     /**
      * @Entity("submission", expr="repository.find(id)")
+     * @IsGranted("view", subject="submission", statusCode=403)
      */
     public function shortcut(Submission $submission): Response {
         return $this->redirect($this->generateSubmissionUrl($submission));
@@ -141,26 +152,20 @@ final class SubmissionController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Security("is_granted(purge ? 'purge' : 'mod_delete', submission)", statusCode=403)
+     * @Security("is_granted('mod_delete', submission)", statusCode=403)
      */
-    public function modDelete(Request $request, Forum $forum, Submission $submission, bool $purge): Response {
+    public function modDelete(Request $request, Forum $forum, Submission $submission, EventDispatcher $dispatcher): Response {
         $form = $this->createForm(DeleteReasonType::class, []);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $forum->addLogEntry(new ForumLogSubmissionDeletion(
-                $submission,
-                $this->getUser(),
-                $form->getData()['reason']
-            ));
+            $user = $this->getUserOrThrow();
+            $reason = $form->getData()['reason'];
 
-            if ($purge || $submission->getCommentCount() === 0) {
-                $this->entityManager->remove($submission);
-            } else {
-                $submission->softDelete();
-            }
+            $dispatcher->dispatch(
+                (new DeleteSubmission($submission))->asModerator($user, $reason)
+            );
 
-            $this->entityManager->flush();
             $this->addFlash('success', 'flash.submission_deleted');
 
             return $this->redirectToRoute('forum', [
@@ -171,7 +176,6 @@ final class SubmissionController extends AbstractController {
         return $this->render('submission/delete_with_reason.html.twig', [
             'form' => $form->createView(),
             'forum' => $forum,
-            'purge' => $purge,
             'submission' => $submission,
         ]);
     }
@@ -180,19 +184,53 @@ final class SubmissionController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("delete_own", subject="submission", statusCode=403)
      */
-    public function deleteOwn(Request $request, Forum $forum, Submission $submission): Response {
+    public function deleteOwn(Request $request, Forum $forum, Submission $submission, EventDispatcher $dispatcher): Response {
         $this->validateCsrf('delete_submission', $request->request->get('token'));
 
-        if ($submission->getCommentCount() > 0) {
-            $submission->softDelete();
-        } else {
-            $this->entityManager->remove($submission);
-        }
+        $dispatcher->dispatch(new DeleteSubmission($submission));
 
-        $this->entityManager->flush();
         $this->addFlash('success', 'flash.submission_deleted');
 
         return $this->redirectAfterDelete($request);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("purge", subject="submission", statusCode=403)
+     */
+    public function purge(
+        Forum $forum,
+        Submission $submission,
+        Request $request,
+        EventDispatcher $dispatcher
+    ): Response {
+        $this->validateCsrf('purge_submission', $request->request->get('token'));
+
+        $dispatcher->dispatch((new DeleteSubmission($submission))->withPermanence());
+
+        $this->addFlash('success', 'flash.submission_purged');
+
+        return $this->redirectAfterDelete($request);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("restore", subject="submission", statusCode=403)
+     */
+    public function restore(Forum $forum, Submission $submission, Request $request): Response {
+        $this->validateCsrf('restore_submission', $request->request->get('token'));
+
+        $submission->restore();
+        $this->entityManager->persist(new ForumLogSubmissionRestored($submission, $this->getUser()));
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'flash.submission_restored');
+
+        if ($request->headers->has('Referer')) {
+            return $this->redirect($request->headers->get('Referer'));
+        }
+
+        return $this->redirect($this->generateSubmissionUrl($submission));
     }
 
     /**

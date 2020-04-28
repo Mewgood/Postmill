@@ -80,6 +80,13 @@ class Site {
      */
     private $wikiEditRole = 'ROLE_USER';
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @var bool
+     */
+    private $trashEnabled = false;
+
     public function __construct() {
         $this->id = Uuid::fromString(Uuid::NIL);
     }
@@ -162,5 +169,13 @@ class Site {
         }
 
         $this->wikiEditRole = $wikiEditRole;
+    }
+
+    public function isTrashEnabled(): bool {
+        return $this->trashEnabled;
+    }
+
+    public function setTrashEnabled(bool $trashEnabled): void {
+        $this->trashEnabled = $trashEnabled;
     }
 }

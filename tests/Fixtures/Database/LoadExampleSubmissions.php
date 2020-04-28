@@ -31,6 +31,10 @@ class LoadExampleSubmissions extends AbstractFixture implements DependentFixture
                 $data['ip']
             );
 
+            if ($data['trashed'] ?? false) {
+                $submission->trash();
+            }
+
             $this->addReference('submission-'.++$i, $submission);
 
             $manager->persist($submission);
@@ -68,6 +72,17 @@ class LoadExampleSubmissions extends AbstractFixture implements DependentFixture
             'timestamp' => new \DateTime('2017-04-28 10:00'),
             'user' => 'zach',
             'forum' => 'cats',
+        ];
+
+        yield [
+            'url' => null,
+            'title' => 'Submission in the trash',
+            'body' => 'anyone else writing tests during a pandemic',
+            'ip' => null,
+            'timestamp' => new \DateTime('2020-03-15 04:21:09'),
+            'user' => 'zach',
+            'forum' => 'cats',
+            'trashed' => true,
         ];
     }
 

@@ -5,7 +5,7 @@
   <article class="comment
                   comment--{{ level > 1 ? 'nested' : 'top-level' }}
                   {{ show_context ? 'comment--with-context' }}
-                  {{ comment.visibility is constant('App\\Entity\\Comment::VISIBILITY_DELETED') ? 'comment--soft-deleted' }}
+                  comment--visibility-{{ comment.visibility|replace({'_': '-'}) }}
                   hideable"
            id="comment_{{ comment.id }}"
            data-level="{{ level }}">
@@ -79,7 +79,7 @@
         <div class="comment__body break-text hideable__hide">
           {%- if raw_body is not null -%}
             {{ raw_body|raw }}
-          {%- elseif comment.body is not null -%}
+          {%- elseif (comment.visible or show_trashed) and comment.body is not null -%}
             {{ comment.body|cached_markdown|raw }}
           {%- endif -%}
         </div>
@@ -101,14 +101,17 @@
       </div>
     </div>
 
-    {% if recurse and comment.children|length > 0 %}
-      <div class="comment__replies hideable__hide">
-        {%- for reply in comment.children -%}
-          {%- with { comment: reply, level: level + 1, show_form: false } -%}
-            {{- block('comment') -}}
-          {%- endwith -%}
-        {%- endfor -%}
-      </div>
+    {% if recurse %}
+      {% set children = comment.children|filter(c => c.threadVisible) %}
+      {% if children|length > 0 %}
+        <div class="comment__replies hideable__hide">
+          {%- for reply in children -%}
+            {%- with { comment: reply, level: level + 1, show_form: false } -%}
+              {{- block('comment') -}}
+            {%- endwith -%}
+          {%- endfor -%}
+        </div>
+      {% endif %}
     {% endif %}
   </article>
 {%- endblock comment -%}
@@ -143,7 +146,7 @@
   {%- from 'user/_macros.html.twig' import user_flag -%}
 
   {% apply spaceless %}
-    {%- if comment.visibility is not constant('App\\Entity\\Comment::VISIBILITY_DELETED') -%}
+    {%- if comment.visible or show_trashed -%}
       <a href="{{ path('user', { username: comment.user.username }) }}" class="fg-inherit">
         <strong>{{ comment.user.username }}</strong>
       </a>
@@ -152,7 +155,7 @@
     {%- endif -%}
   {% endapply %}
 
-  {% if comment.visibility is not constant('App\\Entity\\Comment::VISIBILITY_DELETED') and comment.user is same as(comment.submission.user) %}
+  {% if not comment.softDeleted and comment.user is same as(comment.submission.user) %}
     <small class="comment__op-text text-sm user-flag"
            title="{{ 'item.op'|trans }}"
            aria-label="{{ 'item.op'|trans }}">
@@ -265,16 +268,37 @@
 {% endblock comment_nav_actions %}
 
 {% block comment_actions %}
-  {{- block('comment_actions_delete') -}}
+  {{- block('comment_actions_restore') -}}
   {{- block('comment_actions_purge') -}}
+  {{- block('comment_actions_delete') -}}
+  {{- block('comment_actions_delete_thread') -}}
   {{- block('comment_actions_edit') -}}
   {{- block('comment_actions_ban') -}}
   {{- block('comment_actions_ip_ban') -}}
 {% endblock %}
 
+{% block comment_actions_restore %}
+  {%- from '_macros/icon.html.twig' import icon %}
+  {%- if is_granted('restore', comment) -%}
+    <li>
+      <form action="{{ path('comment_restore', {
+        forum_name: comment.submission.forum.name,
+        submission_id: comment.submission.id,
+        comment_id: comment.id,
+      }) }}" method="post">
+        <input type="hidden" name="token" value="{{ csrf_token('restore_comment') }}">
+        <button class="menu-item no-wrap unbuttonize">
+          {{- icon('ccw') }}
+          {{ 'action.restore'|trans -}}
+        </button>
+      </form>
+    </li>
+  {%- endif -%}
+{% endblock comment_actions_restore %}
+
 {% block comment_actions_delete %}
   {%- from '_macros/icon.html.twig' import icon -%}
-  {%- if comment.user is not same as(self) and is_moderator -%}
+  {%- if comment.user is not same as(self) and is_granted('mod_delete', comment) -%}
     <li>
       <a href="{{ path('comment_delete', {
         forum_name: comment.submission.forum.name,
@@ -288,18 +312,37 @@
   {%- endif -%}
 {% endblock comment_actions_delete %}
 
-{% block comment_actions_purge %}
+{% block comment_actions_delete_thread %}
   {%- from '_macros/icon.html.twig' import icon -%}
-  {%- if is_moderator and comment.replyCount > 0 -%}
+  {%- if comment.replyCount > 0 and is_granted('mod_delete', comment) -%}
     <li>
-      <a href="{{ path('comment_purge', {
+      <a href="{{ path('comment_delete_thread', {
         forum_name: comment.submission.forum.name,
         submission_id: comment.submission.id,
         comment_id: comment.id,
       }) }}" class="menu-item no-wrap">
         {{- icon('cancel') }}
-        {{ 'action.purge'|trans -}}
+        {{ 'action.delete_thread'|trans -}}
       </a>
+    </li>
+  {%- endif -%}
+{% endblock comment_actions_delete_thread %}
+
+{% block comment_actions_purge %}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- if is_granted('purge', comment) -%}
+    <li>
+      <form action="{{ path('comment_purge', {
+        forum_name: comment.submission.forum.name,
+        submission_id: comment.submission.id,
+        comment_id: comment.id,
+      }) }}" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('purge_comment') }}">
+        <button class="menu-item no-wrap unbuttonize js-confirm-comment-delete">
+          {{- icon('cancel') }}
+          {{ 'action.purge'|trans -}}
+        </button>
+      </form>
     </li>
   {%- endif -%}
 {% endblock comment_actions_purge %}

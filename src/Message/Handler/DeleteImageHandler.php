@@ -63,7 +63,7 @@ final class DeleteImageHandler implements MessageHandlerInterface {
     }
 
     public function __invoke(DeleteImage $message): void {
-        $images = \array_slice($message->getImages(), 0, $this->batchSize);
+        $images = \array_slice($message->getFileNames(), 0, $this->batchSize);
         $images = $this->images->findByFileName($images);
         $images = $this->images->filterOrphanedImages($images);
 

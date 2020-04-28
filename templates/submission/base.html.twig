@@ -1,5 +1,5 @@
 {% extends 'forum/base.html.twig' %}
-{% from '_macros/icon.html.twig' import icon %}
+{% from 'forum/_macros.html.twig' import forum_return_nav %}
 
 {% block title %}
   {{ submission.title }}
@@ -33,16 +33,5 @@
 {% endblock %}
 
 {% block body %}
-  <nav class="submission-permalink-nav">
-    <ul class="flex flex--guttered unlistify">
-      <li>
-        <a href="{{ path('forum', {forum_name: forum.name}) }}"
-           class="flex flex--guttered flex--slim-gutters flex--align-center no-margin fg-text"
-           title="{{ 'comments.return_to_forum'|trans({ '%forum%': '/f/'~forum.name }) }}">
-          {{ icon('left-small', '', 'icon--circled text-xl') }}
-          <span class="text-lg">/f/<strong>{{ forum.name }}</strong></span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  {{ forum_return_nav(forum) }}
 {% endblock body %}

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity()
  */
-class ForumLogSubmissionDeletion extends ForumLogEntry {
+class ForumLogSubmissionRestored extends ForumLogEntry {
     /**
      * @ORM\Column(type="text")
      *
@@ -23,13 +23,6 @@ class ForumLogSubmissionDeletion extends ForumLogEntry {
     private $author;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @var string|null
-     */
-    private $reason;
-
-    /**
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @ORM\ManyToOne(targetEntity="Submission")
      *
@@ -37,13 +30,12 @@ class ForumLogSubmissionDeletion extends ForumLogEntry {
      */
     private $submission;
 
-    public function __construct(Submission $submission, User $user, string $reason) {
+    public function __construct(Submission $submission, User $user) {
+        parent::__construct($submission->getForum(), $user);
+
         $this->submission = $submission;
         $this->title = $submission->getTitle();
         $this->author = $submission->getUser();
-        $this->reason = $reason;
-
-        parent::__construct($submission->getForum(), $user);
     }
 
     public function getSubmission(): ?Submission {
@@ -58,11 +50,7 @@ class ForumLogSubmissionDeletion extends ForumLogEntry {
         return $this->author;
     }
 
-    public function getReason(): ?string {
-        return $this->reason;
-    }
-
     public function getAction(): string {
-        return 'submission_deletion';
+        return 'submission_restored';
     }
 }

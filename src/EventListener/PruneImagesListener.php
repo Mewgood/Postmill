@@ -3,15 +3,21 @@
 namespace App\EventListener;
 
 use App\Entity\Image;
+use App\Event\DeleteSubmission;
 use App\Event\ForumDeleted;
 use App\Event\ForumUpdated;
-use App\Event\SubmissionDeleted;
 use App\Event\SubmissionUpdated;
 use App\Message\DeleteImage;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class PruneImagesListener implements EventSubscriberInterface {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
     /**
      * @var MessageBusInterface
      */
@@ -20,29 +26,29 @@ class PruneImagesListener implements EventSubscriberInterface {
     public static function getSubscribedEvents(): array {
         return [
             ForumDeleted::class => ['onDeleteForum'],
-            SubmissionDeleted::class => ['onDeleteSubmission'],
+            DeleteSubmission::class => [
+                'onDeleteSubmission',
+                DeleteListener::FLUSH_LISTENER_PRIORITY - 8,
+            ],
             ForumUpdated::class => ['onEditForum'],
             SubmissionUpdated::class => ['onEditSubmission'],
         ];
     }
 
-    public function __construct(MessageBusInterface $messageBus) {
+    public function __construct(EntityManagerInterface $entityManager, MessageBusInterface $messageBus) {
+        $this->entityManager = $entityManager;
         $this->messageBus = $messageBus;
     }
 
-    public function onDeleteSubmission(SubmissionDeleted $event): void {
-        $images = [];
-
-        foreach ($event->getSubmissions() as $submission) {
-            $image = $submission->getImage();
-
-            if ($image) {
-                $images[] = $image->getId();
-            }
+    public function onDeleteSubmission(DeleteSubmission $event): void {
+        if ($this->entityManager->contains($event->getSubmission())) {
+            return; // entity was soft-deleted
         }
 
-        if ($images) {
-            $this->messageBus->dispatch(new DeleteImage(...$images));
+        $image = $event->getSubmission()->getImage();
+
+        if ($image) {
+            $this->messageBus->dispatch(new DeleteImage($image->getFileName()));
         }
     }
 

@@ -9,11 +9,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class SubmissionVoter extends Voter {
     public const ATTRIBUTES = [
+        'view',
         'delete_own',
         'edit',
         'lock',
         'mod_delete',
         'pin',
+        'restore',
         'purge',
     ];
 
@@ -22,78 +24,89 @@ final class SubmissionVoter extends Voter {
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
-        if (!$token->getUser() instanceof User) {
+        if ($attribute === 'view') {
+            return $this->canView($subject, $token);
+        }
+
+        $user = $token->getUser();
+
+        if (!$user instanceof User) {
             return false;
         }
 
         switch ($attribute) {
         case 'delete_own':
-            return $this->canDeleteOwn($subject, $token);
+            return $this->canDeleteOwn($subject, $user);
         case 'edit':
-            return $this->canEdit($subject, $token);
+            return $this->canEdit($subject, $user);
         case 'lock':
-            return $this->canLock($subject, $token);
+            return $this->canLock($subject, $user);
         case 'mod_delete':
-            return $this->canModDelete($subject, $token);
+            return $this->canModDelete($subject, $user);
         case 'pin':
-            return $this->canPin($subject, $token);
+            return $this->canPin($subject, $user);
         case 'purge':
-            return $this->canPurge($subject, $token);
+            return $this->canPurge($subject, $user);
+        case 'restore':
+            return $this->canRestore($subject, $user);
         default:
-            throw new \RuntimeException("Invalid attribute '$attribute'");
+            throw new \InvalidArgumentException("Invalid attribute '$attribute'");
         }
     }
 
-    private function canDeleteOwn(Submission $submission, TokenInterface $token): bool {
-        if ($submission->getVisibility() === Submission::VISIBILITY_DELETED) {
-            return false;
-        }
-
-        if ($submission->getUser() !== $token->getUser()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function canModDelete(Submission $submission, TokenInterface $token): bool {
-        if ($submission->getVisibility() === Submission::VISIBILITY_DELETED) {
-            return false;
-        }
-
-        if ($submission->getUser() === $token->getUser()) {
-            return false;
-        }
-
-        if (!$submission->getForum()->userIsModerator($token->getUser())) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function canPurge(Submission $submission, TokenInterface $token): bool {
-        if ($submission->getCommentCount() === 0) {
-            return false;
-        }
-
-        if (!$submission->getForum()->userIsModerator($token->getUser())) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function canEdit(Submission $submission, TokenInterface $token): bool {
-        if ($submission->getVisibility() === Submission::VISIBILITY_DELETED) {
-            return false;
-        }
-
-        if ($token->getUser()->isAdmin()) {
+    private function canView(Submission $submission, TokenInterface $token): bool {
+        if (\in_array($submission->getVisibility(), [
+            Submission::VISIBILITY_VISIBLE,
+            Submission::VISIBILITY_SOFT_DELETED,
+        ], true)) {
             return true;
         }
 
-        if ($submission->getUser() !== $token->getUser()) {
+        if ($token->getUser() === $submission->getUser()) {
+            return true;
+        }
+
+        return $submission->getForum()->userIsModerator($token->getUser());
+    }
+
+    private function canDeleteOwn(Submission $submission, User $user): bool {
+        if ($submission->getVisibility() !== Submission::VISIBILITY_VISIBLE) {
+            return false;
+        }
+
+        if ($submission->getUser() !== $user) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function canModDelete(Submission $submission, User $user): bool {
+        if ($submission->getVisibility() !== Submission::VISIBILITY_VISIBLE) {
+            return false;
+        }
+
+        if ($submission->getUser() === $user) {
+            return false;
+        }
+
+        if (!$submission->getForum()->userIsModerator($user)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function canEdit(Submission $submission, User $user): bool {
+        if ($submission->getVisibility() !== Submission::VISIBILITY_VISIBLE) {
+            return false;
+        }
+
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($submission->getUser() !== $user) {
             return false;
         }
 
@@ -104,15 +117,31 @@ final class SubmissionVoter extends Voter {
         return true;
     }
 
-    private function canPin(Submission $submission, TokenInterface $token): bool {
-        if ($submission->getVisibility() === Submission::VISIBILITY_DELETED) {
+    private function canPin(Submission $submission, User $user): bool {
+        if ($submission->getVisibility() !== Submission::VISIBILITY_VISIBLE) {
             return false;
         }
 
-        return $submission->getForum()->userIsModerator($token->getUser());
+        return $submission->getForum()->userIsModerator($user);
     }
 
-    private function canLock(Submission $submission, TokenInterface $token): bool {
-        return $submission->getForum()->userIsModerator($token->getUser());
+    private function canLock(Submission $submission, User $user): bool {
+        return $submission->getForum()->userIsModerator($user);
+    }
+
+    private function canRestore(Submission $submission, User $user): bool {
+        if ($submission->getVisibility() !== Submission::VISIBILITY_TRASHED) {
+            return false;
+        }
+
+        if (!$submission->getForum()->userIsModerator($user)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function canPurge(Submission $submission, User $user): bool {
+        return $submission->isTrashed() && $user->isAdmin();
     }
 }

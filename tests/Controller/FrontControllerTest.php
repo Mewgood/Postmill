@@ -30,4 +30,25 @@ class FrontControllerTest extends WebTestCase {
 
         $this->assertCount(1, $crawler->filter('.submission'));
     }
+
+    public function testTrashListsAllTrashedPostsInForumsUserModerates(): void {
+        $client = self::createUserClient();
+        $crawler = $client->request('GET', '/trash');
+
+        self::assertResponseStatusCodeSame(200);
+        $this->assertCount(1, $crawler->filter('.submission'));
+        $this->assertCount(1, $crawler->filter('.comment'));
+    }
+
+    public function testTrashListsNothingForUsersWhoModerateNoForums(): void {
+        $client = self::createClient([], [
+            'PHP_AUTH_USER' => 'third',
+            'PHP_AUTH_PW' => 'example3',
+        ]);
+        $crawler = $client->request('GET', '/trash');
+
+        self::assertResponseStatusCodeSame(200);
+        $this->assertCount(0, $crawler->filter('.submission'));
+        $this->assertCount(0, $crawler->filter('.comment'));
+    }
 }

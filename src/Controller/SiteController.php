@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Site;
 use App\Form\Model\SiteData;
 use App\Form\SiteSettingsType;
+use App\Repository\TrashRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -41,6 +42,16 @@ final class SiteController extends AbstractController {
 
         return $this->render('site/settings.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_ADMIN", statusCode=403)
+     */
+    public function trash(TrashRepository $trash): Response {
+        return $this->render('site/trash.html.twig', [
+            'trash' => $trash->findTrash(),
         ]);
     }
 }

@@ -1,5 +1,6 @@
 action.ban: Banni
 action.delete: Poista
+action.delete_thread: Poista vastausten kanssa
 action.downvote: Alaääni
 action.edit: Muokkaa
 action.log_in: Kirjaudu

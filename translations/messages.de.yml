@@ -1,5 +1,6 @@
 action.ban: Sperrung
 action.delete: Löschen
+action.delete_thread: Löschen mit Antworten
 action.downvote: Downvote
 action.edit: Bearbeiten
 action.log_in: Einloggen

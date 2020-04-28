@@ -13,6 +13,7 @@ use App\Form\ForumType;
 use App\Form\Model\ForumBanData;
 use App\Form\Model\ModeratorData;
 use App\Form\ModeratorType;
+use App\Repository\TrashRepository;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
 use App\Repository\ForumCategoryRepository;
@@ -216,6 +217,17 @@ final class ForumController extends AbstractController {
         return $this->render('forum/moderators.html.twig', [
             'forum' => $forum,
             'moderators' => $forum->getPaginatedModerators($page),
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("moderator", subject="forum")
+     */
+    public function trash(Forum $forum, TrashRepository $posts): Response {
+        return $this->render('forum/trash.html.twig', [
+            'forum' => $forum,
+            'trash' => $posts->findTrashInForum($forum),
         ]);
     }
 

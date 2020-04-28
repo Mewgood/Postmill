@@ -27,7 +27,7 @@
 
               {%- if raw_title is not null -%}
                 {{ raw_title|raw }}
-              {%- elseif submission.visibility == constant('App\\Entity\\Submission::VISIBILITY_DELETED') -%}
+              {%- elseif submission.softDeleted -%}
                 <del>{{ 'placeholder.deleted'|trans }}</del>
               {%- else -%}
                 {{ submission.title }}
@@ -45,6 +45,13 @@
               <span class="submission__locked-icon"
                     title="{{ 'submission.locked'|trans }}">
                 {{- icon('lock') -}}
+              </span>
+            {% endif %}
+
+            {% if submission.trashed %}
+              <span class="submission__trashed-icon"
+                    title="{{ 'submission.deleted_by_moderator'|trans }}">
+                {{- icon('trash') -}}
               </span>
             {% endif %}
 
@@ -149,12 +156,12 @@
   {{ submission.sticky ? 'submission--sticky' }}
   {{ submission.locked ? 'submission--locked' }}
   {{ has_thumbnail ? 'submission--has-thumbnail' }}
-  submission--visibility-{{ submission.visibility }}
+  submission--visibility-{{ submission.visibility|replace({'_': '-'}) }}
 {% endblock submission_classes %}
 
 {% block submission_info_submitter %}
   {% from 'user/_macros.html.twig' import user_flag %}
-  {% if submission.visibility != constant('App\\Entity\\Submission::VISIBILITY_DELETED') %}
+  {% if not submission.softDeleted %}
     {% apply spaceless %}
       <a href="{{ path('user', { username: submission.user.username }) }}" class="submission__submitter fg-inherit">
         <strong>{{ submission.user.username }}</strong>
@@ -209,8 +216,9 @@
     {% if submission.user is not same as(self) %}
       {{ block('submission_nav_edit') }}
     {% endif %}
-    {{ block('submission_nav_mod_delete') }}
+    {{ block('submission_nav_restore') }}
     {{ block('submission_nav_purge') }}
+    {{ block('submission_nav_mod_delete') }}
     {{ block('submission_nav_pin') }}
     {{ block('submission_nav_lock') }}
     {{ block('submission_nav_ban') }}
@@ -229,6 +237,39 @@
     </li>
   {% endif %}
 {% endblock submission_nav_actions %}
+
+{% block submission_nav_purge %}
+  {% from '_macros/icon.html.twig' import icon %}
+  {% if is_granted('purge', submission) %}
+    <li>
+      <form action="{{ path('submission_purge', {
+        forum_name: submission.forum.name,
+        submission_id: submission.id,
+      }) }}" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('purge_submission') }}">
+        <button class="{{ nav_link_classes }} unbuttonize js-confirm-submission-delete">
+          {{- icon('cancel') }}
+          {{ 'action.purge'|trans -}}
+        </button>
+      </form>
+    </li>
+  {% endif %}
+{% endblock submission_nav_purge %}
+
+{% block submission_nav_restore %}
+  {% from '_macros/icon.html.twig' import icon %}
+  {% if is_granted('restore', submission) %}
+    <li>
+      <form action="{{ path('submission_restore', { forum_name: submission.forum.name, submission_id: submission.id }) }}" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('restore_submission') }}">
+        <button class="{{ nav_link_classes }} unbuttonize">
+          {{- icon('ccw') }}
+          {{ 'action.restore'|trans -}}
+        </button>
+      </form>
+    </li>
+  {% endif %}
+{% endblock submission_nav_restore %}
 
 {% block submission_nav_edit %}
   {% from '_macros/icon.html.twig' import icon %}
@@ -270,19 +311,6 @@
     </li>
   {% endif %}
 {% endblock submission_nav_mod_delete %}
-
-{% block submission_nav_purge %}
-  {% from '_macros/icon.html.twig' import icon %}
-  {% if is_granted('purge', submission) %}
-    <li>
-      <a href="{{ path('submission_purge', { forum_name: submission.forum.name, submission_id: submission.id }) }}"
-         class="unbuttonize menu-item no-wrap">
-        {{- icon('cancel') }}
-        {{ 'action.purge'|trans -}}
-      </a>
-    </li>
-  {% endif %}
-{% endblock submission_nav_purge %}
 
 {% block submission_nav_pin %}
   {% from '_macros/icon.html.twig' import icon %}

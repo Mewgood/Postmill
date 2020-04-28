@@ -110,7 +110,7 @@ class CommentControllerTest extends WebTestCase {
         $client = self::createUserClient();
 
         $crawler = $client->request('GET', '/f/cats/3/-/comment/3');
-        $client->submit($crawler->filter('.comment')->selectButton('Delete')->form());
+        $client->submit($crawler->filter('#comment_3')->selectButton('Delete')->form());
 
         $client->request('GET', '/f/cats/3/-/comment/3');
         $this->assertTrue($client->getResponse()->isNotFound());
@@ -123,7 +123,7 @@ class CommentControllerTest extends WebTestCase {
         $client->submit($crawler->filter('.comment')->selectButton('Delete')->form());
 
         $crawler = $client->request('GET', '/f/news/1/-/comment/1');
-        $this->assertCount(1, $crawler->filter('.comment--soft-deleted'));
+        $this->assertCount(1, $crawler->filter('.comment--visibility-soft-deleted'));
     }
 
     /**
@@ -156,6 +156,32 @@ class CommentControllerTest extends WebTestCase {
         $client->request('GET', '/notifications');
 
         self::assertSelectorTextContains('.comment__body', 'You will be notified about this comment.');
+    }
+
+    public function testCanDeleteAsModerator(): void {
+        $client = self::createUserClient();
+        $crawler = $client->request('GET', '/f/news/1/-/comment/1/delete');
+
+        $client->submit($crawler->selectButton('Delete')->form([
+            'delete_reason[reason]' => 'i hate this post',
+        ]));
+
+        self::assertResponseRedirects('/f/news/1/a-submission-with-a-url-and-body');
+    }
+
+    public function testCanRestoreDeletedComments(): void {
+        $client = self::createUserClient();
+
+        $crawler = $client->request('GET', '/f/cats/3/-/comment/4');
+        self::assertSelectorExists('.comment--visibility-trashed');
+        self::assertSelectorTextNotContains('.comment__body', 'trashed comment');
+
+        $client->submit($crawler->filter('.comment')->selectButton('Restore')->form());
+        self::assertResponseRedirects();
+
+        $client->followRedirect();
+        self::assertSelectorNotExists('.comment--visibility-trashed');
+        self::assertSelectorTextContains('.comment__body', 'trashed comment');
     }
 
     public function selfDeleteReferrerProvider(): iterable {

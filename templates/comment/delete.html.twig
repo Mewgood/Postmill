@@ -3,7 +3,7 @@
 {% from '_macros/form.html.twig' import button_row %}
 {% from 'comment/_macros.html.twig' import comment %}
 
-{% block title purge ? 'title.purge_comment'|trans : 'title.delete_comment'|trans %}
+{% block title recursive ? 'title.delete_comment_thread'|trans : 'title.delete_comment'|trans %}
 
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
@@ -13,10 +13,6 @@
   {{ form_start(form) }}
     {{ form_row(form.reason) }}
 
-    {% if purge %}
-      {{ alert('flash.purge_comment_warning'|trans, 'warn') }}
-    {% endif %}
-
-    {{ button_row(purge ? 'action.purge'|trans : 'action.delete'|trans) }}
+    {{ button_row(recursive ? 'action.delete_thread'|trans : 'action.delete'|trans) }}
   {{ form_end(form) }}
 {% endblock %}

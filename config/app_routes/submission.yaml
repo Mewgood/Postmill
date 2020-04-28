@@ -45,16 +45,23 @@ submission_delete_own:
 
 submission_mod_delete:
     controller: App\Controller\SubmissionController::modDelete
-    defaults: { slug: -, purge: false }
+    defaults: { slug: '-' }
     path: /f/{forum_name}/{submission_id}/{slug}/mod_delete
     methods: [GET, POST]
     requirements: { submission_id: "%number_regex%" }
 
 submission_purge:
-    controller: App\Controller\SubmissionController::modDelete
-    defaults: { slug: -, purge: true }
+    controller: App\Controller\SubmissionController::purge
+    defaults: { slug: '-' }
     path: /f/{forum_name}/{submission_id}/{slug}/purge
-    methods: [GET, POST]
+    methods: [POST]
+    requirements: { submission_id: "%number_regex%" }
+
+submission_restore:
+    controller: App\Controller\SubmissionController::restore
+    defaults: { slug: '-' }
+    path: /f/{forum_name}/{submission_id}/{slug}/restore
+    methods: [POST]
     requirements: { submission_id: "%number_regex%" }
 
 lock:

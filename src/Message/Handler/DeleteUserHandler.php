@@ -10,7 +10,8 @@ use App\Entity\Moderator;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
-use App\Event\SubmissionDeleted;
+use App\Event\DeleteComment;
+use App\Event\DeleteSubmission;
 use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\MessageRepository;
@@ -174,16 +175,12 @@ final class DeleteUserHandler implements MessageHandlerInterface {
             \assert($submission instanceof Submission);
             $dispatchAgain = true;
 
-            if (\count($submission->getComments()) > 0) {
-                $submission->softDelete();
-            } else {
-                $this->entityManager->remove($submission);
-            }
+            $this->eventDispatcher->dispatch(
+                (new DeleteSubmission($submission))->withNoFlush()
+            );
         }
 
         $this->entityManager->flush();
-
-        $this->eventDispatcher->dispatch(new SubmissionDeleted(...$submissions));
 
         return $dispatchAgain;
     }
@@ -200,17 +197,9 @@ final class DeleteUserHandler implements MessageHandlerInterface {
             \assert($comment instanceof Comment);
             $dispatchAgain = true;
 
-            if (\count($comment->getChildren()) > 0) {
-                $comment->softDelete();
-            } else {
-                $parent = $comment->getParent();
-
-                if ($parent) {
-                    $parent->removeReply($comment);
-                }
-
-                $this->entityManager->remove($comment);
-            }
+            $this->eventDispatcher->dispatch(
+                (new DeleteComment($comment))->withNoFlush()
+            );
         }
 
         $this->entityManager->flush();

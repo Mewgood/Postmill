@@ -32,3 +32,8 @@ moderated:
     path: /moderated/{sortBy}
     methods: [GET]
     requirements: { sortBy: "%submission_sort_modes%" }
+
+trash:
+    controller: App\Controller\FrontController::trash
+    methods: [GET]
+    path: /trash

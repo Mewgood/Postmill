@@ -7,9 +7,9 @@ namespace App\Controller;
 use App\DataObject\CommentData;
 use App\Entity\Comment;
 use App\Entity\Forum;
-use App\Entity\ForumLogCommentDeletion;
+use App\Entity\ForumLogCommentRestored;
 use App\Entity\Submission;
-use App\Entity\User;
+use App\Event\DeleteComment;
 use App\Form\CommentType;
 use App\Form\DeleteReasonType;
 use App\Repository\CommentRepository;
@@ -19,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
  * @Entity("forum", expr="repository.findOneOrRedirectToCanonical(forum_name, 'forum_name')")
@@ -114,6 +115,10 @@ final class CommentController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("view", subject="submission", statusCode=403)
+     * @IsGranted("view", subject="comment", statusCode=403)
+     */
     public function commentJson(Forum $forum, Submission $submission, Comment $comment): Response {
         return $this->json($comment, 200, [], [
             'groups' => ['comment:read', 'abbreviated_relations'],
@@ -152,40 +157,35 @@ final class CommentController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("delete_own", subject="comment")
      */
-    public function deleteOwn(Forum $forum, Submission $submission, Comment $comment, Request $request): Response {
+    public function deleteOwn(Forum $forum, Submission $submission, Comment $comment, Request $request, EventDispatcher $dispatcher): Response {
         $this->validateCsrf('delete_own_comment', $request->request->get('token'));
 
-        if ($comment->getReplyCount() === 0) {
-            $submission->removeComment($comment);
-            $this->entityManager->remove($comment);
-        } else {
-            $comment->softDelete();
-        }
-
-        $this->entityManager->flush();
+        $dispatcher->dispatch(new DeleteComment($comment));
 
         return $this->redirectAfterDelete($request);
     }
 
     /**
      * @IsGranted("ROLE_USER")
-     * @IsGranted("moderator", subject="forum", statusCode=403)
+     * @IsGranted("mod_delete", subject="comment", statusCode=403)
      */
-    public function delete(Forum $forum, Submission $submission, Comment $comment, Request $request, bool $purge = false): Response {
+    public function delete(
+        Forum $forum,
+        Submission $submission,
+        Comment $comment,
+        Request $request,
+        bool $recursive,
+        EventDispatcher $dispatcher
+    ): Response {
         $form = $this->createForm(DeleteReasonType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($purge || $comment->getReplyCount() === 0) {
-                $submission->removeComment($comment);
-                $this->entityManager->remove($comment);
-            } else {
-                $comment->softDelete();
-            }
+            $reason = $form->getData()['reason'];
+            $user = $this->getUserOrThrow();
 
-            $this->logDeletion($forum, $comment, $form->getData()['reason']);
-
-            $this->entityManager->flush();
+            $event = (new DeleteComment($comment))->asModerator($user, $reason, $recursive);
+            $dispatcher->dispatch($event);
 
             return $this->redirect($this->generateSubmissionUrl($submission));
         }
@@ -195,17 +195,48 @@ final class CommentController extends AbstractController {
             'forum' => $forum,
             'submission' => $submission,
             'form' => $form->createView(),
-            'purge' => $purge,
+            'recursive' => $recursive,
         ]);
     }
 
-    private function logDeletion(Forum $forum, Comment $comment, string $reason): void {
-        /* @var User $user */
-        $user = $this->getUser();
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("purge", subject="comment", statusCode=403)
+     */
+    public function purge(
+        Forum $forum,
+        Submission $submission,
+        Comment $comment,
+        Request $request,
+        EventDispatcher $dispatcher
+    ): Response {
+        $this->validateCsrf('purge_comment', $request->request->get('token'));
 
-        if ($user !== $comment->getUser()) {
-            $forum->addLogEntry(new ForumLogCommentDeletion($comment, $user, $reason));
+        $dispatcher->dispatch((new DeleteComment($comment))->withPermanence());
+
+        $this->addFlash('success', 'flash.comment_purged');
+
+        return $this->redirectAfterDelete($request);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("restore", subject="comment")
+     */
+    public function restore(Forum $forum, Submission $submission, Comment $comment, Request $request): Response {
+        $this->validateCsrf('restore_comment', $request->request->get('token'));
+
+        $comment->restore();
+        $this->entityManager->persist(new ForumLogCommentRestored($comment, $this->getUser()));
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'flash.comment_restored');
+
+        if ($request->headers->has('Referer')) {
+            return $this->redirect($request->headers->get('Referer'));
         }
+
+        return $this->redirect($this->generateCommentUrl($comment));
     }
 
     private function redirectAfterDelete(Request $request): Response {

@@ -86,8 +86,8 @@ class DomainEventsListener implements EventSubscriber {
 
             if (
                 $entity instanceof VisibilityInterface &&
-                $entity->getVisibility() === VisibilityInterface::VISIBILITY_DELETED &&
-                $previous->getVisibility() !== VisibilityInterface::VISIBILITY_DELETED
+                $entity->getVisibility() === VisibilityInterface::VISIBILITY_SOFT_DELETED &&
+                $previous->getVisibility() !== VisibilityInterface::VISIBILITY_SOFT_DELETED
             ) {
                 $this->dispatcher->dispatch($entity->onDelete());
             }

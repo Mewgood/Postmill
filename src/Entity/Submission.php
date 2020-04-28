@@ -7,9 +7,9 @@ use App\Entity\Contracts\VisibilityInterface as Visibility;
 use App\Entity\Contracts\VotableInterface as Votable;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Exception\SubmissionLockedException;
+use App\Entity\Traits\VisibilityTrait;
 use App\Entity\Traits\VotableTrait;
 use App\Event\SubmissionCreated;
-use App\Event\SubmissionDeleted;
 use App\Event\SubmissionUpdated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -32,6 +32,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  * })
  */
 class Submission implements DomainEvents, Visibility, Votable {
+    use VisibilityTrait;
     use VotableTrait {
         vote as private realVote;
         getNetScore as private getRealNetScore;
@@ -160,7 +161,7 @@ class Submission implements DomainEvents, Visibility, Votable {
     private $lastActive;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", options={"default": "visible"})
      *
      * @var string
      */
@@ -431,7 +432,7 @@ class Submission implements DomainEvents, Visibility, Votable {
     }
 
     public function softDelete(): void {
-        $this->visibility = self::VISIBILITY_DELETED;
+        $this->visibility = self::VISIBILITY_SOFT_DELETED;
         $this->title = '';
         $this->mediaType = self::MEDIA_URL;
         $this->url = null;
@@ -440,6 +441,16 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->sticky = false;
         $this->userFlag = UserFlags::FLAG_NONE;
         $this->mentions->clear();
+    }
+
+    public function trash(): void {
+        $this->visibility = self::VISIBILITY_TRASHED;
+        $this->sticky = false;
+        $this->mentions->clear();
+    }
+
+    public function restore(): void {
+        $this->visibility = self::VISIBILITY_VISIBLE;
     }
 
     public function getForum(): Forum {
@@ -463,7 +474,7 @@ class Submission implements DomainEvents, Visibility, Votable {
 
     public function vote(int $choice, User $user, ?string $ip): void {
         if ($choice !== self::VOTE_NONE) {
-            if ($this->visibility === self::VISIBILITY_DELETED) {
+            if ($this->visibility === self::VISIBILITY_SOFT_DELETED) {
                 throw new SubmissionLockedException();
             }
 
@@ -592,7 +603,10 @@ class Submission implements DomainEvents, Visibility, Votable {
         return new SubmissionUpdated($previous, $this);
     }
 
+    /**
+     * use {@link DeleteSubmission} with negative priority instead
+     */
     public function onDelete(): Event {
-        return new SubmissionDeleted($this);
+        return new Event();
     }
 }

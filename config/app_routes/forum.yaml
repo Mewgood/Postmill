@@ -77,6 +77,11 @@ remove_moderator:
     methods: [POST]
     requirements: { moderator_id: "%uuid_regex%" }
 
+forum_trash:
+    controller: App\Controller\ForumController::trash
+    path: /f/{forum_name}/trash
+    methods: [GET]
+
 moderation_log:
     controller: App\Controller\ForumController::moderationLog
     defaults: { page: 1 }

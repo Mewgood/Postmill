@@ -7,6 +7,7 @@ action.compare: Sammenligne
 action.create: Opprett
 action.delete: Slett
 action.delete_account: Slett brukerkonto
+action.delete_thread: Slett tråd
 action.dismiss: Avvis
 action.downvote: Stem ned
 action.edit: Rediger
@@ -19,8 +20,9 @@ action.log_in: Logg inn
 action.log_out: Logg ut
 action.pin: Klistre
 action.post: Send
-action.purge: Skrubb
+action.purge: Fjern permanent
 action.remove: Fjern
+action.restore: Gjenopprett
 action.retract_downvote: Fjern nedstemning
 action.retract_upvote: Fjern oppstemning
 action.save: Lagre
@@ -119,6 +121,8 @@ edit_user.title: Redigerer brukerkontoen %username%
 
 flash.account_deletion_in_progress: Kontoen blir nå slettet.
 flash.ban_added: IP-adressen ble utestengt.
+flash.comment_purged: Kommentaren ble fjernet permanent.
+flash.comment_restored: Kommentaren ble gjenopprettet.
 flash.delete_account_warning: Med en gang har slettet kontoen din, vil du aldri kunne få den tilbake!
 flash.delete_someone_elses_account_warning: Du holder på å slette noen andre sin konto! Med en gang du gjør dette, vil de aldri kunne få kontoen sin tilbake!
 flash.editing_biography_of_other_user: You are editing the biography of another user.
@@ -136,7 +140,6 @@ flash.notification_cleared: Notifikasjonen ble fjernet.
 flash.notifications_cleared: Notifikasjonene dine har blitt fjernet.
 flash.page_locked: Siden ble låst.
 flash.page_unlocked: Siden ble låst opp.
-flash.purge_submission_warning: Innlegget og all dets kommentarer vil bli fjernet.
 flash.registration_closed: Registrering har blitt stengt av administratoren.
 flash.reset_password_email_sent: En epost har blitt sendt til adressen du oppga.
 flash.site_settings_saved: Innstillingene har blitt lagret.
@@ -145,6 +148,8 @@ flash.submission_edited: Innlegget ble endret.
 flash.submission_is_locked: Innlegget er låst. Du kan ikke poste nye kommentarer.
 flash.submission_locked: Innlegget ble låst.
 flash.submission_pinned: Innlegget ble klistret.
+flash.submission_purged: Innlegget ble fjernet permanent.
+flash.submission_restored: Innlegget ble gjenopprettet.
 flash.submission_unlocked: Innlegget ble låst opp.
 flash.submission_unpinned: Innlegget ble tatt ned.
 flash.too_many_characters: Du skrev inn for mange tegn (maks %max%, %count% skrevet inn)
@@ -219,6 +224,7 @@ help.delete_forum_warning: All innhold på dette forumet vil bli permanent slett
 help.forum_description: En kort beskrivelse av dette forumet. Søkemotorer vil vise dette i sine resultarer.
 help.forum_is_featured: Dette forumet vises på forsiden.
 help.forum_is_hidden: Du har valgt å skjule dette forumet.
+help.front_trash: Denne siden viser poster som ble slettet av en moderator i fora du modererer.
 help.hidden_forums: Ved å markere fora som skjulte, vil du ikke se innlegg fra disse når du ser på listene av «utvalgte» og «alle» innlegg. Du kan fortsatt abonnere på og moderere fora du velger å skjule.
 help.hidden_forums_no_comment_hiding: Kommentarer postet i skjulte fora vil fortsatt vises i listen av nye kommentarer.
 help.notify_on_mentions: Bli varslet når noen nevner deg ved å linke til profilsiden din.
@@ -355,9 +361,11 @@ label.whitelisted: Hvitelistet
 log.ban: '%user% utestengte %banned% (utløper: %expires%). Årsak: «%reason%»'
 log.comment_deletion: '%user% slettet en kommentar av %author% i «%submission%»'
 log.comment_deletion_with_reason: '%user slettet en kommentar av %author% i «%submission%». Årsak: «%reason%»'
+log.comment_restored: '%user% gjenopprettet en kommentar av %author% i «%title%»'
 log.submission_deletion: '%user% slettet innlegget «%title%» av %author%'
 log.submission_deletion_with_reason: '%user% slettet innlegget «%title%» av %author%. Årsak: «%reason%»'
 log.submission_lock: '%user% låste innlegget «%title%» av %author%'
+log.submission_restored: '%user% gjenopprettet innlegget «%title%» av %author%'
 log.submission_unlock: '%user% åpnet innlegget «%title%» av %author%'
 log.unban: '%user% fjernet utestengelsen av %banned%. Årsak: «%reason%»'
 
@@ -426,6 +434,7 @@ nav.search: Søk
 nav.site_settings: Globale innstillinger
 nav.submissions: Innlegg
 nav.submit: Nytt innlegg
+nav.trash: Søppel
 nav.user: Bruker
 nav.user_bans: Brukerutestengelser
 nav.user_settings: Innstillinger
@@ -467,6 +476,8 @@ site_footer.version: '%version% (%branch%)'
 
 site_settings.forum_create_role: Hvem kan opprette nye fora?
 site_settings.image_upload_role: Hvem kan laste opp bilder?
+site_settings.trash_enabled: Bruk søppelbøtte
+site_settings.trash_enabled_help: Flytt poster som blir slettet av moderatorer til søppelbøtta, hvor de kan gjenopprettes senere.
 site_settings.registration_open: Åpen registrering
 site_settings.site_name: Navn på nettstedet
 site_settings.site_theme: Globalt fargetema
@@ -478,6 +489,7 @@ submission_form.create: Send innlegg
 submission_form.edit: Rediger innlegg
 
 submission.comments: '{0} Ingen kommentarer|{1} %count% kommentar|[1,Inf[ %count% kommentarer'
+submission.deleted_by_moderator: Slettet av moderator
 submission.edit_info: (redigert %edited_at%)
 submission.info_with_forum_name: Sendt inn av %submitter% %timestamp% til %forum%
 submission.info_without_forum_name: Sendt inn av %submitter% %timestamp%
@@ -513,6 +525,7 @@ title.blocking_user: Blokkerer %user%
 title.create_forum_category: Opprett forumkategori
 title.create_submission: Nytt innlegg
 title.delete_account: Slett brukerkonto
+title.delete_comment_thread: Slett kommentartråd
 title.delete_forum: Slett forum %forum%
 title.delete_submission: Slett innlegg
 title.editing_biography_for_user: Redigerer biografien for %user%
@@ -527,7 +540,6 @@ title.list_of_users: 'Oversikt over brukere, side %page%'
 title.manage_forum_categories: Behandle forumkategorier
 title.messages: Meldinger
 title.notifications: Notifikasjoner
-title.purge_submission: Skrubb innlegg
 title.recent_comments: Nye kommentarer
 title.recent_comments_forum: Nye kommentarer i %forum%
 title.showing_ban_history_for_user_in_forum: Viser utestengelseshistorikk for %user% i %forum%

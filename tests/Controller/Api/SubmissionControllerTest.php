@@ -124,7 +124,7 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertSame(3, $data['id']);
         $this->assertSame('', $data['title']);
         $this->assertNull($data['body']);
-        $this->assertSame('deleted', $data['visibility']);
+        $this->assertSame('soft_deleted', $data['visibility']);
     }
 
     public function testCannotDeleteSubmissionOfOtherUser(): void {

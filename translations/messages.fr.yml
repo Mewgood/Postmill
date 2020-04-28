@@ -7,6 +7,7 @@ action.block: Bloquer
 action.compare: Comparer
 action.create: Créer
 action.delete: Supprimer
+action.delete_thread: Supprimer avec les réponses
 action.downvote: Downvoter
 action.edit: Modifier
 action.filter: Filtrer

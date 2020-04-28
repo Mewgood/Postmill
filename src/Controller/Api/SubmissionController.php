@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Controller\AbstractController;
 use App\DataObject\SubmissionData;
 use App\Entity\Submission;
+use App\Event\DeleteSubmission;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -109,14 +111,8 @@ final class SubmissionController extends AbstractController {
      * @Route("/{id}", methods={"DELETE"})
      * @IsGranted("delete_own", subject="submission")
      */
-    public function delete(Submission $submission, EntityManagerInterface $em): Response {
-        if ($submission->getCommentCount() > 0) {
-            $submission->softDelete();
-        } else {
-            $em->remove($submission);
-        }
-
-        $em->flush();
+    public function delete(Submission $submission, EventDispatcherInterface $dispatcher): Response {
+        $dispatcher->dispatch(new DeleteSubmission($submission));
 
         return $this->createEmptyResponse();
     }

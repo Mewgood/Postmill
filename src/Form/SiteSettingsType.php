@@ -41,6 +41,11 @@ final class SiteSettingsType extends AbstractType {
                 'label' => 'site_settings.site_theme',
                 'required' => false,
             ])
+            ->add('trashEnabled', CheckboxType::class, [
+                'help' => 'site_settings.trash_enabled_help',
+                'label' => 'site_settings.trash_enabled',
+                'required' => false,
+            ])
             ->add('wikiEnabled', CheckboxType::class, [
                 'label' => 'site_settings.wiki_enabled',
                 'required' => false,

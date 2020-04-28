@@ -12,6 +12,7 @@
     self: app.user,
     show_context: options.show_context ?? false,
     show_form: options.show_form ?? false,
+    show_trashed: options.show_trashed ?? false,
   } only -%}
     {{- block('comment') -}}
   {%- endwith -%}

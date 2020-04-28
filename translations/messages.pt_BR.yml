@@ -1,6 +1,7 @@
 action.ban: Banir
 action.block: Bloquear
 action.delete: Apagar
+action.delete_thread: Apagar com as respostas
 action.downvote: Voto negativo
 action.edit: Alterar
 action.go_to_home_page: Ir para a página inicial

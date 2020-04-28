@@ -22,6 +22,11 @@ final class Criteria {
      */
     private $sortBy;
 
+    /**
+     * @var string|null
+     */
+    private $visibility = Submission::VISIBILITY_VISIBLE;
+
     private $view = self::VIEW_ALL;
 
     /**
@@ -150,6 +155,20 @@ final class Criteria {
 
     public function setMaxPerPage(int $maxPerPage): self {
         $this->maxPerPage = $maxPerPage;
+
+        return $this;
+    }
+
+    public function getVisibility(): string {
+        return $this->visibility;
+    }
+
+    public function trashed(): self {
+        if ($this->visibility !== Submission::VISIBILITY_VISIBLE) {
+            throw new \BadMethodCallException('Cannot call multiple visibility methods');
+        }
+
+        $this->visibility = Submission::VISIBILITY_TRASHED;
 
         return $this;
     }

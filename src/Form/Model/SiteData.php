@@ -64,6 +64,11 @@ final class SiteData {
      */
     public $wikiEditRole;
 
+    /**
+     * @var bool
+     */
+    public $trashEnabled;
+
     public static function createFromSite(Site $site): self {
         $self = new self();
         $self->siteName = $site->getSiteName();
@@ -74,6 +79,7 @@ final class SiteData {
         $self->forumCreateRole = $site->getForumCreateRole();
         $self->imageUploadRole = $site->getImageUploadRole();
         $self->wikiEditRole = $site->getWikiEditRole();
+        $self->trashEnabled = $site->isTrashEnabled();
 
         return $self;
     }
@@ -87,5 +93,6 @@ final class SiteData {
         $site->setForumCreateRole($this->forumCreateRole);
         $site->setImageUploadRole($this->imageUploadRole);
         $site->setWikiEditRole($this->wikiEditRole);
+        $site->setTrashEnabled($this->trashEnabled);
     }
 }

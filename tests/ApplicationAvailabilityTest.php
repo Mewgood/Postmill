@@ -180,6 +180,9 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/submit'];
         yield ['/submit/news'];
         yield ['/user/emma/block_list'];
+        yield ['/f/cats/trash'];
+        yield ['/trash'];
         yield ['/site/bad_phrases'];
+        yield ['/site/trash'];
     }
 }

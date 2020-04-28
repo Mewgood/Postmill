@@ -1,5 +1,6 @@
 {% extends 'front/_base.html.twig' %}
 {% from '_macros/alert.html.twig' import alert %}
+{% from '_macros/post_nav.html.twig' import submission_filter, submission_sort, submission_time %}
 
 {% block listing 'moderated' %}
 
@@ -10,6 +11,11 @@
 
   {{ parent() }}
 {% endblock body %}
+
+{% block front_post_nav %}
+  {{ parent() }}
+  {{ include('front/_moderator_nav.html.twig', with_context=false) }}
+{% endblock %}
 
 {% block sidebar %}
   {{ parent() }}

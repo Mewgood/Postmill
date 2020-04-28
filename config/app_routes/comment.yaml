@@ -35,16 +35,30 @@ comment_delete_own:
 
 comment_delete:
     controller: App\Controller\CommentController::delete
-    defaults: { slug: '-' }
+    defaults: { slug: '-', recursive: false }
     path: /f/{forum_name}/{submission_id}/{slug}/comment/{comment_id}/delete
     methods: [GET, POST]
     requirements: { submission_id: "%number_regex%", comment_id: "%number_regex%" }
 
-comment_purge:
+comment_delete_thread:
     controller: App\Controller\CommentController::delete
-    defaults: { slug: '-', purge: true }
-    path: /f/{forum_name}/{submission_id}/{slug}/comment/{comment_id}/purge
+    defaults: { slug: '-', recursive: true }
+    path: /f/{forum_name}/{submission_id}/{slug}/comment/{comment_id}/delete_thread
     methods: [GET, POST]
+    requirements: { submission_id: "%number_regex%", comment_id: "%number_regex%" }
+
+comment_purge:
+    controller: App\Controller\CommentController::purge
+    defaults: { slug: '-' }
+    path: /f/{forum_name}/{submission_id}/{slug}/comment/{comment_id}/purge
+    methods: [POST]
+    requirements: { submission_id: "%number_regex%", comment_id: "%number_regex%" }
+
+comment_restore:
+    controller: App\Controller\CommentController::restore
+    defaults: { slug: '-' }
+    path: /f/{forum_name}/{submission_id}/{slug}/comment/{comment_id}/restore
+    methods: [POST]
     requirements: { submission_id: "%number_regex%", comment_id: "%number_regex%" }
 
 comment_list:
