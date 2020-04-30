@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class SyncThemesCommand extends Command {
+    protected static $defaultName = 'postmill:sync-themes';
+
     /**
      * @var ThemeRepository
      */
@@ -42,7 +44,7 @@ final class SyncThemesCommand extends Command {
 
     protected function configure(): void {
         $this
-            ->setName('app:theme:sync')
+            ->setAliases(['app:theme:sync'])
             ->setDescription('Sync theme configuration with database');
     }
 

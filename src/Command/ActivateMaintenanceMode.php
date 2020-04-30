@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ActivateMaintenanceMode extends Command {
+    protected static $defaultName = 'postmill:maintenance';
+
     /**
      * @var SiteRepository
      */
@@ -29,7 +31,7 @@ class ActivateMaintenanceMode extends Command {
 
     public function configure(): void {
         $this
-            ->setName('app:maintenance')
+            ->setAliases(['app:maintenance'])
             ->addOption('message', 'm', InputOption::VALUE_REQUIRED, 'Custom message to display.')
             ->addOption('deactivate', 'd', InputOption::VALUE_NONE, 'Deactivate maintenance mode')
             ->setDescription('Manages maintenance mode')
