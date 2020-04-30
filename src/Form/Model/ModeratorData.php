@@ -5,7 +5,7 @@ namespace App\Form\Model;
 use App\Entity\Forum;
 use App\Entity\Moderator;
 use App\Entity\User;
-use App\Validator\Constraints\Unique;
+use App\Validator\Unique;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

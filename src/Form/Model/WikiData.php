@@ -5,7 +5,7 @@ namespace App\Form\Model;
 use App\Entity\User;
 use App\Entity\WikiPage;
 use App\Entity\WikiRevision;
-use App\Validator\Constraints\NoBadPhrases;
+use App\Validator\NoBadPhrases;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class WikiData {

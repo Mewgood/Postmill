@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
 use App\Entity\Forum;
 use App\Entity\ForumBan;
 use App\Entity\User;
-use App\Validator\Constraints\NotForumBanned;
-use App\Validator\Constraints\NotForumBannedValidator;
+use App\Validator\NotForumBanned;
+use App\Validator\NotForumBannedValidator;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
- * @covers \App\Validator\Constraints\NotForumBannedValidator
+ * @covers \App\Validator\NotForumBannedValidator
  */
 class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
     /**

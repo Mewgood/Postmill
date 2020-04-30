@@ -4,7 +4,7 @@ namespace App\Form\Model;
 
 use App\Entity\IpBan;
 use App\Entity\User;
-use App\Validator\Constraints\IpWithCidr;
+use App\Validator\IpWithCidr;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class IpBanData {

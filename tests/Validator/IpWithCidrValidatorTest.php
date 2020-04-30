@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
-use App\Validator\Constraints\IpWithCidr;
-use App\Validator\Constraints\IpWithCidrValidator;
+use App\Validator\IpWithCidr;
+use App\Validator\IpWithCidrValidator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
- * @covers \App\Validator\Constraints\IpWithCidrValidator
+ * @covers \App\Validator\IpWithCidrValidator
  */
 class IpWithCidrValidatorTest extends ConstraintValidatorTestCase {
     protected function createValidator(): ConstraintValidatorInterface {

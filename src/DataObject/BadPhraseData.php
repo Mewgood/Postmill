@@ -3,7 +3,7 @@
 namespace App\DataObject;
 
 use App\Entity\BadPhrase;
-use App\Validator\Constraints\Unique;
+use App\Validator\Unique;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

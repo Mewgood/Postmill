@@ -9,8 +9,8 @@ use App\Entity\Image;
 use App\Entity\Theme;
 use App\Entity\User;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
-use App\Validator\Constraints\NoBadPhrases;
-use App\Validator\Constraints\Unique;
+use App\Validator\NoBadPhrases;
+use App\Validator\Unique;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 

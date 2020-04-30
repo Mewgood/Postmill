@@ -5,7 +5,7 @@ namespace App\Form\Model;
 use App\Entity\Message;
 use App\Entity\MessageThread;
 use App\Entity\User;
-use App\Validator\Constraints\NoBadPhrases;
+use App\Validator\NoBadPhrases;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MessageData {

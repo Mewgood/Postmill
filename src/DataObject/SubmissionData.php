@@ -9,9 +9,9 @@ use App\Entity\User;
 use App\Entity\UserFlags;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
 use App\Utils\Slugger;
-use App\Validator\Constraints\NoBadPhrases;
-use App\Validator\Constraints\NotForumBanned;
-use App\Validator\Constraints\RateLimit;
+use App\Validator\NoBadPhrases;
+use App\Validator\NotForumBanned;
+use App\Validator\RateLimit;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
 use App\Entity\BadPhrase;
 use App\Repository\BadPhraseRepository;
-use App\Validator\Constraints\NoBadPhrases;
-use App\Validator\Constraints\NoBadPhrasesValidator;
+use App\Validator\NoBadPhrases;
+use App\Validator\NoBadPhrasesValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
- * @covers \App\Validator\Constraints\NoBadPhrasesValidator
+ * @covers \App\Validator\NoBadPhrasesValidator
  */
 class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
     public function testNonBannedPhraseWillNotRaise(): void {
