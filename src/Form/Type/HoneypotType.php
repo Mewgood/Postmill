@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Hidden form field that should never be filled out by the user, only by poorly
  * written bots.
  */
-class HoneypotType extends AbstractType {
+final class HoneypotType extends AbstractType {
     /**
      * @var RequestStack
      */

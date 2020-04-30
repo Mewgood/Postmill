@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Twig\Environment as Twig;
 
-class RegistrationClosedListener implements EventSubscriberInterface {
+final class RegistrationClosedListener implements EventSubscriberInterface {
     /**
      * @var Twig
      */

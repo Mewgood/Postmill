@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
-class Kernel extends BaseKernel implements HttpCacheProvider {
+final class Kernel extends BaseKernel implements HttpCacheProvider {
     use HttpCacheAware;
     use MicroKernelTrait;
 

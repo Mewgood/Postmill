@@ -8,7 +8,7 @@ use App\Entity\Theme;
 use App\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class SiteData {
+class SiteData {
     /**
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=60)

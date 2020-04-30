@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @IsGranted("ROLE_USER")
  * @Route("/forums", defaults={"_format": "json"}, requirements={"id": "%number_regex%"})
  */
-class ForumController extends AbstractController {
+final class ForumController extends AbstractController {
     /**
      * @Route("/{id}", methods={"GET"})
      */

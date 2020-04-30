@@ -7,7 +7,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20170101133959 extends AbstractMigration implements ContainerAwareInterface {
+final class Version20170101133959 extends AbstractMigration implements ContainerAwareInterface {
     use ContainerAwareTrait;
 
     public function up(Schema $schema): void {

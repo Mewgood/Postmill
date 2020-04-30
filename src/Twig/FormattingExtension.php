@@ -7,7 +7,7 @@ use App\Utils\Slugger;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class FormattingExtension extends AbstractExtension {
+final class FormattingExtension extends AbstractExtension {
     /**
      * @var MarkdownConverter
      */

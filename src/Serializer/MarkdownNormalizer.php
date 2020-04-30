@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 
-class MarkdownNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface {
+final class MarkdownNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface {
     use NormalizerAwareTrait;
 
     public const NORMALIZED_MARKER = 'markdown_normalized';

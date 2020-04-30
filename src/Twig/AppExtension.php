@@ -14,7 +14,7 @@ use Twig\TwigFunction;
  * Twig extension which makes certain parameters available as template
  * functions.
  */
-class AppExtension extends AbstractExtension {
+final class AppExtension extends AbstractExtension {
     /**
      * @var RequestStack
      */

@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class AdminCommand extends Command {
+final class AdminCommand extends Command {
     protected static $defaultName = 'postmill:admin';
 
     /**

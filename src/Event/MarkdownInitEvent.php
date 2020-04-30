@@ -5,7 +5,7 @@ namespace App\Event;
 use League\CommonMark\ConfigurableEnvironmentInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-final class MarkdownInitEvent extends Event {
+class MarkdownInitEvent extends Event {
     /**
      * @var ConfigurableEnvironmentInterface
      */

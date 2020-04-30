@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PaginationExceptionListener implements EventSubscriberInterface {
+final class PaginationExceptionListener implements EventSubscriberInterface {
     public static function getSubscribedEvents(): array {
         return [
             ExceptionEvent::class => ['onKernelException'],

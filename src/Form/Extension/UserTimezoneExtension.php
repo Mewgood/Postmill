@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
-class UserTimezoneExtension extends AbstractTypeExtension {
+final class UserTimezoneExtension extends AbstractTypeExtension {
     /**
      * @var Security
      */

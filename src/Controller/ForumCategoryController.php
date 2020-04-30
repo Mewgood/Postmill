@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ForumCategoryController extends AbstractController {
+final class ForumCategoryController extends AbstractController {
     /**
      * @var ForumRepository
      */

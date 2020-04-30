@@ -20,7 +20,7 @@ use PagerWave\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 
-final class SubmissionFinder {
+class SubmissionFinder {
     /**
      * @var EntityManagerInterface
      */

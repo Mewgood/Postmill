@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\IpUtils;
 /**
  * Utility class for rate-limiting by IP address.
  */
-final class IpRateLimit {
+class IpRateLimit {
     /**
      * @var CacheItemPoolInterface
      */

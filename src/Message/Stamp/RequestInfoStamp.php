@@ -9,7 +9,7 @@ use Symfony\Component\Routing\RequestContext;
 /**
  * Message stamp that contains some info from the request.
  */
-class RequestInfoStamp implements StampInterface {
+final class RequestInfoStamp implements StampInterface {
     /**
      * @var RequestContext
      */

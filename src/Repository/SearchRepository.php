@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
-final class SearchRepository {
+class SearchRepository {
     private const MAX_PER_PAGE = 50;
 
     private const ENTITY_TYPES = [

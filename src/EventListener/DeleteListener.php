@@ -10,7 +10,7 @@ use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class DeleteListener implements EventSubscriberInterface {
+final class DeleteListener implements EventSubscriberInterface {
     public const FLUSH_LISTENER_PRIORITY = -128;
 
     /**

@@ -6,7 +6,7 @@ use App\Entity\Moderator;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class ModeratorVoter extends Voter {
+final class ModeratorVoter extends Voter {
     protected function supports(string $attribute, $subject): bool {
         return $attribute === 'remove' && $subject instanceof Moderator;
     }

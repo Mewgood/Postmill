@@ -6,7 +6,7 @@ use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
 
-final class Criteria {
+class Criteria {
     public const VIEW_FEATURED = 1;
     public const VIEW_SUBSCRIBED = 2;
     public const VIEW_ALL = 3;

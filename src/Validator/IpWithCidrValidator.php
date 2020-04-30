@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class IpWithCidrValidator extends ConstraintValidator {
+final class IpWithCidrValidator extends ConstraintValidator {
     public function validate($value, Constraint $constraint): void {
         if (!$constraint instanceof IpWithCidr) {
             throw new UnexpectedTypeException($constraint, IpWithCidr::class);

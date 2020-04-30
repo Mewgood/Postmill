@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class InitAssets extends Command {
+final class InitAssets extends Command {
     private const ASSETS = [
         'apple-touch-icon-precomposed.png',
         'favicon.ico',

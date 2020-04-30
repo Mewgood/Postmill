@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RequestContext;
 
-class MentionsListener implements EventSubscriberInterface {
+final class MentionsListener implements EventSubscriberInterface {
     private const USER_URL_PATTERN = '!^%s/user/(\w{3,25})$!';
 
     /**

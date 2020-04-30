@@ -14,7 +14,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * Dispatch events when entities that implement {@link DomainEventsInterface}
  * are persisted, removed, or updated.
  */
-class DomainEventsListener implements EventSubscriber {
+final class DomainEventsListener implements EventSubscriber {
     /**
      * @var EventDispatcherInterface
      */

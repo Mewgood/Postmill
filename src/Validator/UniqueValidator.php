@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class UniqueValidator extends ConstraintValidator {
+final class UniqueValidator extends ConstraintValidator {
     /**
      * @var EntityManagerInterface
      */

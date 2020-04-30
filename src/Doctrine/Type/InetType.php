@@ -6,7 +6,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Types\Type;
 
-class InetType extends Type {
+final class InetType extends Type {
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string {
         return 'INET';
     }

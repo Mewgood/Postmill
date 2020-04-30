@@ -7,7 +7,7 @@ use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Mime\MimeTypes;
 
-final class ImageManager {
+class ImageManager {
     /**
      * @var FilesystemInterface
      */

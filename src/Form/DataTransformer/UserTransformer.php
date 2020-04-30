@@ -10,7 +10,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 /**
  * Transforms usernames into {@link User} objects and vice versa.
  */
-class UserTransformer implements DataTransformerInterface {
+final class UserTransformer implements DataTransformerInterface {
     /**
      * @var UserRepository
      */

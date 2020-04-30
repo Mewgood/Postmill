@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class ChangePasswordCommand extends Command {
+final class ChangePasswordCommand extends Command {
     protected static $defaultName = 'postmill:change-password';
 
     /**

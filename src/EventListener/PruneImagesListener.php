@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class PruneImagesListener implements EventSubscriberInterface {
+final class PruneImagesListener implements EventSubscriberInterface {
     /**
      * @var EntityManagerInterface
      */

@@ -7,7 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Event dispatched to build a hash key for Markdown context.
  */
-final class MarkdownCacheEvent extends Event {
+class MarkdownCacheEvent extends Event {
     private $hashData = [];
 
     public function getCacheKey(): string {

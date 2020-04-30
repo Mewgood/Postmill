@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class NoBadPhrasesValidator extends ConstraintValidator {
+final class NoBadPhrasesValidator extends ConstraintValidator {
     /**
      * @var BadPhraseRepository
      */

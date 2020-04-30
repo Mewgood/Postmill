@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Unique(entityClass="App\Entity\ForumCategory", errorPath="name",
  *     fields={"normalizedName"}, idFields={"entityId": "id"})
  */
-final class ForumCategoryData {
+class ForumCategoryData {
     /**
      * @var int|null
      */

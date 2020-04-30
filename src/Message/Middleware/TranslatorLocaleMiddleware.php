@@ -9,7 +9,7 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TranslatorLocaleMiddleware implements MiddlewareInterface {
+final class TranslatorLocaleMiddleware implements MiddlewareInterface {
     /**
      * @var TranslatorInterface|LocaleAwareInterface
      */

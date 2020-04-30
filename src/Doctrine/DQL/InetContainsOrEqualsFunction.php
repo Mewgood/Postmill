@@ -7,7 +7,7 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
-class InetContainsOrEqualsFunction extends FunctionNode {
+final class InetContainsOrEqualsFunction extends FunctionNode {
     private $firstOperand;
     private $secondOperand;
 

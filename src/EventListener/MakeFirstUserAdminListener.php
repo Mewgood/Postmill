@@ -6,7 +6,7 @@ use App\Event\UserCreated;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class MakeFirstUserAdminListener implements EventSubscriberInterface {
+final class MakeFirstUserAdminListener implements EventSubscriberInterface {
     /**
      * @var EntityManagerInterface
      */

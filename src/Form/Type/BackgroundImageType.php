@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
 
-class BackgroundImageType extends AbstractType {
+final class BackgroundImageType extends AbstractType {
     /**
      * @var ImageRepository
      */

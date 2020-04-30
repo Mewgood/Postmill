@@ -22,7 +22,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * This is intended to be run in a cron job or similar to ensure visitor
  * privacy.
  */
-class PruneIpAddressesCommand extends Command {
+final class PruneIpAddressesCommand extends Command {
     protected static $defaultName = 'postmill:prune-ips';
 
     /**
