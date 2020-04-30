@@ -8,6 +8,3 @@ twig:
         - _forms/standard_form_theme.html.twig
         - _forms/markdown.html.twig
         - _forms/background_image_theme.html.twig
-
-    # remove after symfony 5.0 upgrade
-    exception_controller: null
