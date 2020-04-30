@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Page;
+namespace App\Pagination;
 
 use App\Entity\Submission;
 use PagerWave\DefinitionGroupTrait;

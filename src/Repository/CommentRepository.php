@@ -4,9 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use App\Entity\Forum;
-use App\Entity\Page\CommentPage;
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Pagination\CommentPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;

@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BadPhrase;
-use App\Entity\Page\TimestampPage;
+use App\Pagination\TimestampPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use PagerWave\Adapter\DoctrineAdapter;

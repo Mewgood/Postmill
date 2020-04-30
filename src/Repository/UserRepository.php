@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
-use App\Entity\Page\TimestampPage;
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Pagination\TimestampPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;

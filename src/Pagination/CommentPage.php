@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Entity\Page;
+namespace App\Pagination;
 
 use PagerWave\DefinitionGroupTrait;
 use PagerWave\DefinitionInterface as Definition;
 use PagerWave\Validator\ValidatingDefinitionInterface as ValidatingDefinition;
 
-final class TimestampPage implements Definition, ValidatingDefinition {
+final class CommentPage implements Definition, ValidatingDefinition {
     use DefinitionGroupTrait;
 
     public function getFieldNames(): array {
-        return ['timestamp'];
+        return ['timestamp', 'id'];
     }
 
     public function isFieldDescending(string $fieldName): bool {
@@ -18,6 +18,13 @@ final class TimestampPage implements Definition, ValidatingDefinition {
     }
 
     public function isFieldValid(string $fieldName, $value): bool {
-        return (bool) @\DateTime::createFromFormat(\DateTime::ATOM, $value);
+        switch ($fieldName) {
+        case 'timestamp':
+            return (bool) @\DateTime::createFromFormat(\DateTime::ATOM, $value);
+        case 'id':
+            return is_numeric($value) && \is_int(+$value);
+        default:
+            return false;
+        }
     }
 }
