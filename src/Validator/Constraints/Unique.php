@@ -25,6 +25,9 @@ class Unique extends Constraint {
 
     public $message = 'This value is already used.';
 
+    /**
+     * @var string
+     */
     public $entityClass;
 
     /**
@@ -41,7 +44,7 @@ class Unique extends Constraint {
      */
     public $idFields;
 
-    public $errorPath;
+    public $errorPath = '';
 
     public function __construct($options = null) {
         parent::__construct($options);

@@ -19,8 +19,8 @@ class UniqueValidator extends ConstraintValidator {
     }
 
     public function validate($value, Constraint $constraint): void {
-        if (!\is_array($value) && !\is_object($value)) {
-            throw new UnexpectedTypeException($value, 'array or object');
+        if (!\is_object($value)) {
+            throw new UnexpectedTypeException($value, 'object');
         }
 
         if (!$constraint instanceof Unique) {
@@ -32,7 +32,6 @@ class UniqueValidator extends ConstraintValidator {
             ->from($constraint->entityClass, 'e');
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $param = 0;
 
         foreach ((array) $constraint->fields as $dtoField => $entityField) {
             if (\is_int($dtoField)) {
@@ -41,8 +40,8 @@ class UniqueValidator extends ConstraintValidator {
 
             $fieldValue = $propertyAccessor->getValue($value, $dtoField);
 
-            $qb->andWhere($qb->expr()->eq('e.'.$entityField, '?'.++$param));
-            $qb->setParameter($param, $fieldValue);
+            $qb->andWhere($qb->expr()->eq("e.$entityField", ":f_$entityField"));
+            $qb->setParameter("f_$entityField", $fieldValue);
         }
 
         foreach ((array) $constraint->idFields as $dtoField => $entityField) {
@@ -53,8 +52,8 @@ class UniqueValidator extends ConstraintValidator {
             $fieldValue = $propertyAccessor->getValue($value, $dtoField);
 
             if ($fieldValue !== null) {
-                $qb->andWhere($qb->expr()->neq('e.'.$entityField, '?'.++$param));
-                $qb->setParameter($param, $fieldValue);
+                $qb->andWhere($qb->expr()->neq("e.$entityField", ":i_$entityField"));
+                $qb->setParameter("i_$entityField", $fieldValue);
             }
         }
 
