@@ -341,10 +341,15 @@ class Submission implements DomainEvents, Visibility, Votable {
     }
 
     /**
-     * @return Collection|Comment[]
+     * Get all comments, ordered by ascending time of creation.
+     *
+     * @return Comment[]
      */
-    public function getComments(): Collection {
-        return $this->comments;
+    public function getComments(): array {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE));
+
+        return $this->comments->matching($criteria)->toArray();
     }
 
     /**
@@ -353,8 +358,9 @@ class Submission implements DomainEvents, Visibility, Votable {
      * @return Comment[]
      */
     public function getTopLevelComments(): array {
-        $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->isNull('parent'));
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->isNull('parent'))
+            ->andWhere(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE));
 
         $comments = $this->comments->matching($criteria)->toArray();
 
@@ -363,6 +369,14 @@ class Submission implements DomainEvents, Visibility, Votable {
         });
 
         return $comments;
+    }
+
+    public function hasVisibleComments(): bool {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE))
+            ->setMaxResults(1);
+
+        return \count($this->comments->matching($criteria)) > 0;
     }
 
     public function addComment(Comment ...$comments): void {

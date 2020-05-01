@@ -50,20 +50,10 @@ final class DeleteListener implements EventSubscriberInterface {
 
         if ($useTrash && !$event->isPermanent() && $event->isModDelete()) {
             $submission->trash();
+        } elseif ($submission->hasVisibleComments()) {
+            $submission->softDelete();
         } else {
-            $hasVisibleComments = false;
-            foreach ($submission->getComments() as $comment) {
-                if ($comment->isVisible()) {
-                    $hasVisibleComments = true;
-                    break;
-                }
-            }
-
-            if ($hasVisibleComments) {
-                $submission->softDelete();
-            } else {
-                $this->entityManager->remove($submission);
-            }
+            $this->entityManager->remove($submission);
         }
 
         if ($event->isModDelete()) {

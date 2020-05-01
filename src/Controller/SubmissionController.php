@@ -53,9 +53,16 @@ final class SubmissionController extends AbstractController {
      * @Cache(smaxage="10 seconds")
      */
     public function submission(Forum $forum, Submission $submission, string $commentView): Response {
-        $this->comments->hydrate(...$submission->getComments());
+        if ($commentView === 'nested') {
+            $comments = $submission->getTopLevelComments();
+        } else {
+            $comments = $submission->getComments();
+        }
+
+        $this->comments->hydrate(...$comments);
 
         return $this->render('submission/submission.html.twig', [
+            'comments' => $comments,
             'comment_view' => $commentView,
             'forum' => $forum,
             'submission' => $submission,
@@ -78,7 +85,7 @@ final class SubmissionController extends AbstractController {
      * @IsGranted("view", subject="comment", statusCode=403)
      */
     public function commentPermalink(Forum $forum, Submission $submission, Comment $comment): Response {
-        $this->comments->hydrate(...$submission->getComments());
+        $this->comments->hydrate($comment, ...$comment->getChildrenRecursive());
 
         return $this->render('submission/comment.html.twig', [
             'comment' => $comment,
