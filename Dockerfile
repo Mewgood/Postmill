@@ -27,7 +27,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HTACCESS_PROTECT=0 \
     COMPOSER_HOME="/tmp" \
-    COMPOSER_MEMORY_LIMIT=-1
+    COMPOSER_MEMORY_LIMIT=-1 \
+    POSTMILL_WRITE_DIRS="\
+        /app/public/media/cache \
+        /app/public/submission_images \
+        /app/var/cache/prod/http_cache \
+        /app/var/cache/prod/pools \
+        /app/var/log \
+        /app/var/sessions \
+        /tmp \
+    " \
+    SU_USER=www-data
 
 RUN set -eux; \
     apk add --no-cache --virtual .build-deps \
@@ -72,13 +82,21 @@ RUN set -eux; \
         --no-progress \
         --no-suggest \
         --prefer-dist; \
+    pecl clear-cache; \
     RUNTIME_DEPS="$(scanelf -nBRF '%n#p' /usr/local/lib/php/extensions | \
         tr ',' '\n' | \
         sort -u | \
         awk 'system("[ -e /usr/local/lib/" $1 " ]") != 0 { print "so:" $1 }' \
     )"; \
-    apk add --no-cache $RUNTIME_DEPS; \
-    pecl clear-cache;
+    apk add --no-cache \
+        $RUNTIME_DEPS \
+        acl \
+        su-exec;
+
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["php-fpm"]
 
 WORKDIR /app
 
@@ -93,7 +111,6 @@ COPY composer.* symfony.lock .env LICENSE ./
 COPY assets/fonts.json assets/themes.json assets/
 COPY bin/console bin/
 COPY config config/
-COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY public/index.php public/
 COPY --from=postmill_assets /app/public/build/*.json public/build/
 COPY src src/
@@ -109,22 +126,14 @@ ENV APP_BRANCH=${APP_BRANCH} \
     DATABASE_URL='pgsql://postmill:secret@db/postmill' \
     LOG_FILE='php://stderr' \
     POSTMILL_WRITE_DIRS="\
-        /app/public/media/cache \
-        /app/public/submission_images \
+        ${POSTMILL_WRITE_DIRS} \
         /app/var/cache/prod/http_cache \
         /app/var/cache/prod/pools \
-        /app/var/log \
-        /app/var/sessions \
-        /tmp \
-    " \
-    SU_USER=www-data
+    "
 
 RUN set -eux; \
     apk add --no-cache --virtual .build-deps \
         git; \
-    apk add --no-cache \
-        acl \
-        su-exec; \
     { \
         echo 'opcache.max_accelerated_files = 20000'; \
         echo 'opcache.validate_timestamps = Off'; \
@@ -144,17 +153,12 @@ RUN set -eux; \
         --prefer-dist; \
     sed -i '/^APP_BRANCH\|APP_VERSION/d' .env; \
     composer dump-env prod; \
-    mkdir -p $POSTMILL_WRITE_DIRS; \
-    chown -R www-data:www-data $POSTMILL_WRITE_DIRS; \
     composer clear-cache; \
     apk del --no-network .build-deps;
 
 VOLUME /app/public/media/cache
 VOLUME /app/public/submission_images
 VOLUME /app/var
-
-ENTRYPOINT ["docker-entrypoint"]
-CMD ["php-fpm"]
 
 
 # =====
@@ -166,7 +170,8 @@ FROM nginx:1.17-alpine AS postmill_web
 WORKDIR /app
 
 COPY LICENSE .
-COPY docker/nginx/conf.d/*.conf /etc/nginx/conf.d/
+COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
+COPY docker/nginx/conf.d/gzip.conf /etc/nginx/conf.d/
 COPY assets/public/* public/
 COPY --from=postmill_assets /app/public/build public/build/
 COPY --from=postmill_php /app/public/bundles public/bundles/
@@ -204,11 +209,13 @@ RUN set -eux; \
     apk del --no-network .build-deps; \
     pecl clear-cache;
 
-ENV XDEBUG_REMOTE_PORT=9000 \
+ENV POSTMILL_WRITE_DIRS="\
+        ${POSTMILL_WRITE_DIRS} \
+        /app/var/cache \
+    " \
+    XDEBUG_REMOTE_PORT=9000 \
     XDEBUG_REMOTE_HOST=host.docker.internal \
     XDEBUG_IDEKEY=PHPSTORM
-
-CMD php-fpm -c "$PHP_INI_DIR/php-debug.ini"
 
 
 # ===========
@@ -218,6 +225,7 @@ CMD php-fpm -c "$PHP_INI_DIR/php-debug.ini"
 FROM postmill_web AS postmill_web_debug
 
 COPY docker/nginx/docker-entrypoint-debug.sh /usr/local/bin/docker-entrypoint.sh
+COPY docker/nginx/conf.d/default-dev.conf /etc/nginx/conf.d/default.conf
 
 RUN set -ex; \
     apk add --no-cache openssl; \
