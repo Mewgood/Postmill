@@ -187,8 +187,9 @@ RUN set -eux; \
     docker-php-ext-enable xdebug; \
     { \
         echo 'xdebug.remote_enable = On'; \
-        echo 'xdebug.remote_port = 9001'; \
-        echo 'xdebug.remote_host = 172.17.0.1'; \
+        echo 'xdebug.remote_port = ${XDEBUG_REMOTE_PORT}'; \
+        echo 'xdebug.remote_host = ${XDEBUG_REMOTE_HOST}'; \
+        echo 'xdebug.idekey = ${XDEBUG_IDEKEY}'; \
     } >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
     cat "$PHP_INI_DIR/php.ini" \
         "$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini" \
@@ -202,6 +203,10 @@ RUN set -eux; \
     apk add --no-cache $RUNTIME_DEPS; \
     apk del --no-network .build-deps; \
     pecl clear-cache;
+
+ENV XDEBUG_REMOTE_PORT=9000 \
+    XDEBUG_REMOTE_HOST=host.docker.internal \
+    XDEBUG_IDEKEY=PHPSTORM
 
 CMD php-fpm -c "$PHP_INI_DIR/php-debug.ini"
 
