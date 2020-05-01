@@ -397,6 +397,9 @@ class Submission implements DomainEvents, Visibility, Votable {
     }
 
     public function updateCommentCount(): void {
+        // hydrate the collection
+        $this->comments->get(-1);
+
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE));
 
@@ -412,6 +415,9 @@ class Submission implements DomainEvents, Visibility, Votable {
     }
 
     public function updateLastActive(): void {
+        // hydrate the collection
+        $this->comments->get(-1);
+
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE))
             ->orderBy(['timestamp' => 'DESC'])

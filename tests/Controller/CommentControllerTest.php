@@ -167,6 +167,9 @@ class CommentControllerTest extends WebTestCase {
         ]));
 
         self::assertResponseRedirects('/f/news/1/a-submission-with-a-url-and-body');
+
+        $client->followRedirect();
+        self::assertSelectorTextSame('.submission__nav > ul > li > a', '1 comment');
     }
 
     public function testCanRestoreDeletedComments(): void {
@@ -180,6 +183,7 @@ class CommentControllerTest extends WebTestCase {
         self::assertResponseRedirects();
 
         $client->followRedirect();
+        self::assertSelectorTextSame('.submission__nav > ul > li > a', '2 comments');
         self::assertSelectorNotExists('.comment--visibility-trashed');
         self::assertSelectorTextContains('.comment__body', 'trashed comment');
     }

@@ -104,6 +104,7 @@ final class DeleteListener implements EventSubscriberInterface {
                 $comment->softDelete();
 
                 if (!$comment->isThreadVisible()) {
+                    $comment->getSubmission()->removeComment($comment);
                     $this->entityManager->remove($comment);
                 }
             }
