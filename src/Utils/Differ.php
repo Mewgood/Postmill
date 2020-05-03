@@ -5,13 +5,6 @@ namespace App\Utils;
 use SebastianBergmann\Diff\Differ as BaseDiffer;
 
 final class Differ {
-    // the version of sebastian/diff included in the phpunit's .phar doesn't
-    // define these constants in the Differ class, so we redefine them here for
-    // the unit tests
-    private const B_OLD = 0;
-    private const B_ADDED = 1;
-    private const B_REMOVED = 2;
-
     private function __construct() {
     }
 
@@ -33,13 +26,13 @@ final class Differ {
 
         for ($i = 0, $len = \count($diff); $i < $len; $i++) {
             switch ($diff[$i][1]) {
-            case self::B_OLD:
+            case BaseDiffer::OLD:
                 $oldLineNo++;
                 $newLineNo++;
                 break;
 
-            case self::B_ADDED:
-                if ($i > 0 && $diff[$i - 1][1] === self::B_REMOVED) {
+            case BaseDiffer::ADDED:
+                if ($i > 0 && $diff[$i - 1][1] === BaseDiffer::REMOVED) {
                     $newLineNo++;
                     $oldLineNo++;
 
@@ -62,8 +55,8 @@ final class Differ {
 
                 break;
 
-            case self::B_REMOVED:
-                if ($i === $len - 1 || $diff[$i + 1][1] !== self::B_ADDED) {
+            case BaseDiffer::REMOVED:
+                if ($i === $len - 1 || $diff[$i + 1][1] !== BaseDiffer::ADDED) {
                     $oldLineNo++;
 
                     $output[] = [
