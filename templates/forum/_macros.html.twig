@@ -135,7 +135,7 @@
       })|e,
       entry.submission.visible
         ? entry.submission.title|e
-        : '<del>%s</del>'|format(entry.submission.title|e)
+        : '<del>%s</del>'|format(entry.title|e)
     )|raw
   -}}
 {% endmacro _format_submission_title %}

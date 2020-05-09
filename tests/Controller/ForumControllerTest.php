@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Entity\ForumBan;
+use App\Entity\ForumLogEntry;
 use App\Tests\WebTestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
@@ -191,5 +192,39 @@ class ForumControllerTest extends WebTestCase {
 
         $this->assertCount(1, $crawler->filter('.comment'));
         self::assertSelectorTextContains('.comment__body p', 'YET ANOTHER BORING COMMENT.');
+    }
+
+    /**
+     * @group time-sensitive
+     * @see https://gitlab.com/postmill/Postmill/-/issues/61
+     */
+    public function testTitleOfSoftDeletedSubmissionIsVisibleInForumLog(): void {
+        ClockMock::register(ForumLogEntry::class);
+
+        $client = self::createAdminClient();
+
+        $crawler = $client->request('GET', '/f/cats/3/-/comment/3/delete');
+        $client->submit($crawler->selectButton('Delete')->form([
+            'delete_reason[reason]' => 'aaa',
+        ]));
+
+        sleep(2);
+
+        $crawler = $client->request('GET', '/f/cats/3/-/mod_delete');
+        $client->submit($crawler->selectButton('Delete')->form([
+            'delete_reason[reason]' => 'foob',
+        ]));
+
+        $client->request('GET', '/f/cats/moderation_log');
+
+        self::assertSelectorTextContains(
+            '.moderation-log__entry:nth-child(1) p',
+            'emma moderator deleted submission "Submission with a body" by zach. Reason: "foob"'
+        );
+
+        self::assertSelectorTextContains(
+            '.moderation-log__entry:nth-child(2) p',
+            'emma moderator deleted comment by zach in "Submission with a body". Reason: "aaa"'
+        );
     }
 }
