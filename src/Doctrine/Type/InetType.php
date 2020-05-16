@@ -31,17 +31,15 @@ final class InetType extends Type {
         }
 
         if ($cidr !== null) {
-            if (!\is_int(+$cidr) || !ctype_digit($cidr)) {
+            if (!is_numeric($cidr) || !\is_int(+$cidr)) {
                 throw new \InvalidArgumentException('CIDR must be integer');
             }
 
             $length = strpos($ip, ':') !== false ? 128 : 32;
 
-            if ($cidr > $length) {
+            if ($cidr < 0 || $cidr > $length) {
                 throw new \InvalidArgumentException("CIDR must be between 0 and $length");
             }
-
-            // TODO: check that there aren't bits to the right of mask
 
             return sprintf('%s/%s', $ip, $cidr);
         }
