@@ -70,6 +70,26 @@ class SubmissionControllerTest extends WebTestCase {
         self::assertSelectorTextContains('.form-error-list', 'This file is not a valid image.');
     }
 
+    /**
+     * @see https://gitlab.com/postmill/Postmill/-/issues/63
+     */
+    public function testSubmittingWithWhitespaceOnlyBodyDoesNotFail(): void {
+        $client = self::createUserClient();
+        $crawler = $client->request('GET', '/submit/cats');
+
+        $form = $crawler->selectButton('Create submission')->form([
+            'submission[title]' => 'whitespace body',
+            'submission[body]' => " \r\n \r\n ",
+        ]);
+        $client->submit($form);
+
+        self::assertResponseRedirects();
+
+        $client->followRedirect();
+        self::assertResponseStatusCodeSame(200);
+        self::assertSelectorTextContains('.submission__title', 'whitespace body');
+    }
+
     public function testSubmissionJson(): void {
         $client = self::createClient();
         $client->request('GET', '/f/news/1.json');
