@@ -3,6 +3,7 @@
 namespace App\Tests\Flysystem;
 
 use App\Flysystem\DsnAwareFilesystemFactory;
+use Aws\Credentials\CredentialsInterface;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
@@ -33,6 +34,21 @@ class DsnAwareFilesystemFactoryTest extends TestCase {
         $this->assertInstanceOf(AwsS3Adapter::class, $adapter);
         $this->assertSame('bucket-name', $adapter->getBucket());
         $this->assertSame('your-region', $adapter->getClient()->getRegion());
+    }
+
+    /**
+     * @see https://gitlab.com/postmill/Postmill/-/issues/64
+     */
+    public function testCreateS3FilesystemWithEncodedSecrets(): void {
+        $filesystem = DsnAwareFilesystemFactory::createFilesystem('s3://%2f:%2b@foo/bar');
+
+        /** @var AwsS3Adapter $adapter */
+        $adapter = $filesystem->getAdapter();
+        /** @var CredentialsInterface $credentials */
+        $credentials = $adapter->getClient()->getCredentials()->wait();
+
+        $this->assertSame('/', $credentials->getAccessKeyId());
+        $this->assertSame('+', $credentials->getSecretKey());
     }
 
     public function testThrowsOnUnrecognizedAdapter(): void {
