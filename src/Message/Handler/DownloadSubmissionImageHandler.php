@@ -8,13 +8,13 @@ use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
 use Embed\Exceptions\EmbedException;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     /**
@@ -23,7 +23,7 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $entityManager;
 
     /**
-     * @var ClientInterface
+     * @var HttpClientInterface
      */
     private $httpClient;
 
@@ -43,8 +43,8 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $validator;
 
     public function __construct(
-        ClientInterface $submissionImageClient,
         EntityManagerInterface $entityManager,
+        HttpClientInterface $submissionImageClient,
         ImageRepository $images,
         LoggerInterface $logger,
         ValidatorInterface $validator
@@ -117,12 +117,26 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
         }
 
         try {
-            $this->httpClient->get($url, ['sink' => $tempFile]);
-        } catch (TransferException $e) {
-            $tempFile = null;
-        }
+            $response = $this->httpClient->request('GET', $url, [
+                'headers' => [
+                    'Accept' => 'image/jpeg, image/gif, image/png',
+                ],
+            ]);
 
-        return $tempFile;
+            $fh = fopen($tempFile, 'wb');
+            foreach ($this->httpClient->stream($response) as $chunk) {
+                fwrite($fh, $chunk->getContent());
+            }
+            fclose($fh);
+
+            return $tempFile;
+        } catch (HttpExceptionInterface $e) {
+            $this->logger->error($e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            return null;
+        }
     }
 
     private function validateImage(string $fileName): bool {
