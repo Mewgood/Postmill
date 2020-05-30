@@ -480,6 +480,8 @@ site_settings.forum_create_role: Who can create new forums?
 site_settings.image_upload_role: Who can upload images?
 site_settings.trash_enabled: Enable trash
 site_settings.trash_enabled_help: Move posts deleted by moderators to the trash, where they can later be restored.
+site_settings.registration_captcha_enabled: Enable CAPTCHA during sign-up
+site_settings.registration_captcha_enabled_help: Enabling this can stop some spam bots, but will make your site less accessible to visibly impaired users. Keep in mind that many “bots” are actually humans employed at spam farms, and that enabling this option will not stop them.
 site_settings.registration_open: Enable sign-ups
 site_settings.site_name: Site name
 site_settings.site_theme: Site theme

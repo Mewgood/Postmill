@@ -87,6 +87,13 @@ class Site {
      */
     private $trashEnabled = false;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @var bool
+     */
+    private $registrationCaptchaEnabled = false;
+
     public function __construct() {
         $this->id = Uuid::fromString(Uuid::NIL);
     }
@@ -177,5 +184,13 @@ class Site {
 
     public function setTrashEnabled(bool $trashEnabled): void {
         $this->trashEnabled = $trashEnabled;
+    }
+
+    public function isRegistrationCaptchaEnabled(): bool {
+        return $this->registrationCaptchaEnabled;
+    }
+
+    public function setRegistrationCaptchaEnabled(bool $registrationCaptchaEnabled): void {
+        $this->registrationCaptchaEnabled = $registrationCaptchaEnabled;
     }
 }

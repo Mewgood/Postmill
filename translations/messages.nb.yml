@@ -478,6 +478,8 @@ site_settings.forum_create_role: Hvem kan opprette nye fora?
 site_settings.image_upload_role: Hvem kan laste opp bilder?
 site_settings.trash_enabled: Bruk søppelbøtte
 site_settings.trash_enabled_help: Flytt poster som blir slettet av moderatorer til søppelbøtta, hvor de kan gjenopprettes senere.
+site_settings.registration_captcha_enabled: Bruk bildebekreftelse under registrering
+site_settings.registration_captcha_enabled_help: Bildebekreftelse kan hjelpe mot automatisert spamming, men vil gjøre siden mindre tilgjengelig for svaksynte brukere. Merk at mye «automatisert» spamming faktisk er gjort av mennesker som er ansatt i spamfabrikker, og at dette ikke kan stoppes med denne innstillingen.
 site_settings.registration_open: Åpen registrering
 site_settings.site_name: Navn på nettstedet
 site_settings.site_theme: Globalt fargetema

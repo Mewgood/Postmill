@@ -5,6 +5,7 @@ namespace App\Form;
 use App\DataObject\UserData;
 use App\Form\EventListener\PasswordEncodingSubscriber;
 use App\Form\Type\HoneypotType;
+use App\Repository\SiteRepository;
 use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -23,8 +24,17 @@ final class UserType extends AbstractType {
      */
     private $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder) {
+    /**
+     * @var SiteRepository
+     */
+    private $sites;
+
+    public function __construct(
+        UserPasswordEncoderInterface $encoder,
+        SiteRepository $sites
+    ) {
         $this->encoder = $encoder;
+        $this->sites = $sites;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
@@ -53,7 +63,7 @@ final class UserType extends AbstractType {
                 'required' => false,
             ]);
 
-        if (!$editing) {
+        if (!$editing && $this->sites->findCurrentSite()->isRegistrationCaptchaEnabled()) {
             $builder->add('verification', CaptchaType::class, [
                 'label' => 'label.verification',
                 'as_url' => true,

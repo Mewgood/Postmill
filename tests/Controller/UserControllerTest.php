@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Site;
 use App\Entity\User;
 use App\Repository\SiteRepository;
 use App\Tests\WebTestCase;
@@ -20,7 +21,6 @@ class UserControllerTest extends WebTestCase {
             'user[username]' => 'shrek',
             'user[password][first]' => 'donkeykong123',
             'user[password][second]' => 'donkeykong123',
-            'user[verification]' => 'bypass',
         ]));
 
         self::assertResponseIsSuccessful();
@@ -38,7 +38,6 @@ class UserControllerTest extends WebTestCase {
             'user[username]' => 'random4',
             'user[password][first]' => $password,
             'user[password][second]' => $password,
-            'user[verification]' => 'bypass',
         ]));
 
         self::assertSelectorTextContains(
@@ -65,6 +64,38 @@ class UserControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(403);
         self::assertSelectorTextContains('.alert', 'disabled by the administrator');
+    }
+
+    public function testCannotSignUpWithInvalidCaptcha(): void {
+        $client = self::createClient();
+        self::enableRegistrationCaptcha();
+
+        $crawler = $client->request('GET', '/registration');
+
+        $client->submit($crawler->selectButton('Sign up')->form([
+            'user[username]' => 'shrek',
+            'user[password][first]' => 'donkeykong123',
+            'user[password][second]' => 'donkeykong123',
+            'user[verification]' => 'not valid',
+        ]));
+
+        self::assertResponseStatusCodeSame(200);
+        self::assertSelectorTextContains('.form-error-list li', 'Code does not match');
+    }
+
+    public function testCanSignUpWithValidCaptcha(): void {
+        $client = self::createClient();
+        self::enableRegistrationCaptcha();
+
+        $crawler = $client->request('GET', '/registration');
+        $client->submit($crawler->selectButton('Sign up')->form([
+            'user[username]' => 'shrek',
+            'user[password][first]' => 'donkeykong123',
+            'user[password][second]' => 'donkeykong123',
+            'user[verification]' => 'bypass',
+        ]));
+
+        self::assertResponseRedirects('/');
     }
 
     public function testCanChangeOwnUsernameAndRemainLoggedIn(): void {
@@ -276,5 +307,12 @@ class UserControllerTest extends WebTestCase {
         $user->setUsername('not_emma');
         $em->persist($user);
         $em->flush();
+    }
+
+    private static function enableRegistrationCaptcha(): void {
+        /** @var Site $site */
+        $site = self::$container->get(SiteRepository::class)->findCurrentSite();
+        $site->setRegistrationCaptchaEnabled(true);
+        self::$container->get(EntityManagerInterface::class)->flush();
     }
 }

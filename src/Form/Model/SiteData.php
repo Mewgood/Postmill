@@ -69,6 +69,11 @@ class SiteData {
      */
     public $trashEnabled;
 
+    /**
+     * @var bool
+     */
+    public $registrationCaptchaEnabled;
+
     public static function createFromSite(Site $site): self {
         $self = new self();
         $self->siteName = $site->getSiteName();
@@ -80,6 +85,7 @@ class SiteData {
         $self->imageUploadRole = $site->getImageUploadRole();
         $self->wikiEditRole = $site->getWikiEditRole();
         $self->trashEnabled = $site->isTrashEnabled();
+        $self->registrationCaptchaEnabled = $site->isRegistrationCaptchaEnabled();
 
         return $self;
     }
@@ -94,5 +100,6 @@ class SiteData {
         $site->setImageUploadRole($this->imageUploadRole);
         $site->setWikiEditRole($this->wikiEditRole);
         $site->setTrashEnabled($this->trashEnabled);
+        $site->setRegistrationCaptchaEnabled($this->registrationCaptchaEnabled);
     }
 }

@@ -62,6 +62,11 @@ final class SiteSettingsType extends AbstractType {
                 'choices' => self::ROLES,
                 'label' => 'site_settings.wiki_edit_role',
             ])
+            ->add('registrationCaptchaEnabled', CheckboxType::class, [
+                'help' => 'site_settings.registration_captcha_enabled_help',
+                'label' => 'site_settings.registration_captcha_enabled',
+                'required' => false,
+            ])
         ;
     }
 
