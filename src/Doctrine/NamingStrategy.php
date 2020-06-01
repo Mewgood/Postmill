@@ -2,11 +2,18 @@
 
 namespace App\Doctrine;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 
 class NamingStrategy extends UnderscoreNamingStrategy {
+    /**
+     * @var \Doctrine\Inflector\Inflector
+     */
+    private $inflector;
+
     public function __construct() {
+        $this->inflector = InflectorFactory::create()->build();
+
         // remove after upgrading to doctrine 3.0
         parent::__construct(CASE_LOWER, true);
     }
@@ -18,6 +25,6 @@ class NamingStrategy extends UnderscoreNamingStrategy {
      * @param string $className
      */
     public function classToTableName($className): string {
-        return parent::classToTableName(Inflector::pluralize($className));
+        return parent::classToTableName($this->inflector->pluralize($className));
     }
 }

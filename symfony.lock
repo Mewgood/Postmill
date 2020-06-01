@@ -95,6 +95,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.0"
+    },
     "egulias/email-validator": {
         "version": "2.1.3"
     },
@@ -145,9 +148,6 @@
     },
     "imagine/imagine": {
         "version": "v0.7.1"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
     },
     "league/commonmark": {
         "version": "0.15.7"
@@ -312,6 +312,9 @@
             "ref": "421933bf8f0e75546ac8e00cb3eb12904fa2ac1a"
         }
     },
+    "symfony/amqp-messenger": {
+        "version": "v5.1.0"
+    },
     "symfony/asset": {
         "version": "v4.0.3"
     },
@@ -357,8 +360,14 @@
     "symfony/dependency-injection": {
         "version": "v4.0.3"
     },
+    "symfony/deprecation-contracts": {
+        "version": "v2.1.2"
+    },
     "symfony/doctrine-bridge": {
         "version": "v4.0.3"
+    },
+    "symfony/doctrine-messenger": {
+        "version": "v5.1.0"
     },
     "symfony/dom-crawler": {
         "version": "v4.0.3"
@@ -495,6 +504,9 @@
     "symfony/polyfill-php73": {
         "version": "v1.11.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
+    },
     "symfony/process": {
         "version": "v4.0.3"
     },
@@ -506,6 +518,9 @@
     },
     "symfony/property-info": {
         "version": "v4.0.3"
+    },
+    "symfony/redis-messenger": {
+        "version": "v5.1.0"
     },
     "symfony/requirements-checker": {
         "version": "1.0",
