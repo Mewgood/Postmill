@@ -3699,16 +3699,16 @@
         },
         {
             "name": "postmill/pagerwave",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/postmill/PagerWave.git",
-                "reference": "3204a342ff26ab0975b24d27502ccc4cc6a3a875"
+                "reference": "ed813303917a63d4646709d51a2252aa6c208db3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/postmill%2FPagerWave/repository/archive.zip?sha=3204a342ff26ab0975b24d27502ccc4cc6a3a875",
-                "reference": "3204a342ff26ab0975b24d27502ccc4cc6a3a875",
+                "url": "https://gitlab.com/api/v4/projects/postmill%2FPagerWave/repository/archive.zip?sha=ed813303917a63d4646709d51a2252aa6c208db3",
+                "reference": "ed813303917a63d4646709d51a2252aa6c208db3",
                 "shasum": ""
             },
             "require": {
@@ -3730,7 +3730,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -3749,7 +3749,7 @@
                 }
             ],
             "description": "Key-set pagination for PHP",
-            "time": "2020-05-02T16:17:36+00:00"
+            "time": "2020-05-09T14:24:54+00:00"
         },
         {
             "name": "psr/cache",
