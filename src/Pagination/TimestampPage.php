@@ -4,9 +4,9 @@ namespace App\Pagination;
 
 use PagerWave\DefinitionGroupTrait;
 use PagerWave\DefinitionInterface as Definition;
-use PagerWave\Validator\ValidatingDefinitionInterface as ValidatingDefinition;
+use PagerWave\Extension\Validator\ValidatingDefinitionInterface;
 
-final class TimestampPage implements Definition, ValidatingDefinition {
+final class TimestampPage implements Definition, ValidatingDefinitionInterface {
     use DefinitionGroupTrait;
 
     public function getFieldNames(): array {

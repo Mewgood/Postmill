@@ -5,7 +5,7 @@ namespace App\Pagination;
 use App\Entity\Submission;
 use PagerWave\DefinitionGroupTrait;
 use PagerWave\DefinitionInterface;
-use PagerWave\Validator\ValidatingDefinitionInterface;
+use PagerWave\Extension\Validator\ValidatingDefinitionInterface;
 
 final class SubmissionPage implements DefinitionInterface, ValidatingDefinitionInterface {
     use DefinitionGroupTrait;
