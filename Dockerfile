@@ -188,8 +188,11 @@ RUN set -eux; \
     chmod -R go=u /tmp; \
     apk add --no-cache git; \
     cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
+    pecl install pcov; \
     pecl install xdebug; \
-    docker-php-ext-enable xdebug; \
+    docker-php-ext-enable \
+        pcov \
+        xdebug; \
     { \
         echo 'xdebug.remote_enable = On'; \
         echo 'xdebug.remote_port = ${XDEBUG_REMOTE_PORT}'; \
