@@ -41,7 +41,7 @@ final class IpWithCidrValidator extends ConstraintValidator {
         } else {
             $maxCidr = strpos($ip, ':') !== false ? 128 : 32;
 
-            if (!ctype_digit($cidr) || $cidr < 0 || $cidr > $maxCidr) {
+            if (!is_numeric($cidr) || !\is_int(+$cidr) || $cidr < 0 || $cidr > $maxCidr) {
                 $this->context->buildViolation($constraint->invalidCidrMessage)
                     ->setCode(IpWithCidr::INVALID_CIDR)
                     ->addViolation();

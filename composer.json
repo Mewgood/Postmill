@@ -51,7 +51,6 @@
         "symfony/messenger": "^5.1",
         "symfony/monolog-bundle": "^3.0",
         "symfony/orm-pack": "^1.0",
-        "symfony/polyfill-ctype": "^1.11",
         "symfony/polyfill-php80": "^1.15",
         "symfony/requirements-checker": "^1.0",
         "symfony/security-bundle": "^5.1",
@@ -115,14 +114,12 @@
         }
     },
     "suggest": {
-        "ext-amqp": "For AMQP (RabbitMQ, etc.) support",
-        "ext-ctype": "For faster type checking"
+        "ext-amqp": "For AMQP (RabbitMQ, etc.) support"
     },
     "config": {
         "platform": {
             "php": "7.2.9",
-            "ext-amqp": "1.6.0",
-            "ext-ctype": "7.2.9"
+            "ext-amqp": "1.6.0"
         },
         "sort-packages": true
     }

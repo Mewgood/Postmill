@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "726a7a0df5ab7b36dc28519caa36c701",
+    "content-hash": "5a2b09dd40763c31fbb9ebe8c7812583",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -11302,8 +11302,7 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.2.9",
-        "ext-amqp": "1.6.0",
-        "ext-ctype": "7.2.9"
+        "ext-amqp": "1.6.0"
     },
     "plugin-api-version": "1.1.0"
 }

@@ -31,7 +31,7 @@ abstract class AbstractLocalLinkParser implements InlineParserInterface {
 
         $previousChar = $cursor->peek(-1);
 
-        if ($previousChar !== null && !ctype_space($previousChar)) {
+        if ($previousChar !== null && !preg_match('!^\s+$!', $previousChar)) {
             return false;
         }
 
