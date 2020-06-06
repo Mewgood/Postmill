@@ -82,7 +82,7 @@ class UserBan {
         $this->banned = $banned;
         $this->bannedBy = $bannedBy;
         $this->expires = $expires;
-        $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = new \DateTimeImmutable('@'.time());
 
         $user->addBan($this);
     }

@@ -94,10 +94,7 @@ class ForumBan {
         $this->banned = $banned;
         $this->bannedBy = $bannedBy;
         $this->expires = $expires;
-
-        // since the last ban takes precedence, and because timestamps are used
-        // for sorting, we'll use microseconds to hopefully avoid collisions
-        $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = new \DateTimeImmutable('@'.time());
     }
 
     public function getId(): Uuid {

@@ -65,7 +65,7 @@ class WikiRevision {
         $this->title = $title;
         $this->body = $body;
         $this->user = $user;
-        $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = new \DateTimeImmutable('@'.time());
 
         $this->page->addRevision($this);
     }

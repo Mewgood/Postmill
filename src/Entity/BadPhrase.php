@@ -64,7 +64,7 @@ class BadPhrase {
         }
 
         $this->id = Uuid::uuid4();
-        $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6F', microtime(true)));
+        $this->timestamp = new \DateTimeImmutable('@'.time());
         $this->phrase = $phrase;
         $this->phraseType = $phraseType;
     }

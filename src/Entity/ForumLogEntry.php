@@ -64,7 +64,7 @@ abstract class ForumLogEntry {
         $this->forum = $forum;
         $this->user = $user;
         $this->wasAdmin = !$forum->userIsModerator($user, false);
-        $this->timestamp = \DateTimeImmutable::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        $this->timestamp = new \DateTimeImmutable('@'.time());
     }
 
     public function getId(): Uuid {
