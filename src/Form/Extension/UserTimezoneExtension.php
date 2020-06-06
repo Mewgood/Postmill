@@ -21,11 +21,11 @@ final class UserTimezoneExtension extends AbstractTypeExtension {
 
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setNormalizer('view_timezone', function (Options $options, $value) {
-            if ($this->security->isGranted('ROLE_USER')) {
+            if ($value === null && $this->security->isGranted('ROLE_USER')) {
                 $user = $this->security->getUser();
                 \assert($user instanceof \App\Entity\User);
 
-                return $user->getTimezone()->getName();
+                $value = $user->getTimezone()->getName();
             }
 
             return $value;
