@@ -188,6 +188,27 @@ class CommentControllerTest extends WebTestCase {
         self::assertSelectorTextContains('.comment__body', 'trashed comment');
     }
 
+    /**
+     * @see https://gitlab.com/postmill/Postmill/-/issues/67
+     */
+    public function testCanDeleteCommentWithNotification(): void {
+        $client = self::createAdminClient();
+
+        $crawler = $client->request('GET', '/f/cats/3/-/comment/3');
+        $client->submit($crawler->selectButton('Post')->form([
+            'reply_to_comment_3[comment]' => 'I am mentioning /u/third',
+        ]));
+
+        self::assertResponseRedirects();
+
+        $crawler = $client->request('GET', '/f/cats/3/-/comment/3/delete_thread');
+        $client->submit($crawler->selectButton('Delete thread')->form([
+            'delete_reason[reason]' => 'I am deleting',
+        ]));
+
+        self::assertResponseRedirects('/f/cats/3/submission-with-a-body');
+    }
+
     public function selfDeleteReferrerProvider(): iterable {
         yield ['http://localhost/f/cats/3', '/f/cats/3'];
         yield ['http://localhost/f/cats/3/with-slug', '/f/cats/3/with-slug'];

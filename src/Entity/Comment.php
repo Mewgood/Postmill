@@ -131,14 +131,14 @@ class Comment implements DomainEvents, Visibility, Votable {
     private $userFlag = UserFlags::FLAG_NONE;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommentNotification", mappedBy="comment", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CommentNotification", mappedBy="comment", cascade={"remove"}, orphanRemoval=true)
      *
      * @var CommentNotification[]|Collection
      */
     private $notifications;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommentMention", mappedBy="comment", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CommentMention", mappedBy="comment", cascade={"remove"}, orphanRemoval=true)
      *
      * @var CommentMention[]|Collection
      */
