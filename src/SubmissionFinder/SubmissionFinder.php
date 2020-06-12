@@ -119,7 +119,7 @@ class SubmissionFinder {
         $request = $this->requestStack->getCurrentRequest();
         \assert($request !== null);
 
-        return !$request->query->get('next');
+        return !$request->query->has('next');
     }
 
     private function addTimeClause(QueryBuilder $qb): void {
