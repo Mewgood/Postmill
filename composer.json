@@ -21,6 +21,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo_pgsql": "*",
+        "composer/package-versions-deprecated": "^1.8",
         "embed/embed": "^3.4",
         "ezyang/htmlpurifier": "^4.8",
         "friendsofsymfony/http-cache-bundle": "^2.7",

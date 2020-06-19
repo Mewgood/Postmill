@@ -1,3 +1,4 @@
+ARG COMPOSER_VERSION=2
 ARG PHP_VERSION=7.4
 
 # ======
@@ -20,9 +21,10 @@ RUN set -eux; \
 # PHP base image
 # ==============
 
+FROM composer:${COMPOSER_VERSION} AS composer
 FROM php:${PHP_VERSION}-fpm-alpine AS postmill_php_base
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HTACCESS_PROTECT=0 \
