@@ -1,1 +1,2 @@
-'Your account has been banned.': 'Your account has been banned.'
+error.account_banned: 'Your account has been banned.'
+error.rate_limited: "We've detected too many failed login attempts from your IP address. Please try again later."

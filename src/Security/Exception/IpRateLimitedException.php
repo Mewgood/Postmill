@@ -10,6 +10,6 @@ class IpRateLimitedException extends AuthenticationException {
     }
 
     public function getMessageKey(): string {
-        return 'Your IP address and/or net block has been rate-limited. Please try again later.';
+        return 'error.rate_limited';
     }
 }

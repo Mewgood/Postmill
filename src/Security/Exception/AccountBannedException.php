@@ -10,6 +10,6 @@ class AccountBannedException extends AccountStatusException {
     }
 
     public function getMessageKey(): string {
-        return 'Your account has been banned.';
+        return 'error.account_banned';
     }
 }
