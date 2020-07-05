@@ -6,13 +6,6 @@ stages:
     - build-web
     - release
 
-default:
-    image: docker:19-git
-    services:
-        - docker:dind
-    before_script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-
 
 # =====
 # Audit
@@ -20,8 +13,8 @@ default:
 
 audit:php:
     stage: audit
-    image: php:7.3-alpine
-    services: []
+    image: php:7.4-alpine
+    needs: []
     allow_failure: true
     before_script:
         - curl -sS https://get.sensiolabs.org/security-checker.phar -o check.phar
@@ -31,9 +24,8 @@ audit:php:
 audit:node:
     stage: audit
     image: node:10-alpine
-    services: []
+    needs: []
     allow_failure: true
-    before_script: []
     script:
         - yarn audit
 
@@ -42,10 +34,30 @@ audit:node:
 # Lint
 # ====
 
-lint:js:
-    image: node:10-alpine
+lint:composer:
     stage: lint
-    services: []
+    image: composer:2.0.0-alpha1
+    needs: []
+    except:
+        - schedules
+    script:
+        - composer validate --strict
+
+lint:yaml:
+    stage: lint
+    image: composer:2.0.0-alpha1
+    needs: []
+    except:
+        - schedules
+    before_script:
+        - composer global require symfony/console symfony/yaml
+    script:
+        - $COMPOSER_HOME/vendor/bin/yaml-lint config translations
+
+lint:js:
+    stage: lint
+    image: node:10-alpine
+    needs: []
     except:
         - schedules
     before_script:
@@ -53,24 +65,23 @@ lint:js:
     script:
         - yarn run lint:js
 
-lint:7.4: &lint
+lint:php:7.4: &lint-php
     stage: lint
     image: php:7.4-alpine
-    services: []
+    needs: []
     except:
         - schedules
-    before_script: []
     script:
         - find config public src tests -type f -name "*.php" -print0 |
           xargs -0 -n1 -P4 php -l -n |
           (! grep -v "No syntax errors detected" )
 
-lint:7.3:
-    <<: *lint
+lint:php:7.3:
+    <<: *lint-php
     image: php:7.3-alpine
 
-lint:7.2:
-    <<: *lint
+lint:php:7.2:
+    <<: *lint-php
     image: php:7.2-alpine
 
 
@@ -79,8 +90,9 @@ lint:7.2:
 # =========
 
 build-app:7.4: &build-app
-    stage: build-app
     image: docker:19-git
+    stage: build-app
+    needs: ['lint:php:7.4']
     except:
         - schedules
     services:
@@ -89,6 +101,8 @@ build-app:7.4: &build-app
         PHP_VERSION: '7.4'
         TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION}-${CI_COMMIT_SHA}
         TEST_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:${CI_COMMIT_SHA}
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
         - docker build --pull
             --build-arg APP_VERSION="$(git describe --tags)"
@@ -99,12 +113,14 @@ build-app:7.4: &build-app
 
 build-app:7.3:
     <<: *build-app
+    needs: ['lint:php:7.3']
     variables:
         <<: *build-app-vars
         PHP_VERSION: '7.3'
 
 build-app:7.2:
     <<: *build-app
+    needs: ['lint:php:7.2']
     variables:
         <<: *build-app-vars
         PHP_VERSION: '7.2'
@@ -117,6 +133,7 @@ build-app:7.2:
 test:7.4: &test
     image: ${CI_REGISTRY_IMAGE}/app:7.4-${CI_COMMIT_SHA}
     stage: test
+    needs: ['build-app:7.4']
     except:
         - schedules
     services:
@@ -134,20 +151,21 @@ test:7.4: &test
         - mkdir public/build
         - cp /app/public/build/*.json public/build/
     script:
-        - bin/phpunit
         - bin/console doctrine:mapping:info -q
-        - bin/console lint:yaml config
-        - bin/console lint:twig templates
-        - bin/console lint:yaml translations
-        - composer validate --strict
+        - bin/phpunit --log-junit=report.xml
+    artifacts:
+        reports:
+            junit: report.xml
 
 test:7.3:
     <<: *test
     image: ${CI_REGISTRY_IMAGE}/app:7.3-${CI_COMMIT_SHA}
+    needs: ['build-app:7.3']
 
 test:7.2:
     <<: *test
     image: ${CI_REGISTRY_IMAGE}/app:7.2-${CI_COMMIT_SHA}
+    needs: ['build-app:7.2']
 
 
 # =========
@@ -156,10 +174,16 @@ test:7.2:
 
 build-web:
     stage: build-web
+    image: docker:19
+    services:
+        - docker:dind
+    needs: ['test:7.4']
     variables:
         <<: *build-app-vars
     except:
         - schedules
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
         - docker pull $TEST_IMAGE_APP
         - docker build --cache-from $TEST_IMAGE_APP --target postmill_web -t $TEST_IMAGE_WEB .
@@ -171,11 +195,17 @@ build-web:
 # =======
 
 release:
+    image: docker:19
     stage: release
+    needs: ['test:7.4', 'build-web']
+    services:
+        - docker:dind
     variables:
         <<: *build-app-vars
         RELEASE_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:latest
         RELEASE_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:latest
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
         - docker pull $TEST_IMAGE_APP
         - docker pull $TEST_IMAGE_WEB
