@@ -15,6 +15,7 @@ services:
         environment:
             POSTGRES_USER: postmill
             POSTGRES_PASSWORD: secret
+            PGUSER: postmill
         image: postgres:11-alpine
         networks:
             - app
