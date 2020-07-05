@@ -30,6 +30,10 @@ if ($input->hasParameterOption('--no-debug', true)) {
 
 (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 
+if ($_SERVER['LOG_FILE'] === 'php://stderr') {
+    putenv('LOG_FILE='.$_SERVER['LOG_FILE'] = $_ENV['LOG_FILE'] = PATH_SEPARATOR === '\\' ? 'NUL' : '/dev/null');
+}
+
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
