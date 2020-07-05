@@ -29,7 +29,7 @@
       <nav class="flex flex--guttered">
         {{ forum_list_tabs() }}
 
-        <ul class="no-margin unlistify">
+        <ul class="unlistify">
           <li class="dropdown">
             <button type="button"
                     class="tab dropdown__toggle unbuttonize no-underline"
@@ -41,7 +41,7 @@
               <span class="dropdown__arrow" aria-hidden="true"></span>
             </button>
 
-            <ul class="dropdown__menu dropdown-card no-margin unlistify">
+            <ul class="dropdown__menu dropdown-card unlistify">
               {% for mode, label in forum_sort_modes %}
                 <li>
                   <a href="{{ path('forum_list', { sortBy: mode }) }}"

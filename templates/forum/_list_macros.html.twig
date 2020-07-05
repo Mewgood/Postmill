@@ -1,9 +1,9 @@
 {% macro header() %}
-  <h1 class="no-margin">{{ 'forum_list.page_title'|trans }}</h1>
+  <h1>{{ 'forum_list.page_title'|trans }}</h1>
 {% endmacro header %}
 
 {% macro forum_list_tabs() %}
-  <ul class="unlistify flex no-margin">
+  <ul class="unlistify flex">
     {% with { active: app.request.attributes.get('_route') == 'forum_list' } %}
       <li>
         <a href="{{ path('forum_list') }}" class="tab {{ active ? 'tab--active' }}">

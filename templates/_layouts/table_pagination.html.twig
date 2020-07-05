@@ -16,7 +16,7 @@
       {{ include('_includes/pagination.html.twig', { pager: items }, with_context=false) }}
     {% endblock %}
   {% else %}
-    <p class="no-margin">
+    <p>
       <small class="fg-muted text-md">
         {%- block flash_message 'flash.no_entries_to_display'|trans -%}
       </small>

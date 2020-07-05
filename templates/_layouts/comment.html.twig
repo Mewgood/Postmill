@@ -18,7 +18,7 @@
     <div class="comment__row">
       <div class="comment__main">
         <header class="comment__header">
-          <h1 class="comment__info break-text no-margin unheaderize">
+          <h1 class="comment__info break-text unheaderize">
             <span class="fg-muted text-sm">
               {{ 'comments.info'|trans({
                 '%user%': block('comment_info_user'),
@@ -35,7 +35,7 @@
             </span>
           </h1>
 
-          <ul class="flex no-margin unlistify">
+          <ul class="flex unlistify">
             {% if post_numbers %}
               <li>
                 <a href="{{ path('comment', { forum_name: comment.submission.forum.name, submission_id: comment.submission.id, comment_id: comment.id }) }}"
@@ -76,7 +76,7 @@
           </p>
         {%- endif -%}
 
-        <div class="comment__body break-text hideable__hide">
+        <div class="comment__body break-text hideable__hide text-flow">
           {%- if raw_body is not null -%}
             {{ raw_body|raw }}
           {%- elseif (comment.visible or show_trashed) and comment.body is not null -%}
@@ -85,7 +85,7 @@
         </div>
 
         <nav class="comment__nav hideable__hide">
-          <ul class="fg-muted flex flex--guttered no-margin unlistify">
+          <ul class="fg-muted flex flex--guttered unlistify">
             {{- block('comment_nav') -}}
           </ul>
         </nav>
@@ -104,7 +104,7 @@
     {% if recurse %}
       {% set children = comment.children|filter(c => c.threadVisible) %}
       {% if children|length > 0 %}
-        <div class="comment__replies hideable__hide">
+        <div class="comment__replies hideable__hide flow">
           {%- for reply in children -%}
             {%- with { comment: reply, level: level + 1, show_form: false } -%}
               {{- block('comment') -}}
@@ -260,7 +260,7 @@
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
 
-      <ul class="dropdown__menu dropdown-card unlistify no-margin">
+      <ul class="dropdown__menu dropdown-card unlistify">
         {{ actions|raw }}
       </ul>
     </li>

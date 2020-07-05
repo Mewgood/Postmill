@@ -10,7 +10,7 @@
   <h1 class="page-heading">{{ block('title') }}</h1>
 
   {{ form_start(form) }}
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'label.general'|trans }}</legend>
 
       {{ form_row(form.locale) }}
@@ -20,7 +20,7 @@
       <div>
         {{ form_errors(form.frontPage) }}
 
-        <div class="form-row form-row--single-line">
+        <div class="form-flex form-flex--single-line">
           {{ form_label(form.frontPage, null, {
             show_required_indicator: false,
             label_attr: { for: form.frontPage.filterBy.vars.id },
@@ -38,7 +38,7 @@
       {{ form_row(form.showThumbnails) }}
     </fieldset>
 
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'label.posting'|trans }}</legend>
 
       {{ form_row(form.autoFetchSubmissionTitles) }}
@@ -46,7 +46,7 @@
       {{ form_row(form.enablePostPreviews) }}
     </fieldset>
 
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'heading.notifications'|trans }}</legend>
 
         {{ form_row(form.notifyOnReply) }}
@@ -54,13 +54,13 @@
         {{ form_row(form.notifyOnMentions) }}
     </fieldset>
 
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'heading.privacy'|trans }}</legend>
 
       {{ form_row(form.allowPrivateMessages) }}
     </fieldset>
 
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'label.appearance'|trans }}</legend>
 
       {{ form_row(form.nightMode) }}

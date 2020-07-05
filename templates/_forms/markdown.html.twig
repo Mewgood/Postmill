@@ -18,12 +18,12 @@
   </label>
 
   {% apply spaceless %}
-    <table class="formatting-help hideable__hide">
+    <table class="formatting-help hideable__hide fg-muted text-sm">
       <tbody>
         <tr>
-          <td>
+          <td class="text-flow">
             <p>{{ 'markdown.paragraph'|trans }}</p>
-            <p class="no-margin">{{ 'markdown.another_paragraph'|trans }}</p>
+            <p>{{ 'markdown.another_paragraph'|trans }}</p>
           </td>
           <td>
             <kbd>
@@ -60,7 +60,7 @@
         <tr>
           <td>
             {% for i in 1..6 %}
-              <h{{ i }}{{ loop.last ? ' class="no-margin"' }}>
+              <h{{ i }}>
                 {{ 'markdown.heading'|trans({ '%count%': i }) }}
               </h{{ i }}>
             {% endfor %}
@@ -82,7 +82,7 @@
         </tr>
         <tr>
           <td>
-            <ul class="no-margin">
+            <ul>
               <li>{{ 'markdown.list_item'|trans }}</li>
               <li>{{ 'markdown.list_item'|trans }}</li>
             </ul>
@@ -96,7 +96,7 @@
         </tr>
         <tr>
           <td>
-            <ol class="no-margin">
+            <ol>
               <li>{{ 'markdown.list_item'|trans }}</li>
               <li>{{ 'markdown.list_item'|trans }}</li>
             </ol>
@@ -125,10 +125,10 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="text-flow">
             <blockquote>
               <p>{{ 'markdown.blockquote'|trans }}</p>
-              <p class="no-margin">{{ 'markdown.another_paragraph'|trans }}</p>
+              <p>{{ 'markdown.another_paragraph'|trans }}</p>
             </blockquote>
           </td>
           <td>

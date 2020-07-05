@@ -3,10 +3,10 @@
 {% block wiki_nav_toolbox_active app.request.attributes.get('_route') %}
 
 {% block sidebar %}
-  <section class="sidebar__section sidebar-card">
+  <section class="sidebar__section sidebar-card flow">
     <h1 class="sidebar__title">{{ 'wiki.navigation'|trans }}</h1>
 
-    <ul class="no-margin unlistify sidebar__no-padding">
+    <ul class="unlistify sidebar__no-padding">
       <li>
         <a href="{{ path('wiki_all') }}"
            class="menu-item {{ block('wiki_nav_toolbox_active') == 'wiki_all' ? 'menu-item--active' }}">

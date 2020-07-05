@@ -20,7 +20,7 @@
       {{ comment(item, { show_context: true, show_trashed: true }) }}
     {% endif %}
   {% else %}
-    <p class="fg-muted no-margin"><small class="text-md">{{ 'flash.no_entries_to_display'|trans }}</small></p>
+    <p class="fg-muted"><small class="text-md">{{ 'flash.no_entries_to_display'|trans }}</small></p>
   {% endfor %}
 
   {{ include('_includes/pagination.html.twig', { pager: trash }, with_context=false) }}

@@ -25,7 +25,7 @@
         <span class="forum-card__title">{{ forum.title }}</span>
       </h2>
 
-      <p class="forum-card__description no-margin break-text">
+      <p class="forum-card__description break-text">
         {{- forum.description -}}
       </p>
     </div>
@@ -43,13 +43,13 @@
         </form>
       {% else %}
         {% set subscriber_count = forum.subscriptions|length %}
-        <p class="no-margin">{{ 'forum.subscriber_count'|trans({
+        <p>{{ 'forum.subscriber_count'|trans({
           '%count%': subscriber_count,
           '%formatted_count%': subscriber_count|format_number,
         }) }}</p>
       {% endif %}
 
-      <p class="no-margin fg-muted">
+      <p class="fg-muted">
         {% set submission_count = forum.submissions|length %}
         {{ 'forum.submission_count'|trans({
           '%count%': submission_count,

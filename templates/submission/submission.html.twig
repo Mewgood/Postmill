@@ -26,7 +26,7 @@
 
   {% if comments is not empty %}
     <div class="flex flex--slim-gutters">
-      <ul class="flex unlistify no-margin">
+      <ul class="flex unlistify">
         {% for view in ['nested', 'linear'] %}
           <li>
             <a href="{{ path('submission', { forum_name: forum.name, submission_id: submission.id, slug: submission.title|slugify, commentView: view }) }}"

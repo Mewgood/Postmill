@@ -16,17 +16,17 @@
     {{ alert('flash.you_must_reauthenticate'|trans, 'notice', true) }}
   {% endif %}
 
-  <form action="{{ path('login_check') }}" method="POST" class="form form--login">
+  <form action="{{ path('login_check') }}" method="POST" class="form flow">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
     {% if error %}
-      <ul class="form-error-list no-margin">
+      <ul class="form-error-list">
         <li>{{ error.messageKey|trans(error.messageData, 'security') }}</li>
       </ul>
     {% endif %}
 
-    <div class="form-row form-row--single-line form__row">
-      <label class="form-row__align text-align-right form__label" for="login-username">{{ 'label.username'|trans }}</label>
+    <div class="form-flex form-flex--single-line form__row">
+      <label class="form-flex__align text-align-right form__label" for="login-username">{{ 'label.username'|trans }}</label>
       <input class="form-control"
              {{ last_username|trim|length == 0 ? 'autofocus' }}
              type="text"
@@ -36,8 +36,8 @@
              required>
     </div>
 
-    <div class="form-row form-row--single-line form__row">
-      <label class="form-row__align text-align-right form__label" for="login-password">{{ 'label.password'|trans }}</label>
+    <div class="form-flex form-flex--single-line form__row">
+      <label class="form-flex__align text-align-right form__label" for="login-password">{{ 'label.password'|trans }}</label>
       <input class="form-control"
              {{ last_username|trim|length > 0 ? 'autofocus' }}
              type="password"
@@ -46,14 +46,14 @@
              required>
     </div>
 
-    <div class="form-row form-row--single-line form-row--no-collapse">
-      <div class="form-row__align" aria-hidden="true"></div>
+    <div class="form-flex form-flex--single-line form-flex--no-collapse">
+      <div class="form-flex__align" aria-hidden="true"></div>
       {{ checkbox({ name: '_remember_me', id: 'login-remember-me', checked: remember_me ?? true }) }}
       <label for="login-remember-me">{{ 'login.remember_me'|trans }}</label>
     </div>
 
-    <div class="form-row form-row--single-line form__row form__button-row">
-      <span class="form-row__align" role="presentation"></span>
+    <div class="form-flex form-flex--single-line form__row form__button-row">
+      <span class="form-flex__align" role="presentation"></span>
 
       <button type="submit" class="button">{{ 'action.log_in'|trans }}</button>
 
@@ -67,7 +67,7 @@
 
   <h2>{{ 'login.no_account'|trans }}</h2>
 
-  <p class="no-margin">
+  <p>
     {% if registration_open() %}
       <a href="{{ path('registration') }}" class="button button--secondary">
         {{- 'action.sign_up'|trans -}}

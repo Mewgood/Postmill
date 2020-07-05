@@ -11,10 +11,12 @@
 {% endblock %}
 
 {% block sidebar %}
-  <section class="sidebar__section sidebar-card">
+  <section class="sidebar__section sidebar-card flow">
     <h2 class="sidebar__title">/c/{{ category.name }}</h2>
 
-    {{ category.sidebar|cached_markdown|raw }}
+    <div class="text-flow">
+      {{ category.sidebar|cached_markdown|raw }}
+    </div>
 
     {% if is_granted('ROLE_ADMIN') %}
       <nav>
@@ -28,7 +30,7 @@
     {% endif %}
   </section>
 
-  <section class="sidebar__section sidebar-card">
+  <section class="sidebar__section sidebar-card flow">
     <h2 class="sidebar__title">{{ 'label.forums_in_this_category'|trans }}</h2>
 
     <ul>

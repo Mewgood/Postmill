@@ -1,8 +1,6 @@
 @import (reference) '../_variables';
 
 .markdown-preview {
-  margin-bottom: 1rem;
-
   @media screen and (min-width: @desktop-min-width) {
     max-width: 40rem;
   }
@@ -22,5 +20,10 @@
     padding: 1rem 1rem 0;
     scrollbar-color: var(--primary) var(--accent);
     scrollbar-width: thin;
+
+    > :last-child {
+      // workaround for bottom padding not working with overflow
+      margin-bottom: 1rem;
+    }
   }
 }

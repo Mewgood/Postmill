@@ -12,10 +12,10 @@
 {% block wiki_page_toolbox_active app.request.attributes.get('_route') %}
 
 {% block body %}
-  <article class="wiki-article">
+  <article class="wiki-article flow">
     <h1 class="page-heading wiki-article__title">{{ block('title') }}</h1>
 
-    <div class="wiki-article__body">
+    <div class="wiki-article__body text-flow">
       {{ page.latestRevision.body|cached_markdown|raw }}
     </div>
   </article>
@@ -24,7 +24,7 @@
 {% block sidebar %}
   {% from '_macros/time.html.twig' import relative_time %}
 
-  <section class="sidebar__section sidebar-card">
+  <section class="sidebar__section sidebar-card flow">
     <h1 class="sidebar__title">{{ page.path }}</h1>
       <p>
         {{- 'wiki.last_edited'|trans({
@@ -68,10 +68,10 @@
     {% endif %}
   </section>
 
-  <section class="sidebar__section sidebar-card">
+  <section class="sidebar__section sidebar-card flow">
     <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
 
-    <ul class="no-margin unlistify sidebar__no-padding">
+    <ul class="unlistify sidebar__no-padding">
       {% if is_granted('write', page) %}
         <li>
           <a href="{{ path('wiki_edit', {path: page.path}) }}"

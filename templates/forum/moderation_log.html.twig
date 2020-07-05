@@ -24,17 +24,19 @@
   </nav>
 
   {% if logs|length > 0 %}
-    <ul class="moderation-log">
-      {% for entry in logs %}
-        <li class="moderation-log__entry moderation-log__entry--{{ entry.action|replace({'_': '-'}) }}">
-          <p>
-            {{ log_line(entry) }}
-            &mdash;
-            {{ relative_time(entry.timestamp) }}
-          </p>
-        </li>
-      {% endfor %}
-    </ul>
+    <div class="text-flow">
+      <ul class="moderation-log">
+        {% for entry in logs %}
+          <li class="moderation-log__entry moderation-log__entry--{{ entry.action|replace({'_': '-'}) }}">
+            <p>
+              {{ log_line(entry) }}
+              &mdash;
+              {{ relative_time(entry.timestamp) }}
+            </p>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
 
     {{ include('_includes/pagination.html.twig', {pager: logs}, with_context=false) }}
   {% else %}

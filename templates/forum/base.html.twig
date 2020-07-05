@@ -21,7 +21,7 @@
 {% endblock theme_css %}
 
 {% block sidebar %}
-  <section class="sidebar__section sidebar-card">
+  <section class="sidebar__section sidebar-card flow">
     <h1 class="sidebar__title forum-title break-text">
       <a href="{{ path('forum', {forum_name: forum.name}) }}">{{ forum.title }}</a>
       {% if forum.featured %}
@@ -47,7 +47,7 @@
     {% endif %}
 
     {% if forum.sidebar is not empty %}
-      <div class="forum-sidebar-content break-text">
+      <div class="forum-sidebar-content break-text text-flow">
         {{- forum.sidebar|cached_markdown|raw -}}
       </div>
 
@@ -75,7 +75,7 @@
 
   {% if is_granted('ROLE_USER') %}
     {% set is_hidden = app.user.hidingForum(forum) %}
-    <details class="sidebar__section sidebar-card">
+    <details class="sidebar__section sidebar-card flow">
       <summary class="sidebar__title">{{ 'heading.hide_this_forum'|trans }}</summary>
 
       <p class="fg-muted text-md">{{ 'help.hidden_forums'|trans }}</p>
@@ -92,7 +92,7 @@
     </details>
   {% endif %}
 
-  <section class="sidebar__section sidebar-card">
+  <section class="sidebar__section sidebar-card flow">
     <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
 
     {% set toolbox_items = {
@@ -120,7 +120,7 @@
       },
     } %}
 
-    <ul class="no-margin unlistify sidebar__no-padding">
+    <ul class="unlistify sidebar__no-padding">
       {% for label in toolbox_items|keys|sort|filter(label => toolbox_items[label].condition ?? true) %}
         {% set item = toolbox_items[label] %}
         <li>
@@ -134,7 +134,7 @@
   </section>
 
   {% if forum.moderators is not empty or is_granted('ROLE_ADMIN') %}
-    <section class="sidebar__section sidebar-card">
+    <section class="sidebar__section sidebar-card flow">
       <div class="flex flex--guttered">
         <h1 class="sidebar__title flex__grow">
           {{- 'forum.moderators'|trans -}}

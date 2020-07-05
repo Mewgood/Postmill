@@ -88,7 +88,7 @@
 
         {%- if show_body -%}
           {% if raw_body is not null or submission.body is not null %}
-            <div class="submission__body break-text">
+            <div class="submission__body break-text text-flow">
               {%- if raw_body is not null -%}
                 {{ raw_body|raw }}
               {%- elseif submission.body is not null -%}
@@ -125,7 +125,7 @@
         {%- endif -%}
 
         <nav class="submission__nav">
-          <ul class="unlistify fg-muted flex flex--guttered no-margin">
+          <ul class="unlistify fg-muted flex flex--guttered">
             {{ block('submission_nav') }}
           </ul>
         </nav>
@@ -231,7 +231,7 @@
         <span class="no-underline__exempt">{{ 'nav.actions'|trans }}</span>
         <span class="dropdown__arrow" aria-hidden="true"></span>
       </button>
-      <ul class="dropdown-card dropdown__menu no-margin unlistify">
+      <ul class="dropdown-card dropdown__menu unlistify">
         {{ actions }}
       </ul>
     </li>

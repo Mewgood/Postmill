@@ -19,7 +19,7 @@ function makePreview(renderedHtml) {
         <h3 class="markdown-preview__title">
             ${escapeHtml(translator.trans('markdown.preview'))}
         </h3>
-        <div class="markdown-preview__inner">${renderedHtml}</div>
+        <div class="markdown-preview__inner text-flow">${renderedHtml}</div>
     `);
 }
 

@@ -11,7 +11,7 @@
   <h1 class="page-heading">{{ block('title') }}</h1>
 
   {{ form_start(form) }}
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'label.general'|trans }}</legend>
 
       {{ form_row(form.siteName) }}
@@ -23,7 +23,7 @@
       {{ form_row(form.trashEnabled) }}
     </fieldset>
 
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'label.appearance_and_behavior'|trans }}</legend>
 
       {{ form_row(form.defaultSortMode) }}
@@ -31,7 +31,7 @@
       {{ form_row(form.defaultTheme) }}
     </fieldset>
 
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'label.permissions'|trans }}</legend>
 
       {{ form_row(form.forumCreateRole) }}
@@ -39,7 +39,7 @@
       {{ form_row(form.imageUploadRole) }}
     </fieldset>
 
-    <fieldset class="fieldset">
+    <fieldset class="fieldset flow">
       <legend>{{ 'nav.wiki'|trans }}</legend>
 
       {{ form_row(form.wikiEnabled) }}

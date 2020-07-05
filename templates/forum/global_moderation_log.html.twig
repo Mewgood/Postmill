@@ -12,19 +12,21 @@
   <h1 class="page-heading">{{ block('title') }}</h1>
 
   {% if logs|length > 0 %}
-    <ul class="moderation-log">
-      {% for entry in logs %}
-        <li class="moderation-log__entry moderation-log__entry--{{ entry.action|replace({'_': '-'}) }}">
-          <p>
-            <a href="{{ path('moderation_log', { forum_name: entry.forum.name }) }}">/f/{{ entry.forum.name }}</a>
-            &mdash;
-            {{ log_line(entry) }}
-            &mdash;
-            {{ relative_time(entry.timestamp) }}
-          </p>
-        </li>
-      {% endfor %}
-    </ul>
+    <div class="text-flow">
+      <ul class="moderation-log">
+        {% for entry in logs %}
+          <li class="moderation-log__entry moderation-log__entry--{{ entry.action|replace({'_': '-'}) }}">
+            <p>
+              <a href="{{ path('moderation_log', { forum_name: entry.forum.name }) }}">/f/{{ entry.forum.name }}</a>
+              &mdash;
+              {{ log_line(entry) }}
+              &mdash;
+              {{ relative_time(entry.timestamp) }}
+            </p>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
 
     {{ include('_includes/pagination.html.twig', { pager: logs }, with_context=false) }}
   {% else %}

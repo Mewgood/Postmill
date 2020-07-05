@@ -11,7 +11,7 @@
 
 {% block body %}
   <nav class="flex flex--guttered">
-    <h1 class="no-margin">{{ 'nav.trash'|trans }}</h1>
+    <h1>{{ 'nav.trash'|trans }}</h1>
 
     {{ include('front/_moderator_nav.html.twig', with_context=false) }}
   </nav>
@@ -25,7 +25,7 @@
       {{ comment(item, { show_context: true, show_trashed: true }) }}
     {% endif %}
   {% else %}
-    <p class="fg-muted no-margin"><small class="text-md">{{ 'flash.no_entries_to_display'|trans }}</small></p>
+    <p class="fg-muted"><small class="text-md">{{ 'flash.no_entries_to_display'|trans }}</small></p>
   {% endfor %}
 
   {{ include('_includes/pagination.html.twig', { pager: trash }, with_context=false) }}

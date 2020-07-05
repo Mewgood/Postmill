@@ -74,7 +74,7 @@
 {# form layout #}
 
 {%- block form_start -%}
-  {%- set attr = attr|merge({'class': (attr.class is defined and attr.class|length > 0) ? attr.class~' form' : 'form'}) -%}
+  {%- set attr = attr|merge({ class: ((attr.class ?? '')~' form flow')|trim }) -%}
   {{- parent() -}}
 {%- endblock form_start -%}
 
@@ -86,7 +86,7 @@
 
 {% block checkbox_row %}
   {{- form_errors(form) -}}
-  <span class="form-row form-row--single-line form-row--no-collapse">
+  <span class="form-flex form-flex--single-line form-flex--no-collapse">
     {{- form_widget(form) -}}
     {{- form_label(form) -}}
   </span>
@@ -95,20 +95,20 @@
 
 {% block form_help -%}
   {%- if help is not empty -%}
-    {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' form-help text-sm fg-muted')|trim}) -%}
-    {%- if not (raw_help ?? false) -%}
-      <p id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
-        {%- if translation_domain is same as(false) -%}
-          {{- help -}}
-        {%- else -%}
-          {{- help|trans({}, translation_domain) -}}
-        {%- endif -%}
-      </p>
-    {%- else -%}
-      <div id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+    {% set help_attr = (help_attr ?? {})|merge({ class: ((help_attr.class ?? '')~' text-flow-slim')|trim }) %}
+    <div id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+      {%- if not (raw_help ?? false) -%}
+        <p class="text-sm fg-muted">
+          {%- if translation_domain is same as(false) -%}
+            {{- help -}}
+          {%- else -%}
+            {{- help|trans({}, translation_domain) -}}
+          {%- endif -%}
+        </p>
+      {%- else -%}
         {{- help|raw -}}
-      </div>
-    {%- endif -%}
+      {%- endif -%}
+    </div>
   {%- endif -%}
 {%- endblock form_help %}
 
@@ -116,17 +116,19 @@
   {%- if help is not empty -%}
     {%- set widget_attr = (widget_attr ?? {})|merge({ attr: { 'aria-describedby': id~"_help" } }) -%}
   {%- endif -%}
-  {{- form_errors(form) -}}
-  <div {% with { attr: (row_attr ?? {})|merge({ class: (row_attr.class ?? '')~' form-row form__row' }) } %}{{ block('attributes') }}{% endwith %}>
-    {{- form_label(form, null, label_attr ?? {}) -}}
-    {{- form_widget(form, attr|merge(widget_attr ?? {})) -}}
+  <div class="flow-slim">
+    {{- form_errors(form) -}}
+    <div {% with { attr: (row_attr ?? {})|merge({ class: (row_attr.class ?? '')~' form-flex form__row' }) } %}{{ block('attributes') }}{% endwith %}>
+      {{- form_label(form, null, label_attr ?? {}) -}}
+      {{- form_widget(form, attr|merge(widget_attr ?? {})) -}}
+    </div>
+    {{- form_help(form) -}}
   </div>
-  {{- form_help(form) -}}
 {%- endblock form_row -%}
 
 {%- block form_errors -%}
   {%- if errors|length > 0 -%}
-    <ul class="form-error-list no-margin">
+    <ul class="form-error-list">
       {%- for error in errors -%}
         <li>{{ error.message }}</li>
       {%- endfor -%}

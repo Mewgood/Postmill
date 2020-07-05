@@ -51,5 +51,5 @@
     {{ form_row(form.userFlag) }}
   {% endif %}
 
-  {{ button_row(editing ? 'submission_form.edit'|trans : 'submission_form.create'|trans, {}, { class: 'no-margin' }) }}
+  {{ button_row(editing ? 'submission_form.edit'|trans : 'submission_form.create'|trans, {}) }}
 {{ form_end(form) }}

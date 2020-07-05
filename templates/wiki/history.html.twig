@@ -11,7 +11,7 @@
     '%path%': '<a href="%s">%s</a>'|format(path('wiki', {path: page.path})|escape, page.path|escape)
   })|raw }}</h1>
 
-  <form action="{{ path('wiki_diff') }}">
+  <form action="{{ path('wiki_diff') }}" class="flow">
     {% embed '_layouts/table_pagination.html.twig' with { items: revisions } %}
       {% block header %}
         <th class="table__shrink" colspan="2">{{ 'label.compare'|trans }}</th>

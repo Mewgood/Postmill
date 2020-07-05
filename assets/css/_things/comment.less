@@ -7,7 +7,6 @@
   border-bottom: solid @border-thin var(--border-light);
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
 
   &__context {
     p {
@@ -76,13 +75,16 @@
   }
 
   &__nav {
-    margin-top: -0.5rem; // dig into margin of last element in comment body
-    margin-bottom: 0.5rem;
+    margin: 0.5rem 0;
   }
 
   &--nested:last-child {
     border-bottom: none;
     margin-bottom: 0;
+  }
+
+  .comment-form {
+    padding-bottom: 1rem;
   }
 
   .hideable__checkbox:not(:checked) ~ &__row &__header {

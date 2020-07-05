@@ -12,7 +12,5 @@
     {{ form_row(form.userFlag) }}
   {% endif %}
 
-  {{ button_row(editing ? 'action.save'|trans : 'action.post'|trans, {
-    class: 'no-margin',
-  }) }}
+  {{ button_row(editing ? 'action.save'|trans : 'action.post'|trans) }}
 {{ form_end(form) }}

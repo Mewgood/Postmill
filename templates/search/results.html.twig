@@ -9,14 +9,14 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  <form action="{{ path('search') }}" method="GET" class="form">
-    <div class="form-row form-row--single-line form__row">
-      <label for="query" class="form-row__align text-align-right">{{ 'label.search_query'|trans }}</label>
+  <form action="{{ path('search') }}" method="GET" class="form flow">
+    <div class="form-flex form-flex--single-line form__row">
+      <label for="query" class="form-flex__align text-align-right">{{ 'label.search_query'|trans }}</label>
       <input name="q" type="search" value="{{ query }}" id="query" class="form-control">
     </div>
 
-    <div class="form-row form-row--single-line form__row form__button-row">
-      <span class="form-row__align" role="presentation"></span>
+    <div class="form-flex form-flex--single-line form__row form__button-row">
+      <span class="form-flex__align" role="presentation"></span>
       <button class="button">{{ 'action.search'|trans }}</button>
     </div>
   </form>
