@@ -20,7 +20,7 @@
           data-route="{{ route }}"
           data-id="{{ entity.id }}"
           data-score="{{ entity.netScore }}"
-          data-load-prototype="{{ icon('spinner', 'loading', 'icon--spin icon--no-align')|e }}">
+          data-load-prototype="{{ icon('spinner', 'loading', 'icon--pulse icon--no-align')|e }}">
 
       {# csrf_token starts a session #}
       {% if is_granted('ROLE_USER') %}
