@@ -1,6 +1,7 @@
 const languageAliases = {
     'html': 'xml',
-    'c': 'cpp',
+    'c': 'c-like',
+    'c++': 'cpp',
     'js': 'javascript',
 };
 
@@ -12,7 +13,7 @@ function highlight(el) {
     }
 
     Promise.all([
-        import('highlight.js/lib/highlight'),
+        import('highlight.js/lib/core'),
         import(`highlight.js/lib/languages/${language}.js`),
     ]).then(imports => {
         const [{ default: hljs }, { default: definition }] = imports;
