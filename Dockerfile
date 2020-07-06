@@ -1,11 +1,12 @@
 ARG COMPOSER_VERSION=2.0.0-alpha1
 ARG PHP_VERSION=7.4
+ARG NODE_VERSION=14
 
 # ======
 # Assets
 # ======
 
-FROM node:10-alpine AS postmill_assets
+FROM node:${NODE_VERSION}-alpine AS postmill_assets
 
 WORKDIR /app
 
@@ -13,6 +14,7 @@ COPY assets assets/
 COPY .babelrc package.json postcss.config.js yarn.lock webpack.config.js ./
 
 RUN set -eux; \
+    apk add curl; \
     yarn; \
     yarn run build-prod
 

@@ -55,9 +55,10 @@ services:
         environment:
             POSTMILL_SKIP_MIGRATIONS: '1'
     assets:
-        image: node:10-alpine
+        build:
+            context: .
+            target: postmill_assets
         command: ["sh", "-c", "yarn && yarn run watch"]
         volumes:
             - ./.git:/app/.git:ro
             - ./:/app
-        working_dir: /app
