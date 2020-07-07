@@ -484,6 +484,7 @@ site_settings.registration_open: Åpen registrering
 site_settings.site_name: Navn på nettstedet
 site_settings.site_theme: Globalt fargetema
 site_settings.site_theme_help: Dette vil være temaet som er brukt globalt, med mindre det er overstyrt av fora eller brukerinnstillinger.
+site_settings.url_images_enabled: Hent miniatyrbilder for innsendte lenker
 site_settings.wiki_edit_role: Hvem kan redigere wikien?
 site_settings.wiki_enabled: Åpne wikien
 

@@ -5,6 +5,7 @@ namespace App\Message\Handler;
 use App\Entity\Submission;
 use App\Message\NewSubmission;
 use App\Repository\ImageRepository;
+use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
 use Embed\Exceptions\EmbedException;
@@ -38,6 +39,11 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $logger;
 
     /**
+     * @var SiteRepository
+     */
+    private $sites;
+
+    /**
      * @var ValidatorInterface
      */
     private $validator;
@@ -47,16 +53,24 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
         HttpClientInterface $submissionImageClient,
         ImageRepository $images,
         LoggerInterface $logger,
+        SiteRepository $sites,
         ValidatorInterface $validator
     ) {
         $this->entityManager = $entityManager;
         $this->httpClient = $submissionImageClient;
         $this->images = $images;
         $this->logger = $logger;
+        $this->sites = $sites;
         $this->validator = $validator;
     }
 
     public function __invoke(NewSubmission $message): void {
+        if (!$this->sites->findCurrentSite()->isUrlImagesEnabled()) {
+            $this->logger->info('Image downloading disabled in site settings');
+
+            return;
+        }
+
         $id = $message->getSubmissionId();
         $submission = $this->entityManager->find(Submission::class, $id);
 
