@@ -94,6 +94,13 @@ class Site {
      */
     private $registrationCaptchaEnabled = false;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @var bool
+     */
+    private $urlImagesEnabled = true;
+
     public function __construct() {
         $this->id = Uuid::fromString(Uuid::NIL);
     }
@@ -192,5 +199,13 @@ class Site {
 
     public function setRegistrationCaptchaEnabled(bool $registrationCaptchaEnabled): void {
         $this->registrationCaptchaEnabled = $registrationCaptchaEnabled;
+    }
+
+    public function isUrlImagesEnabled(): bool {
+        return $this->urlImagesEnabled;
+    }
+
+    public function setUrlImagesEnabled(bool $urlImagesEnabled): void {
+        $this->urlImagesEnabled = $urlImagesEnabled;
     }
 }
