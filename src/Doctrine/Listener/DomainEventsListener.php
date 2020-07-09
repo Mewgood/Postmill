@@ -19,7 +19,7 @@ final class DomainEventsListener implements EventSubscriber {
      * @var EventDispatcherInterface
      */
     private $dispatcher;
-
+    private $dispatching = false;
     private $cachedOriginalEntities = [];
 
     public function __construct(EventDispatcherInterface $dispatcher) {
@@ -39,7 +39,7 @@ final class DomainEventsListener implements EventSubscriber {
         $entity = $args->getEntity();
 
         if ($entity instanceof DomainEventsInterface) {
-            $this->dispatcher->dispatch($entity->onCreate());
+            $this->dispatch($entity->onCreate());
         }
     }
 
@@ -47,7 +47,7 @@ final class DomainEventsListener implements EventSubscriber {
         $entity = $args->getEntity();
 
         if ($entity instanceof DomainEventsInterface) {
-            $this->dispatcher->dispatch($entity->onDelete());
+            $this->dispatch($entity->onDelete());
         }
     }
 
@@ -82,14 +82,14 @@ final class DomainEventsListener implements EventSubscriber {
 
             unset($this->cachedOriginalEntities[$key]);
 
-            $this->dispatcher->dispatch($entity->onUpdate($previous));
+            $this->dispatch($entity->onUpdate($previous));
 
             if (
                 $entity instanceof VisibilityInterface &&
                 $entity->getVisibility() === VisibilityInterface::VISIBILITY_SOFT_DELETED &&
                 $previous->getVisibility() !== VisibilityInterface::VISIBILITY_SOFT_DELETED
             ) {
-                $this->dispatcher->dispatch($entity->onDelete());
+                $this->dispatch($entity->onDelete());
             }
         }
     }
@@ -98,5 +98,16 @@ final class DomainEventsListener implements EventSubscriber {
         $proxyClassName = \get_class($args->getEntity());
 
         return $args->getEntityManager()->getClassMetadata($proxyClassName)->getName();
+    }
+
+    private function dispatch(object $event): void {
+        if (!$this->dispatching) {
+            try {
+                $this->dispatching = true;
+                $this->dispatcher->dispatch($event);
+            } finally {
+                $this->dispatching = false;
+            }
+        }
     }
 }

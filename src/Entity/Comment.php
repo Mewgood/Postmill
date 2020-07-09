@@ -152,6 +152,13 @@ class Comment implements DomainEvents, Visibility, Votable {
     private $netScore = 0;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string|null
+     */
+    private $language;
+
+    /**
      * @ORM\Column(type="tsvector", nullable=true)
      */
     private $searchDoc;
@@ -337,6 +344,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         $this->visibility = self::VISIBILITY_SOFT_DELETED;
         $this->body = '';
         $this->userFlag = UserFlags::FLAG_NONE;
+        $this->language = null;
         $this->mentions->clear();
         $this->submission->updateCommentCount();
         $this->submission->updateRanking();
@@ -411,6 +419,14 @@ class Comment implements DomainEvents, Visibility, Votable {
 
     public function getNetScore(): int {
         return $this->netScore;
+    }
+
+    public function getLanguage(): ?string {
+        return $this->language;
+    }
+
+    public function setLanguage(?string $language): void {
+        $this->language = $language;
     }
 
     public function onCreate(): Event {

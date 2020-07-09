@@ -26,37 +26,27 @@ class CommentControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(200);
 
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertSame(3, $data['id']);
+        $this->assertSame('YET ANOTHER BORING COMMENT.', $data['body']);
+        $this->assertSame('2017-05-03T01:00:00+00:00', $data['timestamp']);
+        $this->assertEquals(['id' => 2, 'username' => 'zach'], $data['user']);
         $this->assertEquals([
             'id' => 3,
-            'body' => 'YET ANOTHER BORING COMMENT.',
-            'timestamp' => '2017-05-03T01:00:00+00:00',
-            'user' => [
-                'id' => 2,
-                'username' => 'zach',
-            ],
-            'submission' => [
-                'id' => 3,
-                'forum' => [
-                    'id' => 1,
-                    'name' => 'cats',
-                ],
-                'user' => [
-                    'id' => 2,
-                    'username' => 'zach',
-                ],
-                'slug' => 'submission-with-a-body',
-            ],
-            'parentId' => null,
-            'replyCount' => 0,
-            'visibility' => 'visible',
-            'editedAt' => null,
-            'moderated' => false,
-            'userFlag' => 'none',
-            'netScore' => 1,
-            'upvotes' => 1,
-            'downvotes' => 0,
-            'renderedBody' => "<p>YET ANOTHER BORING COMMENT.</p>\n",
-        ], json_decode($client->getResponse()->getContent(), true));
+            'forum' => ['id' => 1, 'name' => 'cats'],
+            'user' => ['id' => 2, 'username' => 'zach'],
+            'slug' => 'submission-with-a-body',
+        ], $data['submission']);
+        $this->assertNull($data['parentId']);
+        $this->assertSame(0, $data['replyCount']);
+        $this->assertSame('visible', $data['visibility']);
+        $this->assertNull($data['editedAt']);
+        $this->assertFalse($data['moderated']);
+        $this->assertSame('none', $data['userFlag']);
+        $this->assertSame(1, $data['netScore']);
+        $this->assertSame(1, $data['upvotes']);
+        $this->assertSame(0, $data['downvotes']);
+        $this->assertSame("<p>YET ANOTHER BORING COMMENT.</p>\n", $data['renderedBody']);
     }
 
     public function testCanUpdateComment(): void {

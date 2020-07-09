@@ -1,8 +1,10 @@
 {% use '_layouts/site_nav.html.twig' %}
 {% from '_macros/alert.html.twig' import alert_classes, alert_icon %}
+{% from '_macros/lang.html.twig' import lang_attributes %}
 <!DOCTYPE html>
+{#<!--suppress HtmlRequiredLangAttribute -->-#}
 <html class="no-js"
-      lang="{{ app.request.locale|replace({'_': '-'}) }}"
+      {{ lang_attributes(app.request.locale) }}
       prefix="og: http://ogp.me/ns#"
       data-night-mode="{{ app.user.nightMode ?? 'auto' }}">
   <head>
