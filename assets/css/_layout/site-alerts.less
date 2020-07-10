@@ -10,11 +10,11 @@
     position: relative;
     transform: translate(0); // fix post-animation weirdness
 
-    .js & {
+    .js:root & {
       animation: site-alerts-slide 0.5s ease-in;
     }
 
-    .no-js & {
+    .no-js:root & {
       animation: site-alerts-slide-no-js 10s ease-in forwards;
     }
   }
@@ -27,11 +27,11 @@
     width: 100%;
     height: 100%;
 
-    .js & {
+    .js:root & {
       cursor: pointer;
     }
 
-    .no-js & {
+    .no-js:root & {
       display: none;
     }
   }

@@ -9,7 +9,8 @@
         "font-blast": "^0.7.0",
         "less": "^3.11.1",
         "less-loader": "^6.2.0",
-        "postcss-loader": "^3.0.0"
+        "postcss-loader": "^3.0.0",
+        "postcss-rtl": "^1.7.3"
     },
     "dependencies": {
         "date-fns": "^2.10.0",
