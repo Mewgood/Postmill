@@ -156,8 +156,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         return $pager;
     }
 
-    public function findIpsUsedByUser(User $user): iterable {
+    public function findIpsUsedByUser(User $user): \Generator {
         $sql = 'SELECT DISTINCT ip FROM ('.
+            'SELECT registration_ip AS ip FROM users WHERE id = :id AND registration_ip IS NOT NULL UNION ALL '.
             'SELECT ip FROM submissions WHERE user_id = :id AND ip IS NOT NULL UNION ALL '.
             'SELECT ip FROM comments WHERE user_id = :id AND ip IS NOT NULL UNION ALL '.
             'SELECT ip FROM submission_votes WHERE user_id = :id AND ip IS NOT NULL UNION ALL '.
