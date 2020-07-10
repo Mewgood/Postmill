@@ -40,7 +40,7 @@ class PruneIpAddressesCommandTest extends KernelTestCase {
         $this->assertIpCount(0, Submission::class);
         $this->assertIpCount(0, SubmissionVote::class);
 
-        $this->assertStringContainsString('Pruned IPs for 7 entities.', $tester->getDisplay());
+        $this->assertStringContainsString('Pruned IPs for 8 entities.', $tester->getDisplay());
         $this->assertSame(0, $tester->getStatusCode());
     }
 
@@ -57,7 +57,7 @@ class PruneIpAddressesCommandTest extends KernelTestCase {
         $this->assertIpCount(1, Submission::class);
         $this->assertIpCount(1, SubmissionVote::class);
 
-        $this->assertStringContainsString('Pruned IPs for 7 entities', $tester->getDisplay());
+        $this->assertStringContainsString('Pruned IPs for 8 entities', $tester->getDisplay());
         $this->assertSame(0, $tester->getStatusCode());
     }
 
@@ -74,7 +74,7 @@ class PruneIpAddressesCommandTest extends KernelTestCase {
         $this->assertIpCount(0, Submission::class);
         $this->assertIpCount(1, SubmissionVote::class);
 
-        $this->assertStringContainsString('Pruned IPs for 3 entities', $tester->getDisplay());
+        $this->assertStringContainsString('Pruned IPs for 4 entities', $tester->getDisplay());
         $this->assertSame(0, $tester->getStatusCode());
     }
 

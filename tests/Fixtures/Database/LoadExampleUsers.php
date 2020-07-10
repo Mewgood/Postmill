@@ -16,6 +16,7 @@ class LoadExampleUsers extends AbstractFixture {
             $user = new User($data['username'], $data['password']);
             $user->setAdmin($data['admin']);
             $user->setEmail($data['email']);
+            $user->setRegistrationIp($data['registration_ip'] ?? null);
 
             $this->addReference('user-'.$data['username'], $user);
 
@@ -40,6 +41,7 @@ class LoadExampleUsers extends AbstractFixture {
             'created' => new \DateTime('2017-01-02T12:12:12+00:00'),
             'email' => 'zach@example.com',
             'admin' => false,
+            'registration_ip' => '192.168.0.55',
         ];
 
         yield [
