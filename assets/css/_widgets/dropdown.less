@@ -12,7 +12,7 @@
 
   // flip the arrow upon expanding the menu
   &--expanded > &__toggle > &__arrow::after,
-  .no-js &:hover > &__toggle > &__arrow::after {
+  .no-js:root &:hover > &__toggle > &__arrow::after {
     border-bottom: 0.5ch solid;
     border-top: none;
   }
@@ -30,8 +30,8 @@
       position: relative;
     }
 
-    .js &:not(&--mobile-only):not(&--expanded) > &__menu,
-    .no-js &:not(&--mobile-only):not(:hover) > &__menu {
+    .js:root &:not(&--mobile-only):not(&--expanded) > &__menu,
+    .no-js:root &:not(&--mobile-only):not(:hover) > &__menu {
       display: none;
     }
 
@@ -52,8 +52,8 @@
       width: 100%;
     }
 
-    .js &:not(&--expanded) > &__menu,
-    .no-js &:not(:hover) > &__menu {
+    .js:root &:not(&--expanded) > &__menu,
+    .no-js:root &:not(:hover) > &__menu {
       display: none;
     }
   }

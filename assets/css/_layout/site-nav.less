@@ -63,8 +63,8 @@
     color: var(--primary-fg);
   }
 
-  .no-js &__mobile-toggle:hover,
-  .js &__mobile-hidden.dropdown--extended > &__mobile-toggle {
+  .no-js:root &__mobile-toggle:hover,
+  .js:root &__mobile-hidden.dropdown--extended > &__mobile-toggle {
     background-color: var(--primary-alt);
   }
 
@@ -100,8 +100,8 @@
       width: 100%;
     }
 
-    .no-js &__mobile-hidden:hover,
-    .js &__mobile-hidden.dropdown--extended {
+    .no-js:root &__mobile-hidden:hover,
+    .js:root &__mobile-hidden.dropdown--extended {
       background-color: var(--primary-alt);
     }
 
@@ -162,8 +162,8 @@
     }
   }
 
-  .no-js :hover > &__link.dropdown__toggle,
-  .js .dropdown--expanded > &__link.dropdown__toggle {
+  .no-js:root :hover > &__link.dropdown__toggle,
+  .js:root .dropdown--expanded > &__link.dropdown__toggle {
     background-color: var(--primary-alt);
   }
 }
