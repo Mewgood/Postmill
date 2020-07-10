@@ -33,38 +33,31 @@ class SubmissionControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(200);
 
-        $this->assertEquals([
-            'id' => 3,
-            'title' => 'Submission with a body',
-            'url' => null,
-            'body' => "I'm bad at making stuff up.",
-            'mediaType' => 'url',
-            'commentCount' => 1,
-            'timestamp' => '2017-04-28T10:00:00+00:00',
-            'lastActive' => '2017-05-03T01:00:00+00:00',
-            'visibility' => 'visible',
-            'forum' => [
-                'id' => 1,
-                'name' => 'cats',
-            ],
-            'user' => [
-                'id' => 2,
-                'username' => 'zach',
-            ],
-            'netScore' => 1,
-            'upvotes' => 1,
-            'downvotes' => 0,
-            'image' => null,
-            'sticky' => false,
-            'editedAt' => null,
-            'moderated' => false,
-            'userFlag' => 'none',
-            'locked' => false,
-            'slug' => 'submission-with-a-body',
-            'renderedBody' => "<p>I'm bad at making stuff up.</p>\n",
-            'thumbnail_1x' => null,
-            'thumbnail_2x' => null,
-        ], json_decode($client->getResponse()->getContent(), true));
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertSame(3, $data['id']);
+        $this->assertSame('Submission with a body', $data['title']);
+        $this->assertNull($data['url']);
+        $this->assertSame("I'm bad at making stuff up.", $data['body']);
+        $this->assertSame('url', $data['mediaType']);
+        $this->assertSame(1, $data['commentCount']);
+        $this->assertSame('2017-04-28T10:00:00+00:00', $data['timestamp']);
+        $this->assertSame('2017-05-03T01:00:00+00:00', $data['lastActive']);
+        $this->assertSame('visible', $data['visibility']);
+        $this->assertEquals(['id' => 1, 'name' => 'cats'], $data['forum']);
+        $this->assertEquals(['id' => 2, 'username' => 'zach'], $data['user']);
+        $this->assertSame(1, $data['netScore']);
+        $this->assertSame(1, $data['upvotes']);
+        $this->assertSame(0, $data['downvotes']);
+        $this->assertNull($data['image']);
+        $this->assertFalse($data['sticky']);
+        $this->assertNull($data['editedAt']);
+        $this->assertFalse($data['moderated']);
+        $this->assertSame('none', $data['userFlag']);
+        $this->assertFalse($data['locked']);
+        $this->assertSame('submission-with-a-body', $data['slug']);
+        $this->assertSame("<p>I'm bad at making stuff up.</p>\n", $data['renderedBody']);
+        $this->assertNull($data['thumbnail_1x']);
+        $this->assertNull($data['thumbnail_2x']);
     }
 
     public function testPostSubmission(): void {
@@ -140,72 +133,71 @@ class SubmissionControllerTest extends WebTestCase {
 
         self::assertResponseStatusCodeSame(200);
 
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertCount(1, $data);
+
+        $comment = $data[0];
+        $this->assertSame(1, $comment['id']);
+        $this->assertSame("This is a comment body. It is quite neat.\n\n*markdown*", $comment['body']);
+        $this->assertSame('2017-05-01T12:00:00+00:00', $comment['timestamp']);
+        $this->assertEquals(['id' => 1, 'username' => 'emma'], $comment['user']);
         $this->assertEquals([
-            [
-                'id' => 1,
-                'body' => "This is a comment body. It is quite neat.\n\n*markdown*",
-                'timestamp' => '2017-05-01T12:00:00+00:00',
-                'user' => [
-                    'id' => 1,
-                    'username' => 'emma',
-                ],
-                'submission' => [
-                    'id' => 1,
-                    'forum' => [
-                        'id' => 2,
-                        'name' => 'news',
-                    ],
-                    'user' => [
-                        'id' => 1,
-                        'username' => 'emma',
-                    ],
-                    'slug' => 'a-submission-with-a-url-and-body',
-                ],
-                'parentId' => null,
-                'replies' => [
-                    [
-                        'id' => 2,
-                        'body' => 'This is a reply to the previous comment.',
-                        'timestamp' => '2017-05-02T14:00:00+00:00',
-                        'user' => [
-                            'id' => 2,
-                            'username' => 'zach',
-                        ],
-                        'submission' => [
-                            'id' => 1,
-                            'forum' => [
-                                'id' => 2,
-                                'name' => 'news',
-                            ],
-                            'user' => [
-                                'id' => 1,
-                                'username' => 'emma',
-                            ],
-                            'slug' => 'a-submission-with-a-url-and-body',
-                        ],
-                        'parentId' => 1,
-                        'replies' => [],
-                        'replyCount' => 0,
-                        'visibility' => 'visible',
-                        'editedAt' => null,
-                        'moderated' => false,
-                        'userFlag' => 'none',
-                        'netScore' => 1,
-                        'upvotes' => 1,
-                        'downvotes' => 0,
-                        'renderedBody' => "<p>This is a reply to the previous comment.</p>\n",
-                    ],
-                ],
-                'replyCount' => 1,
-                'visibility' => 'visible',
-                'editedAt' => null,
-                'moderated' => false,
-                'userFlag' => 'none',
-                'netScore' => 1,
-                'upvotes' => 1,
-                'downvotes' => 0,
-                'renderedBody' => "<p>This is a comment body. It is quite neat.</p>\n<p><em>markdown</em></p>\n",
+            'id' => 1,
+            'forum' => [
+                'id' => 2,
+                'name' => 'news',
             ],
-        ], json_decode($client->getResponse()->getContent(), true));
+            'user' => [
+                'id' => 1,
+                'username' => 'emma',
+            ],
+            'slug' => 'a-submission-with-a-url-and-body',
+        ], $comment['submission']);
+        $this->assertNull($comment['parentId']);
+        $this->assertSame(1, $comment['replyCount']);
+        $this->assertSame('visible', $comment['visibility']);
+        $this->assertNull($comment['editedAt']);
+        $this->assertFalse($comment['moderated']);
+        $this->assertSame('none', $comment['userFlag']);
+        $this->assertSame(1, $comment['netScore']);
+        $this->assertSame(1, $comment['upvotes']);
+        $this->assertSame(0, $comment['downvotes']);
+        $this->assertSame(
+            "<p>This is a comment body. It is quite neat.</p>\n<p><em>markdown</em></p>\n",
+            $comment['renderedBody']
+        );
+        $this->assertArrayHasKey('replies', $comment);
+
+        $reply = $comment['replies'][0];
+        $this->assertSame(2, $reply['id']);
+        $this->assertSame('This is a reply to the previous comment.', $reply['body']);
+        $this->assertSame('2017-05-02T14:00:00+00:00', $reply['timestamp']);
+        $this->assertEquals([
+            'id' => 2,
+            'username' => 'zach',
+        ], $reply['user']);
+        $this->assertEquals([
+            'id' => 1,
+            'forum' => [
+                'id' => 2,
+                'name' => 'news',
+            ],
+            'user' => [
+                'id' => 1,
+                'username' => 'emma',
+            ],
+            'slug' => 'a-submission-with-a-url-and-body',
+        ], $reply['submission']);
+        $this->assertSame(1, $reply['parentId']);
+        $this->assertSame([], $reply['replies']);
+        $this->assertSame(0, $reply['replyCount']);
+        $this->assertSame('visible', $reply['visibility']);
+        $this->assertNull($reply['editedAt']);
+        $this->assertFalse($reply['moderated']);
+        $this->assertSame('none', $reply['userFlag']);
+        $this->assertSame(1, $reply['netScore']);
+        $this->assertSame(1, $reply['upvotes']);
+        $this->assertSame(0, $reply['downvotes']);
+        $this->assertSame("<p>This is a reply to the previous comment.</p>\n", $reply['renderedBody']);
     }
 }

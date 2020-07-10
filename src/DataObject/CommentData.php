@@ -129,6 +129,13 @@ class CommentData implements NormalizeMarkdownInterface {
      */
     private $downvotes;
 
+    /**
+     * @Groups("comment:read")
+     *
+     * @var string|null
+     */
+    private $language;
+
     public function __construct(Comment $comment = null) {
         if ($comment) {
             $this->id = $comment->getId();
@@ -146,6 +153,7 @@ class CommentData implements NormalizeMarkdownInterface {
             $this->netScore = $comment->getNetScore();
             $this->upvotes = $comment->getUpvotes();
             $this->downvotes = $comment->getDownvotes();
+            $this->language = $comment->getLanguage();
         }
     }
 
@@ -161,6 +169,7 @@ class CommentData implements NormalizeMarkdownInterface {
 
     public function updateComment(Comment $comment, User $editingUser): void {
         $comment->setUserFlag($this->userFlag);
+        $comment->setLanguage($this->language);
 
         if ($this->body !== $comment->getBody()) {
             $comment->setBody($this->body);
@@ -242,6 +251,14 @@ class CommentData implements NormalizeMarkdownInterface {
 
     public function getDownvotes(): int {
         return $this->downvotes;
+    }
+
+    public function getLanguage(): ?string {
+        return $this->language;
+    }
+
+    public function setLanguage(?string $language): void {
+        $this->language = $language;
     }
 
     public function getMarkdownFields(): iterable {

@@ -33,6 +33,7 @@
         "nelmio/cors-bundle": "^2.0",
         "nelmio/security-bundle": "^2.7",
         "pagerfanta/pagerfanta": "^2.1",
+        "patrickschur/language-detection": "^3.4",
         "postmill/pagerwave": "^1.0",
         "ramsey/uuid": "^4.0",
         "ramsey/uuid-doctrine": "^1.4",
