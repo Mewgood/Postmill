@@ -246,15 +246,6 @@
     "php-http/promise": {
         "version": "v1.0.0"
     },
-    "phpdocumentor/reflection-common": {
-        "version": "1.0.1"
-    },
-    "phpdocumentor/reflection-docblock": {
-        "version": "4.2.0"
-    },
-    "phpdocumentor/type-resolver": {
-        "version": "0.4.0"
-    },
     "postmill/pagerwave": {
         "version": "dev-master"
     },
@@ -670,9 +661,6 @@
     },
     "ua-parser/uap-php": {
         "version": "v3.8.8"
-    },
-    "webmozart/assert": {
-        "version": "1.2.0"
     },
     "willdurand/js-translation-bundle": {
         "version": "2.0",
