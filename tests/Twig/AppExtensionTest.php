@@ -2,6 +2,7 @@
 
 namespace App\Tests\Twig;
 
+use App\Entity\BundledTheme;
 use App\Entity\Site;
 use App\Entity\Theme;
 use App\Repository\SiteRepository;
@@ -141,7 +142,7 @@ class AppExtensionTest extends TestCase {
     }
 
     public function testGetSiteTheme(): void {
-        $theme = new Theme('the-key');
+        $theme = new BundledTheme('the-name', 'the-key');
         $site = new Site();
         $site->setDefaultTheme($theme);
 

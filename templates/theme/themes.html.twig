@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title 'nav.themes'|trans %}
+
+{% block head %}
+  {{ parent() }}
+  {{ include('_includes/meta_pagination.html.twig', { pager: themes }, with_context=false) }}
+{% endblock head %}
+
+{% block body %}
+  <div class="flex flex--guttered">
+    <h1 class="page-heading flex__grow">{{ block('title') }}</h1>
+
+    <nav>
+      <a href="{{ path('theme_create_css') }}" class="button">
+        {{- 'action.create'|trans -}}
+      </a>
+    </nav>
+  </div>
+
+  {% embed '_layouts/table_pagination.html.twig' with { items: themes } %}
+    {% block header %}
+      <th>{{ 'label.name'|trans }}</th>
+      <th class="table__shrink">{{ 'label.type'|trans }}</th>
+      <th class="table__shrink"></th>
+    {% endblock header %}
+
+    {% block row %}
+      <td>
+        {{- item.name }}
+        {% if item.type == 'bundled' and item.configKey == default %}
+          <small>{{ 'placeholder.default'|trans }}</small>
+        {% endif %}
+      </td>
+
+      <td class="table__shrink">
+        {{- item.type == 'css' ? 'label.css'|trans -}}
+        {{- item.type == 'bundled' ? 'label.bundled'|trans -}}
+      </td>
+
+      <td class="table__shrink">
+        {# TODO: shouldn't be a flex, has undesirable wrapping characteristics #}
+        <span class="flex flex--slim-gutters flex--no-wrap">
+          {%- if item.type == 'css' -%}
+            <a href="{{ path('theme_edit_css', { id: item.id }) }}"
+               class="button button--small">
+              {{ 'action.edit'|trans }}
+            </a>
+          {%- endif -%}
+
+          <form action="{{ path('theme_delete', { id: item.id }) }}" method="post">
+            <input type="hidden" name="token" value="{{ csrf_token('delete_theme') }}">
+            <button class="button button--small js-confirm-theme-delete">
+              {{- 'action.delete'|trans -}}
+            </button>
+          </form>
+        </span>
+      </td>
+    {% endblock row %}
+  {% endembed %}
+{% endblock body %}

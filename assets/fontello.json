@@ -269,6 +269,12 @@
       "css": "unlink",
       "code": 61735,
       "src": "fontawesome"
+    },
+    {
+      "uid": "b3a9e2dab4d19ea3b2f628242c926bfe",
+      "css": "brush",
+      "code": 59425,
+      "src": "iconic"
     }
   ]
 }

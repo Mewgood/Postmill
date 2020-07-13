@@ -24,19 +24,17 @@
 {%- endmacro %}
 
 {% macro forum_return_nav(forum) %}
-  {% from '_macros/icon.html.twig' import icon %}
-  <nav>
-    <ul class="flex flex--guttered unlistify">
-      <li>
-        <a href="{{ path('forum', {forum_name: forum.name}) }}"
-           class="flex flex--guttered flex--slim-gutters flex--align-center fg-text"
-           title="{{ 'comments.return_to_forum'|trans({ '%forum%': '/f/'~forum.name }) }}">
-          {{ icon('left-small', '', 'icon--circled text-xl') }}
-          <span class="text-lg">/f/<strong>{{ forum.name }}</strong></span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  {%- from '_macros/return_nav.html.twig' import return_nav -%}
+  {{- return_nav(
+    '/f/<strong>%s</strong>'|format(forum.name|e),
+    path('forum', { forum_name: forum.name }),
+    {
+      attr: {
+        title: 'comments.return_to_forum'|trans({ '%forum%': '/f/'~forum.name }),
+      },
+      raw_label: true,
+    }
+  ) -}}
 {% endmacro forum_return_nav %}
 
 {%- macro log_line(entry) -%}

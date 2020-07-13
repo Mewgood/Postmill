@@ -6,13 +6,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-// This seems rather pointless right now, but in the future there will be themes
-// outside of those defined in themes.json.
-
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
+ * @ORM\Table(uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="themes_name_idx", columns={"name"}),
+ * })
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="theme_type", type="text")
+ * @ORM\DiscriminatorMap({
+ *     "bundled": "BundledTheme",
+ *     "css": "CssTheme",
+ * })
  */
-class Theme {
+abstract class Theme {
     /**
      * @ORM\Column(type="uuid")
      * @ORM\Id()
@@ -26,18 +32,24 @@ class Theme {
      *
      * @var string
      */
-    private $configKey;
+    private $name;
 
-    public function __construct(string $configKey) {
+    public function __construct(string $name) {
         $this->id = Uuid::uuid4();
-        $this->configKey = $configKey;
+        $this->name = $name;
     }
 
     public function getId(): UuidInterface {
         return $this->id;
     }
 
-    public function getConfigKey(): string {
-        return $this->configKey;
+    public function getName(): string {
+        return $this->name;
     }
+
+    public function setName(string $name): void {
+        $this->name = $name;
+    }
+
+    abstract public function getType(): string;
 }

@@ -183,6 +183,8 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/f/cats/trash'];
         yield ['/trash'];
         yield ['/site/bad_phrases'];
+        yield ['/site/themes'];
+        yield ['/site/themes/css/create'];
         yield ['/site/trash'];
     }
 }
