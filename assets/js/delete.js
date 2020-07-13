@@ -15,4 +15,5 @@ function bindMessage(selector, message) {
 bindMessage('.js-confirm-comment-delete', 'prompt.confirm_comment_delete');
 bindMessage('.js-confirm-message-delete', 'prompt.confirm_message_delete');
 bindMessage('.js-confirm-submission-delete', 'prompt.confirm_submission_delete');
+bindMessage('.js-confirm-theme-delete', 'prompt.confirm_theme_delete');
 bindMessage('.js-confirm-wiki-delete', 'prompt.confirm_wiki_delete');

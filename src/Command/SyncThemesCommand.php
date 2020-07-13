@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\Theme;
-use App\Repository\ThemeRepository;
+use App\Entity\BundledTheme;
+use App\Repository\BundledThemeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,7 +14,7 @@ final class SyncThemesCommand extends Command {
     protected static $defaultName = 'postmill:sync-themes';
 
     /**
-     * @var ThemeRepository
+     * @var BundledThemeRepository
      */
     private $repository;
 
@@ -29,7 +29,7 @@ final class SyncThemesCommand extends Command {
     private $themesConfig;
 
     public function __construct(
-        ThemeRepository $repository,
+        BundledThemeRepository $repository,
         EntityManagerInterface $manager,
         array $themesConfig
     ) {
@@ -63,7 +63,7 @@ final class SyncThemesCommand extends Command {
             $changes = true;
             $io->text("Creating theme '$key'...");
 
-            $this->manager->persist(new Theme($key));
+            $this->manager->persist(new BundledTheme($this->themesConfig[$key]['name'], $key));
         }
 
         $themes = $this->repository->createQueryBuilder('t', 't.configKey')
@@ -82,7 +82,7 @@ final class SyncThemesCommand extends Command {
         if (!($changes ?? false)) {
             $io->note('Nothing to be done.');
 
-            return 1;
+            return 0;
         }
 
         if (!$io->confirm('Is this OK?')) {

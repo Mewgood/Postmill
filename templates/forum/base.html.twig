@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% from '_macros/icon.html.twig' import icon %}
+{% from '_macros/theme.html.twig' import theme_css %}
 {% from '_macros/time.html.twig' import relative_time %}
 
 {% block forum_toolbox_active app.request.attributes.get('_route') %}
@@ -9,15 +10,14 @@
   <link rel="alternate" type="application/atom+xml" href="{{ path('forum', { forum_name: forum.name, sortBy: 'new', _format: 'atom' }) }}" title="/f/{{ forum.name }}">
 {% endblock feed %}
 
-{% block theme_css %}
-  {% set theme = (app.user.showCustomStylesheets ?? true) ? forum.suggestedTheme %}
-  {% if theme %}
-    {{ encore_entry_link_tags(theme_entrypoint(theme.configKey)) }}
-  {% else %}
-    {{ parent() }}
-  {% endif %}
+{% block stylesheets %}
+  {{ parent() }}
 
   {{ include('_includes/background_image.html.twig', { entity: forum }, with_context=false) }}
+{% endblock stylesheets %}
+
+{% block theme_css %}
+  {{ theme_css(forum.suggestedTheme) }}
 {% endblock theme_css %}
 
 {% block sidebar %}

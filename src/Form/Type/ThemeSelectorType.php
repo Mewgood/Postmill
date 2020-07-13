@@ -2,10 +2,13 @@
 
 namespace App\Form\Type;
 
+use App\Entity\BundledTheme;
 use App\Entity\Theme;
 use App\Repository\SiteRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Repository\ThemeRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ThemeSelectorType extends AbstractType {
@@ -15,36 +18,55 @@ final class ThemeSelectorType extends AbstractType {
     private $siteRepository;
 
     /**
+     * @var ThemeRepository
+     */
+    private $themeRepository;
+
+    /**
      * @var array
      */
     private $themesConfig;
 
-    public function __construct(SiteRepository $siteRepository, array $themesConfig) {
+    public function __construct(
+        SiteRepository $siteRepository,
+        ThemeRepository $themeRepository,
+        array $themesConfig
+    ) {
         $this->siteRepository = $siteRepository;
+        $this->themeRepository = $themeRepository;
         $this->themesConfig = $themesConfig;
     }
 
     public function configureOptions(OptionsResolver $resolver): void {
-        $default = $this->siteRepository->findCurrentSite()->getDefaultTheme();
-        $defaultKey = $default ? $default->getConfigKey() : $this->themesConfig['_default'];
+        $defaultTheme = $this->siteRepository->findCurrentSite()->getDefaultTheme();
+        $defaultKey = $this->themesConfig['_default'];
 
         $resolver->setDefaults([
-            'class' => Theme::class,
-            'choice_label' => function (Theme $theme, $key, $value) use ($defaultKey) {
-                $name = $this->themesConfig[$theme->getConfigKey()]['name'];
+            'choice_loader' => new CallbackChoiceLoader(function (): array {
+                return $this->themeRepository->findAll();
+            }),
+            'choice_label' => static function (Theme $theme, $key, $value) use ($defaultTheme, $defaultKey) {
+                $name = $theme->getName();
 
-                if ($defaultKey === $theme->getConfigKey()) {
+                if (
+                    ($defaultTheme && $theme === $defaultTheme) ||
+                    (!$defaultTheme && $theme instanceof BundledTheme && $theme->getConfigKey() === $defaultKey)
+                ) {
                     $name .= '*';
                 }
 
                 return $name;
             },
+            'choice_value' => static function (?Theme $theme): ?string {
+                return $theme ? $theme->getId()->toString() : null;
+            },
+            'choice_translation_domain' => false,
             'help' => 'help.theme_selector',
             'placeholder' => 'placeholder.default',
         ]);
     }
 
     public function getParent(): string {
-        return EntityType::class;
+        return ChoiceType::class;
     }
 }

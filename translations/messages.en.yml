@@ -5,12 +5,14 @@ action.clear: Clear
 action.clear_all: Clear all
 action.compare: Compare
 action.create: Create
+action.create_theme: Create theme
 action.delete: Delete
 action.delete_account: Delete account
 action.delete_thread: Delete thread
 action.dismiss: Dismiss
 action.downvote: Downvote
 action.edit: Edit
+action.edit_theme: Edit theme
 action.filter: Filter
 action.global_ban: Global ban
 action.go_to_home_page: Go to home page
@@ -262,6 +264,7 @@ label.bans: Bans
 label.biography: Biography
 label.blocked: Blocked
 label.body: Body
+label.bundled: Bundled
 label.category: Category
 label.comment: Comment
 label.comment_votes: Comment votes
@@ -272,6 +275,7 @@ label.compare: Compare
 label.confirm_forum_name: Confirm forum name
 label.confirm_username: Confirm username
 label.creation_date: Creation date
+label.css: CSS
 label.dark: Dark
 label.date: Date
 label.default: Default
@@ -435,6 +439,7 @@ nav.search: Search
 nav.site_settings: Site settings
 nav.submissions: Submissions
 nav.submit: Submit
+nav.themes: Themes
 nav.trash: Trash
 nav.user: User
 nav.user_bans: User bans
@@ -453,6 +458,7 @@ placeholder.uncategorized: (uncategorized)
 prompt.confirm_comment_delete: Are you sure you want to delete this comment?
 prompt.confirm_message_delete: Are you sure you want to delete this message?
 prompt.confirm_submission_delete: Are you sure you want to delete this submission?
+prompt.confirm_theme_delete: Are you sure you want to delete this theme? Every user who chose it will have their selection reverted.
 prompt.confirm_wiki_delete: Are you sure you want to delete this wiki page? It will be permanently lost forever.
 
 request_password_reset.title: Request password reset link

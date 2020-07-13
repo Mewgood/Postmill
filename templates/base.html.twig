@@ -1,6 +1,7 @@
 {% use '_layouts/site_nav.html.twig' %}
 {% from '_macros/alert.html.twig' import alert_classes, alert_icon %}
 {% from '_macros/lang.html.twig' import lang_attributes %}
+{% from '_macros/theme.html.twig' import theme_css %}
 <!DOCTYPE html>
 {#<!--suppress HtmlRequiredLangAttribute -->-#}
 <html class="no-js"
@@ -30,13 +31,11 @@
 
     {% block stylesheets %}
       {{ include('_includes/stylesheets.html.twig', with_context=false) }}
-    {% endblock stylesheets %}
 
-    {% block theme_css %}
-      {{ encore_entry_link_tags(theme_entrypoint(
-        app.user.preferredTheme.configKey ?? site_theme().configKey ?? '_default'
-      )) }}
-    {% endblock theme_css %}
+      {% block theme_css %}
+        {{ theme_css() }}
+      {% endblock theme_css %}
+    {% endblock stylesheets %}
 
     {% block feed %}
       <link rel="alternate" type="application/atom+xml" href="{{ path('all', { sortBy: 'new', _format: 'atom' }) }}" title="{{ 'front.all_forums'|trans }}">
