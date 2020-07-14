@@ -24,7 +24,7 @@
 
   <hr>
 
-  <form action="{{ path('bad_phrase_remove') }}" method="post">
+  <form action="{{ path('bad_phrase_remove') }}" method="post" class="flow">
     <input type="hidden" name="token" value="{{ csrf_token('remove_bad_phrase') }}">
     {% embed '_layouts/table_pagination.html.twig' with { items: bad_phrases } %}
       {% from '_macros/form.html.twig' import checkbox %}
@@ -48,6 +48,8 @@
       {% endblock row %}
     {% endembed %}
 
-    {{ button_row('action.remove'|trans) }}
+    {% if bad_phrases is not empty %}
+      {{ button_row('action.remove'|trans) }}
+    {% endif %}
   </form>
 {% endblock body %}
