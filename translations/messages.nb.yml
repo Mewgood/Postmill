@@ -35,6 +35,7 @@ action.send: Send
 action.sign_up: Registrer
 action.subscribe: Abonnere
 action.subscribe_via_rss: Abonnere via RSS
+action.sync_themes: Synkroniser temaer
 action.unban: Fjern utestengelse
 action.unblock: Avblokker
 action.unhide: Vis
@@ -236,6 +237,7 @@ help.preferred_fonts: Kommaseparert liste over skrifttypene du foretrekker. Dett
 help.preferred_fonts_aliases: 'Aliaserte skrifttyper: '
 help.preferred_fonts_served: 'Skrifttyper levert av serveren (tilgjengelige overalt): '
 help.required_field: Dette feltet er påkrevd.
+help.the_following_changes_will_be_made: 'Følgende endringer vil bli utført: '
 help.theme_selector: Stjerne indikerer samme som forhåndsvalgt.
 help.whitelisting: Hvitelisting vil tillate brukeren å slippe forbi IP-utestengelser og noen virkemidler mot automatisert misbruk. I tillegg vil ikke IP-adressen deres bli lagret lengre.
 help.will_appear_in_the_url: Vil vises i webadressen.
@@ -519,6 +521,9 @@ submission.time_week: Siste uke
 submission.time_year: Siste året
 submission.total_votes: '{1} %count% stemme|[0,Inf[ %count% stemmer'
 submission.vote_stats: (+%up%, −%down%)
+
+theme.to_be_created: Vil bli opprettet
+theme.to_be_deleted: Vil bli slettet
 
 time.at_relative_time: 'for %relative_time%'
 time.earlier_format: '%relative_time% tidligere'

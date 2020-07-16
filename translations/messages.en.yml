@@ -35,6 +35,7 @@ action.send: Send
 action.sign_up: Sign up
 action.subscribe: Subscribe
 action.subscribe_via_rss: Subscribe via RSS
+action.sync_themes: Sync themes
 action.unban: Unban
 action.unblock: Unblock
 action.unhide: Unhide
@@ -236,6 +237,7 @@ help.preferred_fonts: 'Comma-separated list of the fonts you prefer. These can b
 help.preferred_fonts_aliases: 'Aliased font names: '
 help.preferred_fonts_served: 'Server-provided fonts (available everywhere): '
 help.required_field: This field is required.
+help.the_following_changes_will_be_made: 'The following changes will be made:'
 help.theme_selector: Asterisk indicates same as default.
 help.whitelisting: Whitelisting will allow this user to bypass IP bans and some flood protections. Additionally, their IP addresses will no longer be stored.
 help.will_appear_in_the_url: Will appear in the URL.
@@ -521,6 +523,9 @@ submission.time_week: Past week
 submission.time_year: Past year
 submission.total_votes: '{1} %count% point|[0,Inf[ %count% points'
 submission.vote_stats: (+%up%, −%down%)
+
+theme.to_be_created: To be created
+theme.to_be_deleted: To be deleted
 
 time.at_relative_time: '%relative_time%'
 time.earlier_format: '%relative_time% earlier'

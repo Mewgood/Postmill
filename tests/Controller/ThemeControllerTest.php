@@ -2,10 +2,12 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\BundledTheme;
 use App\Entity\CssThemeRevision;
 use App\Entity\Theme;
 use App\Repository\CssThemeRevisionRepository;
 use App\Tests\WebTestCase;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -98,5 +100,34 @@ class ThemeControllerTest extends WebTestCase {
         $client->submitForm('Delete');
         $crawler = $client->followRedirect();
         $this->assertCount(2, $crawler->filter('.body tbody tr'));
+    }
+
+    public function testCanSyncThemes(): void {
+        $client = self::createAdminClient();
+
+        /** @var EntityManagerInterface $em */
+        $em = self::$container->get(EntityManagerInterface::class);
+        $em->persist(new BundledTheme('To be removed', 'to-be-removed'));
+        $em->remove($em->getRepository(BundledTheme::class)->findOneByName('Postmill'));
+        $em->flush();
+
+        $crawler = $client->request('GET', '/site/themes');
+        $list = $crawler
+            ->filter('.body ul li ins, .body ul li del')
+            ->each(static function (Crawler $crawler): string {
+                $type = ['ins' => '+', 'del' => '-'][$crawler->nodeName()] ?? 'UNKNOWN';
+
+                return sprintf('%s %s', $type, $crawler->text());
+            });
+
+        $this->assertSame(['+ Postmill', '- To be removed'], $list);
+
+        $client->submitForm('Sync themes');
+        self::assertResponseRedirects('/site/themes');
+
+        $crawler = $client->followRedirect();
+        $rowCrawler = $crawler->filter('.body table tbody tr');
+        $this->assertEmpty($rowCrawler->filterXPath("//td[normalize-space(text()) = 'To be removed']"));
+        $this->assertCount(1, $rowCrawler->filterXPath("//td[normalize-space(text()) = 'Postmill']"));
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\BundledTheme;
 use App\Repository\BundledThemeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -23,23 +22,14 @@ final class SyncThemesCommand extends Command {
      */
     private $manager;
 
-    /**
-     * @var array
-     */
-    private $themesConfig;
-
     public function __construct(
         BundledThemeRepository $repository,
-        EntityManagerInterface $manager,
-        array $themesConfig
+        EntityManagerInterface $manager
     ) {
         parent::__construct();
 
         $this->repository = $repository;
         $this->manager = $manager;
-        $this->themesConfig = $themesConfig;
-
-        unset($this->themesConfig['_default']);
     }
 
     protected function configure(): void {
@@ -51,30 +41,16 @@ final class SyncThemesCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $io = new SymfonyStyle($input, $output);
 
-        $keys = array_keys($this->themesConfig);
-
-        $themes = $this->repository->createQueryBuilder('t', 't.configKey')
-            ->where('t.configKey IN (:keys)')
-            ->setParameter('keys', $keys)
-            ->getQuery()
-            ->execute();
-
-        foreach (array_diff_key($this->themesConfig, $themes) as $key => $theme) {
+        foreach ($this->repository->findThemesToCreate() as $theme) {
             $changes = true;
-            $io->text("Creating theme '$key'...");
+            $io->text(sprintf("Creating theme '%s'...", $theme->getName()));
 
-            $this->manager->persist(new BundledTheme($this->themesConfig[$key]['name'], $key));
+            $this->manager->persist($theme);
         }
 
-        $themes = $this->repository->createQueryBuilder('t', 't.configKey')
-            ->where('t.configKey NOT IN (:keys)')
-            ->setParameter('keys', $keys)
-            ->getQuery()
-            ->execute();
-
-        foreach (array_diff_key($themes, $this->themesConfig) as $key => $theme) {
+        foreach ($this->repository->findThemesToRemove() as $theme) {
             $changes = true;
-            $io->text("Removing theme '$key'...");
+            $io->text(sprintf("Removing theme '%s'...", $theme->getName()));
 
             $this->manager->remove($theme);
         }
