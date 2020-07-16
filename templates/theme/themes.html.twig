@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+{% from '_macros/form.html.twig' import button_row %}
+
 {% block title 'nav.themes'|trans %}
 
 {% block head %}
@@ -57,4 +59,35 @@
       </td>
     {% endblock row %}
   {% endembed %}
+
+  {% if to_create is not empty or to_remove is not empty %}
+    <h2>{{ 'action.sync_themes'|trans }}</h2>
+
+    <p>{{ 'help.the_following_changes_will_be_made'|trans }}</p>
+
+    <ul class="unlistify">
+      {% for theme in to_create %}
+        <li>
+          <span class="fg-green" aria-hidden="true">+</span>
+          <ins class="undecorate" aria-label="{{ 'theme.to_be_created'|trans }}">
+            {{ theme.name }}
+          </ins>
+        </li>
+      {% endfor %}
+      {% for theme in to_remove %}
+        <li>
+          <span class="fg-red" aria-hidden="true">&minus;</span>
+          <del class="undecorate" aria-label="{{ 'theme.to_be_deleted'|trans }}">
+            {{ theme.name }}
+          </del>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <form action="{{ path('theme_sync') }}" method="POST">
+      <input type="hidden" name="token" value="{{ csrf_token('sync_themes') }}">
+
+      {{ button_row('action.sync_themes'|trans) }}
+    </form>
+  {% endif %}
 {% endblock body %}

@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUnusedParameterInspection */
 
 namespace App\Controller;
 
@@ -7,23 +8,30 @@ use App\Entity\CssTheme;
 use App\Entity\CssThemeRevision;
 use App\Entity\Theme;
 use App\Form\CssThemeType;
+use App\Repository\BundledThemeRepository;
 use App\Repository\ThemeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 
 class ThemeController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      * @IsGranted("ROLE_ADMIN", statusCode=403)
      */
-    public function themes(ThemeRepository $themes, int $page, array $themesConfig): Response {
+    public function themes(
+        ThemeRepository $themes,
+        BundledThemeRepository $bundledThemes,
+        int $page,
+        array $themesConfig
+    ): Response {
         return $this->render('theme/themes.html.twig', [
             'default' => $themesConfig['_default'],
             'themes' => $themes->findPaginated($page),
+            'to_create' => $bundledThemes->findThemesToCreate(),
+            'to_remove' => $bundledThemes->findThemesToRemove(),
         ]);
     }
 
@@ -93,6 +101,26 @@ class ThemeController extends AbstractController {
         $this->validateCsrf('delete_theme', $request->request->get('token'));
 
         $em->remove($theme);
+        $em->flush();
+
+        return $this->redirectToRoute('themes');
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_ADMIN", statusCode=403)
+     */
+    public function sync(Request $request, BundledThemeRepository $themes, EntityManagerInterface $em): Response {
+        $this->validateCsrf('sync_themes', $request->request->get('token'));
+
+        foreach ($themes->findThemesToCreate() as $theme) {
+            $em->persist($theme);
+        }
+
+        foreach ($themes->findThemesToRemove() as $theme) {
+            $em->remove($theme);
+        }
+
         $em->flush();
 
         return $this->redirectToRoute('themes');

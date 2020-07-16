@@ -27,3 +27,8 @@ theme_delete:
     methods: [POST]
     path: /site/themes/{id}/delete
     requirements: { id: "%uuid_regex%" }
+
+theme_sync:
+    controller: App\Controller\ThemeController::sync
+    methods: [POST]
+    path: /site/themes/sync

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Theme loaded from Webpack entrypoint.
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\BundledThemeRepository")
  */
 class BundledTheme extends Theme {
     /**
