@@ -1,11 +1,11 @@
 {%- block submission -%}
   {%- from '_macros/icon.html.twig' import icon -%}
-  {%- from '_macros/lang.html.twig' import lang_attributes, lang_attribute, dir_attribute %}
+  {%- from '_macros/lang.html.twig' import lang_attribute, dir_attribute -%}
   {%- from '_macros/time.html.twig' import relative_time, relative_time_diff -%}
   {%- from 'vote/_macros.html.twig' import vote -%}
   {%- set open_external = submission.url is not empty and open_external_links_in_new_tab -%}
   {%- set has_thumbnail = submission.image and show_thumbnails and not
-    (show_body and submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE')) -%}
+    (show_content and submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE')) -%}
   <article class="{{ block('submission_classes') }}">
     <div class="submission__row">
 
@@ -88,43 +88,13 @@
           </p>
         </header>
 
-        {%- if show_body -%}
-          {% if raw_body is not null or submission.body is not null %}
-            <div class="submission__body break-text text-flow" {{ lang_attributes(submission.language) }}>
-              {%- if raw_body is not null -%}
-                {{ raw_body|raw }}
-              {%- elseif submission.body is not null -%}
-                {{ submission.body|cached_markdown|raw }}
-              {%- endif -%}
+        {% with { content: show_content ? block('submission_content') : null } -%}
+          {% if content is not empty %}
+            <div class="submission__content flow-slim">
+              {{ content|raw }}
             </div>
           {% endif %}
-
-          {% if submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image %}
-            {% set width, height = submission.image.width, submission.image.height %}
-            {% set max_width, max_height = 500, 500 %}
-            {% if width and height and width > max_width %}
-              {% set width = max_width %}
-              {% set height = height * (max_width / submission.image.width) %}
-            {% endif %}
-            {% if width and height and height > max_height %}
-              {% set temp_height = height %}
-              {% set height = max_height %}
-              {% set width = width * (max_height / temp_height) %}
-            {% endif %}
-            {% set url = upload_url('submission_images/'~submission.image) %}
-            <a href="{{ url }}"
-               class="submission__image-link"
-               target="{{ open_external ? '_blank' : '_self' }}">
-              <img src="{{ url }}"
-                   alt=""
-                   class="submission__image"
-                   {% if width and height %}
-                      width="{{ width|round(0, 'ceil') }}"
-                      height="{{ height|round(0, 'ceil') }}"
-                   {% endif %}>
-            </a>
-          {% endif %}
-        {%- endif -%}
+        {% endwith %}
 
         <nav class="submission__nav">
           <ul class="unlistify fg-muted flex flex--guttered">
@@ -154,7 +124,7 @@
   submission
   {{ submission.url ? 'submission--has-url' }}
   {{ submission.body is not null ? 'submission--has-body' }}
-  {{ not show_body ? 'submission--collapsed' : 'submission--expanded' }}
+  {{ not show_content ? 'submission--collapsed' : 'submission--expanded' }}
   {{ submission.sticky ? 'submission--sticky' }}
   {{ submission.locked ? 'submission--locked' }}
   {{ has_thumbnail ? 'submission--has-thumbnail' }}
@@ -183,6 +153,52 @@
   {% endapply %}
 {% endblock submission_info_forum_name %}
 
+{% block submission_content %}
+  {{- block('submission_body') -}}
+  {{- block('submission_image') -}}
+{% endblock submission_content %}
+
+{% block submission_body %}
+  {%- from '_macros/lang.html.twig' import lang_attributes -%}
+  {%- if raw_body is not null or submission.body is not null -%}
+    <div class="submission__body break-text text-flow" {{ lang_attributes(submission.language) }}>
+      {%- if raw_body is not null -%}
+        {{ raw_body|raw }}
+      {%- elseif submission.body is not null -%}
+        {{ submission.body|cached_markdown|raw }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{% endblock submission_body %}
+
+{% block submission_image %}
+  {%- if submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image -%}
+    {% set width, height = submission.image.width, submission.image.height %}
+    {% set max_width, max_height = 500, 500 %}
+    {% if width and height and width > max_width %}
+      {% set width = max_width %}
+      {% set height = height * (max_width / submission.image.width) %}
+    {% endif %}
+    {% if width and height and height > max_height %}
+      {% set temp_height = height %}
+      {% set height = max_height %}
+      {% set width = width * (max_height / temp_height) %}
+    {% endif %}
+    {% set url = upload_url('submission_images/'~submission.image) %}
+    <a href="{{ url }}"
+       class="submission__image-link"
+       target="{{ open_external ? '_blank' : '_self' }}">
+      <img src="{{ url }}"
+           alt=""
+           class="submission__image"
+        {% if width and height %}
+           width="{{ width|round(0, 'ceil') }}"
+           height="{{ height|round(0, 'ceil') }}"
+        {% endif %}>
+    </a>
+  {%- endif -%}
+{% endblock submission_image %}
+
 {% block submission_nav %}
   {% set nav_link_classes = 'fg-inherit text-sm' %}
   {{ block('submission_nav_comments') }}
@@ -202,7 +218,7 @@
       </a>
     {% endapply %}
 
-    {%- if not show_body -%}
+    {%- if not show_content -%}
       <span class="js-display-new-comments submission__new-comments text-sm fg-green"
             data-submission-id="{{ submission.id }}"
             data-comment-count="{{ submission.commentCount }}">

@@ -36,7 +36,7 @@
       }) }}
     {% elseif result.entity == 'submission' %}
       {{ submission(result[0], {
-        show_body: true,
+        show_content: true,
         raw_title: result.title_highlighted|search_highlight,
         raw_body: result.body_excerpt is not empty ? '<p>%s</p>'|format(result.body_excerpt|search_highlight) : null
       }) }}
