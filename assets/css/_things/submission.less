@@ -14,7 +14,6 @@
   &__title {
     font-size: 1.33rem;
     font-weight: normal;
-    margin: 0;
 
     // don't make giant new lines if only the tiny host text wraps.
     // also aligns icons correctly.
@@ -42,15 +41,14 @@
     color: var(--submission-link);
   }
 
-  &__body {
-    padding: 0.5rem 0;
+  &__content {
+    margin: 0.5rem 0;
   }
 
   &__image-link {
     border: 1px solid var(--border);
     border-radius: 0.25rem;
     display: table;
-    margin-bottom: 0.5rem;
     padding: 0.5rem;
     transition: box-shadow .25s, border .25s;
 
@@ -74,12 +72,6 @@
     height: @submission-image-height;
     width: @submission-image-width;
     max-height: @submission-image-height;
-  }
-
-  &__header {
-    > * {
-      margin-bottom: 0;
-    }
   }
 
   @media screen and (max-width: 480px) {
