@@ -275,6 +275,12 @@
       "css": "brush",
       "code": 59425,
       "src": "iconic"
+    },
+    {
+      "uid": "d73eceadda1f594cec0536087539afbf",
+      "css": "heart",
+      "code": 59426,
+      "src": "fontawesome"
     }
   ]
 }

@@ -3,14 +3,12 @@
 namespace App\Form;
 
 use App\DataObject\SubmissionData;
-use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Form\EventListener\SubmissionImageListener;
+use App\Form\Type\ForumSelectorType;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
 use App\Form\Type\UserFlagType;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -103,16 +101,8 @@ final class SubmissionType extends AbstractType {
         }
 
         if (!$editing) {
-            $builder->add('forum', EntityType::class, [
-                'class' => Forum::class,
-                'choice_label' => 'name',
+            $builder->add('forum', ForumSelectorType::class, [
                 'label' => 'label.forum',
-                'query_builder' => static function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('f')
-                        ->orderBy('f.name', 'ASC');
-                },
-                'placeholder' => 'placeholder.choose_one',
-                'required' => false, // enable a blank choice
             ]);
         }
 
