@@ -7,7 +7,7 @@
 {% block sidebar %}
   {% from '_macros/time.html.twig' import relative_time %}
 
-  <section class="sidebar__section sidebar-card flow">
+  <section class="sidebar__section flow">
     <header>
       <h1 class="sidebar__title break-text">
         <a href="{{ path('user', {username: user.username}) }}">{{ user.username }}</a>
@@ -67,7 +67,7 @@
   {% set active_ban = user.activeBan %}
 
   {% if is_granted('ROLE_ADMIN') and active_ban %}
-    <section class="sidebar__section sidebar-card flow bg-red">
+    <section class="sidebar__section flow bg-red">
       <h1 class="sidebar__title">{{ 'heading.this_user_is_banned'|trans }}</h1>
 
       <dl class="definition-list">
@@ -131,7 +131,7 @@
   {% for label in toolbox_items|keys|sort|filter(label => toolbox_items[label].condition) %}
     {% if loop.first %}
       {% set open = true %}
-      <section class="sidebar__section sidebar-card flow">
+      <section class="sidebar__section flow">
         <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
         <ul class="unlistify sidebar__no-padding">
     {% endif %}
@@ -149,7 +149,7 @@
   {% endif %}
 
   {% if is_granted('ROLE_ADMIN') %}
-    <section class="sidebar__section sidebar-card flow">
+    <section class="sidebar__section flow">
       <h1 class="sidebar__title">{{ 'heading.whitelisting'|trans }}</h1>
 
       <p class="fg-muted">{{ 'help.whitelisting'|trans }}</p>
@@ -166,7 +166,7 @@
   {% endif %}
 
   {% if user.moderatorTokens|length > 0 %}
-    <section class="sidebar__section sidebar-card flow">
+    <section class="sidebar__section flow">
       <h1 class="sidebar__title break-text">{{ 'user.moderates'|trans({'%username%': user.username}) }}</h1>
 
       <ul class="unlistify flex flex--guttered flex--slim-gutters">
