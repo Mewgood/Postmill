@@ -404,6 +404,7 @@ markdown.wiki_page: wiki_page
 nav.actions: Actions
 nav.add_ban: Add ban
 nav.appearance: Appearance
+nav.current_page: Current page
 nav.ban_history: Ban history
 nav.bans: Bans
 nav.block_list: Block list
@@ -429,11 +430,13 @@ nav.logged_in_as_user: Logged in as %user%
 nav.messages: Messages
 nav.moderated: Moderated
 nav.moderation_log: Moderation log
+nav.more: More
 nav.my_account: My account
 nav.new_category: New category
 nav.next: Next
 nav.notifications: Notifications
 nav.notifications_count: 'Notifications (%count%)'
+nav.page_number: 'Page %number%'
 nav.places: Places
 nav.previous: Previous
 nav.profile: Profile

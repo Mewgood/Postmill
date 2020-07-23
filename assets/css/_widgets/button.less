@@ -38,10 +38,21 @@
     --fg: var(--accent-fg);
   }
 
+  &--transparent {
+    --bg-active: transparent;
+    --bg: transparent;
+    --fg: inherit;
+  }
+
   &:hover,
   &:focus {
     --bg: var(--bg-active);
     --color: var(--fg-active);
     outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
