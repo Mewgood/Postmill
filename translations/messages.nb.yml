@@ -409,6 +409,7 @@ nav.block_list: Blokkliste
 nav.block_user: Blokker bruker
 nav.censorship: Sensur
 nav.comments: Kommentarer
+nav.current_page: Nåværende side
 nav.dark_mode: Mørk modus
 nav.delete_forum: Slett forum
 nav.delete_this_account: Slett denne kontoen
@@ -428,11 +429,13 @@ nav.logged_in_as_user: Logget inn som %user%
 nav.messages: Meldinger
 nav.moderated: Moderert
 nav.moderation_log: Moderasjonslogg
+nav.more: Mer
 nav.my_account: Min brukerkonto
 nav.new_category: Ny kategori
 nav.next: Neste
 nav.notifications: Notifikasjoner
 nav.notifications_count: 'Notifikasjoner (%count%)'
+nav.page_number: 'Side %number%'
 nav.places: Steder
 nav.previous: Forrige
 nav.profile: Profil
