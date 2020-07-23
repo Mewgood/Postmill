@@ -9,7 +9,9 @@
     flex-direction: column;
   }
 
-  > .body {
+  &__body {
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
     flex: 1 1 auto;
     min-width: 0;
     padding: 1rem;
@@ -19,7 +21,7 @@
     }
   }
 
-  > .sidebar {
+  &__sidebar {
     flex: 0 0 auto;
     min-width: 0;
   }

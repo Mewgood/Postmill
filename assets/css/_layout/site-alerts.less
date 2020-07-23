@@ -12,10 +12,18 @@
 
     .js:root & {
       animation: site-alerts-slide 0.5s ease-in;
+
+      @media (prefers-reduced-motion) {
+        animation-name: site-alerts-fade;
+      }
     }
 
     .no-js:root & {
       animation: site-alerts-slide-no-js 10s ease-in forwards;
+
+      @media (prefers-reduced-motion) {
+        animation-name: site-alerts-fade-no-js;
+      }
     }
   }
 
@@ -38,21 +46,21 @@
 }
 
 @keyframes site-alerts-slide {
-  from {
-    transform: translateX(calc(-100% - 1rem));
-  }
-
-  to {
-    transform: translateX(0%);
-  }
+  from { transform: translateX(calc(-100% - 1rem)) }
+  to { transform: translateX(0%) }
 }
 
 @keyframes site-alerts-slide-no-js {
-  0%, 100% {
-    transform: translateX(calc(-100% - 1rem - 2px));
-  }
+  0%, 100% { transform: translateX(calc(-100% - 1rem - 2px)) }
+  5%, 95% { transform: translateX(0%) }
+}
 
-  5%, 95% {
-    transform: translateX(0%);
-  }
+@keyframes site-alerts-fade {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes site-alerts-fade-no-js {
+  0%, 100% { opacity: 0 }
+  5%, 95% { opacity: 1 }
 }
