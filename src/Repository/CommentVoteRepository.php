@@ -2,16 +2,16 @@
 
 namespace App\Repository;
 
-use App\Entity\Message;
+use App\Entity\CommentVote;
 use App\Repository\Contracts\PrunesIpAddresses;
 use App\Repository\Traits\PrunesIpAddressesTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class MessageRepository extends ServiceEntityRepository implements PrunesIpAddresses {
+class CommentVoteRepository extends ServiceEntityRepository implements PrunesIpAddresses {
     use PrunesIpAddressesTrait;
 
     public function __construct(ManagerRegistry $registry) {
-        parent::__construct($registry, Message::class);
+        parent::__construct($registry, CommentVote::class);
     }
 }

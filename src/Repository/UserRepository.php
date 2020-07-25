@@ -6,6 +6,8 @@ use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Pagination\TimestampPage;
+use App\Repository\Contracts\PrunesIpAddresses;
+use App\Repository\Traits\PrunesIpAddressesTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,7 +28,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @method User[]    findByUsername(string|string[] $usernames)
  * @method User[]    findByNormalizedUsername(string|string[] $usernames)
  */
-class UserRepository extends ServiceEntityRepository implements UserLoaderInterface {
+class UserRepository extends ServiceEntityRepository implements PrunesIpAddresses, UserLoaderInterface {
+    use PrunesIpAddressesTrait;
+
     /**
      * @var PaginatorInterface
      */
@@ -173,6 +177,14 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         while ($ip = $sth->fetchColumn()) {
             yield $ip;
         }
+    }
+
+    protected function getIpAddressField(): string {
+        return 'registrationIp';
+    }
+
+    protected function getTimestampField(): string {
+        return 'created';
     }
 
     private function hydrateContributions(iterable $contributions): void {

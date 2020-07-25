@@ -52,7 +52,7 @@ lint:yaml:
     before_script:
         - composer global require symfony/console symfony/yaml
     script:
-        - $COMPOSER_HOME/vendor/bin/yaml-lint config translations
+        - $COMPOSER_HOME/vendor/bin/yaml-lint --parse-tags config translations
 
 lint:js:
     stage: lint
