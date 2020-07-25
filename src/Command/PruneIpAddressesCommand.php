@@ -2,13 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Comment;
-use App\Entity\CommentVote;
-use App\Entity\Message;
-use App\Entity\Submission;
-use App\Entity\SubmissionVote;
-use App\Entity\User;
-use Doctrine\DBAL\Types\Types;
+use App\Repository\Contracts\PrunesIpAddresses;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,10 +24,19 @@ final class PruneIpAddressesCommand extends Command {
      */
     private $manager;
 
-    public function __construct(EntityManagerInterface $manager) {
+    /**
+     * @var \App\Repository\Contracts\PrunesIpAddresses[]
+     */
+    private $pruners;
+
+    /**
+     * @param \App\Repository\Contracts\PrunesIpAddresses[]|iterable $pruners
+     */
+    public function __construct(EntityManagerInterface $manager, iterable $pruners) {
         parent::__construct();
 
         $this->manager = $manager;
+        $this->pruners = $pruners;
     }
 
     protected function configure(): void {
@@ -85,12 +88,9 @@ final class PruneIpAddressesCommand extends Command {
         $this->manager->beginTransaction();
 
         $count = 0;
-        $count += $this->clearIpsForEntity(Comment::class, $maxTime);
-        $count += $this->clearIpsForEntity(CommentVote::class, $maxTime);
-        $count += $this->clearIpsForEntity(Submission::class, $maxTime);
-        $count += $this->clearIpsForEntity(SubmissionVote::class, $maxTime);
-        $count += $this->clearIpsForEntity(Message::class, $maxTime);
-        $count += $this->clearIpsForEntity(User::class, $maxTime, 'registrationIp', 'created');
+        foreach ($this->pruners as $pruner) {
+            $count += $pruner->pruneIpAddresses($maxTime);
+        }
 
         if ($input->getOption('dry-run')) {
             $this->manager->rollback();
@@ -109,25 +109,5 @@ final class PruneIpAddressesCommand extends Command {
         }
 
         return 0;
-    }
-
-    private function clearIpsForEntity(
-        string $entity,
-        ?\DateTimeImmutable $maxTime,
-        string $ipField = 'ip',
-        string $timestampField = 'timestamp'
-    ): int {
-        $qb = $this->manager->createQueryBuilder()
-            ->update($entity, 'e')
-            ->set('e.'.$ipField, '?1')
-            ->setParameter(1, null)
-            ->where('e.'.$ipField.' IS NOT NULL');
-
-        if ($maxTime) {
-            $qb->andWhere('e.'.$timestampField.' <= ?2');
-            $qb->setParameter(2, $maxTime, Types::DATETIMETZ_IMMUTABLE);
-        }
-
-        return $qb->getQuery()->execute();
     }
 }

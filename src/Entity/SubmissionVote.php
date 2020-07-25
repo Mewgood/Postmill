@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\SubmissionVoteRepository")
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(
  *         name="submission_user_vote_idx",

@@ -7,6 +7,8 @@ use App\Entity\Forum;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Pagination\CommentPage;
+use App\Repository\Contracts\PrunesIpAddresses;
+use App\Repository\Traits\PrunesIpAddressesTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,7 +18,9 @@ use PagerWave\PaginatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class CommentRepository extends ServiceEntityRepository {
+class CommentRepository extends ServiceEntityRepository implements PrunesIpAddresses {
+    use PrunesIpAddressesTrait;
+
     /**
      * @var AuthorizationCheckerInterface
      */

@@ -3,11 +3,15 @@
 namespace App\Repository;
 
 use App\Entity\Submission;
+use App\Repository\Contracts\PrunesIpAddresses;
+use App\Repository\Traits\PrunesIpAddressesTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class SubmissionRepository extends ServiceEntityRepository {
+class SubmissionRepository extends ServiceEntityRepository implements PrunesIpAddresses {
+    use PrunesIpAddressesTrait;
+
     /**
      * @var AuthorizationCheckerInterface
      */
