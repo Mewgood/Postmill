@@ -28,6 +28,7 @@ return PhpCsFixer\Config::create()
         'self_accessor' => true,
         'set_type_to_cast' => true,
         'single_line_throw' => false,
+        'standardize_increment' => false,
         'strict_param' => true,
         'visibility_required' => [
             'elements' => ['property', 'method', 'const'],

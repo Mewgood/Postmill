@@ -58,6 +58,7 @@ background.tile: Side om side
 bad_phrase.help: Dette verktøyet lar deg forby fraser av tekst og forhindre dem i å bli postet. Du kan bruke det til å begrense spam, eller å knuse dissens.
 bad_phrase.phrase: Frase
 bad_phrase.phrase_to_ban: Frase å forby
+bad_phrase.search_title: Søk i forbudte fraser
 bad_phrase.title: Forbudte fraser
 bad_phrase.type_text: Tekst
 bad_phrase.type_regex: RegExp
