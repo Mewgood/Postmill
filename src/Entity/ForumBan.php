@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Represents a ban or unban action that applies to a user and a forum.
@@ -97,7 +98,7 @@ class ForumBan {
         $this->timestamp = new \DateTimeImmutable('@'.time());
     }
 
-    public function getId(): Uuid {
+    public function getId(): UuidInterface {
         return $this->id;
     }
 

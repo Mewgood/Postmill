@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserBanRepository")
@@ -87,7 +88,7 @@ class UserBan {
         $user->addBan($this);
     }
 
-    public function getId(): Uuid {
+    public function getId(): UuidInterface {
         return $this->id;
     }
 

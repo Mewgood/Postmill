@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity()
@@ -62,7 +63,7 @@ class UserBlock {
         $this->timestamp = new \DateTimeImmutable('@'.time());
     }
 
-    public function getId(): Uuid {
+    public function getId(): UuidInterface {
         return $this->id;
     }
 
