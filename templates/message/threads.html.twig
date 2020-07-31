@@ -12,7 +12,7 @@
 
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: threads } %}
+  {% embed '_layouts/table.html.twig' with { items: threads } %}
     {% block header %}
       <th>{{ 'label.title'|trans }}</th>
       <th class="table__shrink">{{ 'label.last_message'|trans }}</th>

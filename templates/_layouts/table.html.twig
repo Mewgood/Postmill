@@ -13,10 +13,10 @@
     </table>
 
     {% block footer %}
-      {% if pager.hasNextPage is defined %}
+      {% if items.hasNextPage is defined %}
         {{ include('_includes/pagination.html.twig', { pager: items }, with_context=false) }}
       {% endif %}
-    {% endblock %}
+    {% endblock footer %}
   {% else %}
     <p>
       <small class="fg-muted text-md">

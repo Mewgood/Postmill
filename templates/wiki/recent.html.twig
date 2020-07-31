@@ -11,7 +11,7 @@
 {% block body %}
   <h1 class="page-heading">{{ 'label.recent_changes'|trans }}</h1>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: revisions } %}
+  {% embed '_layouts/table.html.twig' with { items: revisions } %}
     {% block header %}
       <th class="table__shrink">{{ 'label.id'|trans }}</th>
       <th>{{ 'label.title'|trans }}</th>
