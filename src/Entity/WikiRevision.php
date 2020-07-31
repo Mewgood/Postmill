@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WikiRevisionRepository")
@@ -70,7 +71,7 @@ class WikiRevision {
         $this->page->addRevision($this);
     }
 
-    public function getId(): Uuid {
+    public function getId(): UuidInterface {
         return $this->id;
     }
 
