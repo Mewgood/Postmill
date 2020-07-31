@@ -69,6 +69,18 @@ class CommentControllerTest extends WebTestCase {
         $this->assertSame('The comment must not be empty.', $crawler->filter('.form-error-list li')->text());
     }
 
+    public function testCannotPostCommentContainingBannedPhrase(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/f/cats/3');
+
+        $client->submitForm('Post', [
+            'reply_to_submission_3[comment]' => 'olson peg',
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('.form-error-list', 'The field contains a banned word or phrase.');
+    }
+
     public function testCommentJson(): void {
         $client = self::createClient();
         $client->request('GET', '/f/cats/3/-/comment/3.json');

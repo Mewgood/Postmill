@@ -2,8 +2,8 @@
 
 namespace App\Tests\Validator;
 
-use App\Entity\BadPhrase;
-use App\Repository\BadPhraseRepository;
+use App\Utils\BadPhraseMatcher;
+use App\Validator\IpWithCidr;
 use App\Validator\NoBadPhrases;
 use App\Validator\NoBadPhrasesValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -13,95 +13,86 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  * @covers \App\Validator\NoBadPhrasesValidator
  */
 class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
-    public function testNonBannedPhraseWillNotRaise(): void {
-        $this->validator->validate('food', new NoBadPhrases());
-
-        $this->assertNoViolation();
-    }
-
     /**
-     * @dataProvider provideBannedWords
+     * @var BadPhraseMatcher|\PHPUnit\Framework\MockObject\MockObject
      */
-    public function testBannedWordsWillRaise(string $bannedWord): void {
-        $constraint = new NoBadPhrases();
-        $this->validator->validate($bannedWord, $constraint);
+    private $matcher;
 
-        $this->buildViolation($constraint->message)
-            ->setCode(NoBadPhrases::CONTAINS_BAD_PHRASE_ERROR)
-            ->assertRaised();
-    }
+    protected function setUp(): void {
+        $this->matcher = $this->createMock(BadPhraseMatcher::class);
 
-    public function testBannedTextInsideWordWillNotRaise(): void {
-        $this->validator->validate('fee', new NoBadPhrases());
-
-        $this->assertNoViolation();
-    }
-
-    public function testBannedRegexInsideWordWillRaise(): void {
-        $constraint = new NoBadPhrases();
-        $this->validator->validate('sadist', $constraint);
-
-        $this->buildViolation($constraint->message)
-            ->setCode(NoBadPhrases::CONTAINS_BAD_PHRASE_ERROR)
-            ->assertRaised();
-    }
-
-    public function testDoesNotRaiseOnNull(): void {
-        $this->validator->validate(null, new NoBadPhrases());
-
-        $this->assertNoViolation();
-    }
-
-    /**
-     * @dataProvider provideEmptyStringable
-     * @param string|bool|int|object $stringable
-     */
-    public function testDoesNotRaiseOnEmptyStringable($stringable): void {
-        $this->validator->validate($stringable, new NoBadPhrases());
-
-        $this->assertNoViolation();
-    }
-
-    public function testThrowsOnObjectWithoutToString(): void {
-        $this->expectException(UnexpectedTypeException::class);
-
-        $this->validator->validate((object) [], new NoBadPhrases());
-    }
-
-    public function testThrowsOnNonScalarNonStringableValue(): void {
-        $this->expectException(UnexpectedTypeException::class);
-
-        $this->validator->validate([], new NoBadPhrases());
+        parent::setUp();
     }
 
     protected function createValidator(): NoBadPhrasesValidator {
-        /** @var BadPhraseRepository|\PHPUnit\Framework\MockObject\MockObject $repository */
-        $repository = $this->createMock(BadPhraseRepository::class);
-        $repository
-            ->method('findAll')
-            ->willReturn([
-                new BadPhrase('tea', BadPhrase::TYPE_TEXT),
-                new BadPhrase('coffee', BadPhrase::TYPE_TEXT),
-                new BadPhrase('[bs]ad', BadPhrase::TYPE_REGEX),
-                new BadPhrase('(?x) should # not break', BadPhrase::TYPE_REGEX),
-            ]);
-
-        return new NoBadPhrasesValidator($repository, null);
+        return new NoBadPhrasesValidator($this->matcher);
     }
 
-    public function provideBannedWords(): iterable {
-        yield ['tea'];
-        yield ['coffee'];
-        yield ['bad'];
-        yield ['sad'];
-        yield ['should'];
+    public function testMatchingInputWillRaise(): void {
+        $this->matcher
+            ->expects($this->once())
+            ->method('matches')
+            ->with('fly')
+            ->willReturn(true);
+
+        $constraint = new NoBadPhrases();
+        $this->validator->validate('fly', $constraint);
+
+        $this->buildViolation($constraint->message)
+            ->setCode(NoBadPhrases::CONTAINS_BAD_PHRASE_ERROR)
+            ->assertRaised();
     }
 
-    public function provideEmptyStringable(): iterable {
+    public function testNonMatchingInputWillNotRaise(): void {
+        $this->matcher
+            ->expects($this->once())
+            ->method('matches')
+            ->with('bee')
+            ->willReturn(false);
+
+        $this->validator->validate('bee', new NoBadPhrases());
+
+        $this->assertNoViolation();
+    }
+
+    /**
+     * @dataProvider provideEmptyInputs
+     * @param mixed $emptyInput
+     */
+    public function testEmptyInputWillNotRaise($emptyInput): void {
+        $this->matcher
+            ->expects($this->never())
+            ->method('matches');
+
+        $this->validator->validate($emptyInput, new NoBadPhrases());
+
+        $this->assertNoViolation();
+    }
+
+    public function testThrowsOnNonScalarNonStringableValue(): void {
+        $this->matcher
+            ->expects($this->never())
+            ->method('matches');
+
+        $this->expectException(UnexpectedTypeException::class);
+        $this->validator->validate([], new NoBadPhrases());
+    }
+
+    public function testThrowsOnWrongConstraintType(): void {
+        $this->matcher
+            ->expects($this->never())
+            ->method('matches');
+
+        $this->expectException(UnexpectedTypeException::class);
+        $this->validator->validate('aa', new IpWithCidr());
+    }
+
+    public function provideEmptyInputs(): iterable {
+        yield [null];
         yield [''];
         yield [false];
         yield [new class() {
-            public function __toString() {
+            public function __toString(): string {
                 return '';
             }
         }];

@@ -41,7 +41,7 @@ class SubmissionControllerTest extends WebTestCase {
             'submission[mediaType]' => 'image',
             'submission[forum]' => '2',
         ]);
-        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $form['submission[image]']->upload(__DIR__.'/../Resources/120px-12-Color-SVG.svg.png');
 
         $crawler = $client->submit($form);
@@ -61,13 +61,26 @@ class SubmissionControllerTest extends WebTestCase {
             'submission[mediaType]' => 'image',
             'submission[forum]' => '2',
         ]);
-        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $form['submission[image]']->upload(__DIR__.'/../Resources/garbage.bin');
 
         $client->submit($form);
 
         self::assertResponseStatusCodeSame(200);
         self::assertSelectorTextContains('.form-error-list', 'This file is not a valid image.');
+    }
+
+    public function testCannotSubmitWithBannedPhrase(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/submit');
+
+        $client->submitForm('Create submission', [
+            'submission[title]' => 'I like Orson Pig :))',
+            'submission[forum]' => '2',
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('.form-error-list', 'The field contains a banned word or phrase.');
     }
 
     /**

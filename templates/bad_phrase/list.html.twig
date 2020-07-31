@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 {% from '_macros/alert.html.twig' import alert %}
-{% from '_macros/form.html.twig' import button_row %}
 
 {% block site_nav_main_menu_active 'censorship' %}
 
@@ -10,46 +9,18 @@
   {{ include('_includes/meta_pagination.html.twig', { pager: bad_phrases }, with_context=false) }}
 {% endblock head %}
 
-{% set type_label_map = {
-  (constant('App\\Entity\\BadPhrase::TYPE_TEXT')): 'bad_phrase.type_text'|trans,
-  (constant('App\\Entity\\BadPhrase::TYPE_REGEX')): 'bad_phrase.type_regex'|trans,
-} %}
-
 {% block body %}
   <h1>{{ block('title') }}</h1>
-
   {{ alert('bad_phrase.help'|trans, 'info') }}
 
   {{ render(controller('App\\Controller\\BadPhraseController::renderForm')) }}
 
   <hr>
 
-  <form action="{{ path('bad_phrase_remove') }}" method="post" class="flow">
-    <input type="hidden" name="token" value="{{ csrf_token('remove_bad_phrase') }}">
-    {% embed '_layouts/table_pagination.html.twig' with { items: bad_phrases } %}
-      {% from '_macros/form.html.twig' import checkbox %}
+  {% if bad_phrases is not empty %}
+    {{ render(controller('App\\Controller\\BadPhraseController::renderSearchForm')) }}
+    <hr>
+  {% endif %}
 
-      {% block header %}
-        <th class="table__shrink"></th>
-        <th>{{ 'bad_phrase.phrase'|trans }}</th>
-        <th class="table__shrink">{{ 'label.type'|trans }}</th>
-      {% endblock header %}
-
-      {% block row %}
-        <td class="table__shrink">
-          {{ checkbox({
-            id: 'bad_phrase_%s'|format(item.id),
-            name: 'remove_bad_phrase[]',
-            value: item.id,
-          }) }}
-        </td>
-        <td><label for="{{ 'bad_phrase_%s'|format(item.id) }}"><kbd>{{ item.phrase }}</kbd></label></td>
-        <td class="table__shrink">{{ type_label_map[item.phraseType] }}</td>
-      {% endblock row %}
-    {% endembed %}
-
-    {% if bad_phrases is not empty %}
-      {{ button_row('action.remove'|trans) }}
-    {% endif %}
-  </form>
+  {{ include('bad_phrase/_list.html.twig', { bad_phrases: bad_phrases }, with_context=false) }}
 {% endblock body %}

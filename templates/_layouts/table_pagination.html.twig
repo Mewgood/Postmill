@@ -13,7 +13,9 @@
     </table>
 
     {% block footer %}
-      {{ include('_includes/pagination.html.twig', { pager: items }, with_context=false) }}
+      {% if pager.hasNextPage is defined %}
+        {{ include('_includes/pagination.html.twig', { pager: items }, with_context=false) }}
+      {% endif %}
     {% endblock %}
   {% else %}
     <p>

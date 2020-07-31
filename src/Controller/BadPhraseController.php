@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\DataObject\BadPhraseData;
 use App\Entity\BadPhrase;
+use App\Form\BadPhraseSearchType;
 use App\Form\BadPhraseType;
 use App\Repository\BadPhraseRepository;
+use App\Utils\BadPhraseMatcher;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,9 +22,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface as Validator;
  * @IsGranted("ROLE_ADMIN", statusCode=403)
  */
 final class BadPhraseController extends AbstractController {
-    public function list(BadPhraseRepository $badPhrases): Response {
+    public function list(BadPhraseRepository $badPhrases, int $page): Response {
         return $this->render('bad_phrase/list.html.twig', [
-            'bad_phrases' => $badPhrases->findPaginated(),
+            'bad_phrases' => $badPhrases->findPaginated($page),
         ]);
     }
 
@@ -53,6 +55,29 @@ final class BadPhraseController extends AbstractController {
         ]);
     }
 
+    public function search(BadPhraseMatcher $matcher, Request $request): Response {
+        $form = $this->createForm(BadPhraseSearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $query = $form->getData()['query'];
+            $matches = isset($query) ? $matcher->findMatching($query) : null;
+        }
+
+        return $this->render('bad_phrase/search.html.twig', [
+            'bad_phrases' => $matches ?? null,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function renderSearchForm(): Response {
+        $form = $this->createForm(BadPhraseSearchType::class);
+
+        return $this->render('bad_phrase/_search_form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     public function remove(Request $request, EntityManager $em, Validator $validator): Response {
         $this->validateCsrf('remove_bad_phrase', $request->request->get('token'));
         $ids = (array) $request->request->get('remove_bad_phrase');
@@ -66,7 +91,7 @@ final class BadPhraseController extends AbstractController {
             throw new BadRequestHttpException('Invalid UUID');
         }
 
-        $em->transactional(static function () use ($em, $ids) {
+        $em->transactional(static function () use ($em, $ids): void {
             foreach ($ids as $id) {
                 $entity = $em->find(BadPhrase::class, Uuid::fromString($id));
 

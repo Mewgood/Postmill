@@ -3,30 +3,27 @@
 namespace App\Repository;
 
 use App\Entity\BadPhrase;
-use App\Pagination\TimestampPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
-use PagerWave\Adapter\DoctrineAdapter;
-use PagerWave\CursorInterface;
-use PagerWave\PaginatorInterface;
+use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Pagerfanta\Pagerfanta;
 
 class BadPhraseRepository extends ServiceEntityRepository {
-    /**
-     * @var PaginatorInterface
-     */
-    private $paginator;
-
-    public function __construct(
-        ManagerRegistry $registry,
-        PaginatorInterface $paginator
-    ) {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, BadPhrase::class);
-        $this->paginator = $paginator;
     }
 
-    public function findPaginated(): CursorInterface {
-        $adapter = new DoctrineAdapter($this->createQueryBuilder('bp'));
+    public function findPaginated(int $page): Pagerfanta {
+        $criteria = Criteria::create()
+            ->orderBy(['timestamp' => 'DESC', 'id' => 'ASC']);
 
-        return $this->paginator->paginate($adapter, 50, new TimestampPage());
+        $adapter = new DoctrineSelectableAdapter($this, $criteria);
+
+        $pager = new Pagerfanta($adapter);
+        $pager->setMaxPerPage(50);
+        $pager->setCurrentPage($page);
+
+        return $pager;
     }
 }

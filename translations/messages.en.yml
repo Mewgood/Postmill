@@ -58,6 +58,7 @@ background.tile: Tile
 bad_phrase.help: This tool lets you ban phrases of text from being posted. It can be used to prevent spam, or to suppress dissent.
 bad_phrase.phrase: Phrase
 bad_phrase.phrase_to_ban: Phrase to ban
+bad_phrase.search_title: Search bad phrases
 bad_phrase.title: Bad phrases
 bad_phrase.type_text: Text
 bad_phrase.type_regex: Regex
