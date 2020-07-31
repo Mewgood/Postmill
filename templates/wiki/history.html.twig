@@ -12,7 +12,7 @@
   })|raw }}</h1>
 
   <form action="{{ path('wiki_diff') }}" class="flow">
-    {% embed '_layouts/table_pagination.html.twig' with { items: revisions } %}
+    {% embed '_layouts/table.html.twig' with { items: revisions } %}
       {% block header %}
         <th class="table__shrink" colspan="2">{{ 'label.compare'|trans }}</th>
         <th class="table__shrink">{{ 'wiki.id_label'|trans }}</th>

@@ -23,7 +23,7 @@
     {{ form_end(form) }}
   </details>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: users } %}
+  {% embed '_layouts/table.html.twig' with { items: users } %}
     {% block header %}
       <th class="table__shrink">{{ 'label.id'|trans }}</th>
       <th>{{ 'label.username'|trans }}</th>

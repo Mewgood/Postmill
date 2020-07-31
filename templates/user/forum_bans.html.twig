@@ -15,7 +15,7 @@
     {{ 'title.user_forum_bans'|trans({'%user%': user_link(user, {prefix: true})})|raw }}
   </h1>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: bans } %}
+  {% embed '_layouts/table.html.twig' with { items: bans } %}
     {% block header %}
       <th class="table__shrink">{{ 'label.forum'|trans }}</th>
       <th class="table__shrink">{{ 'label.banned_by'|trans }}</th>

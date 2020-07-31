@@ -19,7 +19,7 @@
     </nav>
   </div>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: themes } %}
+  {% embed '_layouts/table.html.twig' with { items: themes } %}
     {% block header %}
       <th>{{ 'label.name'|trans }}</th>
       <th class="table__shrink">{{ 'label.type'|trans }}</th>

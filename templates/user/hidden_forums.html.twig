@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: forums } %}
+  {% embed '_layouts/table.html.twig' with { items: forums } %}
     {% block header %}
       <th class="table__shrink">{{ 'label.name'|trans }}</th>
       <th>{{ 'label.title'|trans }}</th>

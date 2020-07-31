@@ -15,7 +15,7 @@
     <a href="{{ path('create_forum_category') }}" class="button">{{ 'nav.new_category'|trans }}</a>
   </p>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: categories } %}
+  {% embed '_layouts/table.html.twig' with { items: categories } %}
     {% block header %}
       <th class="table__shrink">{{ 'label.name'|trans }}</th>
       <th>{{ 'label.title'|trans }}</th>

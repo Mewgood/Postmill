@@ -14,7 +14,7 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: pages } %}
+  {% embed '_layouts/table.html.twig' with { items: pages } %}
     {% block header %}
       <th class="table__shrink">{{ 'wiki.path'|trans }}</th>
       <th>{{ 'wiki.page_title'|trans }}</th>

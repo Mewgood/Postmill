@@ -10,7 +10,7 @@
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 
-  {% embed '_layouts/table_pagination.html.twig' with { items: bans } %}
+  {% embed '_layouts/table.html.twig' with { items: bans } %}
     {% block header %}
       <th class="table__shrink">{{ 'label.username'|trans }}</th>
       <th>{{ 'label.reason'|trans }}</th>

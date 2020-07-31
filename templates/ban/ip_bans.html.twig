@@ -20,7 +20,7 @@
   <form action="{{ path('unban_ips') }}" method="POST" class="form">
     <input type="hidden" name="token" value="{{ csrf_token('unban_ips') }}">
 
-    {% embed '_layouts/table_pagination.html.twig' with { items: bans } %}
+    {% embed '_layouts/table.html.twig' with { items: bans } %}
       {% block header %}
         <th class="table__shrink"></th>
         <th class="table__shrink">{{ 'label.ip_address'|trans }}</th>
