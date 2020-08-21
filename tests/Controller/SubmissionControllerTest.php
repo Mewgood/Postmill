@@ -84,6 +84,21 @@ class SubmissionControllerTest extends WebTestCase {
     }
 
     /**
+     * @see https://gitlab.com/postmill/Postmill/-/issues/74
+     */
+    public function testCannotEditSubmissionToIncludeBannedPhrase(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/f/cats/3/-/edit');
+
+        $client->submitForm('Edit submission', [
+            'submission[body]' => 'orson pig',
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('.form-error-list', 'The field contains a banned word or phrase');
+    }
+
+    /**
      * @see https://gitlab.com/postmill/Postmill/-/issues/63
      */
     public function testSubmittingWithWhitespaceOnlyBodyDoesNotFail(): void {
