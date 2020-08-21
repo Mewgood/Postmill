@@ -147,14 +147,14 @@ final class SubmissionType extends AbstractType {
                 $groups[] = 'url';
             }
         } else {
-            $groups[] = 'edit';
+            $groups[] = 'update';
 
             if ($form->getData()->getMediaType() === Submission::MEDIA_URL) {
                 $groups[] = 'url';
             }
 
             if (!$whitelisted) {
-                $groups[] = 'unwhitelisted_user_edit';
+                $groups[] = 'unwhitelisted_user_update';
             }
         }
 
