@@ -8,9 +8,6 @@ services:
 framework:
     cache:
         pools:
-            cache.images:
-                adapter: cache.app
-                public: true
             cache.markdown:
                 adapter: cache.app
                 default_lifetime: "%markdown_cache_time%"
