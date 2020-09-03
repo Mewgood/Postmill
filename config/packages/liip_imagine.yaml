@@ -1,19 +1,6 @@
 services:
-    _defaults:
-        public: false
-
     League\Flysystem\FilesystemInterface $submissionImages: '@postmill.submission_images'
     League\Flysystem\FilesystemInterface $submissionThumbnails: '@postmill.submission_thumbnails'
-
-    postmill.imagine_cache:
-        class: Symfony\Component\Cache\DoctrineProvider
-        arguments: ["@cache.images"]
-
-    postmill.imagine_cache_resolver:
-        class: Liip\ImagineBundle\Imagine\Cache\Resolver\CacheResolver
-        arguments: ["@postmill.imagine_cache", "@liip_imagine.cache.resolver.default"]
-        tags:
-            - { name: liip_imagine.cache.resolver, resolver: postmill.imagine_cache }
 
     postmill.submission_images:
         class: League\Flysystem\FilesystemInterface
@@ -30,8 +17,6 @@ services:
 
 # https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html#create-thumbnails
 liip_imagine:
-    cache: postmill.imagine_cache
-
     filter_sets:
         submission_thumbnail_1x:
             filters:
