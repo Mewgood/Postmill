@@ -11,24 +11,29 @@ use App\Event\CommentUpdated;
 use App\Event\SubmissionCreated;
 use App\Event\SubmissionUpdated;
 use App\EventListener\LanguageListener;
+use App\Utils\LanguageDetector;
 use Doctrine\ORM\EntityManagerInterface;
-use LanguageDetection\Language;
-use LanguageDetection\LanguageResult;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  * @covers \App\EventListener\LanguageListener
  */
 class LanguageListenerTest extends TestCase {
     /**
+     * @var LanguageDetector|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $detector;
+
+    /**
      * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 
     /**
-     * @var Language|\PHPUnit\Framework\MockObject\MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private $language;
+    private $logger;
 
     /**
      * @var LanguageListener
@@ -36,9 +41,10 @@ class LanguageListenerTest extends TestCase {
     private $listener;
 
     protected function setUp(): void {
+        $this->detector = $this->createMock(LanguageDetector::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->language = $this->createMock(Language::class);
-        $this->listener = new LanguageListener($this->entityManager, $this->language, null);
+        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->listener = new LanguageListener($this->detector, $this->entityManager, $this->logger);
     }
 
     public function testSetsLanguageForNewSubmission(): void {
@@ -122,22 +128,31 @@ class LanguageListenerTest extends TestCase {
     }
 
     private function expectLanguageDetected(string $expectedDocument): void {
-        $this->language
+        $this->detector
             ->expects($this->once())
             ->method('detect')
             ->with($expectedDocument)
-            ->willReturn(new LanguageResult([
-                'en' => 0.69,
-                'nb' => 0.420,
-            ]));
+            ->willReturnCallback(static function (string $input, float &$confidence = null) {
+                $confidence = 0.69;
+
+                return 'en';
+            });
 
         $this->entityManager
             ->expects($this->once())
             ->method('flush');
+
+        $this->logger
+            ->expects($this->once())
+            ->method('info')
+            ->with(
+                'Language detection: best match was {lang} with {confidence}',
+                ['lang' => 'en', 'confidence' => 0.69]
+            );
     }
 
     private function expectNoLanguageDetection(): void {
-        $this->language
+        $this->detector
             ->expects($this->never())
             ->method('detect');
 
