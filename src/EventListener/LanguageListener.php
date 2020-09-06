@@ -8,22 +8,22 @@ use App\Event\CommentCreated;
 use App\Event\CommentUpdated;
 use App\Event\SubmissionCreated;
 use App\Event\SubmissionUpdated;
+use App\Utils\LanguageDetector;
 use Doctrine\ORM\EntityManagerInterface;
-use LanguageDetection\Language;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class LanguageListener implements EventSubscriberInterface {
     /**
+     * @var LanguageDetector
+     */
+    private $detector;
+
+    /**
      * @var EntityManagerInterface
      */
     private $entityManager;
-
-    /**
-     * @var Language
-     */
-    private $language;
 
     /**
      * @var LoggerInterface
@@ -40,12 +40,12 @@ final class LanguageListener implements EventSubscriberInterface {
     }
 
     public function __construct(
+        LanguageDetector $detector,
         EntityManagerInterface $entityManager,
-        Language $language,
         ?LoggerInterface $logger
     ) {
+        $this->detector = $detector;
         $this->entityManager = $entityManager;
-        $this->language = $language;
         $this->logger = $logger ?? new NullLogger();
     }
 
@@ -92,9 +92,7 @@ final class LanguageListener implements EventSubscriberInterface {
             return null;
         }
 
-        $results = $this->language->detect($input)->bestResults()->close();
-        $language = array_key_first($results);
-        $confidence = $results[$language] ?? null;
+        $language = $this->detector->detect($input, $confidence);
 
         $this->logger->info(
             'Language detection: best match was {lang} with {confidence}',
