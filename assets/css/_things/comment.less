@@ -8,12 +8,6 @@
   display: flex;
   flex-direction: column;
 
-  &__context {
-    p {
-      margin-bottom: 0;
-    }
-  }
-
   &__row {
     border: solid @border-thin var(--border-light);
     border-bottom: none;
@@ -65,17 +59,17 @@
     padding: 0.5rem;
   }
 
-  &__replying-to {
+  &__content {
     margin-bottom: 0.5rem;
+    padding-right: 0.5rem;
   }
 
   &__body {
     min-height: 1rem;
-    padding-right: 0.5rem;
   }
 
   &__nav {
-    margin: 0.5rem 0;
+    margin-bottom: 0.5rem;
   }
 
   &--nested:last-child {
