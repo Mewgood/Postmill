@@ -5,16 +5,11 @@
   {%- from 'vote/_macros.html.twig' import vote -%}
   <article class="comment
                   comment--{{ level > 1 ? 'nested' : 'top-level' }}
-                  {{ show_context ? 'comment--with-context' }}
                   comment--visibility-{{ comment.visibility|replace({'_': '-'}) }}
                   hideable"
            id="comment_{{ comment.id }}"
            data-level="{{ level }}">
     <input type="checkbox" class="hideable__checkbox" id="comment_toggle_{{ comment.id }}" {{ not hidden ? 'checked' }}>
-
-    {% if show_context %}
-      {{- block('comment_context') -}}
-    {% endif %}
 
     <div class="comment__row">
       <div class="comment__main">
@@ -58,31 +53,22 @@
           </ul>
         </header>
 
-        {%- if post_numbers and comment.parent -%}
-          <p class="comment__replying-to hideable__hide">
-            <a href="{{ path('submission', {
-               forum_name: comment.submission.forum.name,
-               submission_id: comment.submission.id,
-               slug: comment.submission.title|slugify,
-               commentView: 'linear'
-            }) }}#comment_{{ comment.parent.id }}" class="fg-grey no-underline">
-              {{- icon('forward') }}
-              {{ 'comments.replying_to_comment'|trans({
-                '%user%': '<span class="fg-muted">%s</span>'|format(comment.parent.user.username|e),
-                '%id%': '<span class="fg-primary no-underline__exempt">%s</span>'|format(
-                  'number.id'|trans({ '%number%': comment.parent.id|format_number|e })
-                )
-              })|raw -}}
-            </a>
-          </p>
-        {%- endif -%}
+        <div class="comment__content flow-slim hideable__hide">
+          {% if show_context %}
+            {{ block('comment_context') }}
+          {% endif %}
 
-        <div class="comment__body break-text hideable__hide text-flow"{{ not comment.softDeleted ? lang_attributes(comment.language) }}>
-          {%- if raw_body is not null -%}
-            {{ raw_body|raw }}
-          {%- elseif (comment.visible or show_trashed) and comment.body is not null -%}
-            {{ comment.body|cached_markdown|raw }}
-          {%- endif -%}
+          {% if post_numbers and comment.parent %}
+            {{ block('comment_replying_to') }}
+          {% endif %}
+
+          <div class="comment__body break-text text-flow"{{ not comment.softDeleted ? lang_attributes(comment.language) }}>
+            {%- if raw_body is not null -%}
+              {{ raw_body|raw }}
+            {%- elseif (comment.visible or show_trashed) and comment.body is not null -%}
+              {{ comment.body|cached_markdown|raw }}
+            {%- endif -%}
+          </div>
         </div>
 
         <nav class="comment__nav hideable__hide">
@@ -118,9 +104,11 @@
 {%- endblock comment -%}
 
 {% block comment_context %}
+  {% from '_macros/icon.html.twig' import icon %}
   {% with { submission: comment.submission, forum: comment.submission.forum } %}
-    <div class="comment__context break-text text-sm">
-      <p class="fg-muted">
+    <div class="fg-muted flex flex--slim-gutters flex--no-wrap comment__context">
+      {{ icon('forward') }}
+      <p>
         {{ (comment.parent ? 'comments.context.comment_reply' : 'comments.context.top_level_reply')|trans({
           '%comment_author%': block('comment_context_link_format')|format(
             path('user', { username: comment.user.username })|e,
@@ -135,9 +123,32 @@
             submission.user.username|e
           ),
         })|raw }}
+      </p>
     </div>
   {% endwith %}
 {% endblock comment_context %}
+
+{% block comment_replying_to %}
+  {% from '_macros/icon.html.twig' import icon %}
+  <div class="fg-muted flex flex--slim-gutters flex--no-wrap comment__replying-to">
+    {{ icon('forward') }}
+    <p>
+      <a href="{{ path('submission', {
+        forum_name: comment.submission.forum.name,
+        submission_id: comment.submission.id,
+        slug: comment.submission.title|slugify,
+        commentView: 'linear'
+      }) }}#comment_{{ comment.parent.id }}" class="fg-grey no-underline">
+        {{ 'comments.replying_to_comment'|trans({
+          '%user%': '<span class="fg-muted">%s</span>'|format(comment.parent.user.username|e),
+          '%id%': '<span class="fg-link no-underline__exempt">%s</span>'|format(
+            'number.id'|trans({ '%number%': comment.parent.id|format_number|e })
+          )
+        })|raw -}}
+      </a>
+    </p>
+  </div>
+{% endblock comment_replying_to %}
 
 {%- block comment_context_link_format -%}
   <a href="%s" class="fg-inherit"><strong>%s</strong></a>
