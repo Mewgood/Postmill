@@ -105,24 +105,34 @@
 
 {% block comment_context %}
   {% from '_macros/icon.html.twig' import icon %}
-  {% with { submission: comment.submission, forum: comment.submission.forum } %}
+  {% with {
+    submission_author: block('comment_context_link_format')|format(
+      path('user', { username: comment.submission.user.username })|e,
+      comment.submission.user.username|e
+    ),
+    submission_title: block('comment_context_link_format')|format(
+      path('submission', { forum_name: comment.submission.forum.name, submission_id: comment.submission.id })|e,
+      comment.submission.title|e
+    ),
+  } %}
     <div class="fg-muted flex flex--slim-gutters flex--no-wrap comment__context">
       {{ icon('forward') }}
       <p>
-        {{ (comment.parent ? 'comments.context.comment_reply' : 'comments.context.top_level_reply')|trans({
-          '%comment_author%': block('comment_context_link_format')|format(
-            path('user', { username: comment.user.username })|e,
-            comment.user.username|e
-          ),
-          '%submission_title%': block('comment_context_link_format')|format(
-            path('submission', {forum_name: forum.name, submission_id: submission.id})|e,
-            submission.title|e
-          ),
-          '%submission_author%': block('comment_context_link_format')|format(
-            path('user', { username: submission.user.username })|e,
-            submission.user.username|e
-          ),
-        })|raw }}
+        {% if comment.parent %}
+          {{ 'comments.context.comment_reply'|trans({
+            '%comment_author%': block('comment_context_link_format')|format(
+              path('user', { username: comment.parent.user.username })|e,
+              comment.parent.user.username|e
+            ),
+            '%submission_title%': submission_title,
+            '%submission_author%': submission_author,
+          })|raw }}
+        {% else %}
+          {{ 'comments.context.top_level_reply'|trans({
+            '%submission_title%': submission_title,
+            '%submission_author%': submission_author,
+          })|raw }}
+        {% endif %}
       </p>
     </div>
   {% endwith %}
