@@ -6,7 +6,7 @@ use App\Entity\UserBan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 
 class UserBanRepository extends ServiceEntityRepository {
@@ -30,7 +30,7 @@ class UserBanRepository extends ServiceEntityRepository {
             ->orderBy('m.timestamp', 'DESC')
             ->setParameter('now', $now, Types::DATETIMETZ_IMMUTABLE);
 
-        $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $pager = new Pagerfanta(new QueryAdapter($qb));
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($page);
 

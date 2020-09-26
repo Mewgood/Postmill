@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\WikiPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 
 /**
@@ -31,7 +31,7 @@ class WikiPageRepository extends ServiceEntityRepository {
         $qb = $this->createQueryBuilder('wp')
             ->orderBy('wp.normalizedPath', 'ASC');
 
-        $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $pager = new Pagerfanta(new QueryAdapter($qb));
         $pager->setMaxPerPage(25);
         $pager->setCurrentPage($page);
 

@@ -6,7 +6,7 @@ use App\Entity\BadPhrase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
 
 class BadPhraseRepository extends ServiceEntityRepository {
@@ -18,7 +18,7 @@ class BadPhraseRepository extends ServiceEntityRepository {
         $criteria = Criteria::create()
             ->orderBy(['timestamp' => 'DESC', 'id' => 'ASC']);
 
-        $adapter = new DoctrineSelectableAdapter($this, $criteria);
+        $adapter = new SelectableAdapter($this, $criteria);
 
         $pager = new Pagerfanta($adapter);
         $pager->setMaxPerPage(50);

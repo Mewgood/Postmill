@@ -6,7 +6,7 @@ use App\Entity\MessageThread;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 
 class MessageThreadRepository extends ServiceEntityRepository {
@@ -23,7 +23,7 @@ class MessageThreadRepository extends ServiceEntityRepository {
             ->orderBy('mt.id', 'DESC')
             ->setParameter(':user', $user);
 
-        $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $pager = new Pagerfanta(new QueryAdapter($qb));
         $pager->setMaxPerPage(25);
         $pager->setCurrentPage($page);
 

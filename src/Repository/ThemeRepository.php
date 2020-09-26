@@ -6,7 +6,7 @@ use App\Entity\Theme;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
 
 class ThemeRepository extends ServiceEntityRepository {
@@ -24,7 +24,7 @@ class ThemeRepository extends ServiceEntityRepository {
         $criteria = Criteria::create()
             ->orderBy(['name' => 'ASC']);
 
-        $pager = new Pagerfanta(new DoctrineSelectableAdapter($this, $criteria));
+        $pager = new Pagerfanta(new SelectableAdapter($this, $criteria));
         $pager->setMaxPerPage(25);
         $pager->setCurrentPage($page);
 
