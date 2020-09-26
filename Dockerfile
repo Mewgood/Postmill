@@ -1,6 +1,7 @@
-ARG COMPOSER_VERSION=2.0.0-alpha2
+ARG COMPOSER_VERSION=2.0.0-RC1
 ARG PHP_VERSION=7.4
 ARG NODE_VERSION=14
+ARG NGINX_VERSION=1.18
 
 # ======
 # Assets
@@ -169,7 +170,7 @@ VOLUME /app/var
 # Nginx
 # =====
 
-FROM nginx:1.17-alpine AS postmill_web
+FROM nginx:${NGINX_VERSION}-alpine AS postmill_web
 
 WORKDIR /app
 
