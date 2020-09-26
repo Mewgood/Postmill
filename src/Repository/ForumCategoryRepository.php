@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\ForumCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 
 class ForumCategoryRepository extends ServiceEntityRepository {
@@ -20,7 +20,7 @@ class ForumCategoryRepository extends ServiceEntityRepository {
         $qb = $this->createQueryBuilder('fc')
             ->orderBy('fc.normalizedName', 'ASC');
 
-        $pager = new Pagerfanta(new DoctrineORMAdapter($qb, false, false));
+        $pager = new Pagerfanta(new QueryAdapter($qb, false, false));
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($page);
 

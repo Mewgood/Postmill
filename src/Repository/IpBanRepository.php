@@ -7,7 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
 
 class IpBanRepository extends ServiceEntityRepository {
@@ -21,7 +21,7 @@ class IpBanRepository extends ServiceEntityRepository {
     public function findAllPaginated(int $page, $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'DESC']);
 
-        $bans = new Pagerfanta(new DoctrineSelectableAdapter($this, $criteria));
+        $bans = new Pagerfanta(new SelectableAdapter($this, $criteria));
         $bans->setMaxPerPage($maxPerPage);
         $bans->setCurrentPage($page);
 

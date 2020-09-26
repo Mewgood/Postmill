@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
 
 /**
@@ -110,7 +110,7 @@ class WikiPage {
     public function getPaginatedRevisions(int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'DESC']);
 
-        $revisions = new Pagerfanta(new DoctrineSelectableAdapter($this->revisions, $criteria));
+        $revisions = new Pagerfanta(new SelectableAdapter($this->revisions, $criteria));
         $revisions->setMaxPerPage($maxPerPage);
         $revisions->setCurrentPage($page);
 

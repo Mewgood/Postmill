@@ -11,7 +11,7 @@ use App\Repository\Traits\PrunesIpAddressesTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
 use PagerWave\Adapter\DoctrineAdapter;
 use PagerWave\Adapter\UnionAdapter;
@@ -153,7 +153,7 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
      * @return Pagerfanta|User[]
      */
     public function findPaginated(int $page, Criteria $criteria): Pagerfanta {
-        $pager = new Pagerfanta(new DoctrineSelectableAdapter($this, $criteria));
+        $pager = new Pagerfanta(new SelectableAdapter($this, $criteria));
         $pager->setMaxPerPage(25);
         $pager->setCurrentPage($page);
 

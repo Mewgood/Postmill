@@ -10,8 +10,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
-use Pagerfanta\Adapter\DoctrineCollectionAdapter;
-use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Pagerfanta\Doctrine\Collections\CollectionAdapter;
+use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -519,7 +519,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * @return Pagerfanta|Forum[]
      */
     public function getPaginatedHiddenForums(int $page): Pagerfanta {
-        $pager = new Pagerfanta(new DoctrineCollectionAdapter($this->hiddenForums));
+        $pager = new Pagerfanta(new CollectionAdapter($this->hiddenForums));
         $pager->setMaxPerPage(25);
         $pager->setCurrentPage($page);
 
@@ -575,7 +575,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     public function getPaginatedNotifications(int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['id' => 'DESC']);
 
-        $notifications = new Pagerfanta(new DoctrineSelectableAdapter($this->notifications, $criteria));
+        $notifications = new Pagerfanta(new SelectableAdapter($this->notifications, $criteria));
         $notifications->setMaxPerPage($maxPerPage);
         $notifications->setCurrentPage($page);
 
@@ -633,7 +633,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * @return Pagerfanta|UserBlock[]
      */
     public function getPaginatedBlocks(int $page, int $maxPerPage = 25): Pagerfanta {
-        $pager = new Pagerfanta(new DoctrineCollectionAdapter($this->blocks));
+        $pager = new Pagerfanta(new CollectionAdapter($this->blocks));
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($page);
 

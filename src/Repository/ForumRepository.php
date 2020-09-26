@@ -11,7 +11,7 @@ use App\Entity\Moderator;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -79,7 +79,7 @@ class ForumRepository extends ServiceEntityRepository {
 
         $qb->addOrderBy('f.normalizedName', 'ASC')->groupBy('f.id');
 
-        $pager = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $pager = new Pagerfanta(new QueryAdapter($qb));
         $pager->setMaxPerPage(25);
         $pager->setCurrentPage($page);
 

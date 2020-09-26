@@ -11,8 +11,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
-use Pagerfanta\Adapter\DoctrineCollectionAdapter;
-use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Pagerfanta\Doctrine\Collections\CollectionAdapter;
+use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -237,7 +237,7 @@ class Forum implements BackgroundImage, DomainEvents {
     public function getPaginatedModerators(int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'ASC']);
 
-        $moderators = new Pagerfanta(new DoctrineSelectableAdapter($this->moderators, $criteria));
+        $moderators = new Pagerfanta(new SelectableAdapter($this->moderators, $criteria));
         $moderators->setMaxPerPage($maxPerPage);
         $moderators->setCurrentPage($page);
 
@@ -356,7 +356,7 @@ class Forum implements BackgroundImage, DomainEvents {
             ->where(Criteria::expr()->eq('user', $user))
             ->orderBy(['timestamp' => 'DESC']);
 
-        $pager = new Pagerfanta(new DoctrineSelectableAdapter($this->bans, $criteria));
+        $pager = new Pagerfanta(new SelectableAdapter($this->bans, $criteria));
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($page);
 
@@ -423,7 +423,7 @@ class Forum implements BackgroundImage, DomainEvents {
      * @return Pagerfanta|ForumLogEntry[]
      */
     public function getPaginatedLogEntries(int $page, int $max = 50): Pagerfanta {
-        $pager = new Pagerfanta(new DoctrineCollectionAdapter($this->logEntries));
+        $pager = new Pagerfanta(new CollectionAdapter($this->logEntries));
         $pager->setMaxPerPage($max);
         $pager->setCurrentPage($page);
 
