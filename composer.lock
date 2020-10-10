@@ -3991,16 +3991,16 @@
         },
         {
             "name": "postmill/pagerwave",
-            "version": "v1.2.2",
+            "version": "v1.2.3",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.com/postmill/PagerWave.git",
-                "reference": "be191478ab3de13cad50411c33b7d53ebccfaaa5"
+                "url": "https://gitlab.com/pagerwave/PagerWave.git",
+                "reference": "ea137b24a73ddf6a516cf60deee354b6f98cb2e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/postmill%2FPagerWave/repository/archive.zip?sha=be191478ab3de13cad50411c33b7d53ebccfaaa5",
-                "reference": "be191478ab3de13cad50411c33b7d53ebccfaaa5",
+                "url": "https://gitlab.com/api/v4/projects/pagerwave%2FPagerWave/repository/archive.zip?sha=ea137b24a73ddf6a516cf60deee354b6f98cb2e6",
+                "reference": "ea137b24a73ddf6a516cf60deee354b6f98cb2e6",
                 "shasum": ""
             },
             "require": {
@@ -4039,7 +4039,7 @@
             "support": {
                 "issues": "https://gitlab.com/api/v4/projects/18234042/issues"
             },
-            "time": "2020-08-08T15:35:42+00:00"
+            "time": "2020-10-10T21:45:01+00:00"
         },
         {
             "name": "psr/cache",
