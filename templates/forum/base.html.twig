@@ -133,6 +133,28 @@
     </ul>
   </section>
 
+  {% with { tags: forum.tags } %}
+    {% if tags is not empty %}
+      <section class="sidebar__section flow">
+        <h1 class="sidebar__title">{{ 'label.tags'|trans }}</h1>
+
+        <ul class="flex flex--slim-gutters unlistify">
+          {% for tag in tags %}
+            <li>
+              <a href="{{ path('forum_tag', { name: tag.name }) }}"
+                 class="button button--secondary button--small">
+                <span class="flex flex--slim-gutters flex--no-wrap">
+                  {{ icon('tag') }}
+                  <span>{{ tag.name -}}</span>
+                </span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  {% endwith %}
+
   {% if forum.moderators is not empty or is_granted('ROLE_ADMIN') %}
     <section class="sidebar__section flow">
       <div class="flex flex--guttered">

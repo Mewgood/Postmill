@@ -97,12 +97,9 @@ forum.subscriber_count: '{0} Sem inscritos|{1} %formatted_count% inscrito|[1,Inf
 
 forum_form.featured: Mostrar na página inicial
 
-forum_list.category_view: Ver por categorias
-forum_list.list_view: Ver em lista
 forum_list.page_title: Lista de fóruns
 forum_list.submission_count: Postagens
 forum_list.subscribers: Inscritos
-forum_list.uncategorized: Não categorizado
 
 forum_moderators.last_seen: Visto por último
 forum_moderators.since: Desde
@@ -137,7 +134,6 @@ label.bans: Banimentos
 label.biography: Biografia
 label.blocked: Bloqueado
 label.body: Corpo
-label.category: Categoria
 label.comment: Comentário
 label.date: Data
 label.default: Padrão
@@ -213,7 +209,6 @@ nav.wiki: Wiki
 placeholder.default: (padrão)
 placeholder.deleted: '[removido]'
 placeholder.choose_one: Escolha um…
-placeholder.uncategorized: (não categorizado)
 
 prompt.confirm_comment_delete: Tem certeza que quer apagar este comentário?
 prompt.confirm_submission_delete: Tem certeza que quer apagar esta postagem?

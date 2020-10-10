@@ -77,12 +77,9 @@ forum.subscriber_count: '{0} Ei tilaajia|{1} %formatted_count% tilaaja|[1,Inf[ %
 forum.delete: Poista foorumi
 forum_form.featured: Näytä etusivulla
 
-forum_list.category_view: Kategorianäkymä
-forum_list.list_view: Listanäkymä
 forum_list.page_title: Foorumilista
 forum_list.submission_count: Lisäyksiä
 forum_list.subscribers: Tilaajat
-forum_list.uncategorized: Kategorisoimattomat
 
 forum_moderators.last_seen: Paikalla viimeksi
 forum_moderators.since: Ajasta
@@ -99,7 +96,6 @@ front.subscribed_forums: Tilatut foorumit
 inbox.message_reply_head: 'VS: %title%'
 
 label.body: Sisältö
-label.category: Kategoria
 label.comment: Kommentoi
 label.description: Kuvaus
 label.email_address: Sähköpostiosoite
@@ -139,7 +135,6 @@ nav.user_settings: Käyttäjäasetukset
 nav.wiki: Wiki
 
 placeholder.deleted: '[poistettu]'
-placeholder.uncategorized: (ei kategorisoitu)
 
 request_password_reset.multiple_accounts_notice: Jos sinulla on monta käyttäjätunnusta samalla sähköpostiosoitteella, saat yhden sähköpostin käyttäjätunnusta kohti.
 request_password_reset.no_confirmation_notice: Jos et saa sähköpostia, antamasi osoite on luultavasti väärä. Yksityisyyssyistä emme kerro, onko antamasi sähköpostiosoitteen omistaja Radditin käyttäjä.

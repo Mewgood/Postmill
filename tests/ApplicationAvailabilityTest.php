@@ -103,13 +103,13 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/featured/top.atom'];
         yield ['/featured/controversial.atom'];
         yield ['/featured/most_commented.atom'];
-        yield ['/c/pets'];
-        yield ['/c/pets/hot'];
-        yield ['/c/pets/new'];
-        yield ['/c/pets/active'];
-        yield ['/c/pets/top'];
-        yield ['/c/pets/controversial'];
-        yield ['/c/pets/most_commented'];
+        yield ['/tag/pets'];
+        yield ['/tag/pets/hot'];
+        yield ['/tag/pets/new'];
+        yield ['/tag/pets/active'];
+        yield ['/tag/pets/top'];
+        yield ['/tag/pets/controversial'];
+        yield ['/tag/pets/most_commented'];
         yield ['/f/news'];
         yield ['/f/news/hot'];
         yield ['/f/news/new'];
@@ -147,6 +147,14 @@ class ApplicationAvailabilityTest extends WebTestCase {
     }
 
     public function redirectUrlProvider(): iterable {
+        yield ['/tag/pets', '/c/pets'];
+        yield ['/tag/pets/hot', '/c/pets/hot'];
+        yield ['/tag/pets/new', '/c/pets/new'];
+        yield ['/tag/pets/active', '/c/pets/active'];
+        yield ['/tag/pets/top', '/c/pets/top'];
+        yield ['/tag/pets/controversial', '/c/pets/controversial'];
+        yield ['/tag/pets/most_commented', '/c/pets/most_commented'];
+        yield ['/tag/pets', '/tag/PETS'];
         yield ['/f/news', '/f/news/'];
         yield ['/f/news/new', '/f/NeWs/new'];
         yield ['/f/news/top', '/f/NeWs/top'];

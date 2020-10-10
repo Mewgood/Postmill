@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DataObject\ForumData;
+use App\DataTransfer\ForumManager;
 use App\Entity\Forum;
 use App\Entity\Moderator;
 use App\Entity\User;
@@ -13,12 +14,11 @@ use App\Form\ForumType;
 use App\Form\Model\ForumBanData;
 use App\Form\Model\ModeratorData;
 use App\Form\ModeratorType;
-use App\Repository\TrashRepository;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
-use App\Repository\ForumCategoryRepository;
 use App\Repository\ForumLogEntryRepository;
 use App\Repository\ForumRepository;
+use App\Repository\TrashRepository;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -86,16 +86,19 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("create_forum", statusCode=403)
      */
-    public function createForum(Request $request, EntityManagerInterface $em): Response {
+    public function createForum(
+        Request $request,
+        ForumManager $forumManager,
+        EntityManagerInterface $em
+    ): Response {
         $data = new ForumData();
 
         $form = $this->createForm(ForumType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $forum = $data->toForum($this->getUser());
+            $forum = $forumManager->createForum($data, $this->getUserOrThrow());
 
-            $em->persist($forum);
             $em->flush();
 
             return $this->redirectToRoute('forum', [
@@ -112,14 +115,19 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
      */
-    public function editForum(Request $request, Forum $forum, EntityManagerInterface $em): Response {
-        $data = new ForumData($forum);
+    public function editForum(
+        Forum $forum,
+        Request $request,
+        ForumManager $forumManager,
+        EntityManagerInterface $em
+    ): Response {
+        $data = ForumData::createFromForum($forum);
 
         $form = $this->createForm(ForumType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data->updateForum($forum);
+            $forumManager->updateForum($forum, $data);
 
             $em->flush();
             $this->addFlash('success', 'flash.forum_updated');
@@ -197,16 +205,6 @@ final class ForumController extends AbstractController {
         return $this->render('forum/list.html.twig', [
             'forums' => $repository->findForumsByPage($page, $sortBy),
             'sortBy' => $sortBy,
-        ]);
-    }
-
-    public function listCategories(ForumCategoryRepository $fcr, ForumRepository $fr): Response {
-        $forumCategories = $fcr->findBy([], ['name' => 'ASC']);
-        $uncategorizedForums = $fr->findBy(['category' => null], ['normalizedName' => 'ASC']);
-
-        return $this->render('forum/list_by_category.html.twig', [
-            'forum_categories' => $forumCategories,
-            'uncategorized_forums' => $uncategorizedForums,
         ]);
     }
 
@@ -294,14 +292,19 @@ final class ForumController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("moderator", subject="forum", statusCode=403)
      */
-    public function appearance(Forum $forum, Request $request, EntityManagerInterface $em): Response {
-        $data = new ForumData($forum);
+    public function appearance(
+        Forum $forum,
+        Request $request,
+        ForumManager $forumManager,
+        EntityManagerInterface $em
+    ): Response {
+        $data = ForumData::createFromForum($forum);
 
         $form = $this->createForm(ForumAppearanceType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data->updateForum($forum);
+            $forumManager->updateForum($forum, $data);
 
             $em->flush();
 

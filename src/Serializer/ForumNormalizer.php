@@ -17,7 +17,7 @@ final class ForumNormalizer implements
     use NormalizerAwareTrait;
 
     public function normalize($object, string $format = null, array $context = []): array {
-        $object = new ForumData($object);
+        $object = ForumData::createFromForum($object);
 
         return $this->normalizer->normalize($object, $format, $context);
     }

@@ -116,11 +116,16 @@ class Forum implements BackgroundImage, DomainEvents {
     private $featured = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ForumCategory", inversedBy="forums")
+     * @ORM\JoinTable(name="forums_tags", joinColumns={
+     *     @ORM\JoinColumn(name="forum_id", referencedColumnName="id"),
+     * }, inverseJoinColumns={
+     *     @ORM\JoinColumn(name="tag_id", referencedColumnName="id"),
+     * })
+     * @ORM\ManyToMany(targetEntity="ForumTag", inversedBy="forums", cascade={"persist"}, fetch="EXTRA_LAZY")
      *
-     * @var ForumCategory|null
+     * @var ForumTag[]|Collection
      */
-    private $category;
+    private $tags;
 
     /**
      * @ORM\ManyToOne(targetEntity="Image", cascade={"persist"})
@@ -171,6 +176,7 @@ class Forum implements BackgroundImage, DomainEvents {
         $this->description = $description;
         $this->sidebar = $sidebar;
         $this->created = new \DateTimeImmutable('@'.time());
+        $this->tags = new ArrayCollection();
         $this->bans = new ArrayCollection();
         $this->moderators = new ArrayCollection();
         $this->submissions = new ArrayCollection();
@@ -379,12 +385,42 @@ class Forum implements BackgroundImage, DomainEvents {
         $this->featured = $featured;
     }
 
-    public function getCategory(): ?ForumCategory {
-        return $this->category;
+    /**
+     * @return ForumTag[]
+     */
+    public function getTags(): array {
+        $criteria = Criteria::create()
+            ->orderBy(['normalizedName' => 'ASC']);
+
+        return $this->tags->matching($criteria)->toArray();
     }
 
-    public function setCategory(?ForumCategory $category): void {
-        $this->category = $category;
+    public function hasTag(ForumTag $tag): bool {
+        return $this->tags->contains($tag);
+    }
+
+    public function addTags(ForumTag ...$tags): void {
+        foreach ($tags as $tag) {
+            if (!$this->tags->contains($tag)) {
+                $this->tags->add($tag);
+            }
+
+            if (!$tag->hasForum($this)) {
+                $tag->addForum($this);
+            }
+        }
+    }
+
+    public function removeTags(ForumTag ...$tags): void {
+        foreach ($tags as $tag) {
+            if ($this->tags->contains($tag)) {
+                $this->tags->removeElement($tag);
+            }
+
+            if ($tag->hasForum($this)) {
+                $tag->removeForum($this);
+            }
+        }
     }
 
     public function getLightBackgroundImage(): ?Image {

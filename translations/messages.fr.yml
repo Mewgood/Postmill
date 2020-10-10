@@ -115,12 +115,9 @@ forum.subscriber_count: '{0} Aucun abonnement|{1} %formatted_count% personne abo
 
 forum_form.featured: Mettre le forum en avant sur la page d'accueil
 
-forum_list.category_view: Affichage en catégories
-forum_list.list_view: Affichage en liste
 forum_list.page_title: Liste des forums
 forum_list.submission_count: Posts
 forum_list.subscribers: Nombre d'abonnés
-forum_list.uncategorized: Sans catégorie
 
 forum_moderators.last_seen: Dernière connexion
 forum_moderators.since: Nommé
@@ -134,7 +131,6 @@ front.no_subscriptions: Aucun abonnement. Voici les forums mis en avant à la pl
 front.subscribed: Abonnements
 front.subscribed_forums: Abonnements
 
-heading.category: 'Categorie: %category%'
 heading.forums_you_moderate: Forums que vous modérez
 heading.message_reply: "%sender% a répondu %timestamp%"
 heading.message_thread: "%sender% a écrit à %receiver% %timestamp%"
@@ -163,7 +159,6 @@ label.bans: Bans
 label.biography: Biographie
 label.blocked: Bloqué
 label.body: Corps
-label.category: Catégorie
 label.comment: Commenter
 label.comment_votes: Votes sur des commentaires
 label.comment_votes_short: VC
@@ -178,7 +173,6 @@ label.expires: Expire le
 label.featured: Mis en avant
 label.forum: Forum
 label.forums_count: '{0} Aucun forum|{1} Un seul forum|]1,Inf[ %count% forums'
-label.forums_in_this_category: Forums dans cette catégorie
 label.from: De
 label.front_page: Page d'accueil
 label.general: Général
@@ -251,14 +245,12 @@ nav.delete_forum: Supprimer le forum
 nav.edit_biography: Modifier la biographie
 nav.filter_results: Filtrer les résultats
 nav.forum_bans: Bans du forum
-nav.forum_categories: Catégories du forum
 nav.forums: Forums
 nav.ip_bans: Bans d'IP
 nav.messages: Messages
 nav.moderated: Modéré
 nav.moderation_log: Journal de modération
 nav.my_account: Mon compte
-nav.new_category: Nouvelle catégorie
 nav.next: Suivant
 nav.previous: Précédent
 nav.profile: Profil
@@ -272,7 +264,6 @@ nav.wiki: Wiki
 placeholder.choose_one: Choisir…
 placeholder.default: (défaut)
 placeholder.deleted: '[supprimé]'
-placeholder.uncategorized: (sans catégorie)
 
 prompt.confirm_comment_delete: Êtes-vous sûr de vouloir supprimer ce commentaire?
 prompt.confirm_submission_delete: Êtes-vous sûr de vouloir supprimer ce post?
@@ -319,19 +310,16 @@ title.banning_user_from_forum: Bannir %user% de %forum%
 title.bans_in_forum: Bans dans %forum%
 title.block_list: Liste de bloquage
 title.blocking_user: Bloquer %user%
-title.create_forum_category: Créer une catégorie de forum
 title.create_submission: Créer un post
 title.delete_forum: Supprimer forum %forum%
 title.delete_submission: Supprimer le post
 title.editing_biography_for_user: Modification de la biographie de %user%
 title.editing_forum: Modification du forum %forum%
-title.editing_forum_category: 'Modification de catégorie de forum: %category%'
 title.editing_submission: Modification du post %title%
 title.forum_appearance: Apparence pour %forum%
 title.global_moderation_log: Registre de modération global
 title.ip_bans: Adresses IP bannies
 title.list_of_users: 'List d''utilisateurs, page #%page%'
-title.manage_forum_categories: Gérer les catégories de forum
 title.messages: Messages
 title.recent_comments: Commentaires récents
 title.showing_ban_history_for_user_in_forum: Affichage de l'historique des bans de %user% dans %forum%

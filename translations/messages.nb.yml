@@ -31,6 +31,7 @@ action.save: Lagre
 action.save_changes: Lagre endringer
 action.search: Søk
 action.see_full_list: Se fullstendig liste
+action.see_full_list_of_tags: Se fullstendig liste av stikkord
 action.send: Send
 action.sign_up: Registrer
 action.subscribe: Abonnere
@@ -183,12 +184,9 @@ forum.subscriber_count: '{0} Ingen abonnenter|{1} %formatted_count% abonnent|]1,
 
 forum_form.featured: Vis på forsiden
 
-forum_list.category_view: Kategorivisning
-forum_list.list_view: Listevisning
 forum_list.page_title: Liste over fora
 forum_list.submission_count: Innlegg
 forum_list.subscribers: Abonnenter
-forum_list.uncategorized: Ukategorisert
 
 forum_moderators.last_seen: Sist sett
 forum_moderators.since: Siden
@@ -204,7 +202,6 @@ front.no_subscriptions: Du har ikke abonnert på noen fora. Viser utvalgte fora 
 front.subscribed: Abonnert
 front.subscribed_forums: Dine abonnementer
 
-heading.category: 'Kategori: %category%'
 heading.credentials: Legitimasjon
 heading.delete_account: Slett konto
 heading.forums_you_moderate: Fora du modererer
@@ -268,7 +265,6 @@ label.biography: Biografi
 label.blocked: Blokkert
 label.body: Tekst
 label.bundled: Medfølgende
-label.category: Kategori
 label.comment: Kommentar
 label.comment_votes: Kommentarstemmer
 label.comment_votes_short: KS
@@ -292,7 +288,7 @@ label.filter_by: Filtrer på
 label.filter_on_mode: 'Filtrer på: %mode%'
 label.forum: Forum
 label.forums_count: '{0} Ingen fora|{1} %count% forum|]1,Inf[ %count% fora'
-label.forums_in_this_category: Fora i denne kategorien
+label.forums_with_this_tag: Fora med dette stikkordet
 label.from: Fra
 label.from_time: 'Fra: %time%'
 label.front_page: Forside
@@ -350,6 +346,7 @@ label.submissions: Submissions
 label.submissions_short: S
 label.subscribed: Subscribed
 label.suggested_theme: Suggested theme
+label.tags: Stikkord
 label.timezone: Time zone
 label.title: Tittel
 label.to: Til
@@ -417,7 +414,6 @@ nav.delete_this_account: Slett denne kontoen
 nav.edit_biography: Rediger biografi
 nav.filter_results: Filtrer resultater
 nav.forum_bans: Utestengelser fra fora
-nav.forum_categories: Forumkategorier
 nav.forums: Forumliste
 nav.global_moderation_log: Global moderasjonslogg
 nav.hidden_forums: Skjulte fora
@@ -432,7 +428,6 @@ nav.moderated: Moderert
 nav.moderation_log: Moderasjonslogg
 nav.more: Mer
 nav.my_account: Min brukerkonto
-nav.new_category: Ny kategori
 nav.next: Neste
 nav.notifications: Notifikasjoner
 nav.notifications_count: 'Notifikasjoner (%count%)'
@@ -458,7 +453,6 @@ placeholder.choose_one: Velg én…
 placeholder.default: (forhåndsvalgt)
 placeholder.deleted: '[slettet]'
 placeholder.repeat: (repeter)
-placeholder.uncategorized: (ukategorisert)
 
 prompt.confirm_comment_delete: Er du sikker på at du vil slette denne kommentaren?
 prompt.confirm_message_delete: Er du sikker på at du vil slette denne meldigen?
@@ -540,7 +534,6 @@ title.banning_user_from_forum: Utesetenger %user% fra %forum%
 title.bans_in_forum: Utestengelser fra %forum%
 title.block_list: Blokkliste
 title.blocking_user: Blokkerer %user%
-title.create_forum_category: Opprett forumkategori
 title.create_submission: Nytt innlegg
 title.delete_account: Slett brukerkonto
 title.delete_comment_thread: Slett kommentartråd
@@ -548,14 +541,13 @@ title.delete_forum: Slett forum %forum%
 title.delete_submission: Slett innlegg
 title.editing_biography_for_user: Redigerer biografien for %user%
 title.editing_forum: Endrer forum %forum%
-title.editing_forum_category: 'Endrer forumkategori: %category%'
+title.editing_forum_tag: Redigerer stikkordet %tag%
 title.editing_submission: Redigerer innlegget %title%
 title.forum_appearance: Utseende for %forum%
 title.global_moderation_log: Global moderasjonslogg
 title.hidden_forums: Skjulte fora
 title.ip_bans: Utestengte IP-adresser
 title.list_of_users: 'Oversikt over brukere, side %page%'
-title.manage_forum_categories: Behandle forumkategorier
 title.messages: Meldinger
 title.notifications: Notifikasjoner
 title.recent_comments: Nye kommentarer

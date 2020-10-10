@@ -249,3 +249,19 @@
     })}) -}}
   </div>
 {%- endblock repeated_widget -%}
+
+{# forum tags #}
+
+{%- block forum_tags_help -%}
+  {%- if help is empty -%}
+    {%- set raw_help = true -%}
+    {%- set help -%}
+      <p class="text-sm">
+        <a href="{{ path('forum_tags') }}" target="_blank">
+          {{ 'action.see_full_list_of_tags'|trans }}
+        </a>
+      </p>
+    {%- endset -%}
+  {%- endif -%}
+  {{- block('form_help') -}}
+{%- endblock forum_tags_help -%}

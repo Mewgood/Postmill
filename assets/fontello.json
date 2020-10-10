@@ -55,12 +55,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "6fe95ffc3c807e62647d4f814a96e0d7",
-      "css": "sitemap",
-      "code": 61672,
-      "src": "fontawesome"
-    },
-    {
       "uid": "598a5f2bcf3521d1615de8e1881ccd17",
       "css": "clock",
       "code": 59400,
@@ -280,6 +274,12 @@
       "uid": "d73eceadda1f594cec0536087539afbf",
       "css": "heart",
       "code": 59426,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "3db5347bd219f3bce6025780f5d9ef45",
+      "css": "tag",
+      "code": 59427,
       "src": "fontawesome"
     }
   ]
