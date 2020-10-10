@@ -31,6 +31,7 @@ action.save: Save
 action.save_changes: Save changes
 action.search: Search
 action.see_full_list: See full list
+action.see_full_list_of_tags: See the full list of tags
 action.send: Send
 action.sign_up: Sign up
 action.subscribe: Subscribe
@@ -183,12 +184,9 @@ forum.subscriber_count: '{0} No subscribers|{1} %formatted_count% subscriber|[1,
 
 forum_form.featured: Show on front page
 
-forum_list.category_view: Category view
-forum_list.list_view: List view
 forum_list.page_title: List of forums
 forum_list.submission_count: Submissions
 forum_list.subscribers: Subscribers
-forum_list.uncategorized: Uncategorized
 
 forum_moderators.last_seen: Last seen
 forum_moderators.since: Since
@@ -204,7 +202,6 @@ front.no_subscriptions: You are not subscribed to any forum. Showing featured fo
 front.subscribed: Subscribed
 front.subscribed_forums: Subscribed forums
 
-heading.category: 'Category: %category%'
 heading.credentials: Credentials
 heading.delete_account: Delete account
 heading.forums_you_moderate: Forums you moderate
@@ -268,7 +265,6 @@ label.biography: Biography
 label.blocked: Blocked
 label.body: Body
 label.bundled: Bundled
-label.category: Category
 label.comment: Comment
 label.comment_votes: Comment votes
 label.comment_votes_short: CV
@@ -292,7 +288,7 @@ label.filter_by: Filter by
 label.filter_on_mode: 'Filter on: %mode%'
 label.forum: Forum
 label.forums_count: '{0} No forums|{1} %count% forum|]1,Inf[ %count% forums'
-label.forums_in_this_category: Forums in this category
+label.forums_with_this_tag: Forums with this tag
 label.from: From
 label.from_time: 'From: %time%'
 label.front_page: Front page
@@ -351,6 +347,7 @@ label.submissions: Submissions
 label.submissions_short: S
 label.subscribed: Subscribed
 label.suggested_theme: Suggested theme
+label.tags: Tags
 label.timezone: Time zone
 label.title: Title
 label.to: To
@@ -418,7 +415,6 @@ nav.delete_this_account: Delete this account
 nav.edit_biography: Edit biography
 nav.filter_results: Filter results
 nav.forum_bans: Forum bans
-nav.forum_categories: Forum categories
 nav.forums: Forums
 nav.global_moderation_log: Global moderation log
 nav.hidden_forums: Hidden forums
@@ -433,7 +429,6 @@ nav.moderated: Moderated
 nav.moderation_log: Moderation log
 nav.more: More
 nav.my_account: My account
-nav.new_category: New category
 nav.next: Next
 nav.notifications: Notifications
 nav.notifications_count: 'Notifications (%count%)'
@@ -459,7 +454,6 @@ placeholder.choose_one: Choose one…
 placeholder.default: (default)
 placeholder.deleted: '[deleted]'
 placeholder.repeat: (repeat)
-placeholder.uncategorized: (uncategorized)
 
 prompt.confirm_comment_delete: Are you sure you want to delete this comment?
 prompt.confirm_message_delete: Are you sure you want to delete this message?
@@ -542,7 +536,6 @@ title.banning_user_from_forum: Banning %user% from %forum%
 title.bans_in_forum: Bans in %forum%
 title.block_list: Block list
 title.blocking_user: Blocking %user%
-title.create_forum_category: Create forum category
 title.create_submission: Create submission
 title.delete_account: Delete account
 title.delete_comment: Delete comment
@@ -551,14 +544,13 @@ title.delete_forum: Delete forum %forum%
 title.delete_submission: Delete submission
 title.editing_biography_for_user: Editing biography for %user%
 title.editing_forum: Editing forum %forum%
-title.editing_forum_category: 'Editing forum category: %category%'
+title.editing_forum_tag: Editing forum tag %tag%
 title.editing_submission: Editing submission %title%
 title.forum_appearance: Appearance for %forum%
 title.global_moderation_log: Global moderation log
 title.hidden_forums: Hidden forums
 title.ip_bans: Banned IP addresses
 title.list_of_users: 'List of users, page #%page%'
-title.manage_forum_categories: Manage forum categories
 title.messages: Messages
 title.notifications: Notifications
 title.recent_comments: Recent comments

@@ -19,7 +19,7 @@ final class CategoryLinkParser extends AbstractLocalLinkParser {
     }
 
     public function getUrl(string $suffix): string {
-        return $this->urlGenerator->generate('forum_category', ['name' => $suffix]);
+        return $this->urlGenerator->generate('forum_tag', ['name' => $suffix]);
     }
 
     public function getRegex(): string {

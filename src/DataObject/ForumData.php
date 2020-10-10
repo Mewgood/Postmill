@@ -4,10 +4,8 @@ namespace App\DataObject;
 
 use App\Entity\Contracts\BackgroundImageInterface;
 use App\Entity\Forum;
-use App\Entity\ForumCategory;
 use App\Entity\Image;
 use App\Entity\Theme;
-use App\Entity\User;
 use App\Serializer\Contracts\NormalizeMarkdownInterface;
 use App\Validator\NoBadPhrases;
 use App\Validator\Unique;
@@ -15,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Unique("normalizedName", idFields={"id"}, groups={"create", "update"},
+ * @Unique("normalizedName", idFields={"id"}, groups={"create_forum", "update_forum"},
  *     entityClass="App\Entity\Forum", errorPath="name",
  *     message="forum.duplicate_name")
  */
@@ -28,13 +26,13 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
     private $id;
 
     /**
-     * @Assert\NotBlank(groups={"create", "update"})
-     * @Assert\Length(min=3, max=25, groups={"create", "update"})
+     * @Assert\NotBlank(groups={"create_forum", "update_forum"})
+     * @Assert\Length(min=3, max=25, groups={"create_forum", "update_forum"})
      * @Assert\Regex("/^\w+$/",
      *     message="forum.name_characters",
-     *     groups={"create", "update"}
+     *     groups={"create_forum", "update_forum"}
      * )
-     * @NoBadPhrases(groups={"create", "update"})
+     * @NoBadPhrases(groups={"create_forum", "update_forum"})
      *
      * @Groups({"forum:read", "abbreviated_relations"})
      */
@@ -46,9 +44,9 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
     private $normalizedName;
 
     /**
-     * @Assert\Length(max=100, groups={"create", "update"})
-     * @Assert\NotBlank(groups={"create", "update"})
-     * @NoBadPhrases(groups={"create", "update"})
+     * @Assert\Length(max=100, groups={"create_forum", "update_forum"})
+     * @Assert\NotBlank(groups={"create_forum", "update_forum"})
+     * @NoBadPhrases(groups={"create_forum", "update_forum"})
      *
      * @Groups({"forum:read"})
      *
@@ -57,9 +55,9 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
     private $title;
 
     /**
-     * @Assert\Length(max=1500, groups={"create", "update"})
-     * @Assert\NotBlank(groups={"create", "update"})
-     * @NoBadPhrases(groups={"create", "update"})
+     * @Assert\Length(max=1500, groups={"create_forum", "update_forum"})
+     * @Assert\NotBlank(groups={"create_forum", "update_forum"})
+     * @NoBadPhrases(groups={"create_forum", "update_forum"})
      *
      * @Groups({"forum:read"})
      *
@@ -68,9 +66,9 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
     private $sidebar;
 
     /**
-     * @Assert\Length(max=300, groups={"create", "update"})
-     * @Assert\NotBlank(groups={"create", "update"})
-     * @NoBadPhrases(groups={"create", "update"})
+     * @Assert\Length(max=300, groups={"create_forum_forum", "update_forum_forum"})
+     * @Assert\NotBlank(groups={"create_forum_forum", "update_forum_forum"})
+     * @NoBadPhrases(groups={"create_forum_forum", "update_forum_forum"})
      *
      * @Groups({"forum:read"})
      *
@@ -84,13 +82,6 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
      * @var bool
      */
     private $featured = false;
-
-    /**
-     * @Groups({"forum:read"})
-     *
-     * @var ForumCategory|null
-     */
-    private $category;
 
     /**
      * @var Image|null
@@ -114,52 +105,34 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
      */
     private $suggestedTheme;
 
-    public function __construct(Forum $forum = null) {
-        if ($forum) {
-            $this->id = $forum->getId();
-            $this->setName($forum->getName());
-            $this->title = $forum->getTitle();
-            $this->sidebar = $forum->getSidebar();
-            $this->description = $forum->getDescription();
-            $this->featured = $forum->isFeatured();
-            $this->category = $forum->getCategory();
-            $this->lightBackgroundImage = $forum->getLightBackgroundImage();
-            $this->darkBackgroundImage = $forum->getDarkBackgroundImage();
-            $this->backgroundImageMode = $forum->getBackgroundImageMode();
-            $this->suggestedTheme = $forum->getSuggestedTheme();
-        }
-    }
+    /**
+     * @Assert\Count(max=5, groups={"create_forum", "update_forum"})
+     * @Assert\Valid(groups={"create_forum", "update_forum"})
+     *
+     * @var ForumTagData[]|iterable
+     */
+    private $tags = [];
 
-    public function toForum(User $user): Forum {
-        $forum = new Forum(
-            $this->name,
-            $this->title,
-            $this->description,
-            $this->sidebar,
-            $user
-        );
+    public static function createFromForum(Forum $forum): self {
+        $self = new self();
+        $self->id = $forum->getId();
+        $self->setName($forum->getName());
+        $self->title = $forum->getTitle();
+        $self->sidebar = $forum->getSidebar();
+        $self->description = $forum->getDescription();
+        $self->featured = $forum->isFeatured();
+        $self->lightBackgroundImage = $forum->getLightBackgroundImage();
+        $self->darkBackgroundImage = $forum->getDarkBackgroundImage();
+        $self->backgroundImageMode = $forum->getBackgroundImageMode();
+        $self->suggestedTheme = $forum->getSuggestedTheme();
+        $self->tags = (static function () use ($forum) {
+            yield from array_map(
+                ForumTagData::class.'::createFromForumTag',
+                $forum->getTags()
+            );
+        })();
 
-        $forum->setFeatured($this->featured);
-        $forum->setCategory($this->category);
-        $forum->setLightBackgroundImage($this->lightBackgroundImage);
-        $forum->setDarkBackgroundImage($this->darkBackgroundImage);
-        $forum->setBackgroundImageMode($this->backgroundImageMode);
-        $forum->setSuggestedTheme($this->suggestedTheme);
-
-        return $forum;
-    }
-
-    public function updateForum(Forum $forum): void {
-        $forum->setName($this->name);
-        $forum->setTitle($this->title);
-        $forum->setSidebar($this->sidebar);
-        $forum->setDescription($this->description);
-        $forum->setFeatured($this->featured);
-        $forum->setLightBackgroundImage($this->lightBackgroundImage);
-        $forum->setDarkBackgroundImage($this->darkBackgroundImage);
-        $forum->setBackgroundImageMode($this->backgroundImageMode);
-        $forum->setSuggestedTheme($this->suggestedTheme);
-        $forum->setCategory($this->category);
+        return $self;
     }
 
     public function getId(): ?int {
@@ -222,14 +195,6 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
         $this->suggestedTheme = $suggestedTheme;
     }
 
-    public function getCategory(): ?ForumCategory {
-        return $this->category;
-    }
-
-    public function setCategory(?ForumCategory $category): void {
-        $this->category = $category;
-    }
-
     public function getMarkdownFields(): iterable {
         yield 'sidebar';
     }
@@ -256,5 +221,16 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
 
     public function setBackgroundImageMode(string $backgroundImageMode): void {
         $this->backgroundImageMode = $backgroundImageMode;
+    }
+
+    /**
+     * @return ForumTagData[]
+     */
+    public function getTags(): iterable {
+        return $this->tags;
+    }
+
+    public function setTags(iterable $tags): void {
+        $this->tags = $tags;
     }
 }

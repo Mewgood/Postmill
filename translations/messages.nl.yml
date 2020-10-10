@@ -75,12 +75,9 @@ forum.subscriber_count: '{0} Geen abonnees|{1} %formatted_count% abbonee|[1,Inf[
 
 forum_form.featured: Laat zien op de voorpagina
 
-forum_list.category_view: Categorieënoverizcht
-forum_list.list_view: Lijstoverizcht
 forum_list.page_title: Forumlijst
 forum_list.submission_count: Inzendingen
 forum_list.subscribers: Abbonees
-forum_list.uncategorized: Ongecategoriseerd
 
 forum_moderators.since: Vanaf
 forum_moderators.title: Moderators van %forum_name%
@@ -95,7 +92,6 @@ front.subscribed_forums: Geaboneerde fora
 inbox.message_reply_head: 'Antw.: %title'
 
 label.body: Bericht
-label.category: Categorie
 label.comment: Reactie
 label.description: Omschrijving
 label.email_address: E-mailadres
@@ -129,7 +125,6 @@ nav.submit: Bericht plaatsen
 nav.user_settings: Gebruikersinstellingen
 
 placeholder.deleted: '[verwijderd]'
-placeholder.uncategorized: (ongecategoriseerd)
 
 request_password_reset.multiple_accounts_notice: Wanneer je meedere gebruikers hebt geregistreerd met hetzelfde e-mailadres, dan zul je voor elk acocunt één email ontvangen.
 request_password_reset.no_confirmation_notice: Als je geen email ontvangt, dan is dat waarschijnlijk omdat je een verkeerd adres invoert. Omwille van privacy kunnen we je niet vertellen of een gebruiker met dit e-mailadres werkelijk bestaat.

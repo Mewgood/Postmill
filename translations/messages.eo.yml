@@ -127,12 +127,9 @@ forum.subscriber_count: '{0} Sen abonantoj|{1} %formatted_count% abonanto|[1,Inf
 
 forum_form.featured: Montri ĉefpaĝe
 
-forum_list.category_view: Kategoria vido
-forum_list.list_view: Lista vido
 forum_list.page_title: Listo de diskutejoj
 forum_list.submission_count: Da afiŝoj
 forum_list.subscribers: Abonantoj
-forum_list.uncategorized: Senkategoria vido
 
 forum_moderators.last_seen: Laste vidita
 forum_moderators.since: Ekde
@@ -148,7 +145,6 @@ front.no_subscriptions: Vi abonas neniun diskutejon. Anstataŭe montriĝas elsta
 front.subscribed: Abonataj
 front.subscribed_forums: Abonitaj diskutejoj
 
-heading.category: 'Kategorio: %category%'
 heading.forums_you_moderate: Diskutejojn vi moderigas
 heading.hide_this_forum: Kaŝi tiun diskutejon
 heading.message_reply: "%sender% respondis %timestamp%"
@@ -198,7 +194,6 @@ label.bans: Forbaroj
 label.biography: Biografio
 label.blocked: Blokita
 label.body: Korpo
-label.category: Kategorio
 label.comment: Komento
 label.comment_votes: Komentaj voĉoj
 label.comment_votes_short: KV
@@ -215,7 +210,6 @@ label.filter_by: Filtri laŭ
 label.filter_on_mode: 'Filtri laŭ: %mode%'
 label.forum: Diskutejo
 label.forums_count: '{0} neniu diskutejo|{1} %count% diskutejo|]1,Inf[ %count% diskutejoj'
-label.forums_in_this_category: Diskutejo en ĉi tiu kategorio
 label.from: de
 label.from_time: 'De: %time%'
 label.front_page: Ĉefpaĝo
@@ -321,7 +315,6 @@ nav.delete_forum: Malkrei diskutejon
 nav.edit_biography: Redakti biografion
 nav.filter_results: Filtri rezultojn
 nav.forum_bans: Diskutejaj forbaroj
-nav.forum_categories: Distutejaj kategorioj
 nav.forums: Diskutejoj
 nav.hidden_forums: Kaŝitaj diskutejoj
 nav.home: Hejmo
@@ -332,7 +325,6 @@ nav.messages: Mesaĝoj
 nav.moderated: Kontrolitaj
 nav.moderation_log: Moderiga protokolo
 nav.my_account: Mia konto
-nav.new_category: Novan kategorion
 nav.next: Sekva
 nav.notifications: Sciigoj
 nav.notifications_count: 'Sciigoj (%count%)'
@@ -353,7 +345,6 @@ placeholder.choose_one: Elekti unu…
 placeholder.default: (defaŭlto)
 placeholder.deleted: '[forigis]'
 placeholder.repeat: (ripeti)
-placeholder.uncategorized: (sen kategorio)
 
 prompt.confirm_comment_delete: Ĉu vi vere volas forigi ĉi tiun komenton?
 prompt.confirm_message_delete: Ĉu vi vere volas forigi ĉi tiun mesaĝon?
@@ -403,20 +394,17 @@ title.banning_user_from_forum: Forbarata %user% for %forum%
 title.bans_in_forum: Forbaroj en %forum%
 title.block_list: Listo de forbaroj
 title.blocking_user: Forbarata %user%
-title.create_forum_category: Krei diskutejan kategorion
 title.create_submission: Krei afiŝon
 title.delete_forum: Forigi diskutejon %forum%
 title.delete_submission: Forigi afiŝon
 title.editing_biography_for_user: Redaktado de biografio de %user%
 title.editing_forum: Redaktata diskutejon %forum%
-title.editing_forum_category: 'Redaktado de diskuteja kategorio: %category%'
 title.editing_submission: Redaktata afiŝon %title%
 title.forum_appearance: Aspekto por %forum%
 title.global_moderation_log: Malloka moderiga protokolo
 title.hidden_forums: Kaŝitaj diskutejoj
 title.ip_bans: Forbaritaj IP-adreson
 title.list_of_users: 'Lista de uzantoj, paĝo #%page%'
-title.manage_forum_categories: Kontroli diskutejajn kategoriojn
 title.messages: Mesaĝoj
 title.notifications: Sciigoj
 title.recent_comments: Novaj komentoj

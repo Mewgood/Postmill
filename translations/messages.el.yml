@@ -101,12 +101,9 @@ forum.subscriber_count: '{0} Μηδενικούς συνδρομητές|{1} %fo
 
 forum_form.featured: Εμφανίστε την στην πρώτη σελίδα
 
-forum_list.category_view: Προβολή κατηγορίας
-forum_list.list_view: Προβολή λίστας
 forum_list.page_title: Λίστα φόρουμ
 forum_list.submission_count: Συνεισφορές
 forum_list.subscribers: Συνδρομητές
-forum_list.uncategorized: Δεν ταξινομούνται
 
 forum_moderators.last_seen: Τελευταία ενεργή
 forum_moderators.since: από
@@ -142,7 +139,6 @@ label.bans: Λίστα απαγορεύσεων
 label.biography: Βιογραφία
 label.blocked: Αποκλεισμένος
 label.body: Σώμα
-label.category: Κατηγορία
 label.comment: Σχόλιο
 label.date: Ημερομηνία
 label.default: Προκαθορισμένο
@@ -223,7 +219,6 @@ nav.wiki: Wiki
 placeholder.choose_one: Διάλεξε ένα…
 placeholder.default: (Προκαθορισμένο)
 placeholder.deleted: '[διαγράφηκε]'
-placeholder.uncategorized: (Δεν ταξινομούνται)
 
 prompt.confirm_comment_delete: Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το σχόλιο;
 prompt.confirm_submission_delete: Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την υποβολή;

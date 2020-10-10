@@ -5,17 +5,15 @@
 namespace App\Repository;
 
 use App\Entity\Forum;
-use App\Entity\ForumCategory;
 use App\Entity\ForumSubscription;
 use App\Entity\Moderator;
 use App\Entity\User;
+use App\Utils\CanonicalRedirector;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @method Forum|null find(int $id)
@@ -24,24 +22,17 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class ForumRepository extends ServiceEntityRepository {
     /**
-     * @var UrlGeneratorInterface
+     * @var CanonicalRedirector
      */
-    private $urlGenerator;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private $canonicalizer;
 
     public function __construct(
         ManagerRegistry $registry,
-        UrlGeneratorInterface $urlGenerator,
-        RequestStack $requestStack
+        CanonicalRedirector $canonicalizer
     ) {
         parent::__construct($registry, Forum::class);
 
-        $this->urlGenerator = $urlGenerator;
-        $this->requestStack = $requestStack;
+        $this->canonicalizer = $canonicalizer;
     }
 
     /**
@@ -134,21 +125,6 @@ class ForumRepository extends ServiceEntityRepository {
         return array_column($names, 'name', 'id');
     }
 
-    /**
-     * @return string[]
-     */
-    public function findForumsInCategory(ForumCategory $category): array {
-        $dql = 'SELECT f.id, f.name FROM '.Forum::class.' f '.
-            'WHERE f.category = :category '.
-            'ORDER BY f.normalizedName ASC';
-
-        $names = $this->_em->createQuery($dql)
-            ->setParameter('category', $category)
-            ->getResult();
-
-        return array_column($names, 'name', 'id');
-    }
-
     public function findOneByCaseInsensitiveName(?string $name): ?Forum {
         if ($name === null) {
             // for the benefit of param converters which for some reason insist
@@ -167,25 +143,8 @@ class ForumRepository extends ServiceEntityRepository {
     public function findOneOrRedirectToCanonical(?string $name, string $param): ?Forum {
         $forum = $this->findOneByCaseInsensitiveName($name);
 
-        if ($forum && $forum->getName() !== $name) {
-            $request = $this->requestStack->getCurrentRequest();
-
-            if (
-                !$request ||
-                $this->requestStack->getParentRequest() ||
-                !$request->isMethodCacheable()
-            ) {
-                // no request/is sub-request/not cacheable
-                return $forum;
-            }
-
-            $route = $request->attributes->get('_route');
-            $params = $request->attributes->get('_route_params', []);
-            $params[$param] = $forum->getName();
-
-            throw new HttpException(302, 'Redirecting to canonical', null, [
-                'Location' => $this->urlGenerator->generate($route, $params),
-            ]);
+        if ($forum) {
+            $this->canonicalizer->canonicalize($forum->getName(), $param);
         }
 
         return $forum;

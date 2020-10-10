@@ -4,10 +4,8 @@
   {{ form_row(form.name) }}
   {{ form_row(form.title) }}
   {{ form_row(form.description) }}
-
-  {{ form_row(form.sidebar, {attr: {rows: 8}}) }}
-
-  {{ form_row(form.category) }}
+  {{ form_row(form.sidebar, { attr: { rows: 8 } }) }}
+  {{ form_row(form.tags, { attr: { rows: 2 } }) }}
 
   {% if form.featured is defined %}
     {{ form_row(form.featured) }}

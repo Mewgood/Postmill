@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Pagination\TimestampPage;
 use App\Repository\Contracts\PrunesIpAddresses;
 use App\Repository\Traits\PrunesIpAddressesTrait;
+use App\Utils\CanonicalRedirector;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,9 +19,6 @@ use PagerWave\Adapter\UnionAdapter;
 use PagerWave\CursorInterface;
 use PagerWave\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @method User|null findOneByUsername(string|string[] $username)
@@ -37,25 +35,18 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
     private $paginator;
 
     /**
-     * @var RequestStack
+     * @var CanonicalRedirector
      */
-    private $requestStack;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private $canonicalizer;
 
     public function __construct(
         ManagerRegistry $registry,
         PaginatorInterface $paginator,
-        RequestStack $requestStack,
-        UrlGeneratorInterface $urlGenerator
+        CanonicalRedirector $canonicalizer
     ) {
         parent::__construct($registry, User::class);
         $this->paginator = $paginator;
-        $this->requestStack = $requestStack;
-        $this->urlGenerator = $urlGenerator;
+        $this->canonicalizer = $canonicalizer;
     }
 
     /**
@@ -72,24 +63,8 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
     public function findOneOrRedirectToCanonical(?string $username, string $param): ?User {
         $user = $this->loadUserByUsername($username);
 
-        if ($user && $user->getUsername() !== $username) {
-            $request = $this->requestStack->getCurrentRequest();
-
-            if (
-                !$request ||
-                $this->requestStack->getParentRequest() ||
-                !$request->isMethodCacheable()
-            ) {
-                return $user;
-            }
-
-            $route = $request->attributes->get('_route');
-            $params = $request->attributes->get('_route_params', []);
-            $params[$param] = $user->getUsername();
-
-            throw new HttpException(302, 'Redirecting to canonical', null, [
-                'Location' => $this->urlGenerator->generate($route, $params),
-            ]);
+        if ($user) {
+            $this->canonicalizer->canonicalize($user->getUsername(), $param);
         }
 
         return $user;

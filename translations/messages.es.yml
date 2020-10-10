@@ -112,12 +112,9 @@ forum.subscriber_count: '{0} Sin suscriptoras|{1} %formatted_count% suscriptora|
 
 forum_form.featured: Mostrar en la página principal
 
-forum_list.category_view: Vista de categoría
-forum_list.list_view: Vista de lista
 forum_list.page_title: Lista de foros
 forum_list.submission_count: Publicaciones
 forum_list.subscribers: Suscriptores
-forum_list.uncategorized: Sin categorizar
 
 forum_moderators.last_seen: Visto por última vez
 forum_moderators.since: Desde
@@ -131,7 +128,6 @@ front.no_subscriptions: No estás suscrita en ningún foro. Mostrando foros dest
 front.subscribed: Suscritos
 front.subscribed_forums: Foros suscritos
 
-heading.category: 'Categoría: %category%'
 heading.forums_you_moderate: Foros que moderas
 heading.message_reply: "%sender% respondió %timestamp%"
 heading.message_thread: "%sender% le escribió a %receiver% %timestamp%"
@@ -160,7 +156,6 @@ label.bans: Vetos
 label.biography: Biografía
 label.blocked: Bloqueada
 label.body: Contenido
-label.category: Categoría
 label.comment: Comentar
 label.comment_votes: Votos de comentarios
 label.comment_votes_short: VC
@@ -175,7 +170,6 @@ label.expires: Expira
 label.featured: destacado
 label.forum: Foro
 label.forums_count: '{0} Ningún foro|{1} %count% foro|]1,Inf[ %count% foros'
-label.forums_in_this_category: Foros en esta categoría
 label.from: De
 label.front_page: Página principal
 label.general: General
@@ -247,14 +241,12 @@ nav.delete_forum: Borrar foro
 nav.edit_biography: Editar biografía
 nav.filter_results: Filtrar resultados
 nav.forum_bans: Vetos de foro
-nav.forum_categories: Categorías de foro
 nav.forums: Foros
 nav.ip_bans: Vetos IP
 nav.messages: Mensajes
 nav.moderated: Moderado
 nav.moderation_log: Registro de moderación
 nav.my_account: Mi cuenta
-nav.new_category: Nueva categoría
 nav.next: Siguiente
 nav.previous: Anterior
 nav.profile: Perfil
@@ -268,7 +260,6 @@ nav.wiki: Wiki
 placeholder.choose_one: Elige uno…
 placeholder.default: (predeterminado)
 placeholder.deleted: '[Eliminado]'
-placeholder.uncategorized: (Sin categorizar)
 
 prompt.confirm_comment_delete: ¿Estás segura de que quieres eliminar este comentario?
 prompt.confirm_submission_delete: ¿Estás segura de que quieres eliminar esta publicación?
@@ -309,19 +300,16 @@ title.banning_user_from_forum: Vetando %user% de %forum%
 title.bans_in_forum: Vetos en %forum%
 title.block_list: Lista de bloqueo
 title.blocking_user: Bloqueando %user%
-title.create_forum_category: Crear categoría de foro
 title.create_submission: Crear publicación
 title.delete_forum: Borrar foro %forum%
 title.delete_submission: Borrar publicación
 title.editing_biography_for_user: Editando biografía para %user%
 title.editing_forum: Editando foro %forum%
-title.editing_forum_category: 'Editando categoría de foro: %category%'
 title.editing_submission: Editando publicación %title%
 title.forum_appearance: Apariencia para %forum%
 title.global_moderation_log: Registro global de moderación
 title.ip_bans: Direcciones IP vetadas
 title.list_of_users: 'Lista de usuarias, página #%page%'
-title.manage_forum_categories: Gestionar cagegorías de foro
 title.messages: Mensajes
 title.recent_comments: Comentarios recientes
 title.showing_ban_history_for_user_in_forum: Mostrando el historial de vetos de %user% en %forum%

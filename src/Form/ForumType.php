@@ -3,11 +3,9 @@
 namespace App\Form;
 
 use App\DataObject\ForumData;
-use App\Entity\ForumCategory;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\Type\ForumTagsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -46,16 +44,9 @@ final class ForumType extends AbstractType {
             ->add('sidebar', MarkdownType::class, [
                 'label' => 'label.sidebar',
             ])
-            ->add('category', EntityType::class, [
-                'class' => ForumCategory::class,
-                'choice_label' => 'name',
-                'label' => 'label.category',
-                'query_builder' => static function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('fc')
-                        ->orderBy('fc.name', 'ASC');
-                },
+            ->add('tags', ForumTagsType::class, [
+                'label' => 'label.tags',
                 'required' => false,
-                'placeholder' => 'placeholder.uncategorized',
             ])
         ;
 
@@ -74,7 +65,7 @@ final class ForumType extends AbstractType {
             'validation_groups' => static function (FormInterface $form) {
                 $editing = $form->getData() && $form->getData()->getId();
 
-                return $editing ? ['update'] : ['create'];
+                return $editing ? ['update_forum'] : ['create_forum'];
             },
         ]);
 
