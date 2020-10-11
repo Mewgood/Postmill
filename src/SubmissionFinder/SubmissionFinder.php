@@ -129,7 +129,7 @@ class SubmissionFinder {
             $time = $request->query->get('t', Submission::TIME_ALL);
 
             if ($time !== Submission::TIME_ALL) {
-                $since = new \DateTimeImmutable();
+                $since = new \DateTimeImmutable('@'.time());
 
                 switch ($time) {
                 case Submission::TIME_YEAR:
@@ -188,6 +188,9 @@ class SubmissionFinder {
             if (\count($forums) > 0) {
                 $qb->andWhere('s.forum IN (:forums)');
                 $qb->setParameter('forums', $forums);
+            } else {
+                // prevent submissions showing up with an empty list of forums
+                $qb->andWhere('1 = 0');
             }
             break;
         case Criteria::VIEW_USERS:
@@ -195,6 +198,9 @@ class SubmissionFinder {
             if (\count($users) > 0) {
                 $qb->andWhere('s.user IN (:users)');
                 $qb->setParameter('users', $users);
+            } else {
+                // prevent submissions showing up with an empty list of users
+                $qb->andWhere('1 = 0');
             }
             break;
         case Criteria::VIEW_ALL:
