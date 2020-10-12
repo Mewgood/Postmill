@@ -211,6 +211,13 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
      */
     private $admin = false;
 
+    /**
+     * @Groups("user:preferences")
+     *
+     * @var bool
+     */
+    private $fullWidthDisplayEnabled;
+
     public function __construct(User $user = null) {
         if ($user) {
             $this->id = $user->getId();
@@ -235,6 +242,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
             $this->notifyOnMentions = $user->getNotifyOnMentions();
             $this->preferredFonts = $user->getPreferredFonts();
             $this->poppersEnabled = $user->isPoppersEnabled();
+            $this->fullWidthDisplayEnabled = $user->isFullWidthDisplayEnabled();
         }
     }
 
@@ -263,6 +271,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $user->setNotifyOnMentions($this->notifyOnMentions);
         $user->setPreferredFonts($this->preferredFonts);
         $user->setPoppersEnabled($this->poppersEnabled);
+        $user->setFullWidthDisplayEnabled($this->fullWidthDisplayEnabled);
         $user->setAdmin($this->admin);
     }
 
@@ -484,6 +493,14 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
 
     public function setPoppersEnabled(?bool $poppersEnabled): void {
         $this->poppersEnabled = $poppersEnabled;
+    }
+
+    public function isFullWidthDisplayEnabled(): bool {
+        return $this->fullWidthDisplayEnabled;
+    }
+
+    public function setFullWidthDisplayEnabled(bool $fullWidthDisplayEnabled): void {
+        $this->fullWidthDisplayEnabled = $fullWidthDisplayEnabled;
     }
 
     public function isAdmin(): bool {
