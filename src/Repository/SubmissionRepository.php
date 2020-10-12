@@ -7,23 +7,20 @@ use App\Repository\Contracts\PrunesIpAddresses;
 use App\Repository\Traits\PrunesIpAddressesTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Security;
 
 class SubmissionRepository extends ServiceEntityRepository implements PrunesIpAddresses {
     use PrunesIpAddressesTrait;
 
     /**
-     * @var AuthorizationCheckerInterface
+     * @var Security
      */
-    private $authorizationChecker;
+    private $security;
 
-    public function __construct(
-        ManagerRegistry $registry,
-        AuthorizationCheckerInterface $authorizationChecker
-    ) {
+    public function __construct(ManagerRegistry $registry, Security $security) {
         parent::__construct($registry, Submission::class);
 
-        $this->authorizationChecker = $authorizationChecker;
+        $this->security = $security;
     }
 
     /**
@@ -42,7 +39,7 @@ class SubmissionRepository extends ServiceEntityRepository implements PrunesIpAd
             ->getQuery()
             ->getResult();
 
-        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+        if ($this->security->getToken() && $this->security->isGranted('ROLE_USER')) {
             // hydrate submission votes for fast checking of user choice
             $this->_em->createQueryBuilder()
                 ->select('PARTIAL s.{id}')
