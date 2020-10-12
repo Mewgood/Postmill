@@ -34,7 +34,7 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
      * )
      * @NoBadPhrases(groups={"create_forum", "update_forum"})
      *
-     * @Groups({"forum:read", "abbreviated_relations"})
+     * @Groups({"forum:read", "forum:create", "forum:update", "abbreviated_relations"})
      */
     private $name;
 
@@ -48,7 +48,7 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
      * @Assert\NotBlank(groups={"create_forum", "update_forum"})
      * @NoBadPhrases(groups={"create_forum", "update_forum"})
      *
-     * @Groups({"forum:read"})
+     * @Groups({"forum:read", "forum:create", "forum:update"})
      *
      * @var string|null
      */
@@ -59,18 +59,18 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
      * @Assert\NotBlank(groups={"create_forum", "update_forum"})
      * @NoBadPhrases(groups={"create_forum", "update_forum"})
      *
-     * @Groups({"forum:read"})
+     * @Groups({"forum:read", "forum:create", "forum:update"})
      *
      * @var string|null
      */
     private $sidebar;
 
     /**
-     * @Assert\Length(max=300, groups={"create_forum_forum", "update_forum_forum"})
-     * @Assert\NotBlank(groups={"create_forum_forum", "update_forum_forum"})
-     * @NoBadPhrases(groups={"create_forum_forum", "update_forum_forum"})
+     * @Assert\Length(max=300, groups={"create_forum", "update_forum"})
+     * @Assert\NotBlank(groups={"create_forum", "update_forum"})
+     * @NoBadPhrases(groups={"create_forum", "update_forum"})
      *
-     * @Groups({"forum:read"})
+     * @Groups({"forum:read", "forum:create", "forum:update"})
      *
      * @var string|null
      */
@@ -109,9 +109,14 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
      * @Assert\Count(max=5, groups={"create_forum", "update_forum"})
      * @Assert\Valid(groups={"create_forum", "update_forum"})
      *
-     * @var ForumTagData[]|iterable
+     * @var ForumTagData[]|null
      */
     private $tags = [];
+
+    /**
+     * @var \Closure
+     */
+    private $tagsGenerator;
 
     public static function createFromForum(Forum $forum): self {
         $self = new self();
@@ -125,12 +130,13 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
         $self->darkBackgroundImage = $forum->getDarkBackgroundImage();
         $self->backgroundImageMode = $forum->getBackgroundImageMode();
         $self->suggestedTheme = $forum->getSuggestedTheme();
-        $self->tags = (static function () use ($forum) {
-            yield from array_map(
+        $self->tags = null; // skip validation unless changed
+        $self->tagsGenerator = static function () use ($forum) {
+            return array_map(
                 ForumTagData::class.'::createFromForumTag',
                 $forum->getTags()
             );
-        })();
+        };
 
         return $self;
     }
@@ -226,11 +232,18 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
     /**
      * @return ForumTagData[]
      */
-    public function getTags(): iterable {
+    public function getTags(): array {
+        if (!isset($this->tags)) {
+            $this->tags = ($this->tagsGenerator)();
+        }
+
         return $this->tags;
     }
 
-    public function setTags(iterable $tags): void {
+    /**
+     * @param ForumTagData[] $tags
+     */
+    public function setTags(array $tags): void {
         $this->tags = $tags;
     }
 }

@@ -76,6 +76,7 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.3",
+        "dms/phpunit-arraysubset-asserts": "^0.1.1",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "friendsofphp/php-cs-fixer": "^2.3",
         "symfony/browser-kit": "^5.1",
@@ -87,6 +88,7 @@
         "symfony/web-profiler-bundle": "^5.1"
     },
     "replace": {
+        "phpunit/phpunit": "^8",
         "symfony/polyfill-iconv": "*",
         "symfony/polyfill-intl-grapheme": "*",
         "symfony/polyfill-intl-icu": "*",
