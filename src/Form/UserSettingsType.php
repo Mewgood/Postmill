@@ -120,6 +120,10 @@ final class UserSettingsType extends AbstractType {
                 'label' => 'label.poppers_enabled',
                 'required' => false,
             ])
+            ->add('fullWidthDisplayEnabled', CheckboxType::class, [
+                'label' => 'label.full_width_display',
+                'required' => false,
+            ])
         ;
     }
 

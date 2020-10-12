@@ -321,6 +321,13 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      */
     private $preferredFonts;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @var bool
+     */
+    private $fullWidthDisplayEnabled = false;
+
     public function __construct(string $username, string $password) {
         $this->setUsername($username);
         $this->password = $password;
@@ -772,6 +779,14 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
 
     public function setPoppersEnabled(bool $poppersEnabled): void {
         $this->poppersEnabled = $poppersEnabled;
+    }
+
+    public function isFullWidthDisplayEnabled(): bool {
+        return $this->fullWidthDisplayEnabled;
+    }
+
+    public function setFullWidthDisplayEnabled(bool $fullWidthDisplayEnabled): void {
+        $this->fullWidthDisplayEnabled = $fullWidthDisplayEnabled;
     }
 
     /**

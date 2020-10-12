@@ -67,6 +67,8 @@
 
       {{ form_row(form.preferredTheme) }}
 
+      {{ form_row(form.showCustomStylesheets) }}
+
       {{ form_row(form.preferredFonts, {
         attr: {
           placeholder: font_names('default')|join(', '),
@@ -78,7 +80,7 @@
         raw_help: true,
       }) }}
 
-      {{ form_row(form.showCustomStylesheets) }}
+      {{ form_row(form.fullWidthDisplayEnabled) }}
 
       {{ form_row(form.poppersEnabled) }}
     </fieldset>

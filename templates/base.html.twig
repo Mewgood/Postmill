@@ -4,7 +4,7 @@
 {% from '_macros/theme.html.twig' import theme_css %}
 <!DOCTYPE html>
 {#<!--suppress HtmlRequiredLangAttribute -->-#}
-<html class="no-js"
+<html class="no-js {{ (app.user.fullWidthDisplayEnabled ?? false) ? 'full-width' }}"
       {{ lang_attributes(app.request.locale) }}
       prefix="og: http://ogp.me/ns#"
       data-night-mode="{{ app.user.nightMode ?? 'auto' }}">

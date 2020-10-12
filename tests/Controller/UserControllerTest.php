@@ -131,6 +131,23 @@ class UserControllerTest extends WebTestCase {
         self::assertSelectorTextContains('a[href="/submit"]', 'Nytt innlegg');
     }
 
+    public function testCanToggleFullWidthDisplay(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/user/zach/preferences');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorNotExists('.full-width');
+
+        $client->submitForm('Save changes', [
+            'user_settings[fullWidthDisplayEnabled]' => true,
+        ]);
+        self::assertResponseRedirects();
+
+        $client->followRedirect();
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('.full-width');
+    }
+
     public function testCanEditBiography(): void {
         $client = self::createUserClient();
         $crawler = $client->request('GET', '/user/zach/edit_biography');
