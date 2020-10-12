@@ -20,7 +20,7 @@ final class ForumController extends AbstractController {
      * @Route("/{id}", methods={"GET"})
      */
     public function read(Forum $forum): Response {
-        return $this->json($forum, 200, [], [
+        return $this->json(ForumData::createFromForum($forum), 200, [], [
             'groups' => ['forum:read', 'abbreviated_relations'],
         ]);
     }
@@ -33,7 +33,7 @@ final class ForumController extends AbstractController {
         return $this->apiCreate(ForumData::class, [
             'normalization_groups' => ['forum:read', 'abbreviated_relations'],
             'denormalization_groups' => ['forum:create'],
-            'validation_groups' => ['create'],
+            'validation_groups' => ['create_forum'],
         ], function (ForumData $data) use ($forumManager, $em) {
             $forum = $forumManager->createForum($data, $this->getUserOrThrow());
 
@@ -48,10 +48,10 @@ final class ForumController extends AbstractController {
      * @IsGranted("moderator", subject="forum")
      */
     public function update(Forum $forum, ForumManager $forumManager, EntityManagerInterface $em): Response {
-        return $this->apiUpdate($forum, ForumData::class, [
+        return $this->apiUpdate(ForumData::createFromForum($forum), ForumData::class, [
             'normalization_groups' => ['forum:read'],
             'denormalization_groups' => ['forum:update'],
-            'validation_groups' => ['update'],
+            'validation_groups' => ['update_forum'],
         ], static function (ForumData $data) use ($forum, $forumManager, $em): void {
             $forumManager->updateForum($forum, $data);
 
