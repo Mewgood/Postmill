@@ -401,6 +401,7 @@ markdown.wiki_page: wikiside
 
 nav.actions: Handlinger
 nav.add_ban: Utesteng
+nav.alphabetical: Alfabetisk
 nav.appearance: Utseende
 nav.ban_history: Utestengelseshistorikk
 nav.bans: Utestengelser
@@ -530,6 +531,7 @@ time.later_format: '%relative_time% senere'
 time.on_timestamp: '%timestamp%'
 
 title.active_global_user_bans: Aktive, globale brukerutestengelser
+title.all_forums: Alle fora
 title.ban_user: Utestenger %user%
 title.banning_user_from_forum: Utesetenger %user% fra %forum%
 title.bans_in_forum: Utestengelser fra %forum%

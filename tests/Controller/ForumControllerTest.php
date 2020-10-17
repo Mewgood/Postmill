@@ -194,6 +194,14 @@ class ForumControllerTest extends WebTestCase {
         self::assertSelectorTextContains('.comment__body p', 'YET ANOTHER BORING COMMENT.');
     }
 
+    public function testListAll(): void {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/forums/all');
+
+        $this->assertCount(2, $crawler->filter('.body .columns h2'));
+        $this->assertCount(2, $crawler->filter('.body .columns a'));
+    }
+
     /**
      * @group time-sensitive
      * @see https://gitlab.com/postmill/Postmill/-/issues/61

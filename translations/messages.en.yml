@@ -402,6 +402,7 @@ markdown.wiki_page: wiki_page
 
 nav.actions: Actions
 nav.add_ban: Add ban
+nav.alphabetical: Alphabetical
 nav.appearance: Appearance
 nav.current_page: Current page
 nav.ban_history: Ban history
@@ -532,6 +533,7 @@ time.later_format: '%relative_time% later'
 time.on_timestamp: on %timestamp%
 
 title.active_global_user_bans: Active, global user bans
+title.all_forums: All forums
 title.ban_user: Banning %user%
 title.banning_user_from_forum: Banning %user% from %forum%
 title.bans_in_forum: Bans in %forum%

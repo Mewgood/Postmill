@@ -208,6 +208,12 @@ final class ForumController extends AbstractController {
         ]);
     }
 
+    public function listAll(ForumRepository $forums): Response {
+        return $this->render('forum/list_all.html.twig', [
+            'forums' => $forums->findAllForumNames(),
+        ]);
+    }
+
     /**
      * Show a list of forum moderators.
      */
