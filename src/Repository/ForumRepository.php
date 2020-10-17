@@ -125,6 +125,14 @@ class ForumRepository extends ServiceEntityRepository {
         return array_column($names, 'name', 'id');
     }
 
+    public function findAllForumNames(): array {
+        $dql = 'SELECT f.id, f.name FROM '.Forum::class.' f ORDER BY f.normalizedName ASC';
+
+        $names = $this->getEntityManager()->createQuery($dql)->getResult();
+
+        return array_column($names, 'name', 'id');
+    }
+
     public function findOneByCaseInsensitiveName(?string $name): ?Forum {
         if ($name === null) {
             // for the benefit of param converters which for some reason insist

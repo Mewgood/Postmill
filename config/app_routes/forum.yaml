@@ -123,3 +123,8 @@ forum_list:
     path: /forums/{sortBy}/{page}
     methods: [GET]
     requirements: { forums: \d+, sortBy: by_(name|title|subscribers|submissions|creation_date) }
+
+forum_list_all:
+    controller: App\Controller\ForumController::listAll
+    path: /forums/all
+    methods: [GET]
