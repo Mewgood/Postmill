@@ -60,9 +60,11 @@
     {% endif %}
   </div>
 
-  {% for forum in forums %}
-    {{ block('forum_card') }}
-  {% endfor %}
+  <div class="border-list">
+    {% for forum in forums %}
+      {{ block('forum_card') }}
+    {% endfor %}
+  </div>
 
   {{ include('_includes/pagination.html.twig', {pager: forums}, with_context=false) }}
 {% endblock %}
