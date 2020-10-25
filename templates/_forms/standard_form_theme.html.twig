@@ -32,10 +32,22 @@
   {%- endif -%}
 {%- endblock radio_widget %}
 
-{# apply proper class to widgets  #}
 {% block form_widget_simple %}
-  {%- set attr = attr|merge({class: ((attr.class ?? '')~' form-control')|trim}) -%}
-  {{- parent() -}}
+  {%- set attr = attr|merge({ class: ((attr.class ?? '')~' form-control')|trim }) -%}
+  {%- if (prefix ?? '') != '' or (suffix ?? '') != '' -%}
+    {%- set attr = attr|merge({ class: ((attr.class ?? '')~' decorated-form-control__widget form-control--no-decoration')|trim }) -%}
+    <label class="decorated-form-control decorated-form-control--text">
+      {%- if (prefix ?? '') != '' -%}
+        <span class="fg-grey no-select" aria-hidden="true">{{ prefix }}</span>
+      {%- endif -%}
+      {{- parent() -}}
+      {%- if (suffix ?? '') != '' -%}
+        <span class="fg-grey no-select" aria-hidden="true">{{ suffix }}</span>
+      {%- endif -%}
+    </label>
+  {%- else -%}
+    {{- parent() -}}
+  {%- endif -%}
 {% endblock form_widget_simple %}
 
 {%- block honeypot_row -%}
