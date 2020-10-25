@@ -2,7 +2,6 @@
 
 .form-control {
   .form-control-common();
-  .form-control-default();
 
   border-radius: 0; // disable rounded corners on iOS
   display: inline-block;
@@ -101,7 +100,7 @@
     .form-control-disabled();
   }
 
-  &:read-only {
+  &[readonly] {
     .form-control-readonly();
   }
 
