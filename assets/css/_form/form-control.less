@@ -74,6 +74,9 @@
     max-width: 100%;
     resize: vertical;
 
+    // make textarea height be calculated as intended in Firefox
+    overflow-x: hidden;
+
     &:not([cols]) {
       width: 100%;
     }
