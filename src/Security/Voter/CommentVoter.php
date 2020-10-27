@@ -47,7 +47,7 @@ final class CommentVoter extends Voter {
         case 'edit':
             return $this->canEdit($subject, $token);
         case 'purge':
-            return $this->canPurge($subject, $user);
+            return $this->canPurge($subject, $token);
         case 'restore':
             return $this->canRestore($subject, $user);
         default:
@@ -124,7 +124,10 @@ final class CommentVoter extends Voter {
         return true;
     }
 
-    private function canPurge(Comment $comment, User $user): bool {
-        return $comment->isTrashed() && $user->isAdmin();
+    private function canPurge(Comment $comment, TokenInterface $token): bool {
+        return $comment->isTrashed() && (
+            $comment->getUser() === $token->getUser() ||
+            $this->decisionManager->decide($token, ['ROLE_ADMIN'])
+        );
     }
 }

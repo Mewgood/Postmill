@@ -8,6 +8,8 @@ use App\Entity\User;
 use App\Pagination\TimestampPage;
 use App\Repository\Contracts\PrunesIpAddresses;
 use App\Repository\Traits\PrunesIpAddressesTrait;
+use App\SubmissionFinder\Criteria as SubmissionCriteria;
+use App\SubmissionFinder\SubmissionFinder;
 use App\Utils\CanonicalRedirector;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -39,14 +41,21 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
      */
     private $canonicalizer;
 
+    /**
+     * @var SubmissionFinder
+     */
+    private $submissionFinder;
+
     public function __construct(
         ManagerRegistry $registry,
         PaginatorInterface $paginator,
-        CanonicalRedirector $canonicalizer
+        CanonicalRedirector $canonicalizer,
+        SubmissionFinder $submissionFinder
     ) {
         parent::__construct($registry, User::class);
         $this->paginator = $paginator;
         $this->canonicalizer = $canonicalizer;
+        $this->submissionFinder = $submissionFinder;
     }
 
     /**
@@ -115,6 +124,33 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
         $adapter = new UnionAdapter(
             new DoctrineAdapter($submissionsQuery),
             new DoctrineAdapter($commentsQuery)
+        );
+
+        $cursor = $this->paginator->paginate($adapter, 25, new TimestampPage());
+
+        $this->hydrateContributions($cursor);
+
+        return $cursor;
+    }
+
+    public function findTrashedContributions(User $user): CursorInterface {
+        $submissionsQuery = $this->submissionFinder->getQueryBuilder(
+            (new SubmissionCriteria(Submission::SORT_NEW))
+                ->showUsers($user)
+                ->trashed()
+        );
+
+        $commentQuery = $this->getEntityManager()->createQueryBuilder()
+            ->select('c')
+            ->from(Comment::class, 'c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.visibility = :visibilty')
+            ->setParameter('user', $user)
+            ->setParameter('visibilty', Comment::VISIBILITY_TRASHED);
+
+        $adapter = new UnionAdapter(
+            new DoctrineAdapter($submissionsQuery),
+            new DoctrineAdapter($commentQuery)
         );
 
         $cursor = $this->paginator->paginate($adapter, 25, new TimestampPage());

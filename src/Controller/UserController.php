@@ -424,4 +424,15 @@ final class UserController extends AbstractController {
 
         return $this->redirectToRoute('front');
     }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("edit_user", subject="user", statusCode=403)
+     */
+    public function trash(User $user, UserRepository $repository): Response {
+        return $this->render('user/trash.html.twig', [
+            'posts' => $repository->findTrashedContributions($user),
+            'user' => $user,
+        ]);
+    }
 }
