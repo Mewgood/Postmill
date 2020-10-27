@@ -317,6 +317,28 @@ class UserControllerTest extends WebTestCase {
         self::assertSelectorExists('body.user-anonymous');
     }
 
+    public function testCanViewOwnTrash(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/user/zach/trash');
+
+        self::assertResponseStatusCodeSame(200);
+        self::assertSelectorTextContains('.submission__title', 'Submission in the trash');
+    }
+
+    public function testLoggedOutUsersArePromptedToLogInWhenAccessingTrash(): void {
+        $client = self::createClient();
+        $client->request('GET', '/user/zach/trash');
+
+        self::assertResponseRedirects('/login');
+    }
+
+    public function testCannotViewAnotherPersonsTrash(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/user/emma/trash');
+
+        self::assertResponseStatusCodeSame(403);
+    }
+
     private function changeUser(): void {
         $em = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
         /** @var User $user */

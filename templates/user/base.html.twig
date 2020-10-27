@@ -124,7 +124,11 @@
     ('nav.hidden_forums'|trans): {
       route: 'hidden_forums',
       condition: is_granted('ROLE_USER') and user is same as(app.user)
-    }
+    },
+    ('nav.trash'|trans): {
+      'route': 'user_trash',
+      condition: is_granted('ROLE_ADMIN') or user is same as(app.user)
+    },
   } %}
 
   {% set open = false %}

@@ -195,5 +195,6 @@ class ApplicationAvailabilityTest extends WebTestCase {
         yield ['/site/themes'];
         yield ['/site/themes/css/create'];
         yield ['/site/trash'];
+        yield ['/user/emma/trash'];
     }
 }

@@ -146,3 +146,8 @@ change_night_mode:
     path: /night_mode.{_format}
     requirements: { _format: html|json }
     options: { expose: true }
+
+user_trash:
+    controller: App\Controller\UserController::trash
+    methods: [GET]
+    path: /user/{username}/trash

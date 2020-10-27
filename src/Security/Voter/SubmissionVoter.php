@@ -5,6 +5,7 @@ namespace App\Security\Voter;
 use App\Entity\Submission;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class SubmissionVoter extends Voter {
@@ -18,6 +19,15 @@ final class SubmissionVoter extends Voter {
         'restore',
         'purge',
     ];
+
+    /**
+     * @var AccessDecisionManagerInterface
+     */
+    private $decisionManager;
+
+    public function __construct(AccessDecisionManagerInterface $decisionManager) {
+        $this->decisionManager = $decisionManager;
+    }
 
     protected function supports(string $attribute, $subject): bool {
         return $subject instanceof Submission && \in_array($attribute, self::ATTRIBUTES, true);
@@ -46,7 +56,7 @@ final class SubmissionVoter extends Voter {
         case 'pin':
             return $this->canPin($subject, $user);
         case 'purge':
-            return $this->canPurge($subject, $user);
+            return $this->canPurge($subject, $token);
         case 'restore':
             return $this->canRestore($subject, $user);
         default:
@@ -141,7 +151,10 @@ final class SubmissionVoter extends Voter {
         return true;
     }
 
-    private function canPurge(Submission $submission, User $user): bool {
-        return $submission->isTrashed() && $user->isAdmin();
+    private function canPurge(Submission $submission, TokenInterface $token): bool {
+        return $submission->isTrashed() && (
+            $submission->getUser() === $token->getUser() ||
+            $this->decisionManager->decide($token, ['ROLE_ADMIN'])
+        );
     }
 }
