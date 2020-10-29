@@ -60,8 +60,12 @@ lint:js:
     needs: []
     except:
         - schedules
+    cache:
+        paths:
+            - .yarn
+            - node_modules
     before_script:
-        - yarn
+        - yarn install --cache-folder .yarn
     script:
         - yarn run lint:js
 
@@ -101,14 +105,20 @@ build-app:7.4: &build-app
         PHP_VERSION: '7.4'
         TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION}-${CI_COMMIT_SHA}
         TEST_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:${CI_COMMIT_SHA}
+        RELEASE_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:latest
+        RELEASE_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:latest
     before_script:
         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
-        - docker build --pull
+        - docker pull $RELEASE_IMAGE_APP || true
+        - docker build
             --build-arg APP_VERSION="$(git describe --tags)"
             --build-arg APP_BRANCH="$CI_COMMIT_REF_NAME"
             --build-arg PHP_VERSION="$PHP_VERSION"
-            --target postmill_php -t $TEST_IMAGE_APP .
+            --cache-from $RELEASE_IMAGE_APP
+            --target postmill_php
+            -t $TEST_IMAGE_APP
+            .
         - docker push $TEST_IMAGE_APP
 
 build-app:7.3:
@@ -186,7 +196,11 @@ build-web:
         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:
         - docker pull $TEST_IMAGE_APP
-        - docker build --cache-from $TEST_IMAGE_APP --target postmill_web -t $TEST_IMAGE_WEB .
+        - docker build
+            --cache-from $TEST_IMAGE_APP
+            --target postmill_web
+            -t $TEST_IMAGE_WEB
+            .
         - docker push $TEST_IMAGE_WEB
 
 
@@ -202,8 +216,6 @@ release:
         - docker:dind
     variables:
         <<: *build-app-vars
-        RELEASE_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:latest
-        RELEASE_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:latest
     before_script:
         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     script:

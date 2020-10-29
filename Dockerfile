@@ -1,4 +1,4 @@
-ARG COMPOSER_VERSION=2.0.0-RC1
+ARG COMPOSER_VERSION=2
 ARG PHP_VERSION=7.4
 ARG NODE_VERSION=14
 ARG NGINX_VERSION=1.18
@@ -12,22 +12,43 @@ FROM node:${NODE_VERSION}-alpine AS postmill_assets
 WORKDIR /app
 
 COPY assets assets/
-COPY .babelrc package.json postcss.config.js yarn.lock webpack.config.js ./
+COPY .babelrc package.json postcss.config.js webpack.config.js yarn.lock ./
 
 RUN set -eux; \
-    apk add curl; \
+    apk add --no-cache curl; \
     yarn; \
-    yarn run build-prod
+    yarn run build-prod; \
+    yarn cache clean; \
+    rm -rf node_modules;
+
+
+# ========
+# Composer
+# ========
+
+FROM composer:${COMPOSER_VERSION} AS postmill_composer_cache
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+
+RUN set -eux; \
+    composer install \
+        --ignore-platform-reqs \
+        --no-autoloader \
+        --no-cache \
+        --no-dev \
+        --no-scripts \
+        --prefer-dist;
 
 
 # ==============
 # PHP base image
 # ==============
 
-FROM composer:${COMPOSER_VERSION} AS composer
 FROM php:${PHP_VERSION}-fpm-alpine AS postmill_php_base
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=postmill_composer_cache /usr/bin/composer /usr/bin/composer
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HTACCESS_PROTECT=0 \
@@ -81,12 +102,6 @@ RUN set -eux; \
         amqp \
         apcu; \
     echo 'apc.enable_cli = On' >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
-    composer global require symfony/flex \
-        --classmap-authoritative \
-        --apcu-autoloader \
-        --no-progress \
-        --no-suggest \
-        --prefer-dist; \
     pecl clear-cache; \
     RUNTIME_DEPS="$(scanelf -nBRF '%n#p' /usr/local/lib/php/extensions | \
         tr ',' '\n' | \
@@ -121,13 +136,9 @@ COPY --from=postmill_assets /app/public/build/*.json public/build/
 COPY src src/
 COPY templates templates/
 COPY translations translations/
+COPY --from=postmill_composer_cache /app/vendor vendor/
 
-ARG APP_BRANCH=""
-ARG APP_VERSION=""
-
-ENV APP_BRANCH=${APP_BRANCH} \
-    APP_VERSION=${APP_VERSION} \
-    APP_ENV=prod \
+ENV APP_ENV=prod \
     DATABASE_URL='pgsql://postmill:secret@db/postmill' \
     LOG_FILE='php://stderr' \
     POSTMILL_WRITE_DIRS="\
@@ -154,7 +165,6 @@ RUN set -eux; \
         --apcu-autoloader \
         --classmap-authoritative \
         --no-dev \
-        --no-suggest \
         --prefer-dist; \
     sed -i '/^APP_BRANCH\|APP_VERSION/d' .env; \
     composer dump-env prod; \
@@ -164,6 +174,11 @@ RUN set -eux; \
 VOLUME /app/public/media/cache
 VOLUME /app/public/submission_images
 VOLUME /app/var
+
+ARG APP_BRANCH=""
+ARG APP_VERSION=""
+ENV APP_BRANCH=${APP_BRANCH} \
+    APP_VERSION=${APP_VERSION}
 
 
 # =====
@@ -232,13 +247,13 @@ ENV POSTMILL_WRITE_DIRS="\
 
 FROM postmill_web AS postmill_web_debug
 
-COPY docker/nginx/docker-entrypoint-debug.sh /usr/local/bin/docker-entrypoint.sh
-COPY docker/nginx/conf.d/default-dev.conf /etc/nginx/conf.d/default.conf
-
 RUN set -ex; \
     apk add --no-cache openssl; \
     touch /etc/nginx/ssl.conf; \
     chmod go=u /etc/nginx/ssl.conf;
+
+COPY docker/nginx/docker-entrypoint-debug.sh /usr/local/bin/docker-entrypoint.sh
+COPY docker/nginx/conf.d/default-dev.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 443
 
