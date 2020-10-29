@@ -1,1 +1,3 @@
 error.account_banned: 'Via konto estas forbarita.'
+error.rate_limited: "Ni detektis tro fiaskitajn klopodojn ensaluti. Bolvolu provi denove poste."
+
