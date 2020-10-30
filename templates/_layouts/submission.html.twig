@@ -57,6 +57,15 @@
               </span>
             {% endif %}
 
+            {% if not submission.published %}
+              <span class="submission__unpublished-icon"
+                    title="{{ 'submission.unpublished_description'|trans({
+                      '%on_timestamp%': 'time.on_timestamp'|trans({ '%timestamp%': submission.publishedAt|format_datetime }),
+                    }) }}">
+                {{- icon('clock', 'label.unpublished'|trans) -}}
+              </span>
+            {% endif %}
+
             {% if submission.url is not empty and '://' in submission.url %}
               {% with { host: submission.url|rewrite_url|split('://')[1]|split('/')[0] } %}
                 <a href="{{ path('search', { q: host }) }}" class="submission__host text-xs">
@@ -126,6 +135,7 @@
   {{ submission.body is not null ? 'submission--has-body' }}
   {{ not show_content ? 'submission--collapsed' : 'submission--expanded' }}
   {{ submission.sticky ? 'submission--sticky' }}
+  {{ not submission.published ? 'submission--unpublished' }}
   {{ submission.locked ? 'submission--locked' }}
   {{ has_thumbnail ? 'submission--has-thumbnail' }}
   submission--visibility-{{ submission.visibility|replace({'_': '-'}) }}

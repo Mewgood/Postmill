@@ -180,8 +180,9 @@
       {{- label -}}
     {%- else -%}
       {{- label|trans({}, translation_domain) -}}
-    {%- endif %}
-    {% if show_required_indicator -%}
+    {%- endif -%}
+    {%- if show_required_indicator -%}
+      {{- '&nbsp;' -}}
       <b class="fg-red" role="presentation" title="{{ 'help.required_field'|trans }}" aria-label="{{ 'help.required_field'|trans }}">*</b>
     {%- endif -%}
     </{{ element|default('label') }}>

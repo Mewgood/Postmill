@@ -62,7 +62,6 @@ bad_phrase.phrase_to_ban: Frase å forby
 bad_phrase.search_title: Søk i forbudte fraser
 bad_phrase.title: Forbudte fraser
 bad_phrase.type_text: Tekst
-bad_phrase.type_regex: RegExp
 
 ban_add.title: Utesteng en IP-adresse
 
@@ -327,6 +326,7 @@ label.preferred_theme: Foretrukket tema
 label.reason: Årsak
 label.reason_for_banning: Årsak for utestengelse
 label.recent_changes: Nye endringer
+label.regex: RegExp
 label.registration_date: Registreringsdato
 label.repeat_new_password: Nytt passord (gjenta)
 label.repeat_password: Passord (gjenta)
@@ -355,6 +355,7 @@ label.toolbox: Verktøy
 label.type: Type
 label.unban: Fjern utestengelse
 label.unban_associated_ips: Fjern brukerutestengelser assosiert med IP-utestengelser
+label.unpublished: Upublisert
 label.upload_image: Last opp bilde
 label.url: Lenke
 label.user_associated_with_ip: Bruker assosiert med IP
@@ -520,6 +521,7 @@ submission.time_month: Siste måned
 submission.time_week: Siste uke
 submission.time_year: Siste året
 submission.total_votes: '{1} %count% stemme|[0,Inf[ %count% stemmer'
+submission.unpublished_description: Dette innlegget vil bli publisert på %on_timestamp%.
 submission.vote_stats: (+%up%, −%down%)
 
 theme.to_be_created: Vil bli opprettet

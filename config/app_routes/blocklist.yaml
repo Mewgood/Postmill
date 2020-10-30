@@ -1,0 +1,9 @@
+blocklists:
+    controller: App\Controller\BlocklistController::list
+    methods: [GET]
+    path: /site/blocklists
+
+blocklist_add:
+    controller: App\Controller\BlocklistController::add
+    methods: [POST]
+    path: /site/blocklists

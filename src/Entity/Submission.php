@@ -22,6 +22,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @ORM\Entity(repositoryClass="App\Repository\SubmissionRepository")
  * @ORM\Table(indexes={
  *     @ORM\Index(name="submissions_timestamp_idx", columns={"timestamp"}),
+ *     @ORM\Index(name="submissions_published_at_idx", columns={"published_at"}),
  *     @ORM\Index(name="submissions_ranking_id_idx", columns={"ranking", "id"}),
  *     @ORM\Index(name="submissions_last_active_id_idx", columns={"last_active", "id"}),
  *     @ORM\Index(name="submissions_comment_count_id_idx", columns={"comment_count", "id"}),
@@ -152,6 +153,13 @@ class Submission implements DomainEvents, Visibility, Votable {
      * @var \DateTimeImmutable
      */
     private $timestamp;
+
+    /**
+     * @ORM\Column(type="datetimetz_immutable")
+     *
+     * @var \DateTimeImmutable
+     */
+    private $publishedAt;
 
     /**
      * @ORM\Column(type="datetimetz_immutable")
@@ -297,7 +305,7 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->forum = $forum;
         $this->user = $user;
         $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
-        $this->timestamp = new \DateTimeImmutable('@'.time());
+        $this->timestamp = $this->publishedAt = new \DateTimeImmutable('@'.time());
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->mentions = new ArrayCollection();
@@ -431,6 +439,26 @@ class Submission implements DomainEvents, Visibility, Votable {
         return $this->timestamp;
     }
 
+    public function getPublishedAt(): \DateTimeImmutable {
+        return $this->publishedAt;
+    }
+
+    public function isPublished(): bool {
+        return $this->publishedAt->getTimestamp() <= time();
+    }
+
+    public function setPublishedAt(\DateTimeInterface $publishedAt): void {
+        if ($publishedAt instanceof \DateTime) {
+            $publishedAt = \DateTimeImmutable::createFromMutable($publishedAt);
+        }
+
+        $this->publishedAt = $publishedAt;
+
+        foreach ($this->mentions as $mention) {
+            $mention->setNotifyAt($publishedAt);
+        }
+    }
+
     public function getLastActive(): \DateTimeImmutable {
         return $this->lastActive;
     }
@@ -448,9 +476,9 @@ class Submission implements DomainEvents, Visibility, Votable {
 
         if ($lastComment) {
             \assert($lastComment instanceof Comment);
-            $this->lastActive = $lastComment->getTimestamp();
+            $this->lastActive = $lastComment->getPublishedAt();
         } else {
-            $this->lastActive = $this->getTimestamp();
+            $this->lastActive = $this->getPublishedAt();
         }
     }
 
@@ -576,7 +604,7 @@ class Submission implements DomainEvents, Visibility, Votable {
 
         $advantage = max(min($netScoreAdvantage + $commentAdvantage, self::MAX_ADVANTAGE), -self::MAX_PENALTY);
 
-        $this->ranking = $this->getTimestamp()->getTimestamp() + $advantage;
+        $this->ranking = $this->getPublishedAt()->getTimestamp() + $advantage;
     }
 
     public function getEditedAt(): ?\DateTimeImmutable {

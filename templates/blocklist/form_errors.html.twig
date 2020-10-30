@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'nav.blocklists'|trans %}
+
+{% block body %}
+  {{ include('blocklist/_form.html.twig', { form: form }, with_context=false) }}
+{% endblock body %}

@@ -26,6 +26,13 @@ abstract class Notification {
     private $id;
 
     /**
+     * @ORM\Column(type="datetimetz_immutable", nullable=true)
+     *
+     * @var \DateTimeImmutable|null
+     */
+    private $notifyAt;
+
+    /**
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="User", inversedBy="notifications")
      *
@@ -35,12 +42,25 @@ abstract class Notification {
 
     public function __construct(User $receiver) {
         $this->user = $receiver;
+        $this->notifyAt = new \DateTime('@'.time());
     }
 
     abstract public function getType(): string;
 
     public function getId(): ?int {
         return $this->id;
+    }
+
+    public function getNotifyAt(): ?\DateTimeImmutable {
+        return $this->notifyAt;
+    }
+
+    public function setNotifyAt(?\DateTimeInterface $notifyAt): void {
+        if ($notifyAt instanceof \DateTime) {
+            $notifyAt = \DateTimeImmutable::createFromMutable($notifyAt);
+        }
+
+        $this->notifyAt = $notifyAt;
     }
 
     public function getUser(): User {

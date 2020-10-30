@@ -101,6 +101,15 @@ class Site {
      */
     private $urlImagesEnabled = true;
 
+    /**
+     * Delay in hours.
+     *
+     * @ORM\Column(type="float", options={"default": 0})
+     *
+     * @var float
+     */
+    private $submissionPublicationDelay = 0.0;
+
     public function __construct() {
         $this->id = Uuid::fromString(Uuid::NIL);
     }
@@ -207,5 +216,13 @@ class Site {
 
     public function setUrlImagesEnabled(bool $urlImagesEnabled): void {
         $this->urlImagesEnabled = $urlImagesEnabled;
+    }
+
+    public function getSubmissionPublicationDelay(): float {
+        return $this->submissionPublicationDelay;
+    }
+
+    public function setSubmissionPublicationDelay(float $submissionPublicationDelay): void {
+        $this->submissionPublicationDelay = $submissionPublicationDelay;
     }
 }

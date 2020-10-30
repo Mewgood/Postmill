@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert %}
+
+{% block title 'nav.blocklists'|trans %}
+{% block sidebar ' ' %}
+
+{% block body %}
+  <h1 class="page-heading">{{ block('title') }}</h1>
+
+  {{ alert('help.blocklists'|trans, 'info') }}
+
+  {{ render(controller('App\\Controller\\BlocklistController::renderForm')) }}
+
+  <div class="border-list">
+    {% for source in sources %}
+      <article class="flex flex--column flex-desktop--row flex--guttered flex-desktop--align-center pad-v-slim">
+        <div class="flow-slim flex__grow">
+          <h2 class="text-md">{{ source.name }}</h2>
+          <dl class="definition-list">
+            <dt>{{ 'label.url'|trans }}</dt>
+            <dd>{{ source.url }}</dd>
+            <dt>TTL</dt>
+            <dd>{{ source.ttl }}</dd>
+            <dt>{{ 'label.regex'|trans }}</dt>
+            <dd class="monospace">{{ source.regex }}</dd>
+          </dl>
+        </div>
+        <div class="flow-slim">
+          <button class="block button button--small">{{ 'action.remove'|trans }}</button>
+          <button class="block button button--small button--secondary">{{ 'Refresh' }}</button>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% endblock body %}

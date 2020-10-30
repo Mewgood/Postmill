@@ -76,6 +76,7 @@
   {% for key, item in {
     censorship: { label: 'nav.censorship'|trans, route: path('bad_phrase_list'), icon: 'unlink' },
     bans: { label: 'label.bans'|trans, route: path('user_bans'), icon: 'hammer' },
+    blocklists: { label: 'nav.blocklists'|trans, route: path('blocklists'), icon: 'minus-circled' },
     site_settings: { label: 'nav.site_settings'|trans, route: path('site_settings'), icon: 'settings' },
     site_wide_trash: { label: 'nav.trash'|trans, route: path('site_wide_trash'), 'icon': 'trash' },
     themes: { label: 'nav.themes'|trans, route: path('themes'), icon: 'brush' },

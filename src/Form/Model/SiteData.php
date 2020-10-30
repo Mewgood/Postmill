@@ -79,6 +79,11 @@ class SiteData {
      */
     public $urlImagesEnabled;
 
+    /**
+     * @var float
+     */
+    private $submissionPublicationDelay;
+
     public static function createFromSite(Site $site): self {
         $self = new self();
         $self->siteName = $site->getSiteName();
@@ -108,5 +113,13 @@ class SiteData {
         $site->setTrashEnabled($this->trashEnabled);
         $site->setRegistrationCaptchaEnabled($this->registrationCaptchaEnabled);
         $site->setUrlImagesEnabled($this->urlImagesEnabled);
+    }
+
+    public function getSubmissionPublicationDelay(): float {
+        return $this->submissionPublicationDelay;
+    }
+
+    public function setSubmissionPublicationDelay(float $submissionPublicationDelay): void {
+        $this->submissionPublicationDelay = $submissionPublicationDelay;
     }
 }

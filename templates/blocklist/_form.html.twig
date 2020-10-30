@@ -1,0 +1,11 @@
+{% from '_macros/form.html.twig' import button_row %}
+{% form_theme form '_forms/aligned_form_theme.html.twig' %}
+
+{{ form_start(form) }}
+  {{ form_row(form.name) }}
+  {{ form_row(form.url) }}
+  {{ form_row(form.regex, { attr: { class: 'monospace' } }) }}
+  {{ form_row(form.ttl, { suffix: 'time.seconds_suffix'|trans({ '%count%': 2 }), attr: { size: 6 } }) }}
+
+  {{ button_row('action.add'|trans) }}
+{{ form_end(form) }}

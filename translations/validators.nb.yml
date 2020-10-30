@@ -1,8 +1,8 @@
 bad_phrase.match: Feltet inneholder et forbudt ord eller frase.
-bad_phrase.invalid_regex: Feltet må inneholde et gyldig RegExp-uttrykk, uten avgrensningstegn.
-bad_phrase.must_not_match_empty: RegExp-utrykket må ikke matche en tom tekststreng.
 comment.empty: Kommentaren må ikke være tom.
 forum.name_characters: Navnet må inneholde kun bokstaver, tall og understreker.
+regex.invalid: Feltet må inneholde et gyldig RegExp-uttrykk, uten avgrensningstegn.
+regex.must_not_match_empty: RegExp-utrykket må ikke matche en tom tekststreng.
 tag.invalid_characters: Stikkord kan kun inneholde bokstaver, tall og understreker.
 tag.too_short: Stikkordet {{ value }} er for kort. Det må ha minst {{ limit }} tegn.
 tag.too_long: Stikkordet {{ value }} er for langt. Det må ha maksimalt {{ limit }} tegn.

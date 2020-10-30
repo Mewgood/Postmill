@@ -97,6 +97,7 @@ class SubmissionFinder {
             ->where('s.visibility = :visibility')
             ->setParameter('visibility', $criteria->getVisibility());
 
+        $this->addDelayedPublishingClause($qb);
         $this->addTimeClause($qb);
         $this->addStickyClause($qb, $criteria);
         $this->filter($qb, $criteria);
@@ -120,6 +121,26 @@ class SubmissionFinder {
         \assert($request !== null);
 
         return !$request->query->has('next');
+    }
+
+    private function addDelayedPublishingClause(QueryBuilder $qb): void {
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            // future posts are always visible to admins
+            return;
+        }
+
+        $orClause = $qb->expr()->orX($qb->expr()->lte('s.publishedAt', ':now'));
+        $qb->setParameter(':now', new \DateTimeImmutable('@'.time()), Types::DATETIMETZ_IMMUTABLE);
+
+        $user = $this->getUser(false);
+
+        if ($user) {
+            $orClause->add('s.user = :user');
+            $orClause->add('EXISTS (SELECT 1 FROM '.Moderator::class.' m WHERE m.forum = s.forum AND m.user = :user)');
+            $qb->setParameter('user', $user);
+        }
+
+        $qb->andWhere($orClause);
     }
 
     private function addTimeClause(QueryBuilder $qb): void {
