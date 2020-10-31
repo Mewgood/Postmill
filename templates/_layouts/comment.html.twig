@@ -93,7 +93,7 @@
       {% if children|length > 0 %}
         <div class="comment__replies hideable__hide flow">
           {%- for reply in children -%}
-            {%- with { comment: reply, level: level + 1, show_form: false } -%}
+            {%- with { comment: reply, level: level + 1, show_context: false, show_form: false } -%}
               {{- block('comment') -}}
             {%- endwith -%}
           {%- endfor -%}

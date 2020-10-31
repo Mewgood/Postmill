@@ -20,5 +20,9 @@
     </div>
   </div>
 
-  {{ comment(comment, {recurse: true, show_form: true}) }}
-{% endblock %}
+  {{ comment(comment, {
+    recurse: true,
+    show_context: comment.parent is not empty,
+    show_form: true,
+  }) }}
+{% endblock body %}
