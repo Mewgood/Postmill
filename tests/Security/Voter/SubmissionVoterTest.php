@@ -2,6 +2,7 @@
 
 namespace App\Tests\Security\Voter;
 
+use App\Entity\ForumBan;
 use App\Security\Voter\SubmissionVoter;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -43,5 +44,25 @@ class SubmissionVoterTest extends VoterTestCase {
 
         $this->expectRoleLookup('ROLE_ADMIN', $token);
         $this->assertGranted('purge', $submission, $token);
+    }
+
+    public function testCanVote(): void {
+        $submission = EntityFactory::makeSubmission();
+
+        $token = $this->createToken(['ROLE_USER'], EntityFactory::makeUser());
+
+        $this->assertGranted('vote', $submission, $token);
+    }
+
+    public function testCannotVoteIfBanned(): void {
+        $user = EntityFactory::makeUser();
+
+        $submission = EntityFactory::makeSubmission();
+        $forum = $submission->getForum();
+        $forum->addBan(new ForumBan($forum, $user, 'reason', true, $submission->getUser()));
+
+        $token = $this->createToken(['ROLE_USER'], $user);
+
+        $this->assertDenied('vote', $submission, $token);
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Message\Handler;
 
+use App\DataTransfer\VoteManager;
 use App\Entity\Comment;
-use App\Entity\Contracts\VotableInterface;
+use App\Entity\Contracts\Votable;
 use App\Entity\ForumSubscription;
 use App\Entity\Message;
 use App\Entity\Moderator;
@@ -66,6 +67,11 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     private $submissions;
 
     /**
+     * @var VoteManager
+     */
+    private $voteManager;
+
+    /**
      * @var int
      */
     private $batchSize;
@@ -77,6 +83,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         CommentRepository $comments,
         MessageRepository $messages,
         SubmissionRepository $submissions,
+        VoteManager $voteManager,
         int $batchSize
     ) {
         $this->entityManager = $entityManager;
@@ -85,6 +92,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $this->comments = $comments;
         $this->messages = $messages;
         $this->submissions = $submissions;
+        $this->voteManager = $voteManager;
         $this->batchSize = $batchSize;
     }
 
@@ -221,14 +229,22 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
         $dispatchAgain = false;
 
-        foreach ($submissions as $submission) {
-            \assert($submission instanceof Submission);
-            $dispatchAgain = true;
+        try {
+            $this->entityManager->beginTransaction();
 
-            $submission->vote(VotableInterface::VOTE_NONE, $user, null);
+            foreach ($submissions as $submission) {
+                \assert($submission instanceof Submission);
+                $dispatchAgain = true;
+
+                $this->voteManager->vote($submission, $user, Votable::VOTE_NONE, null);
+            }
+
+            $this->entityManager->commit();
+        } catch (\Throwable $e) {
+            $this->entityManager->rollback();
+
+            throw $e;
         }
-
-        $this->entityManager->flush();
 
         return $dispatchAgain;
     }
@@ -247,14 +263,22 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
         $dispatchAgain = false;
 
-        foreach ($comments as $comment) {
-            \assert($comment instanceof Comment);
-            $dispatchAgain = true;
+        try {
+            $this->entityManager->beginTransaction();
 
-            $comment->vote(VotableInterface::VOTE_NONE, $user, null);
+            foreach ($comments as $comment) {
+                \assert($comment instanceof Comment);
+                $dispatchAgain = true;
+
+                $this->voteManager->vote($comment, $user, Votable::VOTE_NONE, null);
+            }
+
+            $this->entityManager->commit();
+        } catch (\Throwable $e) {
+            $this->entityManager->rollback();
+
+            throw $e;
         }
-
-        $this->entityManager->flush();
 
         return $dispatchAgain;
     }

@@ -2,10 +2,10 @@
 
 namespace App\Entity\Contracts;
 
-use App\Entity\Exception\BadVoteChoiceException;
 use App\Entity\User;
+use App\Entity\Vote;
 
-interface VotableInterface {
+interface Votable {
     public const VOTE_UP = 1;
     public const VOTE_NONE = 0;
     public const VOTE_DOWN = -1;
@@ -18,8 +18,11 @@ interface VotableInterface {
 
     public function getUserChoice(User $user): int;
 
-    /**
-     * @throws BadVoteChoiceException if $choice is bad
-     */
-    public function vote(int $choice, User $user, string $ip): void;
+    public function getUserVote(User $user): ?Vote;
+
+    public function createVote(int $choice, User $user, ?string $ip): Vote;
+
+    public function addVote(Vote $vote): void;
+
+    public function removeVote(Vote $vote): void;
 }

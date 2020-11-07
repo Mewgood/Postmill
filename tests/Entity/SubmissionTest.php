@@ -2,7 +2,7 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Contracts\VotableInterface;
+use App\Entity\Contracts\Votable;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Forum;
 use App\Entity\ForumBan;
@@ -112,7 +112,7 @@ class SubmissionTest extends TestCase {
         new Submission('a', null, 'a', $forum, $user, null);
     }
 
-    public function testBannedUserCannotVote(): void {
+    public function testBannedUserCannotAddVote(): void {
         $forum = new Forum('a', 'a', 'a', 'a');
         $user = new User('u', 'p');
         $forum->addBan(new ForumBan($forum, $user, 'a', true, new User('u', 'p')));
@@ -121,7 +121,7 @@ class SubmissionTest extends TestCase {
 
         $this->expectException(BannedFromForumException::class);
 
-        $submission->vote(VotableInterface::VOTE_UP, $user, '::1');
+        $submission->addVote($submission->createVote(Votable::VOTE_UP, $user, '::1'));
     }
 
     public function constructorArgsProvider(): iterable {

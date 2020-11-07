@@ -4,9 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Contracts\DomainEventsInterface as DomainEvents;
 use App\Entity\Contracts\VisibilityInterface as Visibility;
-use App\Entity\Contracts\VotableInterface as Votable;
+use App\Entity\Contracts\Votable;
 use App\Entity\Exception\BannedFromForumException;
-use App\Entity\Exception\SubmissionLockedException;
 use App\Entity\Traits\VisibilityTrait;
 use App\Entity\Traits\VotableTrait;
 use App\Event\SubmissionCreated;
@@ -34,7 +33,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 class Submission implements DomainEvents, Visibility, Votable {
     use VisibilityTrait;
     use VotableTrait {
-        vote as private realVote;
         getNetScore as private getRealNetScore;
     }
 
@@ -185,7 +183,7 @@ class Submission implements DomainEvents, Visibility, Votable {
 
     /**
      * @ORM\OneToMany(targetEntity="SubmissionVote", mappedBy="submission",
-     *     fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
+     *     fetch="EXTRA_LAZY", cascade={"persist"}, orphanRemoval=true)
      *
      * @var SubmissionVote[]|Collection
      */
@@ -301,7 +299,7 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->mentions = new ArrayCollection();
-        $this->vote(self::VOTE_UP, $user, $ip);
+        $this->addVote($this->createVote(self::VOTE_UP, $user, $ip));
         $this->updateLastActive();
     }
 
@@ -496,22 +494,44 @@ class Submission implements DomainEvents, Visibility, Votable {
         return $this->votes;
     }
 
-    protected function createVote(int $choice, User $user, ?string $ip): Vote {
+    public function createVote(int $choice, User $user, ?string $ip): Vote {
         return new SubmissionVote($choice, $user, $ip, $this);
     }
 
-    public function vote(int $choice, User $user, ?string $ip): void {
-        if ($choice !== self::VOTE_NONE) {
-            if ($this->visibility === self::VISIBILITY_SOFT_DELETED) {
-                throw new SubmissionLockedException();
-            }
-
-            if ($this->forum->userIsBanned($user)) {
-                throw new BannedFromForumException();
-            }
+    public function addVote(Vote $vote): void {
+        if (!$vote instanceof SubmissionVote) {
+            throw new \InvalidArgumentException(sprintf(
+                '$vote must be of subtype %s, %s given',
+                SubmissionVote::class,
+                \get_class($vote)
+            ));
         }
 
-        $this->realVote($choice, $user, $ip);
+        if (
+            $vote->getChoice() !== self::VOTE_NONE &&
+            $this->forum->userIsBanned($vote->getUser())
+        ) {
+            throw new BannedFromForumException();
+        }
+
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+        }
+
+        $this->netScore = $this->getRealNetScore();
+        $this->updateRanking();
+    }
+
+    public function removeVote(Vote $vote): void {
+        if (!$vote instanceof SubmissionVote) {
+            throw new \InvalidArgumentException(sprintf(
+                '$vote must be of subtype %s, %s given',
+                SubmissionVote::class,
+                \get_class($vote)
+            ));
+        }
+
+        $this->votes->removeElement($vote);
 
         $this->netScore = $this->getRealNetScore();
         $this->updateRanking();

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Security\Voter;
 
+use App\Entity\ForumBan;
 use App\Security\Voter\CommentVoter;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -44,5 +45,25 @@ class CommentVoterTest extends VoterTestCase {
 
         $this->expectRoleLookup('ROLE_ADMIN', $token);
         $this->assertGranted('purge', $comment, $token);
+    }
+
+    public function testCanVote(): void {
+        $comment = EntityFactory::makeComment();
+
+        $token = $this->createToken(['ROLE_USER'], EntityFactory::makeUser());
+
+        $this->assertGranted('vote', $comment, $token);
+    }
+
+    public function testCannotVoteIfBanned(): void {
+        $user = EntityFactory::makeUser();
+
+        $comment = EntityFactory::makeComment();
+        $forum = $comment->getSubmission()->getForum();
+        $forum->addBan(new ForumBan($forum, $user, 'reason', true, $comment->getUser()));
+
+        $token = $this->createToken(['ROLE_USER'], $user);
+
+        $this->assertDenied('vote', $comment, $token);
     }
 }

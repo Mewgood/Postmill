@@ -16,6 +16,7 @@ final class CommentVoter extends Voter {
         'mod_delete',
         'purge',
         'restore',
+        'vote',
     ];
 
     private $decisionManager;
@@ -50,6 +51,8 @@ final class CommentVoter extends Voter {
             return $this->canPurge($subject, $token);
         case 'restore':
             return $this->canRestore($subject, $user);
+        case 'vote':
+            return $this->canVote($subject, $user);
         default:
             throw new \InvalidArgumentException('Unknown attribute '.$attribute);
         }
@@ -129,5 +132,9 @@ final class CommentVoter extends Voter {
             $comment->getUser() === $token->getUser() ||
             $this->decisionManager->decide($token, ['ROLE_ADMIN'])
         );
+    }
+
+    private function canVote(Comment $comment, User $user): bool {
+        return !$comment->getSubmission()->getForum()->userIsBanned($user);
     }
 }

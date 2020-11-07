@@ -10,7 +10,7 @@ class BadVoteChoiceException extends \DomainException implements HttpExceptionIn
      */
     public function __construct($given) {
         parent::__construct(sprintf(
-            'Bad vote choice (expected one of VotableInterface::VOTE_* constants, given %s)',
+            'Bad vote choice (expected one of Votable::VOTE_* constants, given %s)',
             is_scalar($given) ? var_export($given, true) : \gettype($given)
         ));
     }

@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Contracts\DomainEventsInterface as DomainEvents;
 use App\Entity\Contracts\VisibilityInterface as Visibility;
-use App\Entity\Contracts\VotableInterface as Votable;
+use App\Entity\Contracts\Votable;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Exception\SubmissionLockedException;
 use App\Entity\Traits\VisibilityTrait;
@@ -28,7 +28,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 class Comment implements DomainEvents, Visibility, Votable {
     use VisibilityTrait;
     use VotableTrait {
-        vote as private realVote;
         getNetScore as private getRealNetScore;
     }
 
@@ -89,7 +88,7 @@ class Comment implements DomainEvents, Visibility, Votable {
 
     /**
      * @ORM\OneToMany(targetEntity="CommentVote", mappedBy="comment",
-     *     fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
+     *     fetch="EXTRA_LAZY", cascade={"persist"}, orphanRemoval=true)
      *
      * @var CommentVote[]|Collection
      */
@@ -198,7 +197,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         $this->votes = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->mentions = new ArrayCollection();
-        $this->vote(self::VOTE_UP, $user, $ip);
+        $this->addVote($this->createVote(self::VOTE_UP, $user, $ip));
         $this->notify();
 
         if ($parent) {
@@ -304,16 +303,40 @@ class Comment implements DomainEvents, Visibility, Votable {
         $mentioned->sendNotification(new CommentMention($mentioned, $this));
     }
 
-    protected function createVote(int $choice, User $user, ?string $ip): Vote {
+    public function createVote(int $choice, User $user, ?string $ip): Vote {
         return new CommentVote($choice, $user, $ip, $this);
     }
 
-    public function vote(int $choice, User $user, ?string $ip): void {
-        if ($choice !== self::VOTE_NONE && $this->submission->getForum()->userIsBanned($user)) {
+    public function addVote(Vote $vote): void {
+        if (!$vote instanceof CommentVote) {
+            throw new \InvalidArgumentException(sprintf(
+                '$vote must be of subtype %s, %s given',
+                CommentVote::class,
+                \get_class($vote)
+            ));
+        }
+
+        if ($this->submission->getForum()->userIsBanned($vote->getUser())) {
             throw new BannedFromForumException();
         }
 
-        $this->realVote($choice, $user, $ip);
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+        }
+
+        $this->netScore = $this->getRealNetScore();
+    }
+
+    public function removeVote(Vote $vote): void {
+        if (!$vote instanceof CommentVote) {
+            throw new \InvalidArgumentException(sprintf(
+                '$vote must be of subtype %s, %s given',
+                CommentVote::class,
+                \get_class($vote)
+            ));
+        }
+
+        $this->votes->removeElement($vote);
 
         $this->netScore = $this->getRealNetScore();
     }

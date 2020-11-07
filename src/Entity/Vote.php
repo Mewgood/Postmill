@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-use App\Entity\Contracts\VotableInterface;
+use App\Entity\Contracts\Votable;
+use App\Entity\Exception\BadVoteChoiceException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -50,28 +51,17 @@ abstract class Vote {
     private $ip;
 
     /**
-     * @param int $choice one of VotableInterface::VOTE_UP or
-     *                    VotableInterface::VOTE_DOWN
+     * @param int $choice one of Votable::VOTE_UP or
+     *                    Votable::VOTE_DOWN
      *
      * @throws \InvalidArgumentException if $choice is bad
      * @throws \InvalidArgumentException if IP address isn't valid
      */
     public function __construct(int $choice, User $user, ?string $ip) {
-        if ($choice === VotableInterface::VOTE_NONE) {
-            throw new \InvalidArgumentException('A vote entity cannot have a "none" status');
-        }
 
-        if ($choice !== VotableInterface::VOTE_UP && $choice !== VotableInterface::VOTE_DOWN) {
-            throw new \InvalidArgumentException('Unknown choice');
-        }
-
-        if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
-            throw new \InvalidArgumentException('Bad IP address');
-        }
-
-        $this->upvote = $choice === VotableInterface::VOTE_UP;
         $this->user = $user;
-        $this->ip = $user->isWhitelistedOrAdmin() ? null : $ip;
+        $this->setChoice($choice);
+        $this->setIp($ip);
         $this->timestamp = new \DateTimeImmutable('@'.time());
     }
 
@@ -81,8 +71,20 @@ abstract class Vote {
 
     public function getChoice(): int {
         return $this->upvote
-            ? VotableInterface::VOTE_UP
-            : VotableInterface::VOTE_DOWN;
+            ? Votable::VOTE_UP
+            : Votable::VOTE_DOWN;
+    }
+
+    public function setChoice(int $choice): void {
+        if ($choice === Votable::VOTE_NONE) {
+            throw new BadVoteChoiceException('A vote entity cannot have a "none" status');
+        }
+
+        if ($choice !== Votable::VOTE_UP && $choice !== Votable::VOTE_DOWN) {
+            throw new BadVoteChoiceException('Unknown choice');
+        }
+
+        $this->upvote = $choice === Votable::VOTE_UP;
     }
 
     public function getUser(): User {
@@ -91,6 +93,14 @@ abstract class Vote {
 
     public function getIp(): ?string {
         return $this->ip;
+    }
+
+    public function setIp(?string $ip): void {
+        if ($ip !== null && !filter_var($ip, FILTER_VALIDATE_IP)) {
+            throw new \InvalidArgumentException('Bad IP address');
+        }
+
+        $this->ip = $this->user->isWhitelistedOrAdmin() ? null : $ip;
     }
 
     public function getTimestamp(): \DateTimeImmutable {

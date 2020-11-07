@@ -1,8 +1,8 @@
 {%- macro vote(entity, route) -%}
   {% with {
-    VOTE_NONE: constant('App\\Entity\\Contracts\\VotableInterface::VOTE_NONE'),
-    VOTE_UP: constant('App\\Entity\\Contracts\\VotableInterface::VOTE_UP'),
-    VOTE_DOWN: constant('App\\Entity\\Contracts\\VotableInterface::VOTE_DOWN'),
+    VOTE_NONE: constant('App\\Entity\\Contracts\\Votable::VOTE_NONE'),
+    VOTE_UP: constant('App\\Entity\\Contracts\\Votable::VOTE_UP'),
+    VOTE_DOWN: constant('App\\Entity\\Contracts\\Votable::VOTE_DOWN'),
   } %}
     {{- block('vote') -}}
   {% endwith %}

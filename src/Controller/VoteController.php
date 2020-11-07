@@ -2,32 +2,33 @@
 
 namespace App\Controller;
 
-use App\Entity\Contracts\VotableInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\DataTransfer\VoteManager;
+use App\Entity\Contracts\Votable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class VoteController extends AbstractController {
+    private $voteManager;
+
+    public function __construct(VoteManager $voteManager) {
+        $this->voteManager = $voteManager;
+    }
+
     /**
      * Vote on a votable entity.
      *
      * @IsGranted("ROLE_USER")
+     * @IsGranted("vote", subject="votable", statusCode=403)
      */
-    public function __invoke(EntityManagerInterface $em, Request $request, string $entityClass, int $id): Response {
+    public function __invoke(Request $request, Votable $votable): Response {
         $this->validateCsrf('vote', $request->request->get('token'));
 
-        $choice = (int) $request->request->get('choice');
+        $user = $this->getUserOrThrow();
+        $choice = $request->request->getInt('choice');
+        $ip = $request->getClientIp();
 
-        $votable = $em->find($entityClass, $id);
-
-        if (!$votable instanceof VotableInterface) {
-            throw $this->createNotFoundException('Entity not found');
-        }
-
-        $em->transactional(function () use ($votable, $choice, $request): void {
-            $votable->vote($choice, $this->getUser(), $request->getClientIp());
-        });
+        $this->voteManager->vote($votable, $user, $choice, $ip);
 
         if ($request->getRequestFormat() === 'json') {
             return $this->json(['netScore' => $votable->getNetScore()]);
