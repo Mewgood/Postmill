@@ -29,6 +29,8 @@ class CommentVote extends Vote {
         parent::__construct($choice, $user, $ip);
 
         $this->comment = $comment;
+
+        $comment->addVote($this);
     }
 
     public function getComment(): Comment {

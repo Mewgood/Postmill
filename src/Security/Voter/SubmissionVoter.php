@@ -18,6 +18,7 @@ final class SubmissionVoter extends Voter {
         'pin',
         'restore',
         'purge',
+        'vote',
     ];
 
     /**
@@ -59,6 +60,8 @@ final class SubmissionVoter extends Voter {
             return $this->canPurge($subject, $token);
         case 'restore':
             return $this->canRestore($subject, $user);
+        case 'vote':
+            return $this->canVote($subject, $user);
         default:
             throw new \InvalidArgumentException("Invalid attribute '$attribute'");
         }
@@ -156,5 +159,9 @@ final class SubmissionVoter extends Voter {
             $submission->getUser() === $token->getUser() ||
             $this->decisionManager->decide($token, ['ROLE_ADMIN'])
         );
+    }
+
+    private function canVote(Submission $submission, User $user): bool {
+        return !$submission->getForum()->userIsBanned($user);
     }
 }
