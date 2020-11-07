@@ -25,11 +25,6 @@ class DeleteSubmission extends Event {
     /**
      * @var bool
      */
-    private $noFlush = false;
-
-    /**
-     * @var bool
-     */
     private $permanent = false;
 
     public function __construct(Submission $submission) {
@@ -67,17 +62,6 @@ class DeleteSubmission extends Event {
     public function withPermanence(): self {
         $self = clone $this;
         $self->permanent = true;
-
-        return $self;
-    }
-
-    public function isNoFlush(): bool {
-        return $this->noFlush;
-    }
-
-    public function withNoFlush(): self {
-        $self = clone $this;
-        $self->noFlush = true;
 
         return $self;
     }

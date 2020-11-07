@@ -179,16 +179,24 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
         $dispatchAgain = false;
 
-        foreach ($submissions as $submission) {
-            \assert($submission instanceof Submission);
-            $dispatchAgain = true;
+        try {
+            $this->entityManager->beginTransaction();
 
-            $this->eventDispatcher->dispatch(
-                (new DeleteSubmission($submission))->withNoFlush()
-            );
+            foreach ($submissions as $submission) {
+                \assert($submission instanceof Submission);
+                $dispatchAgain = true;
+
+                $event = new DeleteSubmission($submission);
+
+                $this->eventDispatcher->dispatch($event);
+            }
+
+            $this->entityManager->commit();
+        } catch (\Throwable $e) {
+            $this->entityManager->rollback();
+
+            throw $e;
         }
-
-        $this->entityManager->flush();
 
         return $dispatchAgain;
     }
@@ -201,16 +209,22 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
         $dispatchAgain = false;
 
-        foreach ($comments as $comment) {
-            \assert($comment instanceof Comment);
-            $dispatchAgain = true;
+        try {
+            $this->entityManager->beginTransaction();
 
-            $this->eventDispatcher->dispatch(
-                (new DeleteComment($comment))->withNoFlush()
-            );
+            foreach ($comments as $comment) {
+                \assert($comment instanceof Comment);
+                $dispatchAgain = true;
+
+                $this->eventDispatcher->dispatch(new DeleteComment($comment));
+            }
+
+            $this->entityManager->commit();
+        } catch (\Throwable $e) {
+            $this->entityManager->rollback();
+
+            throw $e;
         }
-
-        $this->entityManager->flush();
 
         return $dispatchAgain;
     }

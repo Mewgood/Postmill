@@ -7,8 +7,6 @@ use App\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class DeleteComment extends Event {
-    public const FLUSH_LISTENER_PRIORITY = -128;
-
     /**
      * @var Comment
      */
@@ -27,8 +25,6 @@ class DeleteComment extends Event {
     private $permanent = false;
 
     private $recursive = false;
-
-    private $noFlush = false;
 
     public function __construct(Comment $comment) {
         $this->comment = $comment;
@@ -70,17 +66,6 @@ class DeleteComment extends Event {
     public function withPermanence(): self {
         $self = clone $this;
         $self->permanent = true;
-
-        return $self;
-    }
-
-    public function isNoFlush(): bool {
-        return $this->noFlush;
-    }
-
-    public function withNoFlush(): self {
-        $self = clone $this;
-        $self->noFlush = true;
 
         return $self;
     }

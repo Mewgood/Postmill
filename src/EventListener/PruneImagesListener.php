@@ -26,10 +26,7 @@ final class PruneImagesListener implements EventSubscriberInterface {
     public static function getSubscribedEvents(): array {
         return [
             ForumDeleted::class => ['onDeleteForum'],
-            DeleteSubmission::class => [
-                'onDeleteSubmission',
-                DeleteListener::FLUSH_LISTENER_PRIORITY - 8,
-            ],
+            DeleteSubmission::class => ['onDeleteSubmission', -8],
             ForumUpdated::class => ['onEditForum'],
             SubmissionUpdated::class => ['onEditSubmission'],
         ];

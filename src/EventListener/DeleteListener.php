@@ -11,8 +11,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class DeleteListener implements EventSubscriberInterface {
-    public const FLUSH_LISTENER_PRIORITY = -128;
-
     /**
      * @var EntityManagerInterface
      */
@@ -25,14 +23,8 @@ final class DeleteListener implements EventSubscriberInterface {
 
     public static function getSubscribedEvents(): array {
         return [
-            DeleteSubmission::class => [
-                ['onDeleteSubmission', 0],
-                ['onDeleteSubmissionFlush', self::FLUSH_LISTENER_PRIORITY],
-            ],
-            DeleteComment::class => [
-                ['onDeleteComment', 0],
-                ['onDeleteCommentFlush', self::FLUSH_LISTENER_PRIORITY],
-            ],
+            DeleteSubmission::class => ['onDeleteSubmission'],
+            DeleteComment::class => ['onDeleteComment'],
         ];
     }
 
@@ -64,12 +56,8 @@ final class DeleteListener implements EventSubscriberInterface {
                 new ForumLogSubmissionDeletion($submission, $moderator, $reason)
             );
         }
-    }
 
-    public function onDeleteSubmissionFlush(DeleteSubmission $event): void {
-        if (!$event->isNoFlush()) {
-            $this->entityManager->flush();
-        }
+        $this->entityManager->flush();
     }
 
     public function onDeleteComment(DeleteComment $event): void {
@@ -105,11 +93,7 @@ final class DeleteListener implements EventSubscriberInterface {
                 );
             }
         }
-    }
 
-    public function onDeleteCommentFlush(DeleteComment $event): void {
-        if (!$event->isNoFlush()) {
-            $this->entityManager->flush();
-        }
+        $this->entityManager->flush();
     }
 }
