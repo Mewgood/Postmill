@@ -62,7 +62,6 @@ bad_phrase.phrase_to_ban: Frase å forby
 bad_phrase.search_title: Søk i forbudte fraser
 bad_phrase.title: Forbudte fraser
 bad_phrase.type_text: Tekst
-bad_phrase.type_regex: RegExp
 
 ban_add.title: Utesteng en IP-adresse
 
@@ -327,6 +326,7 @@ label.preferred_theme: Foretrukket tema
 label.reason: Årsak
 label.reason_for_banning: Årsak for utestengelse
 label.recent_changes: Nye endringer
+label.regex: RegExp
 label.registration_date: Registreringsdato
 label.repeat_new_password: Nytt passord (gjenta)
 label.repeat_password: Passord (gjenta)

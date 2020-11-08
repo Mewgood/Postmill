@@ -62,7 +62,6 @@ bad_phrase.phrase_to_ban: Forbarota frazo
 bad_phrase.search_title: Serĉi malbonajn frazojn
 bad_phrase.title: Malbonaj frazoj
 bad_phrase.type_text: Teksto
-bad_phrase.type_regex: Regula esprimo
 
 ban_add.title: Forbari IP-adreson
 
@@ -328,6 +327,7 @@ label.preferred_theme: Prefera estoso
 label.reason: Kaŭzo
 label.reason_for_banning: Kialo forbari
 label.recent_changes: Novaj aliigoj
+label.regex: Regula esprimo
 label.registration_date: Aliĝildato
 label.repeat_new_password: Nova pasvorto (ripetu)
 label.repeat_password: Pasvorto (ripetu)

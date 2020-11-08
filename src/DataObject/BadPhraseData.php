@@ -3,10 +3,10 @@
 namespace App\DataObject;
 
 use App\Entity\BadPhrase;
+use App\Validator\RegularExpression;
 use App\Validator\Unique;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @Unique({"phrase", "phraseType"}, entityClass="App\Entity\BadPhrase", idFields={"id"}, errorPath="phrase")
@@ -20,6 +20,7 @@ class BadPhraseData {
     /**
      * @Assert\Length(max=150)
      * @Assert\NotBlank()
+     * @RegularExpression(groups={"regex"})
      *
      * @var string|null
      */
@@ -55,24 +56,5 @@ class BadPhraseData {
 
     public function setPhraseType(?string $phraseType): void {
         $this->phraseType = $phraseType;
-    }
-
-    /**
-     * @Assert\Callback()
-     */
-    public function validateRegexPhrase(ExecutionContextInterface $context): void {
-        if ($this->phraseType === BadPhrase::TYPE_REGEX && $this->phrase !== null) {
-            $return = @preg_match('@'.addcslashes($this->phrase, '@').'@u', '');
-
-            if ($return === 1) {
-                $context->buildViolation('bad_phrase.must_not_match_empty')
-                    ->atPath('phrase')
-                    ->addViolation();
-            } elseif ($return !== 0) {
-                $context->buildViolation('bad_phrase.invalid_regex')
-                    ->atPath('phrase')
-                    ->addViolation();
-            }
-        }
     }
 }

@@ -1,7 +1,7 @@
 {%- from '_macros/form.html.twig' import button_row -%}
 {%- set type_label_map = {
   (constant('App\\Entity\\BadPhrase::TYPE_TEXT')): 'bad_phrase.type_text'|trans,
-  (constant('App\\Entity\\BadPhrase::TYPE_REGEX')): 'bad_phrase.type_regex'|trans,
+  (constant('App\\Entity\\BadPhrase::TYPE_REGEX')): 'label.regex'|trans,
 } -%}
 
 <form action="{{ path('bad_phrase_remove') }}" method="post" class="flow">
