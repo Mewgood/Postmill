@@ -3,7 +3,6 @@
 {% macro comment(comment, options) %}
   {%- with {
     comment: comment,
-    hidden: app.user and app.user.blocking(comment.user),
     is_moderator: is_granted('moderator', comment.submission.forum),
     level: 1,
     post_numbers: options.post_numbers ?? false,

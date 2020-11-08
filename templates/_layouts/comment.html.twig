@@ -3,6 +3,7 @@
   {%- from '_macros/lang.html.twig' import lang_attributes %}
   {%- from '_macros/time.html.twig' import relative_time, relative_time_diff -%}
   {%- from 'vote/_macros.html.twig' import vote -%}
+  {%- set hidden = self and self.blocking(comment.user) -%}
   <article class="comment
                   comment--{{ level > 1 ? 'nested' : 'top-level' }}
                   comment--visibility-{{ comment.visibility|replace({'_': '-'}) }}
