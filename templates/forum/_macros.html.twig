@@ -1,6 +1,6 @@
-{% macro subscribe_button(forum, subscribed, inline) %}
+{% macro subscribe_button(forum, subscribed) %}
   {%- set subscriber_count = forum.subscriptions|length -%}
-  <button class="button {{ inline ? 'button--small inline' }} subscribe-button subscribe-button--{{ subscribed ? 'un' }}subscribe"
+  <button class="subscribe-button subscribe-button--{{ subscribed ? 'un' }}subscribe"
           data-subscriber-count="{{ subscriber_count }}">
     <span class="subscribe-button__label">
       <span class="subscribe-button__label-text">

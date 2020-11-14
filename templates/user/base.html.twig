@@ -44,9 +44,9 @@
     {% if user is same as(app.user) %}
       <p>
         <a href="{{ path('edit_biography', { username: user.username }) }}"
-           class="button button--small button--secondary">
-          {{- icon('pencil') }}
-          {{ 'nav.edit_biography'|trans -}}
+           class="button button--flex button--small button--secondary">
+          {{ icon('pencil') }}
+          <span>{{ 'nav.edit_biography'|trans }}</span>
         </a>
       </p>
     {% endif %}
