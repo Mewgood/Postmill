@@ -41,7 +41,7 @@
         <input type="hidden" name="token" value="{{ csrf_token('subscribe') }}">
 
         <div class="form__row">
-          {{ subscribe_button(forum, subscribed, false) }}
+          {{ subscribe_button(forum, subscribed) }}
         </div>
       </form>
     {% endif %}
@@ -142,11 +142,9 @@
           {% for tag in tags %}
             <li>
               <a href="{{ path('forum_tag', { name: tag.name }) }}"
-                 class="button button--secondary button--small">
-                <span class="flex flex--slim-gutters flex--no-wrap">
-                  {{ icon('tag') }}
-                  <span>{{ tag.name -}}</span>
-                </span>
+                 class="button button--flex button--secondary button--small">
+                {{ icon('tag') }}
+                <span>{{ tag.name -}}</span>
               </a>
             </li>
           {% endfor %}

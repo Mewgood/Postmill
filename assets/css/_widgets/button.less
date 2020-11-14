@@ -1,58 +1,35 @@
+@import '_mixins';
+
 .button {
-  --border-radius: 3px;
-  --bg-active: var(--primary-bright);
-  --bg: var(--primary);
-  --fg: var(--primary-fg);
-  --fg-active: var(--primary-fg);
-  --fg-border: transparent;
-  --font-size: 1.2rem;
-  --padding-v: 0.5rem;
-  --padding-h: 1rem;
+  .button-common();
 
-  background: var(--bg);
-  border: solid 1px;
-  border-color: var(--fg-border);
-  border-radius: var(--border-radius);
-  color: var(--fg);
-  cursor: pointer;
-  display: inline-block;
-  font-size: var(--font-size);
-  padding: calc(var(--padding-v) - 1px) calc(var(--padding-h) - 1px);
-  text-align: center;
-  transition: background-color 0.3s;
-  white-space: nowrap;
-
+  &:focus,
   &:hover {
-    text-decoration: none;
+    .button-active();
   }
 
   &--small {
-    --font-size: 1em;
-    --padding-v: 0.25rem;
-    --padding-h: 0.5rem;
+    .button-small();
   }
 
   &--secondary {
-    --bg-active: var(--accent-alt);
-    --bg: var(--accent);
-    --fg: var(--accent-fg);
+    .button-secondary();
   }
 
   &--transparent {
-    --bg-active: transparent;
-    --bg: transparent;
-    --fg: inherit;
-  }
-
-  &:hover,
-  &:focus {
-    --bg: var(--bg-active);
-    --color: var(--fg-active);
-    outline: none;
+    .button-transparent();
   }
 
   &:disabled {
-    opacity: 0.5;
-    pointer-events: none;
+    .button-disabled();
+  }
+
+  &--flex {
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  &--flex > * + * {
+    margin-left: 0.5em;
   }
 }

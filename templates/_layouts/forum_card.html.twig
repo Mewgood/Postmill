@@ -48,7 +48,7 @@
                 class="subscribe-form"
                 data-forum="{{ forum.name }}">
             <input type="hidden" name="token" value="{{ csrf_token('subscribe') }}">
-            {{ subscribe_button(forum, subscribed, true) }}
+            {{ subscribe_button(forum, subscribed) }}
           </form>
         {% else %}
           {% set subscriber_count = forum.subscriptions|length %}
