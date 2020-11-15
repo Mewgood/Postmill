@@ -1,10 +1,12 @@
 .form-control-common() {
-  @height: calc(var(--font-size) * var(--line-height) + 1rem + 2px);
+  --border-width: 1px;
+  --height: calc(var(--font-size) * var(--line-height) + 1rem + 2 * var(--border-width));
+
   background-color: var(--form-bg);
-  border: solid 1px var(--border);
+  border: solid var(--border-width) var(--border);
   color: var(--text);
   font-size: var(--font-size);
-  min-height: @height;
+  min-height: var(--height);
   padding: 0.5rem;
   transition: background-color .1s, box-shadow .1s, border-color .1s, color .1s;
 
@@ -15,7 +17,6 @@
   @supports (-webkit-overflow-scrolling: touch) {
     // fix zoom-on-focus in iOS
     --font-size: 16px;
-    --font-size: ~'max(16px, var(--font-size))';
   }
 }
 
@@ -39,12 +40,12 @@
 }
 
 .form-control-undecorated() {
-  background-color: transparent;
-  border-color: transparent;
-  color: currentColor;
+  --border-width: 0;
+  --form-bg: transparent;
+  --text: currentColor;
   cursor: inherit;
-  min-height: 0;
-  padding: 0.5rem 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .form-control-undecorated-focus() {
