@@ -79,7 +79,7 @@
   }
 
   select&:not([multiple]) {
-    height: @height; // dropdown caret doesn't acknowledge min-height
+    height: var(--height); // dropdown caret doesn't acknowledge min-height
 
     // having vertical padding cuts off the text inside. having height set is
     // enough to achieve a padding effect.
@@ -105,8 +105,6 @@
   }
 
   &--no-decoration {
-    line-height: 1;
-
     .form-control-undecorated();
 
     &:focus {
