@@ -27,6 +27,16 @@ class ForumControllerTest extends WebTestCase {
         ], json_decode($client->getResponse()->getContent(), true));
     }
 
+    public function testReadByName(): void {
+        $client = self::createUserClient();
+        $client->request('GET', '/api/forums/by_name/cats');
+
+        $this->assertArraySubset([
+            'id' => 1,
+            'name' => 'cats',
+        ], json_decode($client->getResponse()->getContent(), true));
+    }
+
     public function testCreate(): void {
         $client = self::createAdminClient();
         $client->request('POST', '/api/forums', [], [], [
