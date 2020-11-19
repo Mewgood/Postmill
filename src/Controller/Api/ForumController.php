@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ForumController extends AbstractController {
     /**
      * @Route("/{id}", methods={"GET"})
+     * @Route("/by_name/{name}", methods={"GET"})
      */
     public function read(Forum $forum): Response {
         return $this->json(ForumData::createFromForum($forum), 200, [], [
