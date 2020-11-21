@@ -32,8 +32,6 @@ class SubmissionControllerTest extends WebTestCase {
 
     public function testCanCreateSubmissionWithImage(): void {
         $client = self::createAdminClient();
-        $client->followRedirects();
-
         $crawler = $client->request('GET', '/submit');
 
         $form = $crawler->selectButton('Create submission')->form([
@@ -44,8 +42,12 @@ class SubmissionControllerTest extends WebTestCase {
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $form['submission[image]']->upload(__DIR__.'/../Resources/120px-12-Color-SVG.svg.png');
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
+        self::assertResponseRedirects();
+        $crawler = $client->followRedirect();
+
+        self::assertResponseIsSuccessful();
         $this->assertSame(
             'http://localhost/submission_images/a91d6c2201d32b8c39bff1143a5b29e74b740248c5d65810ddcbfa16228d49e9.png',
             $crawler->filter('.submission__link')->attr('href')

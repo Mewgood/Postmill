@@ -55,7 +55,7 @@ class SubmissionDataNormalizerTest extends TestCase {
             );
 
         $data = new SubmissionData();
-        $data->setImage(new Image('foo.png', null, null));
+        $data->setImage(new Image('foo.png', random_bytes(32), null, null));
 
         $this->decorated
             ->expects($this->once())

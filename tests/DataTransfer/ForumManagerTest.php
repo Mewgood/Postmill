@@ -97,8 +97,8 @@ class ForumManagerTest extends TestCase {
         $data->setSidebar("# Rules\n\n1. post about technology");
         $data->setFeatured(true);
         $data->setBackgroundImageMode(Forum::BACKGROUND_CENTER);
-        $data->setLightBackgroundImage(new Image('a', 3, 4));
-        $data->setDarkBackgroundImage(new Image('b', 5, 6));
+        $data->setLightBackgroundImage(new Image('a', random_bytes(32), 3, 4));
+        $data->setDarkBackgroundImage(new Image('b', random_bytes(32), 5, 6));
         $data->setSuggestedTheme(new BundledTheme('a', 'a'));
 
         $existingTagData = new ForumTagData();

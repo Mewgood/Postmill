@@ -5,7 +5,7 @@ namespace App\Flysystem;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Mime\MimeTypesInterface;
 
 class ImageManager {
     /**
@@ -13,8 +13,17 @@ class ImageManager {
      */
     private $filesystem;
 
-    public function __construct(FilesystemInterface $submissionImages) {
+    /**
+     * @var MimeTypesInterface
+     */
+    private $mimeTypeGuesser;
+
+    public function __construct(
+        FilesystemInterface $submissionImages,
+        MimeTypesInterface $mimeTypeGuesser
+    ) {
         $this->filesystem = $submissionImages;
+        $this->mimeTypeGuesser = $mimeTypeGuesser;
     }
 
     /**
@@ -25,14 +34,13 @@ class ImageManager {
     public function getFileName(string $file): string {
         $hash = hash_file('sha256', $file);
 
-        $mimeTypes = new MimeTypes();
-        $mimeType = $mimeTypes->guessMimeType($file);
+        $mimeType = $this->mimeTypeGuesser->guessMimeType($file);
 
         if (!$mimeType) {
             throw new \RuntimeException("Couldn't guess MIME type of image");
         }
 
-        $ext = $mimeTypes->getExtensions($mimeType)[0] ?? null;
+        $ext = $this->mimeTypeGuesser->getExtensions($mimeType)[0] ?? null;
 
         if (!$ext) {
             throw new \RuntimeException("Couldn't guess extension of image");
