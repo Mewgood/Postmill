@@ -9,7 +9,8 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="images_file_name_idx", columns={"file_name"})
+ *     @ORM\UniqueConstraint(name="images_file_name_idx", columns={"file_name"}),
+ *     @ORM\UniqueConstraint(name="images_sha256_idx", columns={"sha256"}),
  * })
  */
 class Image {
@@ -29,6 +30,13 @@ class Image {
     private $fileName;
 
     /**
+     * @ORM\Column(type="binary", length=32)
+     *
+     * @var string
+     */
+    private $sha256;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      *
      * @var int
@@ -42,9 +50,24 @@ class Image {
      */
     private $height;
 
-    public function __construct(string $fileName, ?int $width, ?int $height) {
+    public function __construct(string $fileName, string $sha256, ?int $width, ?int $height) {
         $this->id = Uuid::uuid4();
         $this->fileName = $fileName;
+
+        error_clear_last();
+        if (\strlen($sha256) === 64) {
+            $sha256 = @hex2bin($sha256);
+
+            if ($sha256 === false) {
+                throw new \InvalidArgumentException(error_get_last()['message']);
+            }
+        } elseif (\strlen($sha256) !== 32) {
+            throw new \InvalidArgumentException(
+                '$sha256 must be a SHA256 hash in raw or binary form'
+            );
+        }
+
+        $this->sha256 = $sha256;
         $this->setDimensions($width, $height);
     }
 
@@ -58,6 +81,10 @@ class Image {
 
     public function getFileName(): string {
         return $this->fileName;
+    }
+
+    public function getSha256(): string {
+        return bin2hex($this->sha256);
     }
 
     public function getWidth(): ?int {

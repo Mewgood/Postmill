@@ -34,7 +34,7 @@ class SubmissionTest extends TestCase {
             $user,
             '127.0.0.1'
         );
-        $submission->setImage(new Image('foo.png', null, null));
+        $submission->setImage(new Image('foo.png', random_bytes(32), null, null));
         $submission->setSticky(true);
         $submission->setUserFlag(UserFlags::FLAG_ADMIN);
         $submission->setLanguage('nb');

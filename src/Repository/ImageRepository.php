@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * @method Image|null find($id, $lockMode = null, $lockVersion = null)
  * @method Image|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Image|null findOneBySha256(string $sha256, array $orderBy = null)
  * @method Image[]    findAll()
  * @method Image[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method Image[]    findByFileName(string|string[] $fileNames)
@@ -32,11 +33,12 @@ class ImageRepository extends ServiceEntityRepository {
 
     public function findOrCreateFromPath(string $source): Image {
         $filename = $this->imageManager->getFileName($source);
-        $image = $this->findOneBy(['fileName' => $filename]);
+        $sha256 = hash_file('sha256', $source, true);
+        $image = $this->findOneBySha256($sha256);
 
         if (!$image) {
             [$width, $height] = @getimagesize($source);
-            $image = new Image($filename, $width, $height);
+            $image = new Image($filename, $sha256, $width, $height);
         } elseif (!$image->getWidth() || !$image->getHeight()) {
             [$width, $height] = @getimagesize($source);
             $image->setDimensions($width, $height);

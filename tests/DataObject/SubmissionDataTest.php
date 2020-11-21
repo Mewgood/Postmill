@@ -26,7 +26,7 @@ class SubmissionDataTest extends TestCase {
         $data = new SubmissionData();
         $data->setForum($forum);
         $data->setTitle('wah');
-        $data->setImage(new Image('foof.jpeg', null, null));
+        $data->setImage(new Image('foof.jpeg', random_bytes(32), null, null));
         $data->setUrl('http://www.garfield.com');
         $submission = $data->toSubmission($user, null);
 
@@ -41,7 +41,7 @@ class SubmissionDataTest extends TestCase {
         $data = new SubmissionData();
         $data->setForum($forum);
         $data->setTitle('wah');
-        $data->setImage(new Image('foof.jpeg', null, null));
+        $data->setImage(new Image('foof.jpeg', random_bytes(32), null, null));
         $data->setUrl('http://www.garfield.com');
         $data->setMediaType(Submission::MEDIA_IMAGE);
         $submission = $data->toSubmission($user, null);
