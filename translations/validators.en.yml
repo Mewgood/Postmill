@@ -9,7 +9,7 @@ ip.invalid_cidr_mask: The CIDR mask is not valid.
 ratelimit.error: You cannot post more. Wait a while before trying again.
 regex.invalid: The field must contain a valid regular expression, without delimiters.
 regex.must_not_match_empty: The regex must not match an empty string.
-tag.invalid_characters: Tags can only contain only letters, numbers, and underscores.
+tag.invalid_characters: Tags can only contain letters, numbers, and underscores.
 tag.too_short: The tag {{ value }} is too short. It should have at least {{ limit }} character.|The tag {{ value }} is too short. It should have at least {{ limit }} characters.
 tag.too_long: The tag {{ value }} is too long. It should have at most {{ limit }} character.|The tag {{ value }} is too long. It should have at most {{ limit }} characters.
 user.already_moderator: That user is already a moderator.
