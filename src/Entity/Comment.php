@@ -205,6 +205,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         }
 
         $submission->addComment($this);
+        $user->addComment($this);
     }
 
     public function getId(): ?int {

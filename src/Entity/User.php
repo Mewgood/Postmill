@@ -473,6 +473,16 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         return $this->submissions;
     }
 
+    public function addSubmission(Submission $submission): void {
+        if ($submission->getUser() !== $this) {
+            throw new \DomainException('Submission must belong to user');
+        }
+
+        if (!$this->submissions->contains($submission)) {
+            $this->submissions->add($submission);
+        }
+    }
+
     public function getSubmissionVotes(): Collection {
         return $this->submissionVotes;
     }
@@ -482,6 +492,16 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      */
     public function getComments(): Collection {
         return $this->comments;
+    }
+
+    public function addComment(Comment $comment): void {
+        if ($comment->getUser() !== $this) {
+            throw new \DomainException('Comment must belong to user');
+        }
+
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+        }
     }
 
     public function getCommentVotes(): Collection {

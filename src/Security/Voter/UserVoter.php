@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class UserVoter extends Voter {
-    public const ATTRIBUTES = ['edit_user', 'message'];
+    public const ATTRIBUTES = ['edit_biography', 'edit_user', 'message'];
 
     /**
      * @var AccessDecisionManagerInterface
@@ -39,6 +39,8 @@ final class UserVoter extends Voter {
         }
 
         switch ($attribute) {
+        case 'edit_biography':
+            return $this->canEditBiography($subject, $token);
         case 'edit_user':
             return $this->canEditUser($subject, $token);
         case 'message':
@@ -46,6 +48,26 @@ final class UserVoter extends Voter {
         default:
             throw new \InvalidArgumentException("Unknown attribute '$attribute'");
         }
+    }
+
+    private function canEditBiography(User $user, TokenInterface $token): bool {
+        if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
+            return true;
+        }
+
+        if (!$token->getUser() instanceof User) {
+            return false;
+        }
+
+        if ($user !== $token->getUser()) {
+            return false;
+        }
+
+        if ($this->decisionManager->decide($token, ['ROLE_WHITELISTED'])) {
+            return true;
+        }
+
+        return \count($user->getSubmissions()) > 0 || \count($user->getComments()) > 0;
     }
 
     private function canEditUser(User $user, TokenInterface $token): bool {

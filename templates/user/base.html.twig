@@ -41,7 +41,7 @@
       <div class="user-bio__biography text-flow">{{ user.biography|cached_markdown|raw }}</div>
     {% endif %}
 
-    {% if user is same as(app.user) %}
+    {% if user is same as(app.user) and is_granted('edit_biography', user) %}
       <p>
         <a href="{{ path('edit_biography', { username: user.username }) }}"
            class="button button--flex button--small button--secondary">
@@ -119,7 +119,7 @@
     },
     ('nav.edit_biography'|trans): {
       route: 'edit_biography',
-      condition: is_granted('edit_user', user) and user is not same as(app.user)
+      condition: is_granted('edit_biography', user) and user is not same as(app.user)
     },
     ('nav.hidden_forums'|trans): {
       route: 'hidden_forums',
