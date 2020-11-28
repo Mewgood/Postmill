@@ -301,6 +301,7 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->mentions = new ArrayCollection();
         $this->addVote($this->createVote(self::VOTE_UP, $user, $ip));
         $this->updateLastActive();
+        $user->addSubmission($this);
     }
 
     public function getId(): ?int {

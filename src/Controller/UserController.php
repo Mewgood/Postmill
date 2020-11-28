@@ -214,7 +214,7 @@ final class UserController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     * @IsGranted("edit_user", subject="user", statusCode=403)
+     * @IsGranted("edit_biography", subject="user", statusCode=403)
      */
     public function editBiography(EntityManager $em, User $user, Request $request): Response {
         $data = new UserData($user);
