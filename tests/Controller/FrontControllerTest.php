@@ -7,6 +7,9 @@ use App\Repository\UserRepository;
 use App\Tests\WebTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @covers \App\Controller\FrontController
+ */
 class FrontControllerTest extends WebTestCase {
     public function testShowsCorrectNumberOfSubmissionsOnFrontPage(): void {
         $client = self::createClient();

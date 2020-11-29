@@ -13,6 +13,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * @covers \App\Message\Handler\DownloadSubmissionImageHandler
+ */
 class DownloadSubmissionImageHandlerTest extends TestCase {
     public function testDoesNotDownloadIfDisabledInSiteSettings(): void {
         $site = new Site();
