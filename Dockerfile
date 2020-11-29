@@ -1,5 +1,5 @@
 ARG COMPOSER_VERSION=2
-ARG PHP_VERSION=7.4
+ARG PHP_VERSION=8.0-rc
 ARG NODE_VERSION=14
 ARG NGINX_VERSION=1.18
 
@@ -38,6 +38,7 @@ RUN set -eux; \
         --no-autoloader \
         --no-cache \
         --no-dev \
+        --no-progress \
         --no-scripts \
         --prefer-dist;
 
@@ -48,7 +49,26 @@ RUN set -eux; \
 
 FROM php:${PHP_VERSION}-fpm-alpine AS postmill_php_base
 
-COPY --from=postmill_composer_cache /usr/bin/composer /usr/bin/composer
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin
+
+RUN set -eux; \
+    install-php-extensions \
+        $(php -r 'die(PHP_VERSION_ID < 80000 ? 0 : 1);' && echo "amqp") \
+        apcu \
+        gd \
+        intl \
+        opcache \
+        pdo_pgsql \
+        zip \
+    ; \
+    apk add --no-cache \
+        acl \
+        su-exec \
+    ; \
+    echo 'apc.enable_cli = On' >> "$PHP_INI_DIR/conf.d/zz-postmill.ini";
+
+COPY --from=postmill_composer_cache /usr/bin/composer /usr/bin
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HTACCESS_PROTECT=0 \
@@ -64,56 +84,6 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
         /tmp \
     " \
     SU_USER=www-data
-
-RUN set -eux; \
-    apk add --no-cache --virtual .build-deps \
-        $PHPIZE_DEPS \
-        icu-dev \
-        freetype-dev \
-        libjpeg-turbo-dev \
-        libpng-dev \
-        libwebp-dev \
-        libzip-dev \
-        postgresql-dev \
-        rabbitmq-c-dev; \
-    if php -r 'die(PHP_VERSION_ID >= 70400 ? 0 : 1);'; then \
-        docker-php-ext-configure gd \
-            --enable-gd \
-            --with-freetype \
-            --with-jpeg \
-            --with-webp; \
-    else \
-        docker-php-ext-configure gd \
-            --with-gd \
-            --with-freetype-dir=/usr/include/ \
-            --with-jpeg-dir=/usr/include/ \
-            --with-png-dir=/usr/include/ \
-            --with-webp-dir=/usr/include; \
-    fi; \
-    docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) \
-        gd \
-        intl \
-        opcache \
-        pdo_pgsql \
-        zip; \
-    pecl install amqp; \
-    pecl install apcu; \
-    docker-php-ext-enable \
-        amqp \
-        apcu; \
-    echo 'apc.enable_cli = On' >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
-    pecl clear-cache; \
-    RUNTIME_DEPS="$(scanelf -nBRF '%n#p' /usr/local/lib/php/extensions | \
-        tr ',' '\n' | \
-        sort -u | \
-        awk 'system("[ -e /usr/local/lib/" $1 " ]") != 0 { print "so:" $1 }' \
-    )"; \
-    apk add --no-cache \
-        $RUNTIME_DEPS \
-        acl \
-        su-exec;
-
-COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]
@@ -207,38 +177,18 @@ FROM postmill_php_base AS postmill_php_debug
 RUN set -eux; \
     chmod -R go=u /tmp; \
     apk add --no-cache git; \
-    cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
-    pecl install pcov; \
-    pecl install xdebug; \
-    docker-php-ext-enable \
+    install-php-extensions \
         pcov \
-        xdebug; \
-    { \
-        echo 'xdebug.remote_enable = On'; \
-        echo 'xdebug.remote_port = ${XDEBUG_REMOTE_PORT}'; \
-        echo 'xdebug.remote_host = ${XDEBUG_REMOTE_HOST}'; \
-        echo 'xdebug.idekey = ${XDEBUG_IDEKEY}'; \
-    } >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
-    cat "$PHP_INI_DIR/php.ini" \
-        "$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini" \
-        > "$PHP_INI_DIR/php-debug.ini"; \
-    rm "$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini"; \
-    RUNTIME_DEPS="$(scanelf -nBRF '%n#p' /usr/local/lib/php/extensions | \
-        tr ',' '\n' | \
-        sort -u | \
-        awk 'system("[ -e /usr/local/lib/" $1 " ]") != 0 { print "so:" $1 }' \
-    )"; \
-    apk add --no-cache $RUNTIME_DEPS; \
-    apk del --no-network .build-deps; \
-    pecl clear-cache;
+        xdebug \
+    ; \
+    cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini";
 
 ENV POSTMILL_WRITE_DIRS="\
         ${POSTMILL_WRITE_DIRS} \
         /app/var/cache \
     " \
-    XDEBUG_REMOTE_PORT=9000 \
-    XDEBUG_REMOTE_HOST=host.docker.internal \
-    XDEBUG_IDEKEY=PHPSTORM
+    XDEBUG_CONFIG="client_host=host.docker.internal client_port=9000 idekey=PHPSTORM" \
+    XDEBUG_MODE="off"
 
 
 # ===========

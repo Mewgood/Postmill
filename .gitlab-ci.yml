@@ -69,9 +69,9 @@ lint:js:
     script:
         - yarn run lint:js
 
-lint:php:7.4: &lint-php
+lint:php:8.0-rc: &lint-php
     stage: lint
-    image: php:7.4-alpine
+    image: php:8.0-rc-alpine
     needs: []
     except:
         - schedules
@@ -80,20 +80,20 @@ lint:php:7.4: &lint-php
           xargs -0 -n1 -P4 php -l -n |
           (! grep -v "No syntax errors detected" )
 
+lint:php:7.4:
+    <<: *lint-php
+    image: php:7.4-alpine
+
 lint:php:7.3:
     <<: *lint-php
     image: php:7.3-alpine
-
-lint:php:7.2:
-    <<: *lint-php
-    image: php:7.2-alpine
 
 
 # =========
 # Build app
 # =========
 
-build-app:7.4: &build-app
+build-app:8.0-rc: &build-app
     image: docker:19-git
     stage: build-app
     needs: ['lint:php:7.4']
@@ -102,7 +102,7 @@ build-app:7.4: &build-app
     services:
         - docker:dind
     variables: &build-app-vars
-        PHP_VERSION: '7.4'
+        PHP_VERSION: '8.0-rc'
         TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION}-${CI_COMMIT_SHA}
         TEST_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:${CI_COMMIT_SHA}
         RELEASE_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:latest
@@ -121,6 +121,13 @@ build-app:7.4: &build-app
             .
         - docker push $TEST_IMAGE_APP
 
+build-app:7.4:
+    <<: *build-app
+    needs: ['lint:php:7.4']
+    variables:
+        <<: *build-app-vars
+        PHP_VERSION: '7.4'
+
 build-app:7.3:
     <<: *build-app
     needs: ['lint:php:7.3']
@@ -128,22 +135,15 @@ build-app:7.3:
         <<: *build-app-vars
         PHP_VERSION: '7.3'
 
-build-app:7.2:
-    <<: *build-app
-    needs: ['lint:php:7.2']
-    variables:
-        <<: *build-app-vars
-        PHP_VERSION: '7.2'
-
 
 # ====
 # Test
 # ====
 
-test:7.4: &test
-    image: ${CI_REGISTRY_IMAGE}/app:7.4-${CI_COMMIT_SHA}
+test:8.0-rc: &test
+    image: ${CI_REGISTRY_IMAGE}/app:8.0-rc-${CI_COMMIT_SHA}
     stage: test
-    needs: ['build-app:7.4']
+    needs: ['build-app:8.0-rc']
     except:
         - schedules
     services:
@@ -167,15 +167,15 @@ test:7.4: &test
         reports:
             junit: report.xml
 
+test:7.4:
+    <<: *test
+    image: ${CI_REGISTRY_IMAGE}/app:7.4-${CI_COMMIT_SHA}
+    needs: ['build-app:7.4']
+
 test:7.3:
     <<: *test
     image: ${CI_REGISTRY_IMAGE}/app:7.3-${CI_COMMIT_SHA}
     needs: ['build-app:7.3']
-
-test:7.2:
-    <<: *test
-    image: ${CI_REGISTRY_IMAGE}/app:7.2-${CI_COMMIT_SHA}
-    needs: ['build-app:7.2']
 
 
 # =========
@@ -187,7 +187,7 @@ build-web:
     image: docker:19
     services:
         - docker:dind
-    needs: ['test:7.4']
+    needs: ['test:8.0-rc']
     variables:
         <<: *build-app-vars
     except:
@@ -211,7 +211,7 @@ build-web:
 release:
     image: docker:19
     stage: release
-    needs: ['test:7.4', 'build-web']
+    needs: ['test:8.0-rc', 'build-web']
     services:
         - docker:dind
     variables:

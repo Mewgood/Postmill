@@ -37,7 +37,7 @@ services:
         volumes:
             - ./keys:/etc/ssl/private
             - ./public:/app/public:ro
-    php: &php
+    php:
         build:
             context: .
             target: postmill_php_debug
@@ -49,11 +49,6 @@ services:
         volumes:
             - ./.git:/app/.git:ro
             - ./:/app
-    php-xdebug:
-        <<: *php
-        command: sh -c 'php-fpm -c "$$PHP_INI_DIR/php-debug.ini"'
-        environment:
-            POSTMILL_SKIP_MIGRATIONS: '1'
     assets:
         build:
             context: .
