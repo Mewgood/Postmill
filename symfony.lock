@@ -228,6 +228,18 @@
     "pagerfanta/doctrine-orm-adapter": {
         "version": "v2.4.1"
     },
+    "pagerwave/doctrine-collections-extension": {
+        "version": "v1.0.0"
+    },
+    "pagerwave/doctrine-dbal-extension": {
+        "version": "v1.0.0"
+    },
+    "pagerwave/doctrine-orm-extension": {
+        "version": "v1.0.2"
+    },
+    "pagerwave/symfony-http-foundation-integration": {
+        "version": "v1.0.0"
+    },
     "paragonie/random_compat": {
         "version": "v2.0.11"
     },

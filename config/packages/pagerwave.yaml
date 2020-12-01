@@ -14,10 +14,10 @@ services:
     pagerwave.query_reader:
         stack:
             - PagerWave\Extension\Validator\ValidatingQueryReaderDecorator: ~
-            - PagerWave\QueryReader\SymfonyRequestStackQueryReader: ~
+            - PagerWave\Integration\Symfony\RequestStackQueryReader: ~
 
     pagerwave.url_generator:
-        class: PagerWave\UrlGenerator\SymfonyRequestStackUrlGenerator
+        class: PagerWave\Integration\Symfony\RequestStackUrlGenerator
 
     PagerWave\PaginatorInterface:
         class: PagerWave\Paginator
