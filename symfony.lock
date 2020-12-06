@@ -240,9 +240,6 @@
     "pagerwave/symfony-http-foundation-integration": {
         "version": "v1.0.0"
     },
-    "paragonie/random_compat": {
-        "version": "v2.0.11"
-    },
     "patrickschur/language-detection": {
         "version": "v3.4.2"
     },

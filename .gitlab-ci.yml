@@ -69,9 +69,9 @@ lint:js:
     script:
         - yarn run lint:js
 
-lint:php:8.0-rc: &lint-php
+lint:php:8.0: &lint-php
     stage: lint
-    image: php:8.0-rc-alpine
+    image: php:8.0-alpine
     needs: []
     except:
         - schedules
@@ -93,7 +93,7 @@ lint:php:7.3:
 # Build app
 # =========
 
-build-app:8.0-rc: &build-app
+build-app:8.0: &build-app
     image: docker:19-git
     stage: build-app
     needs: ['lint:php:7.4']
@@ -102,7 +102,7 @@ build-app:8.0-rc: &build-app
     services:
         - docker:dind
     variables: &build-app-vars
-        PHP_VERSION: '8.0-rc'
+        PHP_VERSION: '8.0'
         TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION}-${CI_COMMIT_SHA}
         TEST_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:${CI_COMMIT_SHA}
         RELEASE_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:latest
@@ -140,10 +140,10 @@ build-app:7.3:
 # Test
 # ====
 
-test:8.0-rc: &test
-    image: ${CI_REGISTRY_IMAGE}/app:8.0-rc-${CI_COMMIT_SHA}
+test:8.0: &test
+    image: ${CI_REGISTRY_IMAGE}/app:8.0-${CI_COMMIT_SHA}
     stage: test
-    needs: ['build-app:8.0-rc']
+    needs: ['build-app:8.0']
     except:
         - schedules
     services:
@@ -187,7 +187,7 @@ build-web:
     image: docker:19
     services:
         - docker:dind
-    needs: ['test:8.0-rc']
+    needs: ['test:8.0']
     variables:
         <<: *build-app-vars
     except:
@@ -211,7 +211,7 @@ build-web:
 release:
     image: docker:19
     stage: release
-    needs: ['test:8.0-rc', 'build-web']
+    needs: ['test:8.0', 'build-web']
     services:
         - docker:dind
     variables:
