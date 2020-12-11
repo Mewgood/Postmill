@@ -38,7 +38,7 @@
         "pagerfanta/core": "^2.4",
         "pagerfanta/doctrine-collections-adapter": "^2.4",
         "pagerfanta/doctrine-orm-adapter": "^2.4",
-        "patrickschur/language-detection": "^4.0",
+        "patrickschur/language-detection": "^5.0",
         "postmill/pagerwave": "^1.3",
         "ramsey/uuid": "^4.0",
         "ramsey/uuid-doctrine": "^1.4",
