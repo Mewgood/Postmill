@@ -34,7 +34,8 @@
   --border-light: rgb(51, 51, 51);
 
   --card-bg: var(--bg-content);
-  --card-shadow: 0 0 0 1px var(--border-light);
+  // The RTL value must be specified here due to specificity issues
+  --card-shadow: 0 0 0 1px var(--border-light)/*!rtl:0 0 0 1px var(--border)*/;
   --dropdown-card-bg: #000;
   --dropdown-card-shadow: 0 0 2px 1px var(--border-light);
   --form-bg: #000;
