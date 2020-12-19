@@ -16,8 +16,8 @@ fi
 
 if [ -n "$SU_USER" ] && [ "$(id -u)" -eq 0 ]; then
     mkdir -p $POSTMILL_WRITE_DIRS
-    setfacl -R -m u:www-data:rwX -m u:"$SU_USER":rwX $POSTMILL_WRITE_DIRS
-    setfacl -dR -m u:www-data:rwX -m u:"$SU_USER":rwX $POSTMILL_WRITE_DIRS
+    setfacl -R -m u:www-data:rwX -m u:"$SU_USER":rwX $POSTMILL_WRITE_DIRS || true
+    setfacl -dR -m u:www-data:rwX -m u:"$SU_USER":rwX $POSTMILL_WRITE_DIRS || true
     chmod go+w /proc/self/fd/1 /proc/self/fd/2
     set -- su-exec "$SU_USER" "$@"
 fi
