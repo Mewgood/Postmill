@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use App\Markdown\MarkdownConverter;
-use App\Utils\Slugger;
+use App\Utils\SluggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -13,8 +13,17 @@ final class FormattingExtension extends AbstractExtension {
      */
     private $markdownConverter;
 
-    public function __construct(MarkdownConverter $markdownConverter) {
+    /**
+     * @var SluggerInterface
+     */
+    private $slugger;
+
+    public function __construct(
+        MarkdownConverter $markdownConverter,
+        SluggerInterface $slugger
+    ) {
         $this->markdownConverter = $markdownConverter;
+        $this->slugger = $slugger;
     }
 
     public function getFilters(): array {
@@ -25,7 +34,7 @@ final class FormattingExtension extends AbstractExtension {
             ]),
             new TwigFilter('markdown', [$this->markdownConverter, 'convertToHtml']),
             new TwigFilter('cached_markdown', [$this->markdownConverter, 'convertToHtmlCached']),
-            new TwigFilter('slugify', Slugger::class.'::slugify'),
+            new TwigFilter('slugify', [$this->slugger, 'slugify']),
         ];
     }
 

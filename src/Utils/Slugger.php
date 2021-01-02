@@ -2,13 +2,11 @@
 
 namespace App\Utils;
 
-final class Slugger {
-    public const MAX_LENGTH = 60;
-
-    /**
-     * Creates URL slugs.
-     */
-    public static function slugify(string $input): string {
+final class Slugger implements SluggerInterface {
+    public function slugify(
+        string $input,
+        int $maxLength = self::DEFAULT_MAX_LENGTH
+    ): string {
         $input = mb_strtolower($input, 'UTF-8');
 
         $words = preg_split('/[^\w]+/u', $input, -1, PREG_SPLIT_NO_EMPTY);
@@ -19,7 +17,7 @@ final class Slugger {
             $add = $len > 0 ? "-$word" : $word;
             $len += grapheme_strlen($add);
 
-            if ($len > self::MAX_LENGTH) {
+            if ($len > $maxLength) {
                 break;
             }
 
