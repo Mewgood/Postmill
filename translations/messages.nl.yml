@@ -38,7 +38,6 @@ comments.not_logged_in: Je moet je %login_link% of %register_link% om te kunnen 
 comments.not_logged_in_login_link_label: inloggen
 comments.not_logged_in_register_link_label: registeren
 comments.parent: Bovenliggende
-comments.permalink: Permanente link
 comments.reply: Reactie
 comments.return_to_forum: Keer terug naar %forum%
 comments.thread_return: Bekijk alle reacties
@@ -119,6 +118,7 @@ markdown.help: Syntaxhandleiding
 nav.forums: Fora
 nav.my_account: Mijn account
 nav.next: Volgende
+nav.permalink: Permanente link
 nav.previous: Vorige
 nav.profile: Profiel
 nav.submit: Bericht plaatsen

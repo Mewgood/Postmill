@@ -96,7 +96,6 @@ comments.not_logged_in: Vi devas %login_link% aŭ %register_link% por komenti.
 comments.not_logged_in_login_link_label: saluti
 comments.not_logged_in_register_link_label: registriĝi
 comments.parent: Gepatra afiŝo
-comments.permalink: Konstanta ligilo
 comments.reply: Respondi
 comments.replying_to_comment: Respondante al %user% (%id%)
 comments.return_to_forum: Reveni al %forum%
@@ -435,6 +434,7 @@ nav.next: Sekva
 nav.notifications: Sciigoj
 nav.notifications_count: 'Sciigoj (%count%)'
 nav.page_number: 'Paĝo %number%'
+nav.permalink: Konstanta ligilo
 nav.places: Lokoj
 nav.previous: Antaŭa
 nav.profile: Profilo

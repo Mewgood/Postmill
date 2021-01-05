@@ -96,7 +96,6 @@ comments.not_logged_in: Debes %login_link% o %register_link% para comentar.
 comments.not_logged_in_login_link_label: ingresar
 comments.not_logged_in_register_link_label: registrarse
 comments.parent: Padre
-comments.permalink: Permalink
 comments.reply: Responder
 comments.replying_to_comment: Respondiendo a %user% (%id%)
 comments.return_to_forum: Regresar a %forum%
@@ -435,6 +434,7 @@ nav.next: Siguiente
 nav.notifications: Notificaciones
 nav.notifications_count: 'Notificaciones (%count%)'
 nav.page_number: 'Página %number%'
+nav.permalink: Permalink
 nav.places: Lugares
 nav.previous: Anterior
 nav.profile: Perfil

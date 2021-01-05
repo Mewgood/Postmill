@@ -16,7 +16,9 @@
     <h1 class="wiki-article__title">{{ revision.title }}</h1>
 
     <div class="wiki-article__body text-flow">
-      {{ revision.body|markdown|raw }}
+      {{ revision.body|markdown({
+        (constant('App\\Markdown\\Listener\\WikiListener::ATTR_ENABLE_WIKI_MODE')): true,
+      })|raw }}
     </div>
   </article>
 

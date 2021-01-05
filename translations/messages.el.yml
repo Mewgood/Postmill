@@ -47,7 +47,6 @@ comments.not_logged_in: Πρεπει να κάνεις %login_link% ή %register
 comments.not_logged_in_login_link_label: Σύνδεσε
 comments.not_logged_in_register_link_label: Εγγραφή
 comments.parent: Γονικό σχόλιο
-comments.permalink: Μόνιμη διεύθυνση
 comments.reply: Απάντησε
 comments.return_to_forum: Επιστρέψετε στην %forum%
 comments.thread_return: Δείτε όλα τα σχόλια
@@ -208,6 +207,7 @@ nav.moderated: Συντονιστείτε
 nav.moderation_log: Δραστηριότητα του Συντονιστή
 nav.my_account: Ο λογαριασμός μου
 nav.next: Επόμενο
+nav.permalink: Μόνιμη διεύθυνση
 nav.previous: Προηγούμενο
 nav.profile: Προφίλ
 nav.submit: Υποβάλλε

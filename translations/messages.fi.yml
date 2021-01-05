@@ -39,7 +39,6 @@ comments.not_logged_in: Sinun täytyy %login_link% tai %register_link% kommentoi
 comments.not_logged_in_login_link_label: kirjautua
 comments.not_logged_in_register_link_label: rekisteröityä
 comments.parent: Isäntä
-comments.permalink: Pysyvä linkki
 comments.reply: Vastaa
 comments.return_to_forum: Palaa foorumille %forum%
 comments.thread_return: Näytä kaikki kommentit
@@ -128,6 +127,7 @@ nav.forums: Foorumit
 nav.messages: Viestit
 nav.my_account: Tunnukseni
 nav.next: Seuraava
+nav.permalink: Pysyvä linkki
 nav.previous: Edellinen
 nav.profile: Profiili
 nav.submit: Lisää

@@ -96,7 +96,6 @@ comments.not_logged_in: 댓글을 달려면 %login_link% 또는 %register_link%�
 comments.not_logged_in_login_link_label: 로그인
 comments.not_logged_in_register_link_label: 등록
 comments.parent: 부모
-comments.permalink: 영구 링크
 comments.reply: 답장
 comments.replying_to_comment: '%user% (%id%)에게 답장'
 comments.return_to_forum: '%forum%로 돌아가기'
@@ -435,6 +434,7 @@ nav.next: 다음
 nav.notifications: 알림
 nav.notifications_count: '알림 (%count%)'
 nav.page_number: '페이지 %number%'
+nav.permalink: 영구 링크
 nav.places: 장소
 nav.previous: 이전
 nav.profile: 프로필
