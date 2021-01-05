@@ -15,8 +15,9 @@ class MarkdownConverter {
         $this->dispatcher = $dispatcher;
     }
 
-    public function convertToHtml(string $markdown): string {
+    public function convertToHtml(string $markdown, array $context = []): string {
         $event = new ConvertMarkdown($markdown);
+        $event->mergeAttributes($context);
 
         $this->dispatcher->dispatch($event);
 
