@@ -96,7 +96,6 @@ comments.not_logged_in: Du må %login_link% eller %register_link% for å komment
 comments.not_logged_in_login_link_label: logge inn
 comments.not_logged_in_register_link_label: registrere deg
 comments.parent: Forelder
-comments.permalink: Permalenke
 comments.reply: Svar
 comments.replying_to_comment: Svarer til %user% (%id%)
 comments.return_to_forum: Gå tilbake til %forum%
@@ -434,6 +433,7 @@ nav.next: Neste
 nav.notifications: Notifikasjoner
 nav.notifications_count: 'Notifikasjoner (%count%)'
 nav.page_number: 'Side %number%'
+nav.permalink: Permalenke
 nav.places: Steder
 nav.previous: Forrige
 nav.profile: Profil

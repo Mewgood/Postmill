@@ -45,7 +45,6 @@ comments.not_logged_in: Você precisa %login_link% ou %register_link% para comen
 comments.not_logged_in_login_link_label: entrar
 comments.not_logged_in_register_link_label: registrar
 comments.parent: Pai
-comments.permalink: Permalink
 comments.reply: Responder
 comments.return_to_forum: Voltar para %forum%
 comments.thread_return: Ver todos os comentários
@@ -199,6 +198,7 @@ nav.moderated: Moderado
 nav.moderation_log: Registro de moderação
 nav.my_account: Minha conta
 nav.next: Próximo
+nav.permalink: Permalink
 nav.previous: Anterior
 nav.profile: Perfil
 nav.submit: Postar

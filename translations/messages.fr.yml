@@ -58,7 +58,6 @@ comments.not_logged_in: Vous devez vous %login_link% ou vous %register_link% pou
 comments.not_logged_in_login_link_label: connecter
 comments.not_logged_in_register_link_label: inscrire
 comments.parent: Parent
-comments.permalink: Permalien
 comments.reply: Répondre
 comments.return_to_forum: Retourner sur %forum%
 comments.thread_return: Voir tous les commentaires
@@ -252,6 +251,7 @@ nav.moderated: Modéré
 nav.moderation_log: Journal de modération
 nav.my_account: Mon compte
 nav.next: Suivant
+nav.permalink: Permalien
 nav.previous: Précédent
 nav.profile: Profil
 nav.submit: Poster
