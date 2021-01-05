@@ -1,6 +1,9 @@
 import { isObject } from 'lodash-es';
 
-export function fetch(url = '', options = {}) {
+/**
+ * @returns {Promise<Response>}
+ */
+export async function fetch(url = '', options = {}) {
     if (isObject(url)) {
         options = url;
         url = options.url;
@@ -13,7 +16,7 @@ export function fetch(url = '', options = {}) {
     return window.fetch(url, options);
 }
 
-export function ok(response) {
+export async function ok(response) {
     if (!response.ok) {
         const e = new Error(response.statusText);
         e.response = response;

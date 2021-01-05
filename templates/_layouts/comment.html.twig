@@ -1,7 +1,7 @@
 {%- block comment -%}
   {%- from '_macros/icon.html.twig' import icon -%}
   {%- from '_macros/time.html.twig' import relative_time, relative_time_diff -%}
-  {%- from 'vote/_macros.html.twig' import vote -%}
+  {%- from '_macros/vote.html.twig' import vote -%}
   {%- set hidden = self and self.blocking(comment.user) -%}
   <article class="comment
                   comment--{{ level > 1 ? 'nested' : 'top-level' }}
@@ -250,7 +250,10 @@
         comment_id: comment.id,
       }) }}" method="POST">
         <input type="hidden" name="token" value="{{ csrf_token('delete_own_comment') }}">
-        <button class="fg-inherit text-sm unbuttonize js-confirm-comment-delete">
+        <button class="fg-inherit text-sm unbuttonize"
+                data-controller="dialog"
+                data-action="dialog#confirm"
+                data-dialog-text-value="{{ 'prompt.confirm_comment_delete'|trans }}">
           {{- 'action.delete'|trans -}}
         </button>
       </form>
@@ -360,7 +363,10 @@
         comment_id: comment.id,
       }) }}" method="POST">
         <input type="hidden" name="token" value="{{ csrf_token('purge_comment') }}">
-        <button class="menu-item no-wrap unbuttonize js-confirm-comment-delete">
+        <button class="menu-item no-wrap unbuttonize"
+                data-controller="dialog"
+                data-action="dialog#confirm"
+                data-dialog-text-value="{{ 'prompt.confirm_comment_delete'|trans }}">
           {{- icon('cancel') }}
           {{ 'action.purge'|trans -}}
         </button>

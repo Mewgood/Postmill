@@ -91,5 +91,19 @@ class MarkdownConverterTest extends KernelTestCase {
             http://www.example.com
             EOMARKDOWN,
         ];
+
+        yield 'syntax highlighting' => [
+            <<<EOHTML
+            <pre><code data-controller="syntax-highlight" data-syntax-highlight-language-value="php">&lt;?php
+            echo &quot;some code&quot;;
+            </code></pre>
+            EOHTML,
+            <<<EOMARKDOWN
+            ~~~php
+            <?php
+            echo "some code";
+            ~~~
+            EOMARKDOWN,
+        ];
     }
 }

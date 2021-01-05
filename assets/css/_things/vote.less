@@ -7,12 +7,23 @@
   padding-top: 0.5rem;
   width: @vote-width;
 
+  &--loading &__net-score,
+  &:not(&--loading) &__spinner {
+    display: none;
+  }
+
   &__button {
     color: var(--fg-grey);
     cursor: pointer;
     line-height: 1;
     height: 1em;
+    transition: opacity .1s;
     white-space: nowrap;
+  }
+
+  &--loading &__button {
+    cursor: default;
+    opacity: 0.5;
   }
 
   &--user-upvoted &__up {
@@ -29,10 +40,5 @@
 
   &--failed &__net-score {
     color: var(--fg-red);
-  }
-
-  // put minus sign off-centre for aesthetics' sake
-  &[data-score^="-"] &__net-score {
-    padding-right: 1ch;
   }
 }

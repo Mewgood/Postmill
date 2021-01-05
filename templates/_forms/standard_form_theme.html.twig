@@ -202,10 +202,15 @@
          height="{{ captcha_height }}"
          alt=""
          class="block"
-         aria-label="{{ 'label.verification_image'|trans }}">
+         aria-label="{{ 'label.verification_image'|trans }}"
+         {{ reload ? 'data-reload-captcha-target="image"' }}>
   {%- endset -%}
   {%- if reload -%}
-    <button class="unbuttonize js-captcha-reload" type="button" disabled>
+    <button class="unbuttonize"
+            data-controller="reload-captcha"
+            data-action="reload-captcha#reload"
+            disabled
+            type="button">
       {{- image -}}
     </button>
   {%- else -%}

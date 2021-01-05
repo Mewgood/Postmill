@@ -1,7 +1,7 @@
 {%- block submission -%}
   {%- from '_macros/icon.html.twig' import icon -%}
   {%- from '_macros/time.html.twig' import relative_time, relative_time_diff -%}
-  {%- from 'vote/_macros.html.twig' import vote -%}
+  {%- from '_macros/vote.html.twig' import vote -%}
   {%- set open_external = submission.url is not empty and open_external_links_in_new_tab -%}
   {%- set has_thumbnail = submission.image and show_thumbnails and not
     (show_content and submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE')) -%}
@@ -262,7 +262,10 @@
         submission_id: submission.id,
       }) }}" method="POST">
         <input type="hidden" name="token" value="{{ csrf_token('purge_submission') }}">
-        <button class="{{ nav_link_classes }} unbuttonize js-confirm-submission-delete">
+        <button class="{{ nav_link_classes }} unbuttonize"
+                data-controller="dialog"
+                data-action="dialog#confirm"
+                data-dialog-text-value="{{ 'prompt.confirm_submission_delete'|trans }}">
           {{- icon('cancel') }}
           {{ 'action.purge'|trans -}}
         </button>
@@ -305,7 +308,10 @@
     <li>
       <form action="{{ path('submission_delete_own', { forum_name: submission.forum.name, submission_id: submission.id }) }}" method="POST">
         <input type="hidden" name="token" value="{{ csrf_token('delete_submission') }}">
-        <button class="{{ nav_link_classes }} unbuttonize js-confirm-submission-delete">
+        <button class="{{ nav_link_classes }} unbuttonize"
+                data-controller="dialog"
+                data-action="dialog#confirm"
+                data-dialog-text-value="{{ 'prompt.confirm_submission_delete'|trans }}">
           {{- 'menu-item' in nav_link_classes ? icon('trash') }}
           {{ 'action.delete'|trans -}}
         </button>

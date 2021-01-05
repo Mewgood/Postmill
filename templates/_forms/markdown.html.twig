@@ -1,12 +1,28 @@
 {% block markdown_row %}
   {{ form_row(form, {
-    attr: { class: (app.user.enablePostPreviews ?? false) ? 'js-markdown-preview' },
     help: block('_markdown_help'),
     help_attr: { class: 'hideable' },
-    raw_help: true
+    raw_help: true,
+    row_attr: { class: 'form-flex--stretch' },
   }) }}
-  <div class="markdown-preview" id="{{ form.vars.id }}_preview"></div>
 {%- endblock markdown_row %}
+
+{% block markdown_widget -%}
+  <div class="flow-slim" {{ (app.user.enablePostPreviews ?? false) ? 'data-controller="markdown"' }}>
+    {{- form_widget(form, {
+      attr: {
+        class: 'flex__grow',
+        'data-action': 'markdown#preview',
+        'data-markdown-target': 'input',
+      },
+    }) -}}
+
+    <div class="markdown-preview" data-markdown-target="previewContainer" hidden>
+      <h3 class="markdown-preview__title">{{ 'markdown.preview'|trans }}</h3>
+      <div class="markdown-preview__inner text-flow" data-markdown-target="preview"></div>
+    </div>
+  </div>
+{%- endblock markdown_widget %}
 
 {% block _markdown_help %}
   <input type="checkbox" class="hideable__checkbox" id="{{ id~'_markdown_help' }}">

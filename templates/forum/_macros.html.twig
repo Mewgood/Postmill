@@ -1,15 +1,25 @@
 {% macro subscribe_button(forum, subscribed) %}
   {%- set subscriber_count = forum.subscriptions|length -%}
   <button class="subscribe-button subscribe-button--{{ subscribed ? 'un' }}subscribe"
-          data-subscriber-count="{{ subscriber_count }}">
+          data-controller="subscribe-button"
+          data-action="subscribe-button#subscribe"
+          data-subscribe-button-forum-value="{{ forum.name }}"
+          data-subscribe-button-subscribers-value="{{ subscriber_count }}"
+          data-subscribe-button-subscribe-class="subscribe-button--subscribe"
+          data-subscribe-button-unsubscribe-class="subscribe-button--unsubscribe"
+          {{ subscribed ? 'data-subscribe-button-subscribed-value' }}>
     <span class="subscribe-button__label">
-      <span class="subscribe-button__label-text">
+      <span class="subscribe-button__label-text" data-subscribe-button-target="label">
         {{- subscribed ? 'action.unsubscribe'|trans : 'action.subscribe'|trans -}}
       </span>
 
-      {# dummy label to keep width consistent regardless of subscription state #}
-      <span class="subscribe-button__dummy-label" aria-hidden="true">
-        {{- subscribed ? 'action.subscribe'|trans : 'action.unsubscribe'|trans -}}
+      {# dummy labels to keep width of button consistent regardless of state #}
+      <span aria-hidden="true" class="subscribe-button__dummy-label">
+        {{ 'action.subscribe'|trans }}
+      </span>
+
+      <span aria-hidden="true" class="subscribe-button__dummy-label">
+        {{ 'action.unsubscribe'|trans }}
       </span>
     </span>
 
@@ -17,7 +27,8 @@
        aria-label="{{ 'forum.subscriber_count'|trans({
          '%count%': subscriber_count,
          '%formatted_count%': subscriber_count|format_number,
-       }) }}">
+       }) }}"
+       data-subscribe-button-target="subscribers">
       {{- subscriber_count|format_number -}}
     </b>
   </button>
