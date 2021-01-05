@@ -2,6 +2,7 @@
 
 namespace App\Tests\Utils;
 
+use App\Utils\TrustedHosts;
 use App\Utils\UrlRewriter;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
@@ -18,10 +19,10 @@ class UrlRewriterTest extends TestCase {
     protected function setUp(): void {
         $context = new RequestContext('', 'GET', 'localhost', 'https');
 
-        $this->rewriter = new UrlRewriter($context, [
+        $this->rewriter = new UrlRewriter($context, new TrustedHosts([
             'localhost',
             '10.0.0.13',
-        ]);
+        ]));
     }
 
     /**

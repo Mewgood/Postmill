@@ -110,9 +110,6 @@
     "embed/embed": {
         "version": "v3.2.2"
     },
-    "ezyang/htmlpurifier": {
-        "version": "v4.9.3"
-    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {

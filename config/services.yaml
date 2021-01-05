@@ -34,13 +34,16 @@ services:
         App\Repository\Contracts\PrunesIpAddresses:
             tags: [postmill.ip_pruner]
 
+        League\CommonMark\Inline\Parser\InlineParserInterface:
+            tags: [commonmark.inline_parser]
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../src/{Entity,Migrations,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -53,6 +56,10 @@ services:
 
     App\Doctrine\Listener\DomainEventsListener:
         tags: ['doctrine.event_subscriber']
+
+    App\Markdown\Factory\EnvironmentFactory:
+        $container: !service_locator
+            League\CommonMark\ConfigurableEnvironmentInterface: '@League\CommonMark\ConfigurableEnvironmentInterface'
 
     App\Security\AuthenticationHelper:
         $rememberMeServices: "@security.authentication.rememberme.services.simplehash.main"

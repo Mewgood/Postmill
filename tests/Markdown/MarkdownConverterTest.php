@@ -2,74 +2,45 @@
 
 namespace App\Tests\Markdown;
 
-use App\Entity\User;
-use App\EventListener\MarkdownListener;
-use App\Markdown\AppExtension;
+use App\Markdown\Event\ConvertMarkdown;
 use App\Markdown\MarkdownConverter;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @covers \App\Markdown\MarkdownConverter
  */
 class MarkdownConverterTest extends TestCase {
-    private function createMarkdownConverter(bool $externalLinksOpenInNewTab): MarkdownConverter {
-        $user = $this->createMock(User::class);
-        $user
-            ->method('openExternalLinksInNewTab')
-            ->willReturn($externalLinksOpenInNewTab);
+    /**
+     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $dispatcher;
 
-        /* @var UrlGeneratorInterface|MockObject $urlGenerator */
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+    /**
+     * @var MarkdownConverter
+     */
+    private $converter;
 
-        $token = $this->createMock(TokenInterface::class);
-        $token
-            ->method('getUser')
-            ->willReturn($user);
-
-        /* @var TokenStorageInterface|MockObject $tokenStorage */
-        $tokenStorage = $this->createMock(TokenStorageInterface::class);
-        $tokenStorage
-            ->method('getToken')
-            ->willReturn($token);
-
-        $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new MarkdownListener(
-            new AppExtension($urlGenerator),
-            $tokenStorage
-        ));
-
-        /* @var CacheItemPoolInterface|MockObject $cacheItemPool */
-        $cacheItemPool = $this->createMock(CacheItemPoolInterface::class);
-
-        return new MarkdownConverter($dispatcher, $cacheItemPool);
+    protected function setUp(): void {
+        $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->converter = new MarkdownConverter($this->dispatcher);
     }
 
-    public function testLinksHaveNoTargetByDefault(): void {
-        $converter = $this->createMarkdownConverter(false);
+    public function testCanConvert(): void {
+        $event = new ConvertMarkdown('some markdown');
 
-        $output = $converter->convertToHtml('[link](http://example.com)');
+        $this->dispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($event)
+            ->willReturnCallback(function ($event) {
+                $event->setRenderedHtml('some html');
 
-        $crawler = new Crawler($output);
-        $crawler = $crawler->filterXPath('//p/a[not(@target)]');
+                return $event;
+            });
 
-        $this->assertSame('link', $crawler->html());
-    }
+        $renderedHtml = $this->converter->convertToHtml('some markdown');
 
-    public function testLinksHaveTargetWithOpenExternalLinksInNewTabOption(): void {
-        $converter = $this->createMarkdownConverter(true);
-
-        $output = $converter->convertToHtml('[link](http://example.com)');
-
-        $crawler = new Crawler($output);
-        $crawler = $crawler->filterXPath('//p/a[contains(@target,"_blank")]');
-
-        $this->assertSame('link', $crawler->html());
+        $this->assertSame('some html', $renderedHtml);
     }
 }

@@ -30,17 +30,22 @@ class UrlRewriter {
      */
     private $regex;
 
-    public function __construct(RequestContext $requestContext, array $trustedHosts) {
-        if (\count($trustedHosts) >= 2) {
-            $this->requestContext = $requestContext;
+    public function __construct(
+        RequestContext $requestContext,
+        TrustedHosts $trustedHosts
+    ) {
+        $fragments = $trustedHosts->getRegexFragments(true);
 
-            $this->regex = sprintf(
-                self::REGEX_TEMPLATE,
-                implode('|', array_map(static function ($host) {
-                    return str_replace('\*', '.*', preg_quote($host, '!'));
-                }, $trustedHosts))
-            );
+        if (!$fragments) {
+            $host = $requestContext->getHost();
+            $fragments = TrustedHosts::makeRegexFragments($host);
         }
+
+        $this->requestContext = $requestContext;
+        $this->regex = sprintf(
+            self::REGEX_TEMPLATE,
+            implode('|', $fragments)
+        );
     }
 
     public function rewrite(string $url): string {

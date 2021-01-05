@@ -1,6 +1,7 @@
 <?php
 
 use App\Kernel;
+use App\Utils\TrustedHosts;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,9 +27,7 @@ if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ??
 }
 
 if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
-    Request::setTrustedHosts(array_map(function ($host) {
-        return '^'.str_replace('\*', '.*', preg_quote($host, '{')).'$';
-    }, explode(',', $trustedHosts)));
+    Request::setTrustedHosts(TrustedHosts::makeRegexFragments($trustedHosts));
 }
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);

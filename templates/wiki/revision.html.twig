@@ -16,7 +16,7 @@
     <h1 class="wiki-article__title">{{ revision.title }}</h1>
 
     <div class="wiki-article__body text-flow">
-      {{ revision.body|cached_markdown|raw }}
+      {{ revision.body|markdown|raw }}
     </div>
   </article>
 

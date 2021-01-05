@@ -48,7 +48,7 @@
 
     {% if forum.sidebar is not empty %}
       <div class="forum-sidebar-content break-text text-flow">
-        {{- forum.sidebar|cached_markdown|raw -}}
+        {{- forum.sidebar|markdown|raw -}}
       </div>
 
       <hr>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Markdown\Inline\Parser;
+namespace App\Markdown\CommonMark;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

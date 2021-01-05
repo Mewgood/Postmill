@@ -33,7 +33,6 @@ final class FormattingExtension extends AbstractExtension {
                 'pre_escape' => 'html',
             ]),
             new TwigFilter('markdown', [$this->markdownConverter, 'convertToHtml']),
-            new TwigFilter('cached_markdown', [$this->markdownConverter, 'convertToHtmlCached']),
             new TwigFilter('slugify', [$this->slugger, 'slugify']),
         ];
     }

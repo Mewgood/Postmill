@@ -22,7 +22,7 @@
 
     {% if tag.description is not empty %}
       <div class="text-flow">
-        {{ tag.description|cached_markdown|raw }}
+        {{ tag.description|markdown|raw }}
       </div>
     {% endif %}
 

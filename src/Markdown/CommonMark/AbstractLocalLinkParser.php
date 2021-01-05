@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Markdown\Inline\Parser;
+namespace App\Markdown\CommonMark;
 
 use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Parser\InlineParserInterface;

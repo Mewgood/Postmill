@@ -20,7 +20,7 @@
     </h1>
 
     <div class="message__body text-flow">
-      {{- message.body|cached_markdown|raw -}}
+      {{- message.body|markdown|raw -}}
     </div>
 
     {% if is_granted('delete', message) %}

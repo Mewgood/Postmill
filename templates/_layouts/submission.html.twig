@@ -165,7 +165,7 @@
       {%- if raw_body is not null -%}
         {{ raw_body|raw }}
       {%- elseif submission.body is not null -%}
-        {{ submission.body|cached_markdown|raw }}
+        {{ submission.body|markdown|raw }}
       {%- endif -%}
     </div>
   {%- endif -%}

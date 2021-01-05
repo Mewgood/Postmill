@@ -16,7 +16,7 @@
     <h1 class="page-heading wiki-article__title">{{ block('title') }}</h1>
 
     <div class="wiki-article__body text-flow">
-      {{ page.latestRevision.body|cached_markdown|raw }}
+      {{ page.latestRevision.body|markdown|raw }}
     </div>
   </article>
 {% endblock %}
