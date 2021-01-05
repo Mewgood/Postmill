@@ -38,7 +38,7 @@
     </header>
 
     {% if user.biography is not empty %}
-      <div class="user-bio__biography text-flow">{{ user.biography|cached_markdown|raw }}</div>
+      <div class="user-bio__biography text-flow">{{ user.biography|markdown|raw }}</div>
     {% endif %}
 
     {% if user is same as(app.user) and is_granted('edit_biography', user) %}

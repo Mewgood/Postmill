@@ -67,7 +67,7 @@
             {%- if raw_body is not null -%}
               {{ raw_body|raw }}
             {%- elseif (comment.visible or show_trashed) and comment.body is not null -%}
-              {{ comment.body|cached_markdown|raw }}
+              {{ comment.body|markdown|raw }}
             {%- endif -%}
           </div>
         </div>

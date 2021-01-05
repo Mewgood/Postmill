@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Markdown\Inline\Parser;
+namespace App\Markdown\CommonMark;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class CategoryLinkParser extends AbstractLocalLinkParser {
+final class WikiLinkParser extends AbstractLocalLinkParser {
     /**
      * @var UrlGeneratorInterface
      */
@@ -15,14 +15,14 @@ final class CategoryLinkParser extends AbstractLocalLinkParser {
     }
 
     public function getPrefix(): string {
-        return 'c';
+        return 'w';
     }
 
     public function getUrl(string $suffix): string {
-        return $this->urlGenerator->generate('forum_tag', ['name' => $suffix]);
+        return $this->urlGenerator->generate('wiki', ['path' => $suffix]);
     }
 
     public function getRegex(): string {
-        return '/^\w{3,40}\b/';
+        return '!^[A-Za-z][A-Za-z0-9_-]*(/[A-Za-z][A-Za-z0-9_-]*)*\b!';
     }
 }

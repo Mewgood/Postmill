@@ -36,7 +36,7 @@ final class MarkdownNormalizer implements ContextAwareNormalizerInterface, Norma
 
             if (\array_key_exists($rawKey, $data)) {
                 if (isset($data[$rawKey])) {
-                    $data[$renderedKey] = $this->converter->convertToHtmlCached($data[$rawKey]);
+                    $data[$renderedKey] = $this->converter->convertToHtml($data[$rawKey]);
                 } else {
                     $data[$renderedKey] = null;
                 }

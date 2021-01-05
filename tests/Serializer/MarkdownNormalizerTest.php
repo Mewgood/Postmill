@@ -50,7 +50,7 @@ class MarkdownNormalizerTest extends TestCase {
         $converter = $this->createMock(MarkdownConverter::class);
         $converter
             ->expects($this->exactly(2))
-            ->method('convertToHtmlCached')
+            ->method('convertToHtml')
             ->withConsecutive(
                 [$this->equalTo('The header')],
                 [$this->equalTo('The body')]
