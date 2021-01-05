@@ -34,5 +34,21 @@ final class AddMarkdownExtensionsPass implements CompilerPassInterface {
                 $tags[array_key_last($tags)]['priority'] ?? 0,
             ]);
         }
+
+        foreach ($container->findTaggedServiceIds('commonmark.block_renderer') as $serviceId => $tags) {
+            $element = $tags[array_key_last($tags)]['element'] ?? null;
+
+            if (!$element) {
+                throw new \RuntimeException('element missing on BlockRenderer');
+            }
+
+            $priority = $tags[array_key_last($tags)]['priority'] ?? 0;
+
+            $definition->addMethodCall('addBlockRenderer', [
+                $element,
+                new Reference($serviceId),
+                $priority,
+            ]);
+        }
     }
 }

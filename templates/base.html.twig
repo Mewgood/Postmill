@@ -52,12 +52,12 @@
         {%- if app.request.previousSession -%}
           {%- for type, notices in app.flashes -%}
             {%- for notice in notices -%}
-              <div class="{{ alert_classes(type) }} site-alerts__alert" role="alert">
+              <div class="{{ alert_classes(type) }} site-alerts__alert" role="alert" data-controller="alert">
                 {{ alert_icon(type) }}
                 <div class="alert__text">
                   <p>{{ notice|trans }}</p>
                 </div>
-                <button class="site-alerts__dismiss unbuttonize">
+                <button class="site-alerts__dismiss unbuttonize" data-action="alert#close" data-alert-target="close">
                   <span class="hidden">{{ 'action.dismiss'|trans }}</span>
                 </button>
               </div>

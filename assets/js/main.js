@@ -1,20 +1,13 @@
-import './alerts';
-import './captcha';
+import { Application } from 'stimulus';
+import { definitionsFromContext } from 'stimulus/webpack-helpers';
+
+const application = Application.start();
+const context = require.context('./controller', true, /\.js$/);
+application.load(definitionsFromContext(context));
+
 import './comment-count';
 import './commenting';
-import './delete';
 import './dropdowns';
-import './fetch-titles';
-import './markdown';
-import './night-mode';
-import { makeTimesRelative } from './relative-time';
-import './remaining';
 import './select2';
-import './subscribe';
-import { highlightRoot } from './syntax';
 import './unload-forms';
 import './user-popper';
-import './vote';
-
-highlightRoot(document.body);
-makeTimesRelative(document.body);

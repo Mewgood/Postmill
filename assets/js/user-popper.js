@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
 import router from 'fosjsrouting';
-import { makeTimesRelative } from './relative-time';
 import { fetch, ok } from './lib/http';
 
 const BASE_URL = router.getBaseUrl();
@@ -80,11 +79,5 @@ tippy(elements, {
             .finally(() => {
                 instance.fetchState.fetching = false;
             });
-    },
-
-    onBeforeUpdate(instance) {
-        if (instance.fetchState.done) {
-            makeTimesRelative(instance.popper);
-        }
     },
 });

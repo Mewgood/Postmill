@@ -26,7 +26,12 @@
     {% if is_granted('delete', message) %}
       <form action="{{ path('delete_message', { id: message.id }) }}" method="POST" class="message__buttons">
         <input type="hidden" name="token" value="{{ csrf_token('delete_message') }}">
-        <button class="fg-muted text-sm unbuttonize js-confirm-message-delete">{{ 'action.delete'|trans }}</button>
+        <button class="fg-muted text-sm unbuttonize"
+                data-controller="dialog"
+                data-action="dialog#confirm"
+                data-dialog-text-value="{{ 'prompt.confirm_message_delete'|trans }}">
+          {{- 'action.delete'|trans -}}
+        </button>
       </form>
     {% endif %}
   </article>

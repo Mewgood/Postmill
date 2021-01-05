@@ -224,17 +224,19 @@
   </li>
   <li><hr></li>
   <li>
-    <form action="{{ path('change_night_mode') }}" method="POST" class="js-night-mode-form">
+    <form action="{{ path('change_night_mode') }}" method="POST" data-controller="toggle-night-mode">
       <input type="hidden" name="token" value="{{ csrf_token('night_mode') }}">
       <button name="nightMode"
               value="{{ constant('App\\Entity\\User::NIGHT_MODE_DARK') }}"
-              class="menu-item unbuttonize light-mode-only">
+              class="menu-item unbuttonize light-mode-only"
+              data-action="toggle-night-mode#darken">
         {{ icon('moon-inv') }}
         {{ 'nav.dark_mode'|trans }}
       </button>
       <button name="nightMode"
               value="{{ constant('App\\Entity\\User::NIGHT_MODE_LIGHT') }}"
-              class="menu-item unbuttonize dark-mode-only">
+              class="menu-item unbuttonize dark-mode-only"
+              data-action="toggle-night-mode#lighten">
         {{ icon('sun-inv') }}
         {{ 'nav.light_mode'|trans }}
       </button>

@@ -51,7 +51,10 @@
 
           <form action="{{ path('theme_delete', { id: item.id }) }}" method="post">
             <input type="hidden" name="token" value="{{ csrf_token('delete_theme') }}">
-            <button class="button button--small js-confirm-theme-delete">
+            <button class="button button--small"
+                    data-controller="dialog"
+                    data-action="dialog#confirm"
+                    data-dialog-text-value="{{ 'prompt.confirm_theme_delete'|trans }}">
               {{- 'action.delete'|trans -}}
             </button>
           </form>

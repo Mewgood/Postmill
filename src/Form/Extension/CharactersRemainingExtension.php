@@ -15,7 +15,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class CharactersRemainingExtension extends AbstractTypeExtension {
     public function finishView(FormView $view, FormInterface $form, array $options): void {
         if ($options['max_chars']) {
-            $view->vars['attr']['data-max-characters'] = $options['max_chars'];
+            // TODO: figure out if this can be done in templates instead
+            $controller = &$view->vars['attr']['data-controller'];
+            $controller = trim(($controller ?? '').' remaining-chars');
+
+            $action = &$view->vars['attr']['data-action'];
+            $action = trim(($action ?? '').' remaining-chars#validate');
+
+            $view->vars['attr']['data-remaining-chars-max-value'] = $options['max_chars'];
         }
     }
 

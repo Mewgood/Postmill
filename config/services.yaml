@@ -61,6 +61,10 @@ services:
         tags:
             - { name: commonmark.event_listener, event: League\CommonMark\Event\DocumentParsedEvent }
 
+    App\Markdown\CommonMark\SyntaxHighlightRenderer:
+        tags:
+            - { name: commonmark.block_renderer, element: League\CommonMark\Block\Element\FencedCode, priority: 1 }
+
     App\Markdown\Factory\EnvironmentFactory:
         $container: !service_locator
             League\CommonMark\ConfigurableEnvironmentInterface: '@League\CommonMark\ConfigurableEnvironmentInterface'

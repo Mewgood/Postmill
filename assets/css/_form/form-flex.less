@@ -7,6 +7,11 @@
   align-items: flex-start;
   flex-direction: column;
 
+  &--stretch {
+    // TODO: temporary workaround
+    align-items: stretch;
+  }
+
   @media screen and (min-width: @desktop-min-width) {
     &--single-line {
       align-items: center;
