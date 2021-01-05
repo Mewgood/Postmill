@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Submission;
 use App\Entity\User;
-use App\Utils\Slugger;
+use App\Utils\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseAbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class AbstractController extends BaseAbstractController {
     public static function getSubscribedServices(): array {
         return [
+            'slugger' => SluggerInterface::class,
             'validator' => ValidatorInterface::class,
         ] + parent::getSubscribedServices();
     }
@@ -66,7 +67,7 @@ abstract class AbstractController extends BaseAbstractController {
         return $this->generateUrl('submission', [
             'forum_name' => $submission->getForum()->getName(),
             'submission_id' => $id,
-            'slug' => Slugger::slugify($submission->getTitle()),
+            'slug' => $this->get('slugger')->slugify($submission->getTitle()),
         ]);
     }
 
@@ -80,7 +81,7 @@ abstract class AbstractController extends BaseAbstractController {
         return $this->generateUrl('comment', [
             'forum_name' => $comment->getSubmission()->getForum()->getName(),
             'submission_id' => $comment->getSubmission()->getId(),
-            'slug' => Slugger::slugify($comment->getSubmission()->getTitle()),
+            'slug' => $this->get('slugger')->slugify($comment->getSubmission()->getTitle()),
             'comment_id' => $comment->getId(),
         ]);
     }

@@ -13,7 +13,7 @@ class SluggerTest extends TestCase {
      * @dataProvider inputProvider
      */
     public function testCanSlugifyInputs(string $expected, string $input): void {
-        $this->assertSame($expected, Slugger::slugify($input));
+        $this->assertSame($expected, (new Slugger())->slugify($input));
     }
 
     public function inputProvider(): iterable {

@@ -3,6 +3,7 @@
 namespace App\Serializer;
 
 use App\DataObject\SubmissionData;
+use App\Utils\SluggerInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -18,8 +19,14 @@ final class SubmissionDataNormalizer implements ContextAwareNormalizerInterface,
      */
     private $cacheManager;
 
-    public function __construct(CacheManager $cacheManager) {
+    /**
+     * @var SluggerInterface
+     */
+    private $slugger;
+
+    public function __construct(CacheManager $cacheManager, SluggerInterface $slugger) {
         $this->cacheManager = $cacheManager;
+        $this->slugger = $slugger;
     }
 
     public function normalize($object, string $format = null, array $context = []): array {
@@ -39,6 +46,10 @@ final class SubmissionDataNormalizer implements ContextAwareNormalizerInterface,
 
                 $data["thumbnail_{$size}"] = $url ?? null;
             }
+        }
+
+        if (array_intersect($context['groups'] ?? [], ['submission:read', 'abbreviated_relations'])) {
+            $data['slug'] = $this->slugger->slugify($object->getTitle());
         }
 
         return $data;
