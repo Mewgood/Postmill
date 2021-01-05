@@ -27,7 +27,10 @@ class SubmissionControllerTest extends WebTestCase {
 
         $this->assertSame('Making a submission', $crawler->filter('.submission__link')->text());
         $this->assertSame('http://www.foo.example/', $crawler->filter('.submission__link')->attr('href'));
-        $this->assertSame("<p>This is a test submission</p>\n<p>a new line</p>\n", $crawler->filter('.submission__body')->html());
+        $this->assertStringContainsString(
+            'This is a test submission',
+            $crawler->filter('.submission__body')->html(),
+        );
     }
 
     public function testCanCreateSubmissionWithImage(): void {
@@ -129,7 +132,10 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertSame('A submission with a URL and body', $data['title']);
         $this->assertSame('This is a body.', $data['body']);
         $this->assertSame('2017-03-03T03:03:00+00:00', $data['timestamp']);
-        $this->assertSame("<p>This is a body.</p>\n", $data['renderedBody']);
+        $this->assertStringContainsString(
+            'This is a body.',
+            $data['renderedBody'],
+        );
     }
 
     public function testSubmissionShortcut(): void {

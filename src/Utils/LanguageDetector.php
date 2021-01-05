@@ -4,7 +4,7 @@ namespace App\Utils;
 
 use LanguageDetection\Language;
 
-class LanguageDetector {
+final class LanguageDetector implements LanguageDetectorInterface {
     /**
      * @var Language
      */

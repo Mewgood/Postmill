@@ -11,6 +11,23 @@ final class AddMarkdownExtensionsPass implements CompilerPassInterface {
     public function process(ContainerBuilder $container) {
         $definition = $container->getDefinition(ConfigurableEnvironmentInterface::class);
 
+        foreach ($container->findTaggedServiceIds('commonmark.event_listener') as $serviceId => $tags) {
+            $event = $tags[array_key_last($tags)]['event'] ?? null;
+
+            if (!$event) {
+                throw new \RuntimeException('event missing');
+            }
+
+            $method = $tags[array_key_last($tags)]['method'] ?? '__invoke';
+            $priority = $tags[array_key_last($tags)]['priority'] ?? 0;
+
+            $definition->addMethodCall('addEventListener', [
+                $event,
+                [new Reference($serviceId), $method],
+                $priority,
+            ]);
+        }
+
         foreach ($container->findTaggedServiceIds('commonmark.inline_parser') as $serviceId => $tags) {
             $definition->addMethodCall('addInlineParser', [
                 new Reference($serviceId),

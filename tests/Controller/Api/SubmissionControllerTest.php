@@ -55,7 +55,10 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertSame('none', $data['userFlag']);
         $this->assertFalse($data['locked']);
         $this->assertSame('submission-with-a-body', $data['slug']);
-        $this->assertSame("<p>I'm bad at making stuff up.</p>\n", $data['renderedBody']);
+        $this->assertStringContainsString(
+            "I'm bad at making stuff up.",
+            $data['renderedBody'],
+        );
         $this->assertNull($data['thumbnail_1x']);
         $this->assertNull($data['thumbnail_2x']);
     }
@@ -78,7 +81,7 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertIsInt($data['id']);
         $this->assertSame('A submission posted via the API', $data['title']);
         $this->assertSame('very cool', $data['body']);
-        $this->assertSame("<p>very cool</p>\n", $data['renderedBody']);
+        $this->assertStringContainsString('very cool', $data['renderedBody']);
         $this->assertSame(2, $data['forum']['id']);
         $this->assertSame('news', $data['forum']['name']);
     }
@@ -162,9 +165,9 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertSame(1, $comment['netScore']);
         $this->assertSame(1, $comment['upvotes']);
         $this->assertSame(0, $comment['downvotes']);
-        $this->assertSame(
-            "<p>This is a comment body. It is quite neat.</p>\n<p><em>markdown</em></p>\n",
-            $comment['renderedBody']
+        $this->assertStringContainsString(
+            'This is a comment body. It is quite neat.',
+            $comment['renderedBody'],
         );
         $this->assertArrayHasKey('replies', $comment);
 
@@ -198,6 +201,9 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertSame(1, $reply['netScore']);
         $this->assertSame(1, $reply['upvotes']);
         $this->assertSame(0, $reply['downvotes']);
-        $this->assertSame("<p>This is a reply to the previous comment.</p>\n", $reply['renderedBody']);
+        $this->assertStringContainsString(
+            'This is a reply to the previous comment.',
+            $reply['renderedBody'],
+        );
     }
 }

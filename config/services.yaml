@@ -57,6 +57,10 @@ services:
     App\Doctrine\Listener\DomainEventsListener:
         tags: ['doctrine.event_subscriber']
 
+    App\Markdown\CommonMark\LanguageDetectionListener:
+        tags:
+            - { name: commonmark.event_listener, event: League\CommonMark\Event\DocumentParsedEvent }
+
     App\Markdown\Factory\EnvironmentFactory:
         $container: !service_locator
             League\CommonMark\ConfigurableEnvironmentInterface: '@League\CommonMark\ConfigurableEnvironmentInterface'

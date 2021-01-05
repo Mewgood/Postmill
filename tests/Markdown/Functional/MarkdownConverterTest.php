@@ -46,10 +46,10 @@ class MarkdownConverterTest extends KernelTestCase {
 
         yield 'special link syntax' => [
             <<<EOHTML
-            <p><a href="/tag/bar">c/bar</a></p>
-            <p><a href="/f/foo">/f/foo</a></p>
-            <p><a href="/user/emma">/u/emma</a></p>
-            <p><a href="/wiki/some_wiki_page">/w/some_wiki_page</a></p>
+            <p lang="en" dir="ltr"><a href="/tag/bar">c/bar</a></p>
+            <p lang="en" dir="ltr"><a href="/f/foo">/f/foo</a></p>
+            <p lang="en" dir="ltr"><a href="/user/emma">/u/emma</a></p>
+            <p lang="en" dir="ltr"><a href="/wiki/some_wiki_page">/w/some_wiki_page</a></p>
             EOHTML,
             <<<EOMARKDOWN
             c/bar
@@ -64,8 +64,8 @@ class MarkdownConverterTest extends KernelTestCase {
 
         yield 'internal and external links' => [
             <<<EOHTML
-            <p><a href="http://www.example.com" rel="nofollow noopener noreferrer">some link</a></p>
-            <p><a href="/some/path">some path</a></p>
+            <p lang="en" dir="ltr"><a href="http://www.example.com" rel="nofollow noopener noreferrer">some link</a></p>
+            <p lang="en" dir="ltr"><a href="/some/path">some path</a></p>
             EOHTML,
             <<<EOMARKDOWN
             [some link](http://www.example.com)
@@ -76,7 +76,7 @@ class MarkdownConverterTest extends KernelTestCase {
 
         yield 'javascript links are stripped away' => [
             <<<EOHTML
-            <p><a>no href</a></p>
+            <p lang="en" dir="ltr"><a>no href</a></p>
             EOHTML,
             <<<EOMARKDOWN
             [no href](javascript:alert('a'))
@@ -85,7 +85,7 @@ class MarkdownConverterTest extends KernelTestCase {
 
         yield 'auto-linking' => [
             <<<EOHTML
-            <p><a href="http://www.example.com" rel="nofollow noopener noreferrer">http://www.example.com</a>
+            <p lang="en" dir="ltr"><a href="http://www.example.com" rel="nofollow noopener noreferrer">http://www.example.com</a>
             EOHTML,
             <<<EOMARKDOWN
             http://www.example.com

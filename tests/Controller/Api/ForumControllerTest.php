@@ -15,6 +15,8 @@ class ForumControllerTest extends WebTestCase {
         $client = self::createUserClient();
         $client->request('GET', '/api/forums/1');
 
+        $data = json_decode($client->getResponse()->getContent(), true);
+
         $this->assertArraySubset([
             'id' => 1,
             'name' => 'cats',
@@ -23,8 +25,9 @@ class ForumControllerTest extends WebTestCase {
             'description' => 'memes',
             'featured' => true,
             'suggestedTheme' => null,
-            'renderedSidebar' => "<p>le memes</p>\n",
-        ], json_decode($client->getResponse()->getContent(), true));
+        ], $data);
+
+        $this->assertStringContainsString('le memes', $data['renderedSidebar']);
     }
 
     public function testReadByName(): void {
@@ -60,8 +63,11 @@ class ForumControllerTest extends WebTestCase {
             'description' => 'Puppy memes',
             'featured' => false,
             'suggestedTheme' => null,
-            'renderedSidebar' => "<p>Doggy Memes</p>\n",
         ], $data);
+        $this->assertStringContainsString(
+            'Doggy Memes',
+            $data['renderedSidebar'],
+        );
     }
 
     public function testUpdate(): void {

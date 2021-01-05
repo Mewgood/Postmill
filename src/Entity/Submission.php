@@ -260,13 +260,6 @@ class Submission implements DomainEvents, Visibility, Votable {
     private $netScore = 0;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @var string|null
-     */
-    private $language;
-
-    /**
      * @ORM\Column(type="tsvector", nullable=true)
      *
      * @var string
@@ -466,7 +459,6 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->image = null;
         $this->sticky = false;
         $this->userFlag = UserFlags::FLAG_NONE;
-        $this->language = null;
         $this->mentions->clear();
     }
 
@@ -640,14 +632,6 @@ class Submission implements DomainEvents, Visibility, Votable {
 
     public function getNetScore(): int {
         return $this->netScore;
-    }
-
-    public function getLanguage(): ?string {
-        return $this->language;
-    }
-
-    public function setLanguage(?string $language): void {
-        $this->language = $language;
     }
 
     public function onCreate(): Event {

@@ -12,19 +12,19 @@ class CommentControllerTest extends WebTestCase {
         $client = self::createClient();
         $crawler = $client->request('GET', '/comments');
 
-        $this->assertSame(
-            "<p>YET ANOTHER BORING COMMENT.</p>\n",
-            $crawler->filter('.comment__body')->eq(0)->html()
+        $this->assertStringContainsString(
+            'YET ANOTHER BORING COMMENT.',
+            $crawler->filter('.comment__body')->eq(0)->html(),
         );
 
-        $this->assertSame(
-            "<p>This is a reply to the previous comment.</p>\n",
-            $crawler->filter('.comment__body')->eq(1)->html()
+        $this->assertStringContainsString(
+            'This is a reply to the previous comment.',
+            $crawler->filter('.comment__body')->eq(1)->html(),
         );
 
-        $this->assertSame(
-            "<p>This is a comment body. It is quite neat.</p>\n<p><em>markdown</em></p>\n",
-            $crawler->filter('.comment__body')->eq(2)->html()
+        $this->assertStringContainsString(
+            'This is a comment body. It is quite neat.',
+            $crawler->filter('.comment__body')->eq(2)->html(),
         );
     }
 
@@ -38,7 +38,10 @@ class CommentControllerTest extends WebTestCase {
             'reply_to_submission_3[comment]' => 'i think that is a neat idea!',
         ]));
 
-        $this->assertSame("<p>i think that is a neat idea!</p>\n", $crawler->filter('.comment__body')->html());
+        $this->assertStringContainsString(
+            'i think that is a neat idea!',
+            $crawler->filter('.comment__body')->html(),
+        );
         $this->assertCount(0, $crawler->selectLink('Parent'));
     }
 
@@ -52,7 +55,10 @@ class CommentControllerTest extends WebTestCase {
             'reply_to_comment_3[comment]' => 'squirrel',
         ]));
 
-        $this->assertSame("<p>squirrel</p>\n", $crawler->filter('.comment__body')->html());
+        $this->assertStringContainsString(
+            'squirrel',
+            $crawler->filter('.comment__body')->html(),
+        );
         $this->assertCount(1, $crawler->selectLink('Parent'));
     }
 
@@ -102,7 +108,10 @@ class CommentControllerTest extends WebTestCase {
         $this->assertSame(0, $data['downvotes']);
         $this->assertNull($data['parentId']);
         $this->assertSame(0, $data['replyCount']);
-        $this->assertSame("<p>YET ANOTHER BORING COMMENT.</p>\n", $data['renderedBody']);
+        $this->assertStringContainsString(
+            'YET ANOTHER BORING COMMENT',
+            $data['renderedBody'],
+        );
     }
 
     public function testCanEditOwnComment(): void {
@@ -115,7 +124,10 @@ class CommentControllerTest extends WebTestCase {
             'comment[comment]' => 'edited comment',
         ]));
 
-        $this->assertSame("<p>edited comment</p>\n", $crawler->filter('.comment__body')->html());
+        $this->assertStringContainsString(
+            'edited comment',
+            $crawler->filter('.comment__body')->html(),
+        );
     }
 
     public function testCanHardDeleteOwnCommentWithoutReply(): void {
