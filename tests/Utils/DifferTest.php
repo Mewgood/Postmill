@@ -4,86 +4,34 @@ namespace App\Tests\Utils;
 
 use App\Utils\Differ;
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
 
 /**
  * @covers \App\Utils\Differ
  */
 class DifferTest extends TestCase {
     /**
-     * @dataProvider provideDiffs
+     * @var \PHPUnit\Framework\MockObject\MockObject|DiffOutputBuilderInterface
      */
-    public function testDiff(array $expected, string $from, string $to): void {
-        $this->assertEqualsCanonicalizing($expected, Differ::diff($from, $to));
+    private $outputBuilder;
+
+    /**
+     * @var Differ
+     */
+    private $differ;
+
+    protected function setUp(): void {
+        $this->outputBuilder = $this->createMock(DiffOutputBuilderInterface::class);
+        $this->differ = new Differ($this->outputBuilder);
     }
 
-    public function provideDiffs(): iterable {
-        yield [[], '', ''];
+    public function testDiff(): void {
+        $this->outputBuilder
+            ->expects($this->once())
+            ->method('getDiff')
+            ->with($this->isType('array'))
+            ->willReturn('some diff');
 
-        yield [
-            [
-                [
-                    'type' => 'added',
-                    'newLineNo' => 5,
-                    'new' => 'e',
-                ],
-            ],
-            "a\nb\nc\nd",
-            "a\nb\nc\nd\ne",
-        ];
-
-        yield [
-            [
-                [
-                    'type' => 'changed',
-                    'oldLineNo' => 2,
-                    'newLineNo' => 2,
-                    'old' => 'b',
-                    'new' => 'e',
-                ],
-            ],
-            "a\nb\nc\nd",
-            "a\ne\nc\nd",
-        ];
-
-        yield [
-            [
-                [
-                    'type' => 'removed',
-                    'oldLineNo' => 4,
-                    'old' => 'd',
-                ],
-            ],
-            "a\nb\nc\nd",
-            "a\nb\nc",
-        ];
-
-        yield [
-            [
-                [
-                    'type' => 'removed',
-                    'oldLineNo' => 3,
-                    'old' => 'c',
-                ],
-                [
-                    'type' => 'added',
-                    'newLineNo' => 5,
-                    'new' => 'i',
-                ],
-                [
-                    'type' => 'added',
-                    'newLineNo' => 6,
-                    'new' => 'ii',
-                ],
-                [
-                    'type' => 'changed',
-                    'oldLineNo' => 7,
-                    'old' => 'g',
-                    'newLineNo' => 8,
-                    'new' => 'z',
-                ],
-            ],
-            "a\nb\nc\nd\ne\nf\ng\nh\ni\nj",
-            "a\nb\nd\ne\ni\nii\nf\nz\nh\ni\nj",
-        ];
+        $this->assertSame('some diff', $this->differ->diff('old', 'new'));
     }
 }

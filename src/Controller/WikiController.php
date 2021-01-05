@@ -8,7 +8,6 @@ use App\Form\Model\WikiData;
 use App\Form\WikiType;
 use App\Repository\WikiPageRepository;
 use App\Repository\WikiRevisionRepository;
-use App\Utils\Differ;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -166,7 +165,6 @@ final class WikiController extends AbstractController {
         }
 
         return $this->render('wiki/diff.html.twig', [
-            'diff' => Differ::diff($from->getBody(), $to->getBody()),
             'from' => $from,
             'to' => $to,
             'page' => $from->getPage(),
