@@ -1,6 +1,5 @@
 {%- block comment -%}
   {%- from '_macros/icon.html.twig' import icon -%}
-  {%- from '_macros/lang.html.twig' import lang_attributes %}
   {%- from '_macros/time.html.twig' import relative_time, relative_time_diff -%}
   {%- from 'vote/_macros.html.twig' import vote -%}
   {%- set hidden = self and self.blocking(comment.user) -%}
@@ -63,7 +62,7 @@
             {{ block('comment_replying_to') }}
           {% endif %}
 
-          <div class="comment__body break-text text-flow"{{ not comment.softDeleted ? lang_attributes(comment.language) }}>
+          <div class="comment__body break-text text-flow">
             {%- if raw_body is not null -%}
               {{ raw_body|raw }}
             {%- elseif (comment.visible or show_trashed) and comment.body is not null -%}

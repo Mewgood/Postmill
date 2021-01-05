@@ -178,13 +178,6 @@ class SubmissionData implements NormalizeMarkdownInterface {
      */
     private $locked = false;
 
-    /**
-     * @Groups("submission:read")
-     *
-     * @var string|null
-     */
-    private $language;
-
     public function __construct(Submission $submission = null) {
         if ($submission) {
             $this->id = $submission->getId();
@@ -207,7 +200,6 @@ class SubmissionData implements NormalizeMarkdownInterface {
             $this->moderated = $submission->isModerated();
             $this->userFlag = $submission->getUserFlag();
             $this->locked = $submission->isLocked();
-            $this->language = $submission->getLanguage();
         }
     }
 
@@ -216,7 +208,6 @@ class SubmissionData implements NormalizeMarkdownInterface {
         $submission->setUserFlag($this->userFlag);
         $submission->setSticky($this->sticky);
         $submission->setLocked($this->locked);
-        $submission->setLanguage($this->language);
 
         if ($this->mediaType === Submission::MEDIA_IMAGE) {
             $submission->setUrl(null);
@@ -248,7 +239,6 @@ class SubmissionData implements NormalizeMarkdownInterface {
         $submission->setModerated($this->moderated);
         $submission->setSticky($this->sticky);
         $submission->setLocked($this->locked);
-        $submission->setLanguage($this->language);
     }
 
     public function getId(): ?int {
@@ -365,14 +355,6 @@ class SubmissionData implements NormalizeMarkdownInterface {
 
     public function setLocked(bool $locked): void {
         $this->locked = $locked;
-    }
-
-    public function getLanguage(): ?string {
-        return $this->language;
-    }
-
-    public function setLanguage(?string $language): void {
-        $this->language = $language;
     }
 
     public function getMarkdownFields(): iterable {

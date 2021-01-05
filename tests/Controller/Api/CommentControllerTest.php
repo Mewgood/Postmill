@@ -46,7 +46,10 @@ class CommentControllerTest extends WebTestCase {
         $this->assertSame(1, $data['netScore']);
         $this->assertSame(1, $data['upvotes']);
         $this->assertSame(0, $data['downvotes']);
-        $this->assertSame("<p>YET ANOTHER BORING COMMENT.</p>\n", $data['renderedBody']);
+        $this->assertStringContainsString(
+            'YET ANOTHER BORING COMMENT',
+            $data['renderedBody'],
+        );
     }
 
     public function testCanUpdateComment(): void {

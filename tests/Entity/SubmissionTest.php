@@ -37,7 +37,6 @@ class SubmissionTest extends TestCase {
         $submission->setImage(new Image('foo.png', random_bytes(32), null, null));
         $submission->setSticky(true);
         $submission->setUserFlag(UserFlags::FLAG_ADMIN);
-        $submission->setLanguage('nb');
 
         $submission->softDelete();
 
@@ -45,7 +44,6 @@ class SubmissionTest extends TestCase {
         $this->assertNull($submission->getBody());
         $this->assertNull($submission->getImage());
         $this->assertNull($submission->getUrl());
-        $this->assertNull($submission->getLanguage());
         $this->assertFalse($submission->isSticky());
         $this->assertSame(Submission::MEDIA_URL, $submission->getMediaType());
         $this->assertSame(UserFlags::FLAG_NONE, $submission->getUserFlag());

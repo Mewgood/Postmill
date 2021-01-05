@@ -9,9 +9,8 @@
   {%- endif -%}
 {%- endmacro lang_attribute %}
 
-{#- currently matches arabic, hebrew, yiddish -#}
 {%- macro dir_attribute(language) -%}
   {%- if language -%}
-    {{- ' dir="%s"'|format(language matches '/^(ar|he|yi)\\b/' ? 'rtl' : 'ltr')|raw -}}
+    {{- ' dir="%s"'|format(language matches '/^(ar|fa|he|yi)\\b/' ? 'rtl' : 'ltr')|raw -}}
   {%- endif -%}
 {%- endmacro dir_attribute -%}
