@@ -43,4 +43,23 @@ class MarkdownConverterTest extends TestCase {
 
         $this->assertSame('some html', $renderedHtml);
     }
+
+    public function testCanConvertWithContext(): void {
+        $event = new ConvertMarkdown('some markdown');
+        $event->mergeAttributes([
+            'some' => 'context',
+        ]);
+
+        $this->dispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($event)
+            ->willReturnCallback(function ($event) {
+                $event->setRenderedHtml('some html');
+
+                return $event;
+            });
+
+        $this->converter->convertToHtml('some markdown', ['some' => 'context']);
+    }
 }
