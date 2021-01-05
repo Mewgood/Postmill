@@ -3,11 +3,17 @@
 namespace App\Twig;
 
 use App\Markdown\MarkdownConverter;
+use App\Utils\DifferInterface;
 use App\Utils\SluggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class FormattingExtension extends AbstractExtension {
+    /**
+     * @var DifferInterface
+     */
+    private $differ;
+
     /**
      * @var MarkdownConverter
      */
@@ -19,9 +25,11 @@ final class FormattingExtension extends AbstractExtension {
     private $slugger;
 
     public function __construct(
+        DifferInterface $differ,
         MarkdownConverter $markdownConverter,
         SluggerInterface $slugger
     ) {
+        $this->differ = $differ;
         $this->markdownConverter = $markdownConverter;
         $this->slugger = $slugger;
     }
@@ -32,6 +40,7 @@ final class FormattingExtension extends AbstractExtension {
                 'is_safe' => ['html'],
                 'pre_escape' => 'html',
             ]),
+            new TwigFilter('diff', [$this->differ, 'diff']),
             new TwigFilter('markdown', [$this->markdownConverter, 'convertToHtml']),
             new TwigFilter('slugify', [$this->slugger, 'slugify']),
         ];

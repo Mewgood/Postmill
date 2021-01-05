@@ -24,46 +24,11 @@
     })|raw }}
   </h1>
 
-  <table class="diff-table">
-    <thead>
-    <tr>
-      <th class="diff-table__header diff-table__header--from" colspan="2">
-        {{ relative_time(from.timestamp) }}
-      </th>
-      <th class="diff-table__header diff-table__header--to" colspan="2">
-        {{ relative_time_diff(to.timestamp, from.timestamp) }}
-      </th>
-    </tr>
-    </thead>
-    <tbody class="diff-table__line-group">
-    {% with { lastOldLineNo: 0, lastNewLineNo: 0 } %}
-      {% for entry in diff %}
-        {% if not loop.first and
-            (entry.oldLineNo ?? lastOldLineNo) != lastOldLineNo + 1 and
-            (entry.newLineNo ?? lastNewLineNo) != lastNewLineNo + 1 %}
-          </tbody><tbody class="diff-table__line-group">
-        {% endif %}
-
-        {% set lastOldLineNo = entry.oldLineNo ?? lastOldLineNo %}
-        {% set lastNewLineNo = entry.newLineNo ?? lastNewLineNo %}
-
-        <tr>
-          {% if entry.oldLineNo is defined %}
-            <th class="diff-table__line-no diff-table__line-no--{{ entry.type }}">{{ entry.oldLineNo }}</th>
-            <td class="diff-table__content diff-table__content--{{ entry.type }}"><code>{{ entry.old }}</code></td>
-          {% else %}
-            <td class="diff-table__col-spacer" colspan="2"></td>
-          {% endif %}
-
-          {% if entry.newLineNo is defined %}
-            <th class="diff-table__line-no diff-table__line-no--{{ entry.type }}">{{ entry.newLineNo }}</th>
-            <td class="diff-table__content diff-table__content--{{ entry.type }}"><code>{{ entry.new }}</code></td>
-          {% else %}
-            <td class="diff-table__col-spacer" colspan="2"></td>
-          {% endif %}
-        </tr>
-      {% endfor %}
-    {% endwith %}
-    </tbody>
-  </table>
-{% endblock %}
+  {% apply spaceless %}
+    <pre>
+      <code data-controller="syntax-highlight" data-syntax-highlight-language-value="diff">
+        {{- from.body|diff(to.body) -}}
+      </code>
+    </pre>
+  {% endapply %}
+{% endblock body %}
