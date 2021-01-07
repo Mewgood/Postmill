@@ -10,7 +10,7 @@ action.delete: 삭제
 action.delete_account: 계정 삭제
 action.delete_thread: 스레드 삭제
 action.dismiss: 닫기
-action.downvote: 반대 투표
+action.downvote: 반대
 action.edit: 편집
 action.edit_theme: 테마 편집
 action.filter: 필터
@@ -56,11 +56,11 @@ background.center: 중앙
 background.fit_to_page: 페이지에 맞추기
 background.tile: 타일
 
-bad_phrase.help: 이 도구를 사용하면 텍스트 문구가 게시되는 것을 금지할 수 있습니다. 스팸을 방지하거나 반대 의견을 억제하는 데 사용할 수 있습니다.
-bad_phrase.phrase: 구문
-bad_phrase.phrase_to_ban: 차단할 단어
-bad_phrase.search_title: 잘못된 문구 검색
-bad_phrase.title: 잘못된 문구
+bad_phrase.help: 이 도구를 사용하면 특정 텍스트 문구가 게시되는 것을 금지할 수 있습니다. 스팸을 방지하거나 반대 의견을 억제하는 데 사용할 수 있습니다.
+bad_phrase.phrase: 문구
+bad_phrase.phrase_to_ban: 차단할 문구
+bad_phrase.search_title: 금지 문구 검색
+bad_phrase.title: 금지 문구
 bad_phrase.type_text: 텍스트
 
 ban_add.title: IP 주소 차단
@@ -75,7 +75,7 @@ ban_list.user: 사용자
 ban_list.user_none: 없음
 
 banned.banned_account: 귀하의 계정이 차단되었습니다.
-banned.banned_ip: '{1} 귀하의 IP 주소 %ip%가 차단되었습니다.|]1,Inf[ 귀하의 IP 주소, %ip%에 %formatted_count% 차단이 기록되어 있습니다:'
+banned.banned_ip: '{1} 귀하의 IP 주소 %ip%가 차단되었습니다.|]1,Inf[ 귀하의 IP 주소, %ip%에 %formatted_count%개의 차단이 기록되어 있습니다:'
 banned.set_on_date: '%date%에 차단이 설정되었습니다.'
 banned.set_on_date_for_range: '%date%에 IP 범위 차단이 설정되었습니다.'
 banned.title: 차단
@@ -88,7 +88,7 @@ comments.context.comment_reply: '%submission_author%의 %submission_title%에서
 comments.context.top_level_reply: '%submission_author%의 %submission_title%에 대한 답장'
 comments.edit_info: (%edited_at% 수정 됨)
 comments.form_load_error: 양식 로드 오류. 다시 시도하십시오.
-comments.info: '%user%가 %timestamp%를 작성했습니다'
+comments.info: '%user%가 %timestamp%에 작성했습니다'
 comments.linear: 선형
 comments.moderator_info: (조정자 %edited_at%에 의해 편집됨)
 comments.nested: 중첩
@@ -205,12 +205,12 @@ heading.delete_account: 계정 삭제
 heading.forums_you_moderate: 내가 검토하는 포럼
 heading.hide_this_forum: 이 포럼 숨기기
 heading.message_reply: "%sender%가 %timestamp%에 응답했습니다."
-heading.message_thread: "%sender%가 %receiver% %timestamp%에 썼습니다."
+heading.message_thread: "%sender%가 %receiver%에게 %timestamp%에 썼습니다."
 heading.multi_forum_view: 다중 포럼 보기
 heading.notifications: 알림
 heading.privacy: 개인 정보 보호
 heading.search: 검색
-heading.search_results: '{0} %query%|{1}에 대한 결과 없음 %query%:|]1,Inf[ %query%에 대한 %count%개의 결과:'
+heading.search_results: '{0} %query%에 대한 결과 없음|{1} %query%에 대한 1개의 결과:|]1,Inf[ %query%에 대한 %count%개의 결과:'
 heading.this_user_is_banned: 이 사용자는 차단되었습니다!
 heading.you_were_mentioned: '%user% 님이 멘션했습니다.'
 heading.whitelisting: 화이트리스트
@@ -562,7 +562,7 @@ title.showing_ban_history_for_user_in_forum: '%forum%에서 %user%의 차단 내
 title.showing_moderation_log_for_forum: '%forum%에 대한 중재 로그 표시'
 title.showing_revision: '%path% 페이지의 수정 내역 %revision%개 표시'
 title.site_settings: 사이트 설정
-title.site_wide_trash: 전체 사이트 휴지통
+title.site_wide_trash: 사이트 전체 휴지통
 title.unban_user: '%user% 차단 해제'
 title.unbanning_user_from_forum: '%forum%에서 %user% 차단 해제'
 title.user_forum_bans: "%user%의 포럼 차단"
