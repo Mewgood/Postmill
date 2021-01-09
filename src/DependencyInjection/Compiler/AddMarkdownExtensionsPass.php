@@ -50,5 +50,21 @@ final class AddMarkdownExtensionsPass implements CompilerPassInterface {
                 $priority,
             ]);
         }
+
+        foreach ($container->findTaggedServiceIds('commonmark.inline_renderer') as $serviceId => $tags) {
+            $element = $tags[array_key_last($tags)]['element'] ?? null;
+
+            if (!$element) {
+                throw new \RuntimeException('element missing on InlineRenderer');
+            }
+
+            $priority = $tags[array_key_last($tags)]['priority'] ?? 0;
+
+            $definition->addMethodCall('addInlineRenderer', [
+                    $element,
+                    new Reference($serviceId),
+                    $priority,
+            ]);
+        }
     }
 }
