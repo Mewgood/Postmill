@@ -5,6 +5,7 @@ namespace App\Form;
 use App\DataObject\UserData;
 use App\Entity\Submission;
 use App\Entity\User;
+use App\Form\Type\SubmissionLinkDestinationType;
 use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -124,6 +125,7 @@ final class UserSettingsType extends AbstractType {
                 'label' => 'label.full_width_display',
                 'required' => false,
             ])
+            ->add('submissionLinkDestination', SubmissionLinkDestinationType::class)
         ;
     }
 

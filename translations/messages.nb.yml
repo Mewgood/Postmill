@@ -340,9 +340,9 @@ label.sort_by: Sorter på
 label.sort_by_mode: 'Sort by: %mode%'
 label.source_code: Source code
 label.system_preference: Systeminnstilling
-label.submission_votes: Submission votes
-label.submission_votes_short: SV
-label.submissions: Submissions
+label.submission_votes: Innleggstemmer
+label.submission_votes_short: IS
+label.submissions: Innlegg
 label.submissions_short: S
 label.subscribed: Subscribed
 label.suggested_theme: Suggested theme
@@ -521,6 +521,10 @@ submission.time_week: Siste uke
 submission.time_year: Siste året
 submission.total_votes: '{1} %count% stemme|[0,Inf[ %count% stemmer'
 submission.vote_stats: (+%up%, −%down%)
+
+submission_link_destination.label: Klikking av innlegg-lenker…
+submission_link_destination.submission: Åpner innlegget
+submission_link_destination.url: Åpner det lenkede innholdet
 
 theme.to_be_created: Vil bli opprettet
 theme.to_be_deleted: Vil bli slettet

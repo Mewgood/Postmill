@@ -18,7 +18,10 @@
 {% block body %}
   {{ parent() }}
 
-  {{ submission(submission, {show_content: true}) }}
+  {{ submission(submission, {
+    link_to: constant('App\\Entity\\Constants\\SubmissionLinkDestination::URL'),
+    show_content: true,
+  }) }}
 
   <h2>{{ 'comments.comments'|trans }}</h2>
 

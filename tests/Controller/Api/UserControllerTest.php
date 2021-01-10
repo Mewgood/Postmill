@@ -54,6 +54,7 @@ class UserControllerTest extends WebTestCase {
             'poppersEnabled' => true,
             'nightMode' => 'auto',
             'fullWidthDisplayEnabled' => false,
+            'submissionLinkDestination' => 'url',
         ], json_decode($client->getResponse()->getContent(), true));
     }
 

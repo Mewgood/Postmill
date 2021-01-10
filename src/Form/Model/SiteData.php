@@ -2,6 +2,7 @@
 
 namespace App\Form\Model;
 
+use App\Entity\Constants\SubmissionLinkDestination;
 use App\Entity\Site;
 use App\Entity\Submission;
 use App\Entity\Theme;
@@ -79,6 +80,14 @@ class SiteData {
      */
     public $urlImagesEnabled;
 
+    /**
+     * @Assert\Choice(SubmissionLinkDestination::OPTIONS)
+     * @Assert\NotBlank()
+     *
+     * @var string
+     */
+    public $submissionLinkDestination;
+
     public static function createFromSite(Site $site): self {
         $self = new self();
         $self->siteName = $site->getSiteName();
@@ -92,6 +101,7 @@ class SiteData {
         $self->trashEnabled = $site->isTrashEnabled();
         $self->registrationCaptchaEnabled = $site->isRegistrationCaptchaEnabled();
         $self->urlImagesEnabled = $site->isUrlImagesEnabled();
+        $self->submissionLinkDestination = $site->getSubmissionLinkDestination();
 
         return $self;
     }
@@ -108,5 +118,6 @@ class SiteData {
         $site->setTrashEnabled($this->trashEnabled);
         $site->setRegistrationCaptchaEnabled($this->registrationCaptchaEnabled);
         $site->setUrlImagesEnabled($this->urlImagesEnabled);
+        $site->setSubmissionLinkDestination($this->submissionLinkDestination);
     }
 }

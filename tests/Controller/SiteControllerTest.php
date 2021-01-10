@@ -85,6 +85,8 @@ class SiteControllerTest extends WebTestCase {
 
         $client->submit($form);
 
+        self::assertResponseRedirects();
+
         self::ensureKernelShutdown();
     }
 }
