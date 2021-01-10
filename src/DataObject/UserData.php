@@ -2,6 +2,7 @@
 
 namespace App\DataObject;
 
+use App\Entity\Constants\SubmissionLinkDestination;
 use App\Entity\Submission;
 use App\Entity\Theme;
 use App\Entity\User;
@@ -218,6 +219,16 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
      */
     private $fullWidthDisplayEnabled;
 
+    /**
+     * @Assert\Choice(SubmissionLinkDestination::OPTIONS, groups={"settings"})
+     * @Assert\NotBlank(groups={"settings"})
+     *
+     * @Groups("user:preferences")
+     *
+     * @var string|null
+     */
+    private $submissionLinkDestination;
+
     public function __construct(User $user = null) {
         if ($user) {
             $this->id = $user->getId();
@@ -243,6 +254,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
             $this->preferredFonts = $user->getPreferredFonts();
             $this->poppersEnabled = $user->isPoppersEnabled();
             $this->fullWidthDisplayEnabled = $user->isFullWidthDisplayEnabled();
+            $this->submissionLinkDestination = $user->getSubmissionLinkDestination();
         }
     }
 
@@ -273,6 +285,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
         $user->setPoppersEnabled($this->poppersEnabled);
         $user->setFullWidthDisplayEnabled($this->fullWidthDisplayEnabled);
         $user->setAdmin($this->admin);
+        $user->setSubmissionLinkDestination($this->submissionLinkDestination);
     }
 
     public function toUser(?string $ip): User {
@@ -299,6 +312,7 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
             'notifyOnMentions',
             'preferredFonts',
             'poppersEnabled',
+            'submissionLinkDestination',
         ];
 
         foreach ($settings as $setting) {
@@ -501,6 +515,14 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
 
     public function setFullWidthDisplayEnabled(bool $fullWidthDisplayEnabled): void {
         $this->fullWidthDisplayEnabled = $fullWidthDisplayEnabled;
+    }
+
+    public function getSubmissionLinkDestination(): ?string {
+        return $this->submissionLinkDestination;
+    }
+
+    public function setSubmissionLinkDestination(?string $submissionLinkDestination): void {
+        $this->submissionLinkDestination = $submissionLinkDestination;
     }
 
     public function isAdmin(): bool {

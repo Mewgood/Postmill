@@ -2,6 +2,7 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Constants\SubmissionLinkDestination;
 use App\Entity\User;
 use App\Entity\UserBan;
 use PHPUnit\Framework\TestCase;
@@ -92,5 +93,21 @@ class UserTest extends TestCase {
     public function invalidEmailAddressProvider(): iterable {
         yield ['gasg7a8.'];
         yield ['foo@examplenet@example.net'];
+    }
+
+    /**
+     * @dataProvider provideSubmissionLinkDestinations
+     */
+    public function testSetAndGetSubmissionLinkDestinations(string $destination): void {
+        $user = new User('u', 'p');
+        $this->assertSame(SubmissionLinkDestination::URL, $user->getSubmissionLinkDestination());
+        $user->setSubmissionLinkDestination($destination);
+        $this->assertSame($destination, $user->getSubmissionLinkDestination());
+    }
+
+    public function provideSubmissionLinkDestinations(): \Generator {
+        foreach (SubmissionLinkDestination::OPTIONS as $destination) {
+            yield [$destination];
+        }
     }
 }

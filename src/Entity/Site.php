@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Constants\SubmissionLinkDestination;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -100,6 +101,13 @@ class Site {
      * @var bool
      */
     private $urlImagesEnabled = true;
+
+    /**
+     * @ORM\Column(type="text", options={"default": SubmissionLinkDestination::URL})
+     *
+     * @var string
+     */
+    private $submissionLinkDestination = SubmissionLinkDestination::URL;
 
     public function __construct() {
         $this->id = Uuid::fromString(Uuid::NIL);
@@ -207,5 +215,15 @@ class Site {
 
     public function setUrlImagesEnabled(bool $urlImagesEnabled): void {
         $this->urlImagesEnabled = $urlImagesEnabled;
+    }
+
+    public function getSubmissionLinkDestination(): string {
+        return $this->submissionLinkDestination;
+    }
+
+    public function setSubmissionLinkDestination(string $submissionLinkDestination): void {
+        SubmissionLinkDestination::assertValidDestination($submissionLinkDestination);
+
+        $this->submissionLinkDestination = $submissionLinkDestination;
     }
 }

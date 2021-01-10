@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Constants\SubmissionLinkDestination;
 use App\Entity\Contracts\DomainEventsInterface;
 use App\Event\UserCreated;
 use App\Event\UserUpdated;
@@ -327,6 +328,13 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * @var bool
      */
     private $fullWidthDisplayEnabled = false;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @var string
+     */
+    private $submissionLinkDestination = SubmissionLinkDestination::URL;
 
     public function __construct(string $username, string $password) {
         $this->setUsername($username);
@@ -807,6 +815,16 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
 
     public function setFullWidthDisplayEnabled(bool $fullWidthDisplayEnabled): void {
         $this->fullWidthDisplayEnabled = $fullWidthDisplayEnabled;
+    }
+
+    public function getSubmissionLinkDestination(): string {
+        return $this->submissionLinkDestination;
+    }
+
+    public function setSubmissionLinkDestination(string $submissionLinkDestination): void {
+        SubmissionLinkDestination::assertValidDestination($submissionLinkDestination);
+
+        $this->submissionLinkDestination = $submissionLinkDestination;
     }
 
     /**

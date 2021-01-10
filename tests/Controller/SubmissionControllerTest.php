@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Constants\SubmissionLinkDestination;
 use App\Repository\SiteRepository;
 use App\Tests\WebTestCase;
 use Doctrine\ORM\EntityManagerInterface;
@@ -334,5 +335,45 @@ class SubmissionControllerTest extends WebTestCase {
         yield ['http://localhost/f/cats', '/f/cats'];
         yield ['/f/cats', '/f/cats/3'];
         yield ['/f/cats', '/f/cats/3/with-slug'];
+    }
+
+    public function testSubmissionLinksOutsideSubmissionHaveCorrectDestination(): void {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/f/news');
+        $link = $crawler->filterXPath('//a[normalize-space(text()) = "A submission with a URL and body"]');
+
+        $this->assertCount(1, $link);
+        $this->assertStringContainsString('://', $link->attr('href'));
+
+        self::$container->get(SiteRepository::class)
+            ->findCurrentSite()
+            ->setSubmissionLinkDestination(SubmissionLinkDestination::SUBMISSION);
+        self::$container->get(EntityManagerInterface::class)->flush();
+
+        $crawler = $client->request('GET', '/f/news');
+        $link = $crawler->filterXPath('//a[normalize-space(text()) = "A submission with a URL and body"]');
+
+        $this->assertCount(1, $link);
+        $this->assertStringNotContainsString('://', $link->attr('href'));
+    }
+
+    public function testSubmissionLinksInsideSubmissionGoToExternalUrl(): void {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/f/news/1');
+        $link = $crawler->filterXPath('//a[normalize-space(text()) = "A submission with a URL and body"]');
+
+        $this->assertCount(1, $link);
+        $this->assertStringContainsString('://', $link->attr('href'));
+
+        self::$container->get(SiteRepository::class)
+            ->findCurrentSite()
+            ->setSubmissionLinkDestination(SubmissionLinkDestination::SUBMISSION);
+        self::$container->get(EntityManagerInterface::class)->flush();
+
+        $crawler = $client->request('GET', '/f/news/1');
+        $link = $crawler->filterXPath('//a[normalize-space(text()) = "A submission with a URL and body"]');
+
+        $this->assertCount(1, $link);
+        $this->assertStringContainsString('://', $link->attr('href'));
     }
 }

@@ -101,9 +101,11 @@ final class UserController extends AbstractController {
             return $this->redirectToRoute('front');
         }
 
+        // TODO: use listener
         $data = new UserData();
         $data->setLocale($request->getLocale());
         $data->setFrontPageSortMode($site->getDefaultSortMode());
+        $data->setSubmissionLinkDestination($site->getSubmissionLinkDestination());
 
         $form = $this->createForm(UserType::class, $data);
         $form->handleRequest($request);

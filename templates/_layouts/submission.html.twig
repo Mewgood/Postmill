@@ -13,8 +13,10 @@
           <h1 class="submission__title break-text">
             <a href="{{ block('submission_url') }}"
                class="submission__link"
-               rel="{{ submission.url ? 'nofollow noreferrer noopener' }}"
-               target="{{ open_external ? '_blank' : '_self' }}">
+               {% if link_to is constant('App\\Entity\\Constants\\SubmissionLinkDestination::URL') %}
+                 rel="{{ submission.url ? 'nofollow noreferrer noopener' }}"
+                 target="{{ open_external ? '_blank' : '_self' }}"
+               {% endif %}>
               {%- if has_thumbnail -%}
                 <img src="{{ submission.image|imagine_filter('submission_thumbnail_1x') }}"
                      srcset="{{ submission.image|imagine_filter('submission_thumbnail_2x') }} 2x"
@@ -109,9 +111,9 @@
 {% endblock submission %}
 
 {%- block submission_url -%}
-  {%- if submission.url -%}
+  {%- if submission.url and link_to is constant('App\\Entity\\Constants\\SubmissionLinkDestination::URL') -%}
     {{- submission.url|rewrite_url -}}
-  {%- elseif submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image -%}
+  {%- elseif submission.mediaType is constant('App\\Entity\\Submission::MEDIA_IMAGE') and submission.image and link_to is constant('App\\Entity\\Constants\\SubmissionLinkDestination::URL') -%}
     {{- upload_url('submission_images/'~submission.image) -}}
   {%- else -%}
     {{- path('submission', { forum_name: submission.forum.name, submission_id: submission.id, slug: submission.title|slugify }) -}}

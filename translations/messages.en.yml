@@ -524,6 +524,10 @@ submission.time_year: Past year
 submission.total_votes: '{1} %count% point|[0,Inf[ %count% points'
 submission.vote_stats: (+%up%, −%down%)
 
+submission_link_destination.label: When clicking submission links…
+submission_link_destination.submission: Open the submission
+submission_link_destination.url: Open the linked content
+
 theme.to_be_created: To be created
 theme.to_be_deleted: To be deleted
 

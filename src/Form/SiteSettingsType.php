@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Submission;
 use App\Form\Model\SiteData;
+use App\Form\Type\SubmissionLinkDestinationType;
 use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -71,6 +72,7 @@ final class SiteSettingsType extends AbstractType {
                 'label' => 'site_settings.registration_captcha_enabled',
                 'required' => false,
             ])
+            ->add('submissionLinkDestination', SubmissionLinkDestinationType::class)
         ;
     }
 
