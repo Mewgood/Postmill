@@ -524,6 +524,10 @@ submission.time_year: 작년
 submission.total_votes: '{1} %count% 포인트|[0,Inf[ %count% 포인트'
 submission.vote_stats: (+%up%, −%down%)
 
+submission_link_destination.label: 게시물 링크를 클릭할 때…
+submission_link_destination.submission: 게시물 열기
+submission_link_destination.url: 링크된 콘텐츠 열기
+
 theme.to_be_created: 생성 예정
 theme.to_be_deleted: 삭제 예정
 
