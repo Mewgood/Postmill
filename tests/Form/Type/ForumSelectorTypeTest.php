@@ -6,6 +6,7 @@ use App\Entity\Forum;
 use App\Entity\User;
 use App\Form\Type\ForumSelectorType;
 use App\Repository\ForumRepository;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -53,7 +54,7 @@ class ForumSelectorTypeTest extends TypeTestCase {
     }
 
     public function testListingAsLoggedInUserWithSubscriptions(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $this->security
             ->expects($this->once())
             ->method('getUser')
@@ -123,7 +124,8 @@ class ForumSelectorTypeTest extends TypeTestCase {
     }
 
     private function createForum($name, bool $featured, ?User $subscriber): Forum {
-        $forum = new Forum($name, 'a', 'a', 'a');
+        $forum = EntityFactory::makeForum();
+        $forum->setName($name);
         $forum->setFeatured($featured);
 
         $r = (new \ReflectionObject($forum))->getProperty('id');

@@ -2,10 +2,9 @@
 
 namespace App\Tests\SubmissionFinder;
 
-use App\Entity\Forum;
 use App\Entity\Submission;
-use App\Entity\User;
 use App\SubmissionFinder\Criteria;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -83,8 +82,8 @@ class CriteriaTest extends TestCase {
     }
 
     public function testForumView(): void {
-        $forum1 = new Forum('a', 'a', 'a', 'a');
-        $forum2 = new Forum('a', 'a', 'a', 'a');
+        $forum1 = EntityFactory::makeForum();
+        $forum2 = EntityFactory::makeForum();
 
         $criteria = $this->createCriteria()->showForums($forum1, $forum2);
 
@@ -121,8 +120,8 @@ class CriteriaTest extends TestCase {
     }
 
     public function testUserView(): void {
-        $user1 = new User('u', 'p');
-        $user2 = new User('u', 'p');
+        $user1 = EntityFactory::makeUser();
+        $user2 = EntityFactory::makeUser();
 
         $criteria = new Criteria(Submission::SORT_HOT);
         $criteria->showUsers($user1, $user2);

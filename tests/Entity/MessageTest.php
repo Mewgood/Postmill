@@ -5,6 +5,7 @@ namespace App\Tests\Entity;
 use App\Entity\Message;
 use App\Entity\MessageThread;
 use App\Entity\User;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,8 +23,8 @@ class MessageTest extends TestCase {
     private $receiver;
 
     protected function setUp(): void {
-        $this->sender = new User('u', 'p');
-        $this->receiver = new User('u', 'p');
+        $this->sender = EntityFactory::makeUser();
+        $this->receiver = EntityFactory::makeUser();
     }
 
     public function testNewMessagesSendNotifications(): void {
@@ -39,7 +40,7 @@ class MessageTest extends TestCase {
     public function testNonParticipantsCannotAccessThread(): void {
         $thread = new MessageThread($this->sender, $this->receiver);
 
-        $this->assertFalse($thread->userIsParticipant(new User('u', 'p')));
+        $this->assertFalse($thread->userIsParticipant(EntityFactory::makeUser()));
     }
 
     public function testBothParticipantsCanAccessOwnThread(): void {

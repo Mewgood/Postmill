@@ -4,12 +4,12 @@ namespace App\Tests\EventListener;
 
 use App\Entity\Comment;
 use App\Entity\Submission;
-use App\Entity\User;
 use App\Event\CommentCreated;
 use App\Event\SubmissionCreated;
 use App\EventListener\MentionsListener;
 use App\Markdown\MarkdownConverter;
 use App\Repository\UserRepository;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
@@ -65,7 +65,7 @@ Here is <a href="http://localhost/user/emma">emma's page</a> again.</p>
 EOF
             );
 
-        $users = [new User('emma', 'p'), new User('zach', 'p')];
+        $users = [EntityFactory::makeUser(), EntityFactory::makeUser()];
 
         $userParams = array_map(function ($user) {
             return [$this->identicalTo($user)];

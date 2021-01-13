@@ -2,9 +2,9 @@
 
 namespace App\Tests\EventListener;
 
-use App\Entity\User;
 use App\Event\UserUpdated;
 use App\EventListener\LocaleListener;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use App\Tests\Fixtures\TranslatorInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,7 +92,7 @@ class LocaleListenerTest extends TestCase {
     }
 
     public function testSetsLocaleOnLogin(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $user->setLocale('nb');
 
         /** @var TokenInterface|\PHPUnit\Framework\MockObject\MockObject $token */
@@ -114,7 +114,7 @@ class LocaleListenerTest extends TestCase {
     }
 
     public function testSessionIsUpdatedWhenChangingLocalePreference(): void {
-        $before = new User('u', 'p');
+        $before = EntityFactory::makeUser();
         $before->setLocale('en');
 
         $after = clone $before;
@@ -134,7 +134,7 @@ class LocaleListenerTest extends TestCase {
      * @doesNotPerformAssertions
      */
     public function testChangingLocaleWithNoRequestDoesNotFail(): void {
-        $before = new User('u', 'p');
+        $before = EntityFactory::makeUser();
         $before->setLocale('en');
 
         $after = clone $before;

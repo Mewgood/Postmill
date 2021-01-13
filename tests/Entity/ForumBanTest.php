@@ -2,9 +2,8 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Forum;
 use App\Entity\ForumBan;
-use App\Entity\User;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\PhpUnit\ClockMock;
@@ -19,9 +18,9 @@ class ForumBanTest extends TestCase {
     }
 
     public function testConstruction(): void {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
-        $bannedBy = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
+        $bannedBy = EntityFactory::makeUser();
         $expires = new \DateTime('@'.time().' +600 seconds');
 
         $ban = new ForumBan($forum, $user, 'some reason', true, $bannedBy, $expires);
@@ -41,22 +40,22 @@ class ForumBanTest extends TestCase {
         $this->expectExceptionMessage('Unbans cannot have expiry times');
 
         new ForumBan(
-            new Forum('a', 'a', 'a', 'a'),
-            new User('u', 'p'),
+            EntityFactory::makeForum(),
+            EntityFactory::makeUser(),
             'asda',
             false,
-            new User('u', 'p'),
+            EntityFactory::makeUser(),
             new \DateTime()
         );
     }
 
     public function testExpires(): void {
         $ban = new ForumBan(
-            new Forum('a', 'a', 'a', 'a'),
-            new User('u', 'p'),
+            EntityFactory::makeForum(),
+            EntityFactory::makeUser(),
             'asda',
             true,
-            new User('u', 'p'),
+            EntityFactory::makeUser(),
             new \DateTime()
         );
 
@@ -67,11 +66,11 @@ class ForumBanTest extends TestCase {
 
     public function testIndefiniteBanIsNotExpired(): void {
         $ban = new ForumBan(
-            new Forum('a', 'a', 'a', 'a'),
-            new User('u', 'p'),
+            EntityFactory::makeForum(),
+            EntityFactory::makeUser(),
             'asda',
             true,
-            new User('u', 'p')
+            EntityFactory::makeUser()
         );
 
         $this->assertFalse($ban->isExpired());

@@ -5,10 +5,10 @@ namespace App\Tests\Doctrine\Listener;
 use App\Doctrine\Listener\DomainEventsListener;
 use App\Entity\Forum;
 use App\Entity\Submission;
-use App\Entity\User;
 use App\Event\ForumDeleted;
 use App\Event\ForumUpdated;
 use App\Event\SubmissionCreated;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class DomainEventsListenerTest extends TestCase {
     public function testDispatchesCreateEvent(): void {
-        $entity = new Submission('a', null, null, new Forum('a', 'a', 'a', 'a'), new User('u', 'p'), null);
+        $entity = new Submission('a', null, null, EntityFactory::makeForum(), EntityFactory::makeUser(), null);
 
         /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entityManager */
         $entityManager = $this->createMock(EntityManagerInterface::class);
@@ -41,7 +41,7 @@ class DomainEventsListenerTest extends TestCase {
     }
 
     public function testDispatchesDeleteEvent(): void {
-        $entity = new Forum('Ringo', 'a', 'a', 'a');
+        $entity = EntityFactory::makeForum();
 
         /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entityManager */
         $entityManager = $this->createMock(EntityManagerInterface::class);
@@ -61,7 +61,8 @@ class DomainEventsListenerTest extends TestCase {
     }
 
     public function testDispatchesUpdateEvent(): void {
-        $entity = new Forum('Paul', 'a', 'a', 'a');
+        $entity = EntityFactory::makeForum();
+        $entity->setName('Paul');
 
         $classMetadata = $this->createMock(ClassMetadata::class);
         $classMetadata

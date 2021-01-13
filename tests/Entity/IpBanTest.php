@@ -3,7 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\IpBan;
-use App\Entity\User;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,8 +12,8 @@ use PHPUnit\Framework\TestCase;
  */
 class IpBanTest extends TestCase {
     public function testConstruction(): void {
-        $user = new User('u', 'p');
-        $bannedBy = new User('u', 'p');
+        $user = EntityFactory::makeUser();
+        $bannedBy = EntityFactory::makeUser();
         $ban = new IpBan('123.123.123.123', 'aaa', $user, $bannedBy, new \DateTime('@'.time().' +600 seconds'));
 
         $this->assertSame('123.123.123.123', $ban->getIp());
@@ -28,7 +28,7 @@ class IpBanTest extends TestCase {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('$ip must be valid IP with optional CIDR range');
 
-        new IpBan('256.256.256.256', 'a', null, new User('u', 'p'));
+        new IpBan('256.256.256.256', 'a', null, EntityFactory::makeUser());
     }
 
     /**
@@ -38,14 +38,14 @@ class IpBanTest extends TestCase {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid CIDR mask');
 
-        new IpBan($invalidIp, 'a', null, new User('u', 'p'));
+        new IpBan($invalidIp, 'a', null, EntityFactory::makeUser());
     }
 
     /**
      * @dataProvider provideIpsAndIpRanges
      */
     public function testIsRangeBan(string $ip, bool $isRange): void {
-        $ban = new IpBan($ip, 'a', null, new User('u', 'p'));
+        $ban = new IpBan($ip, 'a', null, EntityFactory::makeUser());
 
         $this->assertSame($isRange, $ban->isRangeBan());
     }

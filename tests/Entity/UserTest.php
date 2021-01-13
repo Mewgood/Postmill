@@ -5,6 +5,7 @@ namespace App\Tests\Entity;
 use App\Entity\Constants\SubmissionLinkDestination;
 use App\Entity\User;
 use App\Entity\UserBan;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -32,22 +33,22 @@ class UserTest extends TestCase {
     }
 
     public function testNewUserIsNotBanned(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
 
         $this->assertFalse($user->isBanned());
     }
 
     public function testUserBanIsEffective(): void {
-        $user = new User('u', 'p');
-        $user->addBan(new UserBan($user, 'foo', true, new User('ben', 'p')));
+        $user = EntityFactory::makeUser();
+        $user->addBan(new UserBan($user, 'foo', true, EntityFactory::makeUser()));
 
         $this->assertTrue($user->isBanned());
     }
 
     public function testExpiringUserBanIsEffective(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $expires = new \DateTime('@'.time().' +1 hour');
-        $user->addBan(new UserBan($user, 'foo', true, new User('ben', 'p'), $expires));
+        $user->addBan(new UserBan($user, 'foo', true, EntityFactory::makeUser(), $expires));
 
         $this->assertTrue($user->isBanned());
     }
@@ -56,9 +57,9 @@ class UserTest extends TestCase {
      * @group time-sensitive
      */
     public function testExpiredUserBanIsIneffective(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $expires = new \DateTime('@'.time().' +1 hour');
-        $user->addBan(new UserBan($user, 'ofo', true, new User('ben', 'p'), $expires));
+        $user->addBan(new UserBan($user, 'ofo', true, EntityFactory::makeUser(), $expires));
 
         sleep(7200); // 2 hours
 
@@ -99,7 +100,7 @@ class UserTest extends TestCase {
      * @dataProvider provideSubmissionLinkDestinations
      */
     public function testSetAndGetSubmissionLinkDestinations(string $destination): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $this->assertSame(SubmissionLinkDestination::URL, $user->getSubmissionLinkDestination());
         $user->setSubmissionLinkDestination($destination);
         $this->assertSame($destination, $user->getSubmissionLinkDestination());
