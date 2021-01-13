@@ -5,6 +5,7 @@ namespace App\Tests\Validator;
 use App\Entity\Forum;
 use App\Entity\ForumBan;
 use App\Entity\User;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use App\Validator\NotForumBanned;
 use App\Validator\NotForumBannedValidator;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -23,9 +24,26 @@ class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
      */
     private $tokenStorage;
 
+    /**
+     * @var Forum
+     */
+    private $forum;
+
+    protected function setUp(): void {
+        parent::setUp();
+
+        $this->forum = EntityFactory::makeForum();
+    }
+
+    protected function createValidator(): ConstraintValidator {
+        $this->tokenStorage = new TokenStorage();
+        $this->tokenStorage->setToken(new AnonymousToken('aa', 'anon.'));
+
+        return new NotForumBannedValidator($this->tokenStorage);
+    }
+
     public function testNoViolationOnAnonymousUser(): void {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $this->validator->validate($forum, new NotForumBanned());
+        $this->validator->validate($this->forum, new NotForumBanned());
 
         $this->assertNoViolation();
     }
@@ -33,18 +51,16 @@ class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
     public function testNoViolationOnEmptyTokenStorage(): void {
         $this->tokenStorage->setToken(null);
 
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $this->validator->validate($forum, new NotForumBanned());
+        $this->validator->validate($this->forum, new NotForumBanned());
 
         $this->assertNoViolation();
     }
 
     public function testRaisesOnBannedUser(): void {
         $user = $this->login();
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $forum->addBan(new ForumBan($forum, $user, 'a', true, new User('u', 'p')));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, EntityFactory::makeUser()));
 
-        $this->validator->validate($forum, new NotForumBanned());
+        $this->validator->validate($this->forum, new NotForumBanned());
 
         $this->buildViolation('forum.banned')
             ->setCode(NotForumBanned::FORUM_BANNED_ERROR)
@@ -53,10 +69,9 @@ class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
 
     public function testNoViolationOnExpiredBan(): void {
         $user = $this->login();
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $forum->addBan(new ForumBan($forum, $user, 'a', true, new User('u', 'p'), new \DateTime('yesterday')));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, EntityFactory::makeUser(), new \DateTime('yesterday')));
 
-        $this->validator->validate($forum, new NotForumBanned());
+        $this->validator->validate($this->forum, new NotForumBanned());
 
         $this->assertNoViolation();
     }
@@ -64,10 +79,9 @@ class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
     public function testRaisesOnExpiringBan(): void {
         $user = $this->login();
 
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $forum->addBan(new ForumBan($forum, $user, 'a', true, new User('a', 'p'), new \DateTime('tomorrow')));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, EntityFactory::makeUser(), new \DateTime('tomorrow')));
 
-        $this->validator->validate($forum, new NotForumBanned());
+        $this->validator->validate($this->forum, new NotForumBanned());
 
         $this->buildViolation('forum.banned')
             ->setCode(NotForumBanned::FORUM_BANNED_ERROR)
@@ -83,15 +97,8 @@ class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
         $this->assertNoViolation();
     }
 
-    protected function createValidator(): ConstraintValidator {
-        $this->tokenStorage = new TokenStorage();
-        $this->tokenStorage->setToken(new AnonymousToken('aa', 'anon.'));
-
-        return new NotForumBannedValidator($this->tokenStorage);
-    }
-
     private function login(): User {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $this->tokenStorage->setToken(new UsernamePasswordToken($user, [], 'main'));
 
         return $user;

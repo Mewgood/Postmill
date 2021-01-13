@@ -2,8 +2,8 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\User;
 use App\Entity\UserBan;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -13,8 +13,8 @@ use Ramsey\Uuid\UuidInterface;
  */
 class UserBanTest extends TestCase {
     public function testConstruction(): void {
-        $user = new User('u', 'p');
-        $bannedBy = new User('u', 'p');
+        $user = EntityFactory::makeUser();
+        $bannedBy = EntityFactory::makeUser();
         $expires = new \DateTime('@'.time().' +600 seconds');
 
         $ban = new UserBan($user, 'sdfg', true, $bannedBy, $expires);
@@ -32,7 +32,7 @@ class UserBanTest extends TestCase {
 
     public function testExpiration(): void {
         $expires = new \DateTime('@'.time().' +600 seconds');
-        $ban = new UserBan(new User('u', 'p'), 'a', true, new User('u', 'p'), $expires);
+        $ban = new UserBan(EntityFactory::makeUser(), 'a', true, EntityFactory::makeUser(), $expires);
 
         $this->assertFalse($ban->isExpired());
         sleep(601);
@@ -40,7 +40,7 @@ class UserBanTest extends TestCase {
     }
 
     public function testIndefiniteBanNeverExpires(): void {
-        $ban = new UserBan(new User('u', 'p'), 'a', true, new User('u', 'p'));
+        $ban = new UserBan(EntityFactory::makeUser(), 'a', true, EntityFactory::makeUser());
 
         $this->assertFalse($ban->isExpired());
     }
@@ -49,6 +49,6 @@ class UserBanTest extends TestCase {
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Unbans cannot have expiry times');
 
-        new UserBan(new User('u', 'p'), 'a', false, new User('u', 'p'), new \DateTime());
+        new UserBan(EntityFactory::makeUser(), 'a', false, EntityFactory::makeUser(), new \DateTime());
     }
 }

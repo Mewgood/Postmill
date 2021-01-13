@@ -5,7 +5,7 @@ namespace App\Tests\Entity;
 use App\Entity\Forum;
 use App\Entity\ForumBan;
 use App\Entity\Moderator;
-use App\Entity\User;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -19,7 +19,7 @@ class ForumTest extends TestCase {
     private $forum;
 
     protected function setUp(): void {
-        $this->forum = new Forum('name', 'title', 'description', 'sidebar');
+        $this->forum = EntityFactory::makeForum();
     }
 
     /**
@@ -31,10 +31,10 @@ class ForumTest extends TestCase {
     }
 
     public function testModeratorsAreModerators(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         new Moderator($this->forum, $user);
 
-        $admin = new User('u', 'p');
+        $admin = EntityFactory::makeUser();
         $admin->setAdmin(true);
         new Moderator($this->forum, $admin);
 
@@ -43,7 +43,7 @@ class ForumTest extends TestCase {
     }
 
     public function testAdminsAreNotModeratorsWithFlag(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $user->setAdmin(true);
 
         $this->assertFalse($this->forum->userIsModerator($user, false));
@@ -58,61 +58,61 @@ class ForumTest extends TestCase {
     }
 
     public function testAdminCanDeleteEmptyForum(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $user->setAdmin(true);
 
         $this->assertTrue($this->forum->userCanDelete($user));
     }
 
     public function testModeratorCanDeleteEmptyForum(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         new Moderator($this->forum, $user);
 
         $this->assertTrue($this->forum->userCanDelete($user));
     }
 
     public function testUserIsNotBannedInNewForum(): void {
-        $this->assertFalse($this->forum->userIsBanned(new User('u', 'p')));
+        $this->assertFalse($this->forum->userIsBanned(EntityFactory::makeUser()));
     }
 
     public function testBansWithoutExpiryTimesWork(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
 
-        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, new User('u', 'p')));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, EntityFactory::makeUser()));
 
         $this->assertTrue($this->forum->userIsBanned($user));
     }
 
     public function testBansWithExpiryTimesWork(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
 
-        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, new User('u', 'p'), new \DateTime('+2 weeks')));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, EntityFactory::makeUser(), new \DateTime('+2 weeks')));
 
         $this->assertTrue($this->forum->userIsBanned($user));
     }
 
     public function testBansCanExpire(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
 
-        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, new User('u', 'p'), new \DateTime('-2 weeks')));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, EntityFactory::makeUser(), new \DateTime('-2 weeks')));
 
         $this->assertFalse($this->forum->userIsBanned($user));
     }
 
     public function testAdminUserIsNeverBanned(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $user->setAdmin(true);
 
-        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, new User('u', 'p')));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'a', true, EntityFactory::makeUser()));
 
         $this->assertFalse($this->forum->userIsBanned($user));
     }
 
     public function testUnbansWork(): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
 
-        $this->forum->addBan(new ForumBan($this->forum, $user, 'ben', true, new User('u', 'p')));
-        $this->forum->addBan(new ForumBan($this->forum, $user, 'unben', false, new User('u', 'p')));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'ben', true, EntityFactory::makeUser()));
+        $this->forum->addBan(new ForumBan($this->forum, $user, 'unben', false, EntityFactory::makeUser()));
 
         $this->assertFalse($this->forum->userIsBanned($user));
     }
@@ -121,6 +121,6 @@ class ForumTest extends TestCase {
         yield [null];
         yield [$this->createMock(UserInterface::class)];
         yield ['anon.'];
-        yield [new User('u', 'p')];
+        yield [EntityFactory::makeUser()];
     }
 }

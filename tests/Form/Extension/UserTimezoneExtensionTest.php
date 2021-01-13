@@ -2,8 +2,8 @@
 
 namespace App\Tests\Form\Extension;
 
-use App\Entity\User;
 use App\Form\Extension\UserTimezoneExtension;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -89,7 +89,7 @@ class UserTimezoneExtensionTest extends TypeTestCase {
             ->with('ROLE_USER')
             ->willReturn(true);
 
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $user->setTimezone(new \DateTimeZone('Europe/Oslo'));
 
         $this->security

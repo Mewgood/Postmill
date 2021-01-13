@@ -3,10 +3,9 @@
 namespace App\Tests\DataObject;
 
 use App\DataObject\SubmissionData;
-use App\Entity\Forum;
 use App\Entity\Image;
 use App\Entity\Submission;
-use App\Entity\User;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
@@ -20,8 +19,8 @@ class SubmissionDataTest extends TestCase {
     }
 
     public function testCannotCreateSubmissionWithMediaTypeUrlAndImage(): void {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
 
         $data = new SubmissionData();
         $data->setForum($forum);
@@ -35,8 +34,8 @@ class SubmissionDataTest extends TestCase {
     }
 
     public function testCannotCreateSubmissionWithMediaTypeImageAndUrl(): void {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
 
         $data = new SubmissionData();
         $data->setForum($forum);
@@ -54,8 +53,8 @@ class SubmissionDataTest extends TestCase {
      * @dataProvider provideMethodsThatUpdateTheEditableAtProperty
      */
     public function testEditedAtAttributeIsUpdated(string $getter, string $setter): void {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
         $submission = new Submission('title', null, null, $forum, $user, null);
 
         $data = new SubmissionData($submission);

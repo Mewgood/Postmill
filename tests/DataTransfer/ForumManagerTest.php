@@ -9,8 +9,8 @@ use App\Entity\BundledTheme;
 use App\Entity\Forum;
 use App\Entity\ForumTag;
 use App\Entity\Image;
-use App\Entity\User;
 use App\Repository\ForumTagRepository;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -58,7 +58,7 @@ class ForumManagerTest extends TestCase {
             ->with($this->isInstanceOf(Forum::class));
 
         $data = $this->getData();
-        $forum = $this->forumManager->createForum($data, new User('u', 'p'));
+        $forum = $this->forumManager->createForum($data, EntityFactory::makeUser());
 
         $this->assertForumMatchesData($data, $forum);
         $this->assertCount(1, $forum->getSubscriptions());
@@ -66,7 +66,7 @@ class ForumManagerTest extends TestCase {
     }
 
     public function testForumUpdating(): void {
-        $forum = new Forum('old', 'old', 'old', 'old');
+        $forum = EntityFactory::makeForum();
         $forum->addTags(
             $existingTag = new ForumTag('existing'),
             $removedTag = new ForumTag('removed')

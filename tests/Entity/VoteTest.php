@@ -4,8 +4,8 @@ namespace App\Tests\Entity;
 
 use App\Entity\Contracts\Votable;
 use App\Entity\Exception\BadVoteChoiceException;
-use App\Entity\User;
 use App\Entity\Vote;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,7 +20,7 @@ class VoteTest extends TestCase {
         $vote = $this->getMockBuilder(Vote::class)
             ->setConstructorArgs([
                 $choice,
-                new User('u', 'p'),
+                EntityFactory::makeUser(),
                 null,
             ])
             ->getMockForAbstractClass();
@@ -39,7 +39,7 @@ class VoteTest extends TestCase {
         $this->getMockBuilder(Vote::class)
             ->setConstructorArgs([
                 $vote,
-                new User('u', 'p'),
+                EntityFactory::makeUser(),
                 null,
             ])
             ->getMockForAbstractClass();
@@ -52,7 +52,7 @@ class VoteTest extends TestCase {
         $this->getMockBuilder(Vote::class)
             ->setConstructorArgs([
                 Votable::VOTE_UP,
-                new User('u', 'p'),
+                EntityFactory::makeUser(),
                 'poo',
             ])
             ->getMockForAbstractClass();
@@ -62,7 +62,7 @@ class VoteTest extends TestCase {
      * @dataProvider provideExpectedIpWhitelistMap
      */
     public function testConstructorSavesIpDependsOnUserWhitelistStatus(?string $expectedIp, bool $whitelisted): void {
-        $user = new User('u', 'p');
+        $user = EntityFactory::makeUser();
         $user->setWhitelisted($whitelisted);
 
         /** @var Vote $vote */

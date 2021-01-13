@@ -10,6 +10,7 @@ use App\Entity\Image;
 use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserFlags;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
@@ -23,8 +24,8 @@ class SubmissionTest extends TestCase {
     }
 
     public function testSoftDelete(): void {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
 
         $submission = new Submission(
             'The title',
@@ -54,8 +55,8 @@ class SubmissionTest extends TestCase {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Bad user flag 'poopy'");
 
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
         $submission = new Submission('a', null, null, $forum, $user, null);
         $submission->setUserFlag('poopy');
     }
@@ -64,8 +65,8 @@ class SubmissionTest extends TestCase {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid IP address 'in:va:li:d'");
 
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
         new Submission('a', null, null, $forum, $user, 'in:va:li:d');
     }
 
@@ -74,8 +75,8 @@ class SubmissionTest extends TestCase {
         $this->expectExceptionMessage('Submission with URL cannot have image as media type');
 
         /** @var Submission $submission */
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
         $submission = new Submission('a', null, null, $forum, $user, null);
 
         $submission->setUrl('http://www.example.com');
@@ -101,9 +102,9 @@ class SubmissionTest extends TestCase {
     }
 
     public function testBannedUserCannotCreateSubmission(): void {
-        $user = new User('u', 'p');
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $forum->addBan(new ForumBan($forum, $user, 'a', true, new User('u', 'p')));
+        $user = EntityFactory::makeUser();
+        $forum = EntityFactory::makeForum();
+        $forum->addBan(new ForumBan($forum, $user, 'a', true, EntityFactory::makeUser()));
 
         $this->expectException(BannedFromForumException::class);
 
@@ -111,11 +112,11 @@ class SubmissionTest extends TestCase {
     }
 
     public function testBannedUserCannotAddVote(): void {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
-        $forum->addBan(new ForumBan($forum, $user, 'a', true, new User('u', 'p')));
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
+        $forum->addBan(new ForumBan($forum, $user, 'a', true, EntityFactory::makeUser()));
 
-        $submission = new Submission('a', null, 'a', $forum, new User('u', 'p'), null);
+        $submission = new Submission('a', null, 'a', $forum, EntityFactory::makeUser(), null);
 
         $this->expectException(BannedFromForumException::class);
 
@@ -123,8 +124,8 @@ class SubmissionTest extends TestCase {
     }
 
     public function constructorArgsProvider(): iterable {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
         $url = 'http://example.com';
 
         yield ['title', $url, 'body', $forum, $user, '::1'];

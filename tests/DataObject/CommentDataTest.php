@@ -4,9 +4,8 @@ namespace App\Tests\DataObject;
 
 use App\DataObject\CommentData;
 use App\Entity\Comment;
-use App\Entity\Forum;
 use App\Entity\Submission;
-use App\Entity\User;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 
@@ -25,11 +24,11 @@ class CommentDataTest extends TestCase {
     }
 
     protected function setUp(): void {
-        $forum = new Forum('a', 'a', 'a', 'a');
-        $user = new User('u', 'p');
+        $forum = EntityFactory::makeForum();
+        $user = EntityFactory::makeUser();
         $parent = new Submission('a', null, null, $forum, $user, null);
 
-        $this->comment = new Comment('foo', new User('u', 'p'), $parent, null);
+        $this->comment = new Comment('foo', EntityFactory::makeUser(), $parent, null);
     }
 
     public function testUpdate(): void {
@@ -43,7 +42,7 @@ class CommentDataTest extends TestCase {
         sleep(5);
 
         $data->setBody('baz');
-        $data->updateComment($this->comment, new User('u', 'p'));
+        $data->updateComment($this->comment, EntityFactory::makeUser());
 
         $this->assertSame(time(), $this->comment->getEditedAt()->getTimestamp());
         $this->assertTrue($this->comment->isModerated());

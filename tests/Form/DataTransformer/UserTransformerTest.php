@@ -2,9 +2,9 @@
 
 namespace App\Tests\Form\DataTransformer;
 
-use App\Entity\User;
 use App\Form\DataTransformer\UserTransformer;
 use App\Repository\UserRepository;
+use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -32,7 +32,8 @@ class UserTransformerTest extends TestCase {
     }
 
     public function testReturnsUsernameOnTransformOfUser(): void {
-        $user = new User('emma', 'p');
+        $user = EntityFactory::makeUser();
+        $user->setUsername('emma');
         $this->assertSame('emma', $this->transformer->transform($user));
     }
 
@@ -52,7 +53,7 @@ class UserTransformerTest extends TestCase {
     }
 
     public function testReturnsUserOnReverseTransformerOfExistentUser(): void {
-        $user = new User('emma', 'p');
+        $user = EntityFactory::makeUser();
 
         $this->userRepository
             ->expects($this->once())
