@@ -2,14 +2,13 @@
 
 namespace App\Markdown\Listener;
 
-use App\Entity\User;
 use App\Markdown\Event\BuildCacheContext;
 use App\Markdown\Event\ConfigureCommonMark;
+use App\Security\Authentication;
 use App\Utils\TrustedHosts;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Configures the rendering of external links.
@@ -19,14 +18,14 @@ final class ExternalLinksListener implements EventSubscriberInterface {
     public const OPEN_IN_NEW_TAB_CONTEXT_KEY = 'open_external_links_in_new_tab';
 
     /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    /**
      * @var RequestStack
      */
     private $requestStack;
-
-    /**
-     * @var Security
-     */
-    private $security;
 
     /**
      * @var TrustedHosts
@@ -46,12 +45,12 @@ final class ExternalLinksListener implements EventSubscriberInterface {
     }
 
     public function __construct(
-        Security $security,
+        Authentication $authentication,
         RequestStack $requestStack,
         TrustedHosts $trustedHosts
     ) {
+        $this->authentication = $authentication;
         $this->requestStack = $requestStack;
-        $this->security = $security;
         $this->trustedHosts = $trustedHosts;
     }
 
@@ -79,8 +78,7 @@ final class ExternalLinksListener implements EventSubscriberInterface {
     }
 
     private function shouldOpenInNewTab(): bool {
-        $user = $this->security->getUser();
-        \assert($user instanceof User || $user === null);
+        $user = $this->authentication->getUser();
 
         return $user ? $user->openExternalLinksInNewTab() : false;
     }

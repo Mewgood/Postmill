@@ -257,8 +257,6 @@ final class UserController extends AbstractController {
      * @Security("user !== blockee", statusCode=403)
      */
     public function block(User $blockee, Request $request, EntityManager $em): Response {
-        \assert($this->getUser() instanceof User);
-
         $data = new UserBlockData();
 
         $form = $this->createForm(UserBlockType::class, $data);
@@ -288,7 +286,6 @@ final class UserController extends AbstractController {
     public function unblock(User $user, EntityManager $em, Request $request): Response {
         $this->validateCsrf('unblock', $request->request->get('token'));
 
-        \assert($this->getUser() instanceof User);
         $this->getUser()->unblock($user);
 
         $em->flush();
@@ -401,8 +398,6 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      */
     public function changeNightMode(EntityManager $em, Request $request, Validator $validator): Response {
-        \assert($this->getUser() instanceof User);
-
         $this->validateCsrf('night_mode', $request->request->get('token'));
 
         $data = new UserData($this->getUser());

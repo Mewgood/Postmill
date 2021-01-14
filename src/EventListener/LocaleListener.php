@@ -4,10 +4,10 @@ namespace App\EventListener;
 
 use App\Entity\User;
 use App\Event\UserUpdated;
+use App\Security\Authentication;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,9 +24,9 @@ final class LocaleListener implements EventSubscriberInterface {
     private $requestStack;
 
     /**
-     * @var Security
+     * @var Authentication
      */
-    private $security;
+    private $authentication;
 
     /**
      * @var TranslatorInterface|LocaleAwareInterface
@@ -52,8 +52,8 @@ final class LocaleListener implements EventSubscriberInterface {
     }
 
     public function __construct(
+        Authentication $authentication,
         RequestStack $requestStack,
-        Security $security,
         TranslatorInterface $translator,
         array $availableLocales,
         string $defaultLocale
@@ -65,7 +65,7 @@ final class LocaleListener implements EventSubscriberInterface {
         }
 
         $this->requestStack = $requestStack;
-        $this->security = $security;
+        $this->authentication = $authentication;
         $this->translator = $translator;
         $this->availableLocales = $availableLocales;
         $this->defaultLocale = $defaultLocale;
@@ -122,7 +122,7 @@ final class LocaleListener implements EventSubscriberInterface {
         $updatedUser = $event->getAfter();
 
         if (
-            $this->security->getUser() === $updatedUser &&
+            $this->authentication->getUser() === $updatedUser &&
             $event->getBefore()->getLocale() !== $updatedUser->getLocale()
         ) {
             $request->getSession()->set('_locale', $updatedUser->getLocale());

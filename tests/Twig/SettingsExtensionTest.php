@@ -5,19 +5,19 @@ namespace App\Tests\Twig;
 use App\Entity\Constants\SubmissionLinkDestination;
 use App\Entity\Site;
 use App\Repository\SiteRepository;
+use App\Security\Authentication;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use App\Twig\SettingsExtension;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * @covers \App\Twig\SettingsExtension
  */
 class SettingsExtensionTest extends TestCase {
     /**
-     * @var Security|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
      */
-    private $security;
+    private $authentication;
 
     /**
      * @var SiteRepository|\PHPUnit\Framework\MockObject\MockObject
@@ -30,11 +30,11 @@ class SettingsExtensionTest extends TestCase {
     private $extension;
 
     protected function setUp(): void {
-        $this->security = $this->createMock(Security::class);
+        $this->authentication = $this->createMock(Authentication::class);
         $this->sites = $this->createMock(SiteRepository::class);
 
         $this->extension = new SettingsExtension(
-            $this->security,
+            $this->authentication,
             $this->sites,
         );
     }
@@ -43,7 +43,7 @@ class SettingsExtensionTest extends TestCase {
      * @dataProvider provideSubmissionLinkDestinations
      */
     public function testGetSubmissionLinkDestinationFromUserSettings(?string $destination): void {
-        $this->security
+        $this->authentication
             ->expects($this->once())
             ->method('getUser')
             ->willReturnCallback(function () use ($destination) {
@@ -64,7 +64,7 @@ class SettingsExtensionTest extends TestCase {
      * @dataProvider provideSubmissionLinkDestinations
      */
     public function testGetSubmissionLinkDestinationFromSiteSettings(string $destination): void {
-        $this->security
+        $this->authentication
             ->expects($this->once())
             ->method('getUser');
 

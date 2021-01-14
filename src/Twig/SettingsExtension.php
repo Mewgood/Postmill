@@ -2,9 +2,8 @@
 
 namespace App\Twig;
 
-use App\Entity\User;
 use App\Repository\SiteRepository;
-use Symfony\Component\Security\Core\Security;
+use App\Security\Authentication;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -15,17 +14,17 @@ use Twig\TwigFunction;
  */
 class SettingsExtension extends AbstractExtension {
     /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    /**
      * @var SiteRepository
      */
     private $sites;
 
-    /**
-     * @var Security
-     */
-    private $security;
-
-    public function __construct(Security $security, SiteRepository $sites) {
-        $this->security = $security;
+    public function __construct(Authentication $authentication, SiteRepository $sites) {
+        $this->authentication = $authentication;
         $this->sites = $sites;
     }
 
@@ -36,8 +35,7 @@ class SettingsExtension extends AbstractExtension {
     }
 
     public function getSubmissionLinkDestination(): string {
-        $user = $this->security->getUser();
-        \assert($user instanceof User || $user === null);
+        $user = $this->authentication->getUser();
 
         if ($user) {
             $destination = $user->getSubmissionLinkDestination();

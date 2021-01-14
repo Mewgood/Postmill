@@ -5,13 +5,10 @@ namespace App\Tests\Validator;
 use App\Entity\Forum;
 use App\Entity\ForumBan;
 use App\Entity\User;
+use App\Security\Authentication;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use App\Validator\NotForumBanned;
 use App\Validator\NotForumBannedValidator;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
@@ -20,9 +17,9 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
     /**
-     * @var TokenStorageInterface
+     * @var Authentication
      */
-    private $tokenStorage;
+    private $authentication;
 
     /**
      * @var Forum
@@ -30,27 +27,17 @@ class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
     private $forum;
 
     protected function setUp(): void {
-        parent::setUp();
-
+        $this->authentication = $this->createMock(Authentication::class);
         $this->forum = EntityFactory::makeForum();
+
+        parent::setUp();
     }
 
     protected function createValidator(): ConstraintValidator {
-        $this->tokenStorage = new TokenStorage();
-        $this->tokenStorage->setToken(new AnonymousToken('aa', 'anon.'));
-
-        return new NotForumBannedValidator($this->tokenStorage);
+        return new NotForumBannedValidator($this->authentication);
     }
 
-    public function testNoViolationOnAnonymousUser(): void {
-        $this->validator->validate($this->forum, new NotForumBanned());
-
-        $this->assertNoViolation();
-    }
-
-    public function testNoViolationOnEmptyTokenStorage(): void {
-        $this->tokenStorage->setToken(null);
-
+    public function testNoViolationWhenUnauthenticated(): void {
         $this->validator->validate($this->forum, new NotForumBanned());
 
         $this->assertNoViolation();
@@ -99,7 +86,10 @@ class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
 
     private function login(): User {
         $user = EntityFactory::makeUser();
-        $this->tokenStorage->setToken(new UsernamePasswordToken($user, [], 'main'));
+
+        $this->authentication
+            ->method('getUser')
+            ->willReturn($user);
 
         return $user;
     }

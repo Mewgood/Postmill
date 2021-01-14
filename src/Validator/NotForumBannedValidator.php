@@ -3,9 +3,8 @@
 namespace App\Validator;
 
 use App\Entity\Forum;
-use App\Entity\User;
+use App\Security\Authentication;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\InvalidArgumentException;
@@ -13,16 +12,16 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class NotForumBannedValidator extends ConstraintValidator {
     /**
-     * @var TokenStorageInterface
+     * @var Authentication
      */
-    private $tokenStorage;
+    private $authentication;
 
-    public function __construct(TokenStorageInterface $tokenStorage) {
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(Authentication $authentication) {
+        $this->authentication = $authentication;
     }
 
     public function validate($value, Constraint $constraint): void {
-        if (!$value || !$this->tokenStorage->getToken() || !$this->tokenStorage->getToken()->getUser()) {
+        if (!$value) {
             return;
         }
 
@@ -63,10 +62,9 @@ final class NotForumBannedValidator extends ConstraintValidator {
             ));
         }
 
-        $token = $this->tokenStorage->getToken();
-        $user = $token ? $token->getUser() : null;
+        $user = $this->authentication->getUser();
 
-        if (!$token || !$user instanceof User) {
+        if (!$user) {
             return;
         }
 

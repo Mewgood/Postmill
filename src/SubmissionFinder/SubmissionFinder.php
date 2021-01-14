@@ -11,6 +11,7 @@ use App\Entity\UserBlock;
 use App\Pagination\SubmissionPage;
 use App\Repository\SiteRepository;
 use App\Repository\SubmissionRepository;
+use App\Security\Authentication;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -18,9 +19,13 @@ use PagerWave\Adapter\DoctrineAdapter;
 use PagerWave\CursorInterface;
 use PagerWave\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
 
 class SubmissionFinder {
+    /**
+     * @var Authentication
+     */
+    private $authentication;
+
     /**
      * @var EntityManagerInterface
      */
@@ -37,32 +42,26 @@ class SubmissionFinder {
     private $requestStack;
 
     /**
-     * @var Security
-     */
-    private $security;
-
-    /**
      * @var SiteRepository
      */
     private $sites;
-
     /**
      * @var SubmissionRepository
      */
     private $submissions;
 
     public function __construct(
+        Authentication $authentication,
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator,
         RequestStack $requestStack,
-        Security $security,
         SiteRepository $sites,
         SubmissionRepository $submissions
     ) {
+        $this->authentication = $authentication;
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
         $this->requestStack = $requestStack;
-        $this->security = $security;
         $this->sites = $sites;
         $this->submissions = $submissions;
     }
@@ -108,7 +107,7 @@ class SubmissionFinder {
      * Get the submission ordering currently in use.
      */
     public function getSortMode(?string $sortBy): string {
-        $user = $this->getUser(false);
+        $user = $this->authentication->getUser();
 
         return $sortBy
             ?? ($user ? $user->getFrontPageSortMode() : null)
@@ -177,11 +176,11 @@ class SubmissionFinder {
             break;
         case Criteria::VIEW_SUBSCRIBED:
             $qb->andWhere('s.forum IN (SELECT IDENTITY(fs.forum) FROM '.ForumSubscription::class.' fs WHERE fs.user = :user)');
-            $qb->setParameter('user', $this->getUser());
+            $qb->setParameter('user', $this->authentication->getUserOrThrow());
             break;
         case Criteria::VIEW_MODERATED:
             $qb->andWhere('s.forum IN (SELECT IDENTITY(m.forum) FROM '.Moderator::class.' m WHERE m.user = :user)');
-            $qb->setParameter('user', $this->getUser());
+            $qb->setParameter('user', $this->authentication->getUserOrThrow());
             break;
         case Criteria::VIEW_FORUMS:
             $forums = $criteria->getForums();
@@ -210,7 +209,7 @@ class SubmissionFinder {
             throw new \LogicException("Bad sort mode {$criteria->getView()}");
         }
 
-        $user = $this->getUser(false);
+        $user = $this->authentication->getUser();
 
         if ($user) {
             $exclusions = $criteria->getExclusions();
@@ -227,16 +226,5 @@ class SubmissionFinder {
                 $qb->setParameter('user', $user);
             }
         }
-    }
-
-    private function getUser(bool $throw = true): ?User {
-        if ($throw && !$this->security->isGranted('ROLE_USER')) {
-            throw new \LogicException('User is not logged in');
-        }
-
-        $user = $this->security->getUser();
-        \assert(!$user || $user instanceof User);
-
-        return $user;
     }
 }

@@ -6,11 +6,11 @@ use App\Entity\Forum;
 use App\Entity\User;
 use App\Form\Type\ForumSelectorType;
 use App\Repository\ForumRepository;
+use App\Security\Authentication;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * @covers \App\Form\Type\ForumSelectorType
@@ -24,9 +24,9 @@ class ForumSelectorTypeTest extends TypeTestCase {
     private $forums;
 
     /**
-     * @var Security|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
      */
-    private $security;
+    private $authentication;
 
     /**
      * @var Forum[]
@@ -40,7 +40,7 @@ class ForumSelectorTypeTest extends TypeTestCase {
             ->willReturnCallback(function () {
                 return $this->subscribedForums;
             });
-        $this->security = $this->createMock(Security::class);
+        $this->authentication = $this->createMock(Authentication::class);
 
         parent::setUp();
     }
@@ -48,14 +48,14 @@ class ForumSelectorTypeTest extends TypeTestCase {
     protected function getExtensions() {
         return [
             new PreloadedExtension([
-                new ForumSelectorType($this->forums, $this->security),
+                new ForumSelectorType($this->forums, $this->authentication),
             ], []),
         ];
     }
 
     public function testListingAsLoggedInUserWithSubscriptions(): void {
         $user = EntityFactory::makeUser();
-        $this->security
+        $this->authentication
             ->expects($this->once())
             ->method('getUser')
             ->willReturn($user);
