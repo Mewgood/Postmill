@@ -2,28 +2,27 @@
 
 namespace App\EventListener;
 
-use App\Entity\User;
 use App\Repository\IpBanRepository;
+use App\Security\Authentication;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Show the user a landing page if they are banned.
  */
 final class BanListener implements EventSubscriberInterface {
     /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    /**
      * @var IpBanRepository
      */
     private $repository;
-
-    /**
-     * @var Security
-     */
-    private $security;
 
     /**
      * @var UrlGeneratorInterface
@@ -40,11 +39,11 @@ final class BanListener implements EventSubscriberInterface {
 
     public function __construct(
         IpBanRepository $repository,
-        Security $security,
+        Authentication $authentication,
         UrlGeneratorInterface $urlGenerator
     ) {
+        $this->authentication = $authentication;
         $this->repository = $repository;
-        $this->security = $security;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -59,20 +58,17 @@ final class BanListener implements EventSubscriberInterface {
             return;
         }
 
-        if ($this->security->isGranted('ROLE_USER')) {
-            $user = $this->security->getUser();
-            \assert($user instanceof User);
+        $user = $this->authentication->getUser();
 
-            if ($user->isBanned()) {
-                $event->setResponse($this->getRedirectResponse());
+        if ($user && $user->isBanned()) {
+            $event->setResponse($this->getRedirectResponse());
 
-                return;
-            }
+            return;
+        }
 
-            if ($user->isWhitelistedOrAdmin()) {
-                // don't check for ip bans
-                return;
-            }
+        if ($user && $user->isWhitelistedOrAdmin()) {
+            // don't check for ip bans
+            return;
         }
 
         if ($this->repository->ipIsBanned($request->getClientIp())) {

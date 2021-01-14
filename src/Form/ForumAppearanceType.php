@@ -8,16 +8,16 @@ use App\Form\Type\ThemeSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class ForumAppearanceType extends AbstractType {
     /**
-     * @var Security
+     * @var AuthorizationCheckerInterface
      */
-    private $security;
+    private $authorizationChecker;
 
-    public function __construct(Security $security) {
-        $this->security = $security;
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker) {
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
@@ -27,7 +27,7 @@ final class ForumAppearanceType extends AbstractType {
                 'required' => false,
             ]);
 
-        if ($this->security->isGranted('upload_image')) {
+        if ($this->authorizationChecker->isGranted('upload_image')) {
             $builder->add('backgroundImage', BackgroundImageType::class, [
                 'label' => 'label.background_image',
                 'required' => false,

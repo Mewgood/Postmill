@@ -4,6 +4,7 @@ namespace App\Tests\EventListener;
 
 use App\Event\UserUpdated;
 use App\EventListener\LocaleListener;
+use App\Security\Authentication;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use App\Tests\Fixtures\TranslatorInterface;
 use PHPUnit\Framework\TestCase;
@@ -14,13 +15,17 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
  * @covers \App\EventListener\LocaleListener
  */
 class LocaleListenerTest extends TestCase {
+    /**
+     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $authentication;
+
     /**
      * @var LocaleListener
      */
@@ -37,11 +42,6 @@ class LocaleListenerTest extends TestCase {
     private $requestStack;
 
     /**
-     * @var Security|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $security;
-
-    /**
      * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $translator;
@@ -51,7 +51,7 @@ class LocaleListenerTest extends TestCase {
         $this->request->setLocale('en');
         $this->request->setSession(new Session(new MockArraySessionStorage()));
 
-        $this->security = $this->createMock(Security::class);
+        $this->authentication = $this->createMock(Authentication::class);
 
         $this->translator = $this->createMock(TranslatorInterface::class);
 
@@ -59,8 +59,8 @@ class LocaleListenerTest extends TestCase {
         $this->requestStack->push($this->request);
 
         $this->listener = new LocaleListener(
+            $this->authentication,
             $this->requestStack,
-            $this->security,
             $this->translator,
             ['en', 'nb', 'sv'],
             'en'
@@ -120,7 +120,7 @@ class LocaleListenerTest extends TestCase {
         $after = clone $before;
         $after->setLocale('nb');
 
-        $this->security
+        $this->authentication
             ->expects($this->atLeastOnce())
             ->method('getUser')
             ->willReturn($after);

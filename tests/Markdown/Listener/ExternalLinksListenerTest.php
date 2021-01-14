@@ -6,13 +6,13 @@ use App\Markdown\Event\BuildCacheContext;
 use App\Markdown\Event\ConfigureCommonMark;
 use App\Markdown\Event\ConvertMarkdown;
 use App\Markdown\Listener\ExternalLinksListener;
+use App\Security\Authentication;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use App\Utils\TrustedHosts;
 use League\CommonMark\Environment;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * @covers \App\Markdown\Listener\ExternalLinksListener
@@ -29,9 +29,9 @@ class ExternalLinksListenerTest extends TestCase {
     private $requestStack;
 
     /**
-     * @var Security|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
      */
-    private $security;
+    private $authentication;
 
     /**
      * @var TrustedHosts|\PHPUnit\Framework\MockObject\MockObject
@@ -39,12 +39,12 @@ class ExternalLinksListenerTest extends TestCase {
     private $trustedHosts;
 
     protected function setUp(): void {
+        $this->authentication = $this->createMock(Authentication::class);
         $this->requestStack = $this->createMock(RequestStack::class);
-        $this->security = $this->createMock(Security::class);
         $this->trustedHosts = $this->createMock(TrustedHosts::class);
 
         $this->listener = new ExternalLinksListener(
-            $this->security,
+            $this->authentication,
             $this->requestStack,
             $this->trustedHosts
         );
@@ -95,7 +95,7 @@ class ExternalLinksListenerTest extends TestCase {
     }
 
     public function testNoOpenLinksInNewTabForNonAuthenticatedUsers(): void {
-        $this->security
+        $this->authentication
             ->expects($this->once())
             ->method('getUser')
             ->willReturn(null);
@@ -111,7 +111,7 @@ class ExternalLinksListenerTest extends TestCase {
      * @dataProvider provideOpenExternalLinksInNewTabChoices
      */
     public function testConfiguresOpenLinksInNewTabBasedOnUserSetting(bool $openInNewTab): void {
-        $this->security
+        $this->authentication
             ->expects($this->once())
             ->method('getUser')
             ->willReturnCallback(function () use ($openInNewTab) {
@@ -135,7 +135,7 @@ class ExternalLinksListenerTest extends TestCase {
      * @dataProvider provideOpenExternalLinksInNewTabChoices
      */
     public function testOpenLinksInNewTabAddsToCacheContext(bool $openInNewTab): void {
-        $this->security
+        $this->authentication
             ->expects($this->once())
             ->method('getUser')
             ->willReturnCallback(function () use ($openInNewTab) {

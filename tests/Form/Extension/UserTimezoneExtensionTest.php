@@ -3,30 +3,30 @@
 namespace App\Tests\Form\Extension;
 
 use App\Form\Extension\UserTimezoneExtension;
+use App\Security\Authentication;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * @covers \App\Form\Extension\UserTimezoneExtension
  */
 class UserTimezoneExtensionTest extends TypeTestCase {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|Security
+     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
      */
-    private $security;
+    private $authentication;
 
     protected function setUp(): void {
-        $this->security = $this->createMock(Security::class);
+        $this->authentication = $this->createMock(Authentication::class);
 
         parent::setUp();
     }
 
     protected function getTypeExtensions(): array {
         return [
-            new UserTimezoneExtension($this->security),
+            new UserTimezoneExtension($this->authentication),
         ];
     }
 
@@ -64,14 +64,10 @@ class UserTimezoneExtensionTest extends TypeTestCase {
      * @dataProvider provideExtendedFormTypes
      */
     public function testDoesNotSetOptionWhenNotAuthenticated(string $type): void {
-        $this->security
+        $this->authentication
             ->expects($this->atLeastOnce())
-            ->method('isGranted')
-            ->with('ROLE_USER')
-            ->willReturn(false);
-        $this->security
-            ->expects($this->never())
-            ->method('getUser');
+            ->method('getUser')
+            ->willReturn(null);
 
         $form = $this->factory->create($type);
 
@@ -84,16 +80,13 @@ class UserTimezoneExtensionTest extends TypeTestCase {
     }
 
     private function setLoggedIn(): void {
-        $this->security
-            ->method('isGranted')
-            ->with('ROLE_USER')
-            ->willReturn(true);
-
-        $user = EntityFactory::makeUser();
-        $user->setTimezone(new \DateTimeZone('Europe/Oslo'));
-
-        $this->security
+        $this->authentication
             ->method('getUser')
-            ->willReturn($user);
+            ->willReturnCallback(function () {
+                $user = EntityFactory::makeUser();
+                $user->setTimezone(new \DateTimeZone('Europe/Oslo'));
+
+                return $user;
+            });
     }
 }

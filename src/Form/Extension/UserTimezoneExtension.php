@@ -2,29 +2,28 @@
 
 namespace App\Form\Extension;
 
+use App\Security\Authentication;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 final class UserTimezoneExtension extends AbstractTypeExtension {
     /**
-     * @var Security
+     * @var Authentication
      */
-    private $security;
+    private $authentication;
 
-    public function __construct(Security $security) {
-        $this->security = $security;
+    public function __construct(Authentication $authentication) {
+        $this->authentication = $authentication;
     }
 
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setNormalizer('view_timezone', function (Options $options, $value) {
-            if ($value === null && $this->security->isGranted('ROLE_USER')) {
-                $user = $this->security->getUser();
-                \assert($user instanceof \App\Entity\User);
+            $user = $this->authentication->getUser();
 
+            if ($user && $value === null) {
                 $value = $user->getTimezone()->getName();
             }
 

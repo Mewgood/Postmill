@@ -2,18 +2,22 @@
 
 namespace App\Validator;
 
-use App\Entity\User;
+use App\Security\Authentication;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class RateLimitValidator extends ConstraintValidator {
+    /**
+     * @var Authentication
+     */
+    private $authentication;
+
     /**
      * @var EntityManagerInterface
      */
@@ -25,24 +29,19 @@ final class RateLimitValidator extends ConstraintValidator {
     private $requestStack;
 
     /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
      * @var array
      */
     private $ipWhitelist;
 
     public function __construct(
+        Authentication $authentication,
         EntityManagerInterface $manager,
         RequestStack $requestStack,
-        TokenStorageInterface $tokenStorage,
         array $ipWhitelist
     ) {
+        $this->authentication = $authentication;
         $this->manager = $manager;
         $this->requestStack = $requestStack;
-        $this->tokenStorage = $tokenStorage;
         // FIXME: $ipWhitelist shouldn't contain null values
         $this->ipWhitelist = array_filter($ipWhitelist, 'is_string');
     }
@@ -90,10 +89,9 @@ final class RateLimitValidator extends ConstraintValidator {
         }
 
         if ($constraint->userField) {
-            $token = $this->tokenStorage->getToken();
-            $user = $token ? $token->getUser() : null;
+            $user = $this->authentication->getUser();
 
-            if ($user instanceof User) {
+            if ($user) {
                 $expr->add("e.{$constraint->userField} = :user");
 
                 $qb->setParameter('user', $user);

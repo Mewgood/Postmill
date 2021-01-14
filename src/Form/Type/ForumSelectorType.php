@@ -3,15 +3,14 @@
 namespace App\Form\Type;
 
 use App\Entity\Forum;
-use App\Entity\User;
 use App\Repository\ForumRepository;
+use App\Security\Authentication;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 final class ForumSelectorType extends AbstractType {
     /**
@@ -20,13 +19,13 @@ final class ForumSelectorType extends AbstractType {
     private $forums;
 
     /**
-     * @var Security
+     * @var Authentication
      */
-    private $security;
+    private $authentication;
 
-    public function __construct(ForumRepository $forums, Security $security) {
+    public function __construct(ForumRepository $forums, Authentication $authentication) {
         $this->forums = $forums;
-        $this->security = $security;
+        $this->authentication = $authentication;
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options): void {
@@ -34,8 +33,7 @@ final class ForumSelectorType extends AbstractType {
     }
 
     public function configureOptions(OptionsResolver $resolver): void {
-        $user = $this->security->getUser();
-        \assert($user instanceof User || $user === null);
+        $user = $this->authentication->getUser();
 
         $cacheKey = sprintf('%d', $user ? $user->getId() : 0);
 

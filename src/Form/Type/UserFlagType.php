@@ -4,22 +4,32 @@ namespace App\Form\Type;
 
 use App\Entity\Forum;
 use App\Entity\UserFlags;
+use App\Security\Authentication;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class UserFlagType extends AbstractType {
     /**
-     * @var Security
+     * @var Authentication
      */
-    private $security;
+    private $authentication;
 
-    public function __construct(Security $security) {
-        $this->security = $security;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    public function __construct(
+        Authentication $authentication,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        $this->authentication = $authentication;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options): void {
@@ -45,14 +55,14 @@ final class UserFlagType extends AbstractType {
 
         $resolver->setNormalizer('choices', function (Options $options, $choices) {
             if ($options['forum']) {
-                $user = $this->security->getUser();
+                $user = $this->authentication->getUser();
 
                 if ($options['forum']->userIsModerator($user, false)) {
                     $choices['moderator'] = UserFlags::FLAG_MODERATOR;
                 }
             }
 
-            if ($this->security->isGranted('ROLE_ADMIN')) {
+            if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
                 $choices['admin'] = UserFlags::FLAG_ADMIN;
             }
 
