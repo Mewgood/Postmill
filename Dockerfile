@@ -151,6 +151,16 @@ ENV APP_BRANCH=${APP_BRANCH} \
     APP_VERSION=${APP_VERSION}
 
 
+# ==========
+# PHP (test)
+# ==========
+
+FROM postmill_php AS postmill_php_test
+
+RUN set -eux; \
+    install-php-extensions pcov;
+
+
 # =====
 # Nginx
 # =====
