@@ -226,24 +226,29 @@ class UserControllerTest extends WebTestCase {
 
     public function testCanClearSingleNotification(): void {
         $client = self::createAdminClient();
-        $client->followRedirects();
 
         $crawler = $client->request('GET', '/notifications');
+        self::assertResponseIsSuccessful();
+
         $buttons = $crawler->filter('.clear-notification-button');
         $this->assertCount(2, $buttons);
 
-        $crawler = $client->submit($buttons->first()->form());
+        $client->submit($buttons->first()->form());
+        self::assertResponseRedirects('/notifications');
+
+        $crawler = $client->followRedirect();
         $buttons = $crawler->filter('.clear-notification-button');
         $this->assertCount(1, $buttons);
     }
 
     public function testCanClearAllNotificationsOnPage(): void {
         $client = self::createAdminClient();
-        $client->followRedirects();
 
         $crawler = $client->request('GET', '/notifications');
         $client->submit($crawler->selectButton('Clear all')->form());
+        self::assertResponseRedirects('/notifications');
 
+        $client->followRedirect();
         self::assertResponseIsSuccessful();
         self::assertSelectorNotExists('.clear-notification-button');
     }

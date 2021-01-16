@@ -33,8 +33,8 @@ class MessageTest extends TestCase {
         new Message($thread, $this->sender, 'c', null);
         new Message($thread, $this->receiver, 'd', null);
 
-        $this->assertCount(1, $this->receiver->getNotifications());
-        $this->assertCount(1, $this->sender->getNotifications());
+        $this->assertEquals(1, $this->receiver->getNotificationCount());
+        $this->assertEquals(1, $this->sender->getNotificationCount());
     }
 
     public function testNonParticipantsCannotAccessThread(): void {
