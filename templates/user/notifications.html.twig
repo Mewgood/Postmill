@@ -7,7 +7,6 @@
 {% endblock head %}
 
 {% block site_nav_active 'notifications' %}
-
 {% block title 'title.notifications'|trans %}
 
 {% block body %}
@@ -94,7 +93,7 @@
 {% block clear_notification_button %}
   <form action="{{ path('clear_notifications') }}" method="POST">
     <input type="hidden" name="token" value="{{ csrf_token('clear_notifications') }}">
-    <input type="hidden" name="id" value="{{ notification.id }}">
+    <input type="hidden" name="id[]" value="{{ notification.id }}">
     <button type="submit" class="button button--small clear-notification-button">{{ 'action.clear'|trans }}</button>
   </form>
 {% endblock clear_notification_button %}

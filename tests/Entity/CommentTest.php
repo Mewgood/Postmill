@@ -15,8 +15,8 @@ class CommentTest extends TestCase {
         $submission = new Submission('a', null, null, EntityFactory::makeForum(), EntityFactory::makeUser(), null);
         $comment = new Comment('a', EntityFactory::makeUser(), $submission, null);
 
-        $this->assertCount(0, $comment->getUser()->getNotifications());
-        $this->assertCount(1, $submission->getUser()->getNotifications());
+        $this->assertEquals(0, $comment->getUser()->getNotificationCount());
+        $this->assertEquals(1, $submission->getUser()->getNotificationCount());
     }
 
     public function testNewChildReplySendsNotifications(): void {
@@ -25,8 +25,8 @@ class CommentTest extends TestCase {
         $parent = new Comment('a', EntityFactory::makeUser(), $submission, null);
         $child = new Comment('b', EntityFactory::makeUser(), $parent, null);
 
-        $this->assertCount(0, $child->getUser()->getNotifications());
-        $this->assertCount(1, $parent->getUser()->getNotifications());
+        $this->assertEquals(0, $child->getUser()->getNotificationCount());
+        $this->assertEquals(1, $parent->getUser()->getNotificationCount());
     }
 
     public function testDoesNotSendNotificationsWhenReplyingToSelf(): void {
@@ -36,6 +36,6 @@ class CommentTest extends TestCase {
         $parent = new Comment('a', $user, $submission, null);
         new Comment('b', $user, $parent, null);
 
-        $this->assertCount(0, $submission->getUser()->getNotifications());
+        $this->assertEquals(0, $submission->getUser()->getNotificationCount());
     }
 }

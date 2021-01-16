@@ -174,11 +174,14 @@ class CommentControllerTest extends WebTestCase {
         ]);
 
         $client->submit($form);
+        self::assertResponseRedirects();
         self::ensureKernelShutdown();
 
         $client = self::createUserClient();
         $client->request('GET', '/notifications');
 
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('.comment');
         self::assertSelectorTextContains('.comment__body', 'You will be notified about this comment.');
     }
 

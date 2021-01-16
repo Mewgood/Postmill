@@ -196,6 +196,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
 
     /**
      * @ORM\OneToMany(targetEntity="Notification", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OrderBy({"timestamp": "DESC", "id": "DESC"})
      *
      * @var Notification[]|Collection|Selectable
      */
@@ -591,11 +592,19 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         $this->timezone = $timezone->getName();
     }
 
+    public function getNotificationCount(): int {
+        return \count($this->notifications);
+    }
+
     /**
-     * @return Collection|Selectable|Notification[]
+     * @param array<string|\Stringable> $ids
+     * @return array<self>
      */
-    public function getNotifications(): Collection {
-        return $this->notifications;
+    public function getNotificationsById(array $ids): array {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->in('id', $ids));
+
+        return $this->notifications->matching($criteria)->toArray();
     }
 
     public function sendNotification(Notification $notification): void {
@@ -604,11 +613,22 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         }
     }
 
+    public function clearNotification(Notification ...$notifications): void {
+        foreach ($notifications as $notification) {
+            if ($this->notifications->removeElement($notification)) {
+                $notification->detach();
+            }
+        }
+    }
+
     /**
      * @return Pagerfanta|Notification[]
      */
     public function getPaginatedNotifications(int $page, int $maxPerPage = 25): Pagerfanta {
-        $criteria = Criteria::create()->orderBy(['id' => 'DESC']);
+        $criteria = Criteria::create()->orderBy([
+            'timestamp' => 'DESC',
+            'id' => 'DESC',
+        ]);
 
         $notifications = new Pagerfanta(new SelectableAdapter($this->notifications, $criteria));
         $notifications->setMaxPerPage($maxPerPage);

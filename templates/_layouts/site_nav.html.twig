@@ -144,7 +144,7 @@
 
 {% block site_nav_user_menu_logged_in %}
   {% from '_macros/icon.html.twig' import icon %}
-  {% set notification_count = is_granted('ROLE_USER') ? app.user.notifications|length : 0 %}
+  {% set notification_count = app.user.notificationCount ?? 0 %}
   {% set active_menu_item %}{% if active == 'user' %}{% block site_nav_user_menu_active '' %}{% endif %}{% endset %}
   <li>
     <a href="{{ path('notifications') }}"

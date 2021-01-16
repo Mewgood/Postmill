@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DataObject\UserData;
+use App\DataTransfer\UserManager;
 use App\Entity\Forum;
 use App\Entity\Site;
 use App\Entity\Submission;
@@ -18,12 +19,12 @@ use App\Form\UserType;
 use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
-use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Security\AuthenticationHelper;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
+use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -305,8 +306,7 @@ final class UserController extends AbstractController {
      * @IsGranted("ROLE_USER")
      */
     public function notifications(int $page): Response {
-        /* @var User $user */
-        $user = $this->getUser();
+        $user = $this->getUserOrThrow();
 
         return $this->render('user/notifications.html.twig', [
             'notifications' => $user->getPaginatedNotifications($page),
@@ -316,15 +316,14 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function clearNotifications(Request $request, NotificationRepository $repository, EntityManager $em): Response {
+    public function clearNotifications(Request $request, UserManager $manager): Response {
         $this->validateCsrf('clear_notifications', $request->request->get('token'));
 
-        $ids = array_filter((array) $request->request->get('id'), static function ($id) {
-            return is_numeric($id) && \is_int(+$id);
+        $ids = array_filter($request->request->all('id'), function ($id) {
+            return \is_string($id) && Uuid::isValid($id);
         });
 
-        $repository->clearNotifications($this->getUser(), ...$ids);
-        $em->flush();
+        $manager->clearNotificationsById($this->getUserOrThrow(), $ids);
 
         $this->addFlash('notice', 'flash.notifications_cleared');
 
