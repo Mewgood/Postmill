@@ -11,7 +11,7 @@ class DeleteUser {
     private $userId;
 
     /**
-     * @param User|int|mixed $user
+     * @param User|int $user
      */
     public function __construct($user) {
         if ($user instanceof User) {
@@ -23,10 +23,10 @@ class DeleteUser {
         } elseif (is_scalar($user)) {
             $this->userId = $user;
         } else {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \TypeError(sprintf(
                 '$user must be integer or instance of %s, %s given',
                 User::class,
-                \is_object($user) ? \get_class($user) : \gettype($user)
+                get_debug_type($user),
             ));
         }
     }
