@@ -9,16 +9,10 @@ use App\Tests\WebTestCase;
  */
 class MessageControllerTest extends WebTestCase {
     /**
-     * @dataProvider authProvider
-     *
-     * @param string $username
-     * @param string $password
+     * @dataProvider usernameProvider
      */
-    public function testCanViewMessageList($username, $password): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => $username,
-            'PHP_AUTH_PW' => $password,
-        ]);
+    public function testCanViewMessageList(string $username): void {
+        $client = self::createClientWithAuthenticatedUser($username);
 
         $crawler = $client->request('GET', '/messages');
 
@@ -30,10 +24,7 @@ class MessageControllerTest extends WebTestCase {
     }
 
     public function testMessageListIsEmptyForUserWithNoMessages(): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => 'third',
-            'PHP_AUTH_PW' => 'example3',
-        ]);
+        $client = self::createClientWithAuthenticatedUser('third');
 
         $client->request('GET', '/messages');
 
@@ -49,16 +40,10 @@ class MessageControllerTest extends WebTestCase {
     }
 
     /**
-     * @dataProvider authProvider
-     *
-     * @param string $username
-     * @param string $password
+     * @dataProvider usernameProvider
      */
-    public function testCanReadOwnMessages($username, $password): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => $username,
-            'PHP_AUTH_PW' => $password,
-        ]);
+    public function testCanReadOwnMessages(string $username): void {
+        $client = self::createClientWithAuthenticatedUser($username);
 
         $client->request('GET', '/messages/thread/1');
 
@@ -69,10 +54,7 @@ class MessageControllerTest extends WebTestCase {
     }
 
     public function testCannotReadOthersMessages(): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => 'third',
-            'PHP_AUTH_PW' => 'example3',
-        ]);
+        $client = self::createClientWithAuthenticatedUser('third');
 
         $client->request('GET', '/messages/thread/1');
 
@@ -100,8 +82,8 @@ class MessageControllerTest extends WebTestCase {
         $this->assertStringContainsString('aaa', $crawler->filter('.message__body')->eq(2)->text());
     }
 
-    public function authProvider(): iterable {
-        yield ['emma', 'goodshit'];
-        yield ['zach', 'example2'];
+    public function usernameProvider(): iterable {
+        yield ['emma'];
+        yield ['zach'];
     }
 }

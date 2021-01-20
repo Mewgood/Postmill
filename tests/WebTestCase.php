@@ -2,23 +2,30 @@
 
 namespace App\Tests;
 
+use App\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
-use Symfony\Component\BrowserKit\AbstractBrowser;
 
 abstract class WebTestCase extends BaseWebTestCase {
-    public static function createAdminClient(): AbstractBrowser {
-        return self::createClient([], [
-            'PHP_AUTH_USER' => 'emma',
-            'PHP_AUTH_PW' => 'goodshit',
-            'HTTP_X_EXPERIMENTAL_API' => 1,
-        ]);
+    public static function createAdminClient(): KernelBrowser {
+        return self::createClientWithAuthenticatedUser('emma');
     }
 
-    public static function createUserClient(): AbstractBrowser {
-        return self::createClient([], [
-            'PHP_AUTH_USER' => 'zach',
-            'PHP_AUTH_PW' => 'example2',
+    public static function createUserClient(): KernelBrowser {
+        return self::createClientWithAuthenticatedUser('zach');
+    }
+
+    public static function createClientWithAuthenticatedUser(string $username): KernelBrowser {
+        $client = self::createClient([], [
             'HTTP_X_EXPERIMENTAL_API' => 1,
         ]);
+
+        $user = self::$container
+            ->get(UserRepository::class)
+            ->loadUserByUsername($username);
+
+        $client->loginUser($user);
+
+        return $client;
     }
 }

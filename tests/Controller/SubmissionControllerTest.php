@@ -321,10 +321,7 @@ class SubmissionControllerTest extends WebTestCase {
     }
 
     public function testNonModeratorNonSubmitterUserCannotAccessTrashedSubmissions(): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => 'third',
-            'PHP_AUTH_PW' => 'example3',
-        ]);
+        $client = self::createClientWithAuthenticatedUser('third');
         $client->request('GET', '/f/cats/4');
 
         self::assertResponseStatusCodeSame(403);

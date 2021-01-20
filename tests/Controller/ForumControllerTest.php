@@ -47,13 +47,7 @@ class ForumControllerTest extends WebTestCase {
     }
 
     public function testCanDeleteForum(): void {
-        $client = self::createClient();
-        $crawler = $client->request('GET', '/login');
-        $client->submit($crawler->selectButton('Log in')->form([
-            '_username' => 'emma',
-            '_password' => 'goodshit',
-        ]));
-
+        $client = self::createAdminClient();
         $crawler = $client->request('GET', '/f/cats/delete');
         $client->submit($crawler->selectButton('Delete forum')->form([
             'confirm_deletion[name]' => 'cats',
