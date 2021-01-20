@@ -206,6 +206,9 @@ build-web:
     script:
         - docker pull $TEST_IMAGE_APP
         - docker build
+            --build-arg APP_VERSION="$(git describe --tags)"
+            --build-arg APP_BRANCH="$CI_COMMIT_REF_NAME"
+            --build-arg PHP_VERSION="8.0"
             --cache-from $TEST_IMAGE_APP
             --target postmill_web
             -t $TEST_IMAGE_WEB
