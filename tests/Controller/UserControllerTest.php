@@ -99,15 +99,8 @@ class UserControllerTest extends WebTestCase {
     }
 
     public function testCanChangeOwnUsernameAndRemainLoggedIn(): void {
-        $client = self::createClient();
+        $client = self::createClientWithAuthenticatedUser('zach');
         $client->followRedirects();
-
-        $crawler = $client->request('GET', '/login');
-        $client->submit($crawler->selectButton('Log in')->form([
-            '_username' => 'zach',
-            '_password' => 'example2',
-        ]));
-
         $crawler = $client->request('GET', '/user/zach/account');
 
         $client->submit($crawler->selectButton('Save changes')->form([
@@ -163,13 +156,7 @@ class UserControllerTest extends WebTestCase {
     }
 
     public function testDeleteAccount(): void {
-        $client = self::createClient();
-
-        $crawler = $client->request('GET', '/login');
-        $client->submit($crawler->selectButton('Log in')->form([
-            '_username' => 'zach',
-            '_password' => 'example2',
-        ]));
+        $client = self::createClientWithAuthenticatedUser('zach');
 
         $crawler = $client->request('GET', '/user/zach/delete_account');
         $client->submit($crawler->selectButton('Delete account')->form([
@@ -188,14 +175,7 @@ class UserControllerTest extends WebTestCase {
     }
 
     public function testCanDeleteOtherPersonsAccountAsAdminWithoutBeingLoggedOut(): void {
-        $client = self::createClient();
-
-        $crawler = $client->request('GET', '/login');
-        $client->submit($crawler->selectButton('Log in')->form([
-            '_username' => 'emma',
-            '_password' => 'goodshit',
-        ]));
-
+        $client = self::createAdminClient();
         $crawler = $client->request('GET', '/user/zach/delete_account');
         $client->submit($crawler->selectButton('Delete account')->form([
             'confirm_deletion[name]' => 'zach',
@@ -306,14 +286,9 @@ class UserControllerTest extends WebTestCase {
     }
 
     public function testUserIsLoggedOutOnChange(): void {
-        $client = self::createClient();
-        $crawler = $client->request('GET', '/login');
-        $client->submit($crawler->selectButton('Log in')->form([
-            '_username' => 'emma',
-            '_password' => 'goodshit',
-        ]));
+        $client = self::createClientWithAuthenticatedUser('emma');
+        $client->request('GET', '/');
 
-        $client->followRedirect();
         self::assertSelectorExists('body.user-logged-in');
 
         $this->changeUser();

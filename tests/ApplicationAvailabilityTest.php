@@ -2,8 +2,6 @@
 
 namespace App\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 /**
  * Simple availability tests to ensure the application isn't majorly screwed up.
  *
@@ -12,10 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class ApplicationAvailabilityTest extends WebTestCase {
     /**
      * @dataProvider publicUrlProvider
-     *
-     * @param string $url
      */
-    public function testCanAccessPublicPages($url): void {
+    public function testCanAccessPublicPages(string $url): void {
         $client = self::createClient();
         $client->request('GET', $url);
 
@@ -24,14 +20,9 @@ class ApplicationAvailabilityTest extends WebTestCase {
 
     /**
      * @dataProvider authUrlProvider
-     *
-     * @param string $url
      */
-    public function testCanAccessPagesThatNeedAuthentication($url): void {
-        $client = self::createClient([], [
-            'PHP_AUTH_USER' => 'emma',
-            'PHP_AUTH_PW' => 'goodshit',
-        ]);
+    public function testCanAccessPagesThatNeedAuthentication(string $url): void {
+        $client = self::createAdminClient();
         $client->request('GET', $url);
 
         self::assertResponseIsSuccessful("URL: $url");
@@ -39,10 +30,8 @@ class ApplicationAvailabilityTest extends WebTestCase {
 
     /**
      * @dataProvider authUrlProvider
-     *
-     * @param string $url
      */
-    public function testCannotAccessPagesThatNeedAuthenticationWhenNotAuthenticated($url): void {
+    public function testCannotAccessPagesThatNeedAuthenticationWhenNotAuthenticated(string $url): void {
         self::createClient()->request('GET', $url);
 
         self::assertResponseRedirects('/login', null, "URL: $url");
@@ -50,11 +39,8 @@ class ApplicationAvailabilityTest extends WebTestCase {
 
     /**
      * @dataProvider redirectUrlProvider
-     *
-     * @param string $expectedLocation
-     * @param string $url
      */
-    public function testRedirectedUrlsGoToExpectedLocation($expectedLocation, $url): void {
+    public function testRedirectedUrlsGoToExpectedLocation(string $expectedLocation, string $url): void {
         $client = self::createClient();
         $client->followRedirects();
         $client->request('GET', $url);
@@ -72,7 +58,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
      * Public URLs that should exist when fixtures are loaded into a fresh
      * database.
      */
-    public function publicUrlProvider(): iterable {
+    public function publicUrlProvider(): \Generator {
         yield ['/'];
         yield ['/hot'];
         yield ['/new'];
