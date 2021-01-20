@@ -13,13 +13,13 @@ stages:
 
 audit:php:
     stage: audit
-    image: php:7.4-alpine
+    image: composer:2
     needs: []
     allow_failure: true
-    before_script:
-        - curl -sS https://get.sensiolabs.org/security-checker.phar -o check.phar
     script:
-        - php check.phar security:check composer.lock
+        - composer update roave/security-advisories:dev-latest
+          --dry-run
+          --ignore-platform-reqs
 
 audit:node:
     stage: audit
@@ -36,7 +36,7 @@ audit:node:
 
 lint:composer:
     stage: lint
-    image: composer:2.0.0-alpha1
+    image: composer:2
     needs: []
     except:
         - schedules
@@ -45,7 +45,7 @@ lint:composer:
 
 lint:yaml:
     stage: lint
-    image: composer:2.0.0-alpha1
+    image: composer:2
     needs: []
     except:
         - schedules

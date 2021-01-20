@@ -323,6 +323,9 @@
             "ref": "f7895777cd673fcefbc321a9063077a24e5df646"
         }
     },
+    "roave/security-advisories": {
+        "version": "dev-latest"
+    },
     "sebastian/diff": {
         "version": "4.0.4"
     },
@@ -333,15 +336,6 @@
             "branch": "master",
             "version": "4.0",
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
-        }
-    },
-    "sensiolabs/security-checker": {
-        "version": "4.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.0",
-            "ref": "421933bf8f0e75546ac8e00cb3eb12904fa2ac1a"
         }
     },
     "symfony/amqp-messenger": {
