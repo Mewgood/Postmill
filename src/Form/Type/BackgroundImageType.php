@@ -2,8 +2,8 @@
 
 namespace App\Form\Type;
 
+use App\DataTransfer\ImageManager;
 use App\Entity\Contracts\BackgroundImageInterface;
-use App\Repository\ImageRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -20,12 +20,12 @@ use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
 
 final class BackgroundImageType extends AbstractType {
     /**
-     * @var ImageRepository
+     * @var ImageManager
      */
-    private $images;
+    private $imageManager;
 
-    public function __construct(ImageRepository $images) {
-        $this->images = $images;
+    public function __construct(ImageManager $imageManager) {
+        $this->imageManager = $imageManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
@@ -92,12 +92,11 @@ final class BackgroundImageType extends AbstractType {
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getForm()->getData();
+            \assert($data instanceof BackgroundImageInterface || $data === null);
 
             if (!$form->isValid()) {
                 return;
             }
-
-            \assert($data instanceof BackgroundImageInterface);
 
             $uploadMap = [];
 
@@ -107,7 +106,7 @@ final class BackgroundImageType extends AbstractType {
                 \assert($upload instanceof UploadedFile || !$upload);
 
                 if ($upload) {
-                    $image = $this->images->findOrCreateFromUpload($upload);
+                    $image = $this->imageManager->findOrCreateFromFile($upload->getPathname());
 
                     // avoid error if the same image is chosen twice
                     $image = $uploadMap[$image->getFileName()] ?? $image;

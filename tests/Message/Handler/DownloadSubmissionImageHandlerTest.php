@@ -2,10 +2,10 @@
 
 namespace App\Tests\Message\Handler;
 
+use App\DataTransfer\ImageManager;
 use App\Entity\Site;
 use App\Message\Handler\DownloadSubmissionImageHandler;
 use App\Message\NewSubmission;
-use App\Repository\ImageRepository;
 use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +36,7 @@ class DownloadSubmissionImageHandlerTest extends TestCase {
         $handler = new DownloadSubmissionImageHandler(
             $this->createMock(EntityManagerInterface::class),
             $this->createMock(HttpClientInterface::class),
-            $this->createMock(ImageRepository::class),
+            $this->createMock(ImageManager::class),
             $logger,
             $siteRepository,
             $this->createMock(ValidatorInterface::class)

@@ -2,9 +2,9 @@
 
 namespace App\Message\Handler;
 
+use App\DataTransfer\ImageManager;
 use App\Entity\Submission;
 use App\Message\NewSubmission;
-use App\Repository\ImageRepository;
 use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Embed\Embed;
@@ -29,9 +29,9 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $httpClient;
 
     /**
-     * @var ImageRepository
+     * @var ImageManager
      */
-    private $images;
+    private $imageManager;
 
     /**
      * @var LoggerInterface
@@ -51,14 +51,14 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     public function __construct(
         EntityManagerInterface $entityManager,
         HttpClientInterface $submissionImageClient,
-        ImageRepository $images,
+        ImageManager $imageManager,
         LoggerInterface $logger,
         SiteRepository $sites,
         ValidatorInterface $validator
     ) {
         $this->entityManager = $entityManager;
         $this->httpClient = $submissionImageClient;
-        $this->images = $images;
+        $this->imageManager = $imageManager;
         $this->logger = $logger;
         $this->sites = $sites;
         $this->validator = $validator;
@@ -101,7 +101,7 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
                 return;
             }
 
-            $image = $this->images->findOrCreateFromPath($tempFile);
+            $image = $this->imageManager->findOrCreateFromFile($tempFile);
 
             $this->entityManager->transactional(static function () use ($submission, $image): void {
                 $submission->setImage($image);

@@ -6,10 +6,8 @@ use App\Entity\Contracts\VisibilityInterface;
 use App\Entity\Forum;
 use App\Entity\Image;
 use App\Entity\Submission;
-use App\Flysystem\ImageManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @method Image|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,37 +18,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @method Image[]    findByFileName(string|string[] $fileNames)
  */
 class ImageRepository extends ServiceEntityRepository {
-    /**
-     * @var ImageManager
-     */
-    private $imageManager;
-
-    public function __construct(ManagerRegistry $registry, ImageManager $imageManager) {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Image::class);
-
-        $this->imageManager = $imageManager;
-    }
-
-    public function findOrCreateFromPath(string $source): Image {
-        $filename = $this->imageManager->getFileName($source);
-        $sha256 = hash_file('sha256', $source, true);
-        $image = $this->findOneBySha256($sha256);
-
-        if (!$image) {
-            [$width, $height] = @getimagesize($source);
-            $image = new Image($filename, $sha256, $width, $height);
-        } elseif (!$image->getWidth() || !$image->getHeight()) {
-            [$width, $height] = @getimagesize($source);
-            $image->setDimensions($width, $height);
-        }
-
-        $this->imageManager->store($source, $filename);
-
-        return $image;
-    }
-
-    public function findOrCreateFromUpload(UploadedFile $upload): Image {
-        return $this->findOrCreateFromPath($upload->getPathname());
     }
 
     /**
@@ -58,7 +27,7 @@ class ImageRepository extends ServiceEntityRepository {
      *
      * @return Image[]|array
      */
-    public function filterOrphanedImages(array $images): array {
+    public function filterOrphaned(array $images): array {
         return $this->createQueryBuilder('i')
             ->andWhere('i IN (?1)')
             ->andWhere('i NOT IN (SELECT IDENTITY(f1.lightBackgroundImage) FROM '.Forum::class.' f1 WHERE f1.lightBackgroundImage IS NOT NULL)')
