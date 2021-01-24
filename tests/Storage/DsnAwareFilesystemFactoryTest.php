@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Flysystem;
+namespace App\Tests\Storage;
 
-use App\Flysystem\DsnAwareFilesystemFactory;
+use App\Storage\DsnAwareFilesystemFactory;
 use Aws\Credentials\CredentialsInterface;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Adapter\NullAdapter;
@@ -10,7 +10,7 @@ use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \App\Flysystem\DsnAwareFilesystemFactory
+ * @covers \App\Storage\DsnAwareFilesystemFactory
  */
 class DsnAwareFilesystemFactoryTest extends TestCase {
     public function testCreateLocalFilesystem(): void {

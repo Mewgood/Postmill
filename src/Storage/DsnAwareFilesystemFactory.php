@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Flysystem;
+namespace App\Storage;
 
 use Aws\S3\S3Client;
 use League\Flysystem\Adapter\Local;

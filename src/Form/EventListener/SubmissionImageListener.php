@@ -3,23 +3,24 @@
 namespace App\Form\EventListener;
 
 use App\DataObject\SubmissionData;
+use App\DataTransfer\ImageManager;
 use App\Entity\Submission;
-use App\Repository\ImageRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Handle submission image uploads.
  */
 final class SubmissionImageListener implements EventSubscriberInterface {
     /**
-     * @var ImageRepository
+     * @var ImageManager
      */
-    private $images;
+    private $imageManager;
 
-    public function __construct(ImageRepository $images) {
-        $this->images = $images;
+    public function __construct(ImageManager $imageManager) {
+        $this->imageManager = $imageManager;
     }
 
     public static function getSubscribedEvents(): array {
@@ -37,9 +38,10 @@ final class SubmissionImageListener implements EventSubscriberInterface {
         \assert($data instanceof SubmissionData);
 
         $upload = $event->getForm()->get('image')->getData();
+        \assert($upload instanceof UploadedFile || $upload === null);
 
         if ($upload && !$data->getImage() && $data->getMediaType() === Submission::MEDIA_IMAGE) {
-            $image = $this->images->findOrCreateFromUpload($upload);
+            $image = $this->imageManager->findOrCreateFromFile($upload->getPathname());
 
             $data->setImage($image);
         }
