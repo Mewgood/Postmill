@@ -1,2 +1,1 @@
 error.account_banned: 'Din konto har blitt utestengt.'
-error.rate_limited: 'Vi har oppdaget altfor mange mislykkede innloggingsforsøk fra din IP-adresse. Vennligst prøv igjen senere.'

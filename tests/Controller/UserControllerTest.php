@@ -95,7 +95,16 @@ class UserControllerTest extends WebTestCase {
             'user[verification]' => 'bypass',
         ]));
 
-        self::assertResponseRedirects('/');
+        $this->assertResponseRedirects();
+
+        // follow login link
+        $client->followRedirect();
+        $this->assertResponseRedirects('/');
+
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('.user-logged-in');
+        $this->assertBrowserHasCookie('REMEMBERME');
     }
 
     public function testCanChangeOwnUsernameAndRemainLoggedIn(): void {

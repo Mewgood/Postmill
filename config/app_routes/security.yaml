@@ -7,5 +7,9 @@ login_check:
     path: /login_check
     methods: [POST]
 
+login_url:
+    path: /login_url
+    methods: [GET]
+
 log_out:
     path: /log_out
