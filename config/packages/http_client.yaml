@@ -1,7 +1,7 @@
 services:
-    Symfony\Contracts\HttpClient\HttpClientInterface $submissionImageClient: "@postmill.http_client.submission_images"
+    Symfony\Contracts\HttpClient\HttpClientInterface $imageDownloadingClient: "@postmill.http_client.image_downloading"
 
-    postmill.http_client.submission_images:
+    postmill.http_client.image_downloading:
         class: Symfony\Component\HttpClient\NoPrivateNetworkHttpClient
         arguments:
             - '@Symfony\Contracts\HttpClient\HttpClientInterface'

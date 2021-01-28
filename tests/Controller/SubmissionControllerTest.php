@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 class SubmissionControllerTest extends WebTestCase {
     public function testCanCreateSubmission(): void {
         $client = self::createUserClient();
-        $client->followRedirects();
 
         $crawler = $client->request('GET', '/submit');
 
@@ -24,8 +23,13 @@ class SubmissionControllerTest extends WebTestCase {
             'submission[forum]' => '2',
         ]);
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
+        $this->assertResponseRedirects();
+
+        $crawler = $client->followRedirect();
+
+        $this->assertResponseIsSuccessful();
         $this->assertSame('Making a submission', $crawler->filter('.submission__link')->text());
         $this->assertSame('http://www.foo.example/', $crawler->filter('.submission__link')->attr('href'));
         $this->assertStringContainsString(

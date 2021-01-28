@@ -16,3 +16,6 @@ services:
 
     App\Utils\LanguageDetectorInterface:
         class: App\Tests\Fixtures\Utils\MockLanguageDetector
+
+    App\Utils\UrlMetadataFetcherInterface:
+        class: App\Tests\Fixtures\Utils\MockUrlMetadataFetcher

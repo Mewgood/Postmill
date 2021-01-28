@@ -3,11 +3,68 @@
 namespace App\Tests\Controller;
 
 use App\Tests\WebTestCase;
+use App\Utils\UrlMetadataFetcherInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @covers \App\Controller\AjaxController
  */
 class AjaxControllerTest extends WebTestCase {
+    public function testFetchTitle(): void {
+        $client = self::createUserClient();
+
+        $urlMetadataFetcher = $this->createMock(UrlMetadataFetcherInterface::class);
+        $urlMetadataFetcher
+            ->expects($this->once())
+            ->method('fetchTitle')
+            ->with('http://www.example.com/')
+            ->willReturn('Example dot com');
+
+        self::$container->set(UrlMetadataFetcherInterface::class, $urlMetadataFetcher);
+
+        $client->request('POST', '/ft.json', [
+            'url' => 'http://www.example.com/',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'application/json; charset=UTF-8');
+    }
+
+    public function testFetchTitleReturnsBadRequestOnMalformedUrl(): void {
+        $client = self::createUserClient();
+        $client->request('POST', 'ft.json', [
+            'url' => 'htttp:/www.goglle.come',
+        ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+    }
+
+    public function testFetchTitleReturnsBadRequestOnMissingUrl(): void {
+        $client = self::createUserClient();
+        $client->request('POST', 'ft.json');
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+    }
+
+    public function testFetchTitleReturnsNotFoundOnMissingTitle(): void {
+        $client = self::createUserClient();
+
+        $urlMetadataFetcher = $this->createMock(UrlMetadataFetcherInterface::class);
+        $urlMetadataFetcher
+            ->expects($this->once())
+            ->method('fetchTitle')
+            ->with('http://www.example.com/')
+            ->willReturn(null);
+
+        self::$container->set(UrlMetadataFetcherInterface::class, $urlMetadataFetcher);
+
+        $client->request('POST', '/ft.json', [
+            'url' => 'http://www.example.com/',
+        ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
     public function testPopperLoggedOut(): void {
         $client = self::createClient();
         $client->request('GET', '/_up/emma');

@@ -3,16 +3,38 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use Embed\Embed;
-use Embed\Exceptions\InvalidUrlException;
+use App\Utils\UrlMetadataFetcherInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Url;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Helpers for Ajax-related stuff.
  */
 final class AjaxController extends AbstractController {
+    /**
+     * @var UrlMetadataFetcherInterface
+     */
+    private $metadataFetcher;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    public function __construct(
+        UrlMetadataFetcherInterface $metadataFetcher,
+        ValidatorInterface $validator
+    ) {
+        $this->metadataFetcher = $metadataFetcher;
+        $this->validator = $validator;
+    }
+
     /**
      * JSON action for retrieving link titles.
      *
@@ -24,17 +46,19 @@ final class AjaxController extends AbstractController {
      */
     public function fetchTitle(Request $request): Response {
         $url = $request->request->get('url');
-        try {
-            $title = Embed::create($url)->getTitle();
+        $errors = $this->validator->validate($url, [new NotBlank(), new Url()]);
 
-            if ((string) $title === '') {
-                return $this->json(null, 404);
-            }
-
-            return $this->json(['title' => $title]);
-        } catch (InvalidUrlException $e) {
-            return $this->json(['error' => $e->getMessage()], 400);
+        if (\count($errors) > 0) {
+            throw new BadRequestHttpException();
         }
+
+        $title = $this->metadataFetcher->fetchTitle($url);
+
+        if ($title === null) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->json(['title' => $title]);
     }
 
     public function userPopper(User $user): Response {
