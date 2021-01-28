@@ -6,27 +6,18 @@ use App\DataTransfer\ImageManager;
 use App\Entity\Submission;
 use App\Message\NewSubmission;
 use App\Repository\SiteRepository;
+use App\Repository\SubmissionRepository;
+use App\Utils\UrlMetadataFetcherInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Embed\Embed;
-use Embed\Exceptions\EmbedException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Validator\Constraints\Image;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
-
-    /**
-     * @var HttpClientInterface
-     */
-    private $httpClient;
 
     /**
      * @var ImageManager
@@ -44,35 +35,40 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
     private $sites;
 
     /**
-     * @var ValidatorInterface
+     * @var SubmissionRepository
      */
-    private $validator;
+    private $submissions;
+
+    /**
+     * @var UrlMetadataFetcherInterface
+     */
+    private $urlMetadataFetcher;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        HttpClientInterface $submissionImageClient,
         ImageManager $imageManager,
         LoggerInterface $logger,
         SiteRepository $sites,
-        ValidatorInterface $validator
+        SubmissionRepository $submissions,
+        UrlMetadataFetcherInterface $urlMetadataFetcher
     ) {
         $this->entityManager = $entityManager;
-        $this->httpClient = $submissionImageClient;
         $this->imageManager = $imageManager;
         $this->logger = $logger;
         $this->sites = $sites;
-        $this->validator = $validator;
+        $this->submissions = $submissions;
+        $this->urlMetadataFetcher = $urlMetadataFetcher;
     }
 
     public function __invoke(NewSubmission $message): void {
         if (!$this->sites->findCurrentSite()->isUrlImagesEnabled()) {
-            $this->logger->info('Image downloading disabled in site settings');
+            $this->logger->debug('Image downloading disabled in site settings');
 
             return;
         }
 
         $id = $message->getSubmissionId();
-        $submission = $this->entityManager->find(Submission::class, $id);
+        $submission = $this->submissions->find($id);
 
         if (!$submission instanceof Submission) {
             throw new UnrecoverableMessageHandlingException(
@@ -80,95 +76,23 @@ final class DownloadSubmissionImageHandler implements MessageHandlerInterface {
             );
         }
 
-        if (!$submission->getUrl() || $submission->getImage()) {
+        if (
+            $submission->getMediaType() !== Submission::MEDIA_URL ||
+            !$submission->getUrl()
+        ) {
             return;
         }
 
-        $imageUrl = $this->getRemoteImageUrl($submission->getUrl());
+        $url = $submission->getUrl();
+        $fileName = $this->urlMetadataFetcher->downloadRepresentativeImage($url);
 
-        if (!$imageUrl) {
+        if (!$fileName) {
             return;
         }
 
-        $tempFile = $this->downloadImage($imageUrl);
+        $image = $this->imageManager->findOrCreateFromFile($fileName);
+        $submission->setImage($image);
 
-        if (!$tempFile) {
-            return;
-        }
-
-        try {
-            if (!$this->validateImage($tempFile)) {
-                return;
-            }
-
-            $image = $this->imageManager->findOrCreateFromFile($tempFile);
-
-            $this->entityManager->transactional(static function () use ($submission, $image): void {
-                $submission->setImage($image);
-            });
-        } catch (\RuntimeException $e) {
-            throw new UnrecoverableMessageHandlingException($e->getMessage(), $e->getCode(), $e);
-        } finally {
-            @unlink($tempFile);
-        }
-    }
-
-    private function getRemoteImageUrl($url): ?string {
-        try {
-            return Embed::create($url)->getImage();
-        } catch (EmbedException $e) {
-            $this->logger->notice($e->getMessage(), ['exception' => $e]);
-        }
-
-        return null;
-    }
-
-    private function downloadImage(string $url): ?string {
-        $tempFile = @tempnam(sys_get_temp_dir(), 'pml');
-
-        if ($tempFile === false) {
-            throw new UnrecoverableMessageHandlingException('Couldn\'t create temporary file');
-        }
-
-        try {
-            $response = $this->httpClient->request('GET', $url, [
-                'headers' => [
-                    'Accept' => 'image/jpeg, image/gif, image/png',
-                ],
-            ]);
-
-            $fh = fopen($tempFile, 'wb');
-            foreach ($this->httpClient->stream($response) as $chunk) {
-                fwrite($fh, $chunk->getContent());
-            }
-            fclose($fh);
-
-            return $tempFile;
-        } catch (HttpExceptionInterface $e) {
-            $this->logger->error($e->getMessage(), [
-                'exception' => $e,
-            ]);
-
-            return null;
-        }
-    }
-
-    private function validateImage(string $fileName): bool {
-        $violations = $this->validator->validate($fileName, [
-            new Image(['detectCorrupted' => true]),
-        ]);
-
-        if (\count($violations) > 0) {
-            foreach ($violations as $violation) {
-                $this->logger->debug(
-                    $violation->getMessageTemplate(),
-                    $violation->getParameters()
-                );
-            }
-
-            return false;
-        }
-
-        return true;
+        $this->entityManager->flush();
     }
 }
