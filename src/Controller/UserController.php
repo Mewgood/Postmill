@@ -20,7 +20,7 @@ use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\ForumBanRepository;
 use App\Repository\UserRepository;
-use App\Security\AuthenticationHelper;
+use App\Security\LoginLinkGenerator;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
@@ -97,7 +97,12 @@ final class UserController extends AbstractController {
     /**
      * @IsGranted("register", subject="site", statusCode=403)
      */
-    public function registration(Site $site, Request $request, EntityManager $em, AuthenticationHelper $auth): Response {
+    public function registration(
+        Site $site,
+        Request $request,
+        EntityManager $em,
+        LoginLinkGenerator $loginLinkGenerator
+    ): Response {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('front');
         }
@@ -117,13 +122,9 @@ final class UserController extends AbstractController {
             $em->persist($user);
             $em->flush();
 
-            $response = $this->redirectToRoute('front');
-
-            $auth->login($user, $request, $response, 'main');
-
             $this->addFlash('success', 'flash.user_account_registered');
 
-            return $response;
+            return $this->redirect($loginLinkGenerator->generate($user));
         }
 
         return $this->render('user/registration.html.twig', [

@@ -73,17 +73,15 @@ services:
         $container: !service_locator
             League\CommonMark\ConfigurableEnvironmentInterface: '@League\CommonMark\ConfigurableEnvironmentInterface'
 
-    App\Security\AuthenticationHelper:
-        $rememberMeServices: "@security.authentication.rememberme.services.simplehash.main"
+    App\Security\RateLimitExemptLimiter:
+        stack:
+            - App\Security\RateLimitExemptLimiter:
+                  $ipWhitelist: "%env(csv:RATELIMIT_WHITELIST)%"
+            - Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter:
+                  $globalFactory: "@limiter.login_global"
+                  $localFactory: "@limiter.login_local"
 
     App\Storage\StorageInterface $imageStorage:
         class: App\Storage\FlysystemStorage
         arguments:
             $filesystem: "@postmill.submission_images"
-
-    App\Utils\IpRateLimit $loginRateLimit:
-        class: App\Utils\IpRateLimit
-        arguments:
-            $prefix: login
-            $maxHits: 20
-            $interval: 10 minutes
