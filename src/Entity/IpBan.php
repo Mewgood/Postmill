@@ -92,6 +92,10 @@ class IpBan {
         $this->bannedBy = $bannedBy;
         $this->expires = $expires;
         $this->timestamp = new \DateTimeImmutable('@'.time());
+
+        if ($user) {
+            $user->addIpBan($this);
+        }
     }
 
     public function getId(): ?int {

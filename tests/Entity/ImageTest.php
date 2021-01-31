@@ -4,11 +4,23 @@ namespace App\Tests\Entity;
 
 use App\Entity\Image;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 
 /**
  * @covers \App\Entity\Image
  */
 class ImageTest extends TestCase {
+    /**
+     * @testdox ID is UUIDv4
+     */
+    public function testIdIsUuidV4(): void {
+        $image = new Image('a.png', random_bytes(32), null, null);
+        $fields = $image->getId()->getFields();
+
+        $this->assertInstanceOf(FieldsInterface::class, $fields);
+        $this->assertSame(4, $fields->getVersion());
+    }
+
     public function testAcceptsFilename(): void {
         $image = new Image('a.png', random_bytes(32), 420, 69);
         $this->assertSame('a.png', $image->getFileName());

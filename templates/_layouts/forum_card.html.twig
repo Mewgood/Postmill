@@ -51,7 +51,7 @@
             {{ subscribe_button(forum, subscribed) }}
           </form>
         {% else %}
-          {% set subscriber_count = forum.subscriptions|length %}
+          {% set subscriber_count = forum.subscriptionCount %}
           <p>{{ 'forum.subscriber_count'|trans({
               '%count%': subscriber_count,
               '%formatted_count%': subscriber_count|format_number,
@@ -59,7 +59,7 @@
         {% endif %}
 
         <p class="fg-muted">
-          {% set submission_count = forum.submissions|length %}
+          {% set submission_count = forum.submissionCount %}
           {{ 'forum.submission_count'|trans({
             '%count%': submission_count,
             '%formatted_count%': submission_count|format_number,

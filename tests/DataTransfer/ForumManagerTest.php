@@ -61,7 +61,7 @@ class ForumManagerTest extends TestCase {
         $forum = $this->forumManager->createForum($data, EntityFactory::makeUser());
 
         $this->assertForumMatchesData($data, $forum);
-        $this->assertCount(1, $forum->getSubscriptions());
+        $this->assertSame(1, $forum->getSubscriptionCount());
         $this->assertCount(1, $forum->getModerators());
     }
 

@@ -13,6 +13,7 @@ use App\Event\CommentCreated;
 use App\Event\CommentUpdated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -169,7 +170,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         } elseif ($parent instanceof self) {
             $submission = $parent->getSubmission();
         } else {
-            throw new \InvalidArgumentException('$parent must be Submission or Comment');
+            throw new \TypeError('$parent must be Submission or Comment');
         }
 
         if ($submission->isLocked() && !$user->isAdmin()) {
@@ -235,20 +236,16 @@ class Comment implements DomainEvents, Visibility, Votable {
      * @return Comment[]
      */
     public function getChildren(): array {
-        $children = $this->children->toArray();
+        $criteria = Criteria::create()->orderBy(['netScore' => 'DESC']);
 
-        usort($children, static function (self $a, self $b) {
-            return $b->getNetScore() <=> $a->getNetScore();
-        });
-
-        return $children;
+        return $this->children->matching($criteria)->getValues();
     }
 
     /**
-     * @return Comment[]|iterable
+     * @return \Generator<Comment>
      */
-    public function getChildrenRecursive(int &$startIndex = 0): iterable {
-        foreach ($this->children as $child) {
+    public function getChildrenRecursive(int &$startIndex = 0): \Generator {
+        foreach ($this->getChildren() as $child) {
             // each yielded key must be unique, lol
             yield $startIndex++ => $child;
             yield from $child->getChildrenRecursive($startIndex);
@@ -263,7 +260,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         $this->children->removeElement($reply);
     }
 
-    public function getVotes(): Collection {
+    protected function getVotes(): Collection {
         return $this->votes;
     }
 
@@ -390,12 +387,8 @@ class Comment implements DomainEvents, Visibility, Votable {
         return $this->editedAt;
     }
 
-    public function setEditedAt(?\DateTimeInterface $editedAt): void {
-        if ($editedAt instanceof \DateTime) {
-            $editedAt = \DateTimeImmutable::createFromMutable($editedAt);
-        }
-
-        $this->editedAt = $editedAt;
+    public function updateEditedAt(): void {
+        $this->editedAt = new \DateTimeImmutable('@'.time());
     }
 
     public function isModerated(): bool {

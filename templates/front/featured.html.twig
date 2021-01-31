@@ -5,7 +5,7 @@
 
 {% block front_alerts %}
   {% if is_granted('ROLE_USER') %}
-    {% if app.user.frontPage == 'subscribed' and app.user.subscriptions|length == 0 %}
+    {% if app.user.frontPage == 'subscribed' and app.user.subscriptionCount == 0 %}
       {{ alert('front.no_subscriptions'|trans) }}
     {% endif %}
   {% endif %}

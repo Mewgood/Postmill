@@ -51,22 +51,22 @@
         {% endwith %}
       </td>
       <td class="table__shrink">
-        {% with { count: item.submissions|length } %}
+        {% with { count: item.submissionCount } %}
           {{ count > 0 ? count|format_number : '-' }}
         {% endwith %}
       </td>
       <td class="table__shrink">
-        {% with { count: item.comments|length } %}
+        {% with { count: item.commentCount } %}
           {{ count > 0 ? count|format_number : '-' }}
         {% endwith %}
       </td>
       <td class="table__shrink">
-        {% with { count: item.submissionVotes|length } %}
+        {% with { count: item.submissionVoteCount } %}
           {{ count > 0 ? count|format_number : '-' }}
         {% endwith %}
       </td>
       <td class="table__shrink">
-        {% with { count: item.commentVotes|length } %}
+        {% with { count: item.commentVoteCount } %}
           {{ count > 0 ? count|format_number : '-' }}
         {% endwith %}
       </td>

@@ -341,17 +341,18 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         $this->setUsername($username);
         $this->password = $password;
         $this->created = new \DateTimeImmutable('@'.time());
-        $this->notifications = new ArrayCollection();
-        $this->submissions = new ArrayCollection();
-        $this->submissionVotes = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-        $this->commentVotes = new ArrayCollection();
-        $this->bans = new ArrayCollection();
-        $this->ipBans = new ArrayCollection();
-        $this->blocks = new ArrayCollection();
-        $this->subscriptions = new ArrayCollection();
-        $this->moderatorTokens = new ArrayCollection();
         $this->timezone = date_default_timezone_get();
+        $this->bans = new ArrayCollection();
+        $this->blocks = new ArrayCollection();
+        $this->commentVotes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->hiddenForums = new ArrayCollection();
+        $this->ipBans = new ArrayCollection();
+        $this->moderatorTokens = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
+        $this->submissionVotes = new ArrayCollection();
+        $this->submissions = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -410,12 +411,8 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         return $this->lastSeen;
     }
 
-    public function setLastSeen(?\DateTimeInterface $lastSeen): void {
-        if ($lastSeen instanceof \DateTime) {
-            $lastSeen = \DateTimeImmutable::createFromMutable($lastSeen);
-        }
-
-        $this->lastSeen = $lastSeen;
+    public function updateLastSeen(): void {
+        $this->lastSeen = new \DateTimeImmutable('@'.time());
     }
 
     public function getRegistrationIp(): ?string {
@@ -438,15 +435,13 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         $this->admin = $admin;
     }
 
-    /**
-     * @return Collection|ForumSubscription[]
-     */
-    public function getSubscriptions(): Collection {
-        return $this->subscriptions;
+    public function getSubscriptionCount(): int {
+        return \count($this->subscriptions);
     }
 
     /**
      * @return Collection|Moderator[]|Selectable
+     * @todo return an array instead
      */
     public function getModeratorTokens(): Collection {
         return $this->moderatorTokens;
@@ -475,11 +470,8 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     public function eraseCredentials(): void {
     }
 
-    /**
-     * @return Collection|Selectable|Submission[]
-     */
-    public function getSubmissions(): Collection {
-        return $this->submissions;
+    public function getSubmissionCount(): int {
+        return \count($this->submissions);
     }
 
     public function addSubmission(Submission $submission): void {
@@ -492,15 +484,22 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         }
     }
 
-    public function getSubmissionVotes(): Collection {
-        return $this->submissionVotes;
+    public function getSubmissionVoteCount(): int {
+        return \count($this->submissionVotes);
     }
 
-    /**
-     * @return Collection|Selectable|Comment[]
-     */
-    public function getComments(): Collection {
-        return $this->comments;
+    public function addSubmissionVote(SubmissionVote $vote): void {
+        if ($vote->getUser() !== $this) {
+            throw new \DomainException('Submission vote must belong to user');
+        }
+
+        if (!$this->submissionVotes->contains($vote)) {
+            $this->submissionVotes->add($vote);
+        }
+    }
+
+    public function getCommentCount(): int {
+        return \count($this->comments);
     }
 
     public function addComment(Comment $comment): void {
@@ -513,15 +512,18 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         }
     }
 
-    public function getCommentVotes(): Collection {
-        return $this->commentVotes;
+    public function getCommentVoteCount(): int {
+        return \count($this->commentVotes);
     }
 
-    /**
-     * @return UserBan[]|Collection
-     */
-    public function getBans(): Collection {
-        return $this->bans;
+    public function addCommentVote(CommentVote $vote): void {
+        if ($vote->getUser() !== $this) {
+            throw new \DomainException('Vote must belong to user');
+        }
+
+        if (!$this->commentVotes->contains($vote)) {
+            $this->commentVotes->add($vote);
+        }
     }
 
     public function getActiveBan(): ?UserBan {
@@ -545,10 +547,20 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     }
 
     /**
-     * @return Collection|IpBan[]
+     * @return IpBan[]
      */
-    public function getIpBans(): Collection {
-        return $this->ipBans;
+    public function getIpBans(): array {
+        return $this->ipBans->getValues();
+    }
+
+    public function addIpBan(IpBan $ipBan): void {
+        if ($ipBan->getUser() !== $this) {
+            throw new \DomainException('Cannot add IP ban meant for another user');
+        }
+
+        if (!$this->ipBans->contains($ipBan)) {
+            $this->ipBans->add($ipBan);
+        }
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\IpBan;
+use App\Entity\User;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -11,17 +12,77 @@ use PHPUnit\Framework\TestCase;
  * @group time-sensitive
  */
 class IpBanTest extends TestCase {
-    public function testConstruction(): void {
-        $user = EntityFactory::makeUser();
-        $bannedBy = EntityFactory::makeUser();
-        $ban = new IpBan('123.123.123.123', 'aaa', $user, $bannedBy, new \DateTime('@'.time().' +600 seconds'));
+    private function ipBan(
+        string $ip = null,
+        User $banned = null,
+        User $banningUser = null,
+        \DateTimeInterface $expires = null
+    ): IpBan {
+        return new IpBan(
+            $ip ?? '127.0.0.1',
+            'reason',
+            $banned,
+            $banningUser ?? EntityFactory::makeUser(),
+            $expires,
+        );
+    }
 
-        $this->assertSame('123.123.123.123', $ban->getIp());
-        $this->assertSame('aaa', $ban->getReason());
-        $this->assertSame($user, $ban->getUser());
-        $this->assertSame($bannedBy, $ban->getBannedBy());
-        $this->assertSame(time(), $ban->getTimestamp()->getTimestamp());
-        $this->assertSame(time() + 600, $ban->getExpires()->getTimestamp());
+    public function testGetId(): void {
+        $this->assertNull($this->ipBan()->getId());
+    }
+
+    public function testGetIdWithPropertySet(): void {
+        $ipBan = $this->ipBan();
+        $r = (new \ReflectionClass(IpBan::class))->getProperty('id');
+        $r->setAccessible(true);
+        $r->setValue($ipBan, 123);
+        $r->setAccessible(false);
+
+        $this->assertSame(123, $ipBan->getId());
+    }
+
+    public function testGetReason(): void {
+        $this->assertSame('reason', $this->ipBan()->getReason());
+    }
+
+    public function testGetUser(): void {
+        $user = EntityFactory::makeUser();
+
+        $this->assertSame($user, $this->ipBan(null, $user)->getUser());
+    }
+
+    public function testGetBannedBy(): void {
+        $user = EntityFactory::makeUser();
+
+        $this->assertSame($user, $this->ipBan(null, null, $user)->getBannedBy());
+    }
+
+    /**
+     * @dataProvider provideNotRangeIps
+     */
+    public function testIsNotRangeBan(string $ip): void {
+        $this->assertFalse($this->ipBan($ip)->isRangeBan());
+    }
+
+    public function provideNotRangeIps(): \Generator {
+        yield 'ipv4' => ['192.168.0.0'];
+        yield 'ipv4 with cidr' => ['192.168.0.4/32'];
+        yield 'ipv6' => ['::1'];
+        yield 'ipv6 with cidr' => ['ffff:1124:1241:5125::/128'];
+    }
+
+    /**
+     * @dataProvider provideRangeIps
+     */
+    public function testIsRangeBan(string $ip): void {
+        $this->assertTrue($this->ipBan($ip)->isRangeBan());
+    }
+
+    public function provideRangeIps(): \Generator {
+        yield 'ipv4 1' => ['192.168.0.1/24'];
+        yield 'ipv4 2' => ['192.168.0.0/31'];
+        yield 'ipv6 1' => ['::/127'];
+        yield 'ipv6 2' => ['ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/1'];
     }
 
     public function testCannotConstructWithInvalidIp(): void {
@@ -36,33 +97,43 @@ class IpBanTest extends TestCase {
      */
     public function testCannotConstructWithInvalidCidr(string $invalidIp): void {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid CIDR mask');
 
-        new IpBan($invalidIp, 'a', null, EntityFactory::makeUser());
+        $this->ipBan($invalidIp);
     }
 
-    /**
-     * @dataProvider provideIpsAndIpRanges
-     */
-    public function testIsRangeBan(string $ip, bool $isRange): void {
-        $ban = new IpBan($ip, 'a', null, EntityFactory::makeUser());
-
-        $this->assertSame($isRange, $ban->isRangeBan());
-    }
-
-    public function provideIpsAndIpRanges(): iterable {
-        yield ['123.123.123.123', false];
-        yield ['123.123.123.123/32', false];
-        yield ['123.123.123.123/31', true];
-        yield ['1234:1234::1234', false];
-        yield ['1234:1234::1234/128', false];
-        yield ['1234:1234::1234/127', true];
-    }
-
-    public function provideInvalidIpsWithMasks(): iterable {
+    public function provideInvalidIpsWithMasks(): \Generator {
         yield ['1.1.1.1/33'];
         yield ['1.1.1.1/335782317590127581273589012375890127389012357890123578902357890235789025378901235789012357905789012537890'];
         yield ['2001:4:4:4::4/129'];
         yield ['2001:4:4:4::4/-1'];
+    }
+
+    /**
+     * @group time-sensitive
+     */
+    public function testGetTimestamp(): void {
+        $this->assertSame(
+            time(),
+            $this->ipBan()->getTimestamp()->getTimestamp(),
+        );
+    }
+
+    /**
+     * @dataProvider provideExpires
+     */
+    public function testGetExpires(
+        ?\DateTimeInterface $expected,
+        ?\DateTimeInterface $expires
+    ): void {
+        $this->assertEquals(
+            $expected,
+            $this->ipBan(null, null, null, $expires)->getExpires(),
+        );
+    }
+
+    public function provideExpires(): \Generator {
+        yield [new \DateTimeImmutable('@300'), new \DateTimeImmutable('@300')];
+        yield [new \DateTimeImmutable('@300'), new \DateTime('@300')];
+        yield [null, null];
     }
 }

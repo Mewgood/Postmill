@@ -102,12 +102,15 @@ class Message {
 
     private function notify(): void {
         foreach ($this->thread->getParticipants() as $user) {
-            if (
-                $user === $this->sender ||
-                $user->isAccountDeleted() ||
-                $user->isBlocking($this->sender)
-            ) {
-                // don't notify self, deleted accounts, or users blocking you
+            if ($user === $this->sender) {
+                continue;
+            }
+
+            if ($user->isAccountDeleted()) {
+                continue;
+            }
+
+            if ($user->isBlocking($this->sender)) {
                 continue;
             }
 

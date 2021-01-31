@@ -1,5 +1,5 @@
 {% macro subscribe_button(forum, subscribed) %}
-  {%- set subscriber_count = forum.subscriptions|length -%}
+  {%- set subscriber_count = forum.subscriptionCount -%}
   <button class="subscribe-button subscribe-button--{{ subscribed ? 'un' }}subscribe"
           data-controller="subscribe-button"
           data-action="subscribe-button#subscribe"

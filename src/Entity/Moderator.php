@@ -49,7 +49,7 @@ class Moderator {
         $this->forum = $forum;
         $this->user = $user;
         $this->timestamp = new \DateTimeImmutable('@'.time());
-        $forum->getModerators()->add($this);
+        $forum->addModerator($this);
         $user->getModeratorTokens()->add($this);
     }
 

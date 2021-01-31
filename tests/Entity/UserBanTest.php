@@ -26,7 +26,6 @@ class UserBanTest extends TestCase {
         $this->assertSame(time(), $ban->getTimestamp()->getTimestamp());
         $this->assertSame(time() + 600, $ban->getExpires()->getTimestamp());
 
-        $this->assertCount(1, $user->getBans());
         $this->assertSame($ban, $user->getActiveBan());
     }
 

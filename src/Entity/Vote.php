@@ -58,7 +58,6 @@ abstract class Vote {
      * @throws \InvalidArgumentException if IP address isn't valid
      */
     public function __construct(int $choice, User $user, ?string $ip) {
-
         $this->user = $user;
         $this->setChoice($choice);
         $this->setIp($ip);

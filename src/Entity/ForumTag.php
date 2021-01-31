@@ -72,7 +72,7 @@ class ForumTag {
         $criteria = Criteria::create()
             ->orderBy(['normalizedName' => 'ASC']);
 
-        return $this->forums->matching($criteria)->toArray();
+        return $this->forums->matching($criteria)->getValues();
     }
 
     public function hasForum(Forum $forum): bool {
