@@ -29,6 +29,8 @@ class SubmissionVote extends Vote {
         parent::__construct($choice, $user, $ip);
 
         $this->submission = $submission;
+
+        $submission->addVote($this);
     }
 
     public function getSubmission(): Submission {

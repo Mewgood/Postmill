@@ -233,8 +233,8 @@ class Forum implements BackgroundImage, DomainEvents {
     /**
      * @return Collection|Moderator[]
      */
-    public function getModerators(): Collection {
-        return $this->moderators;
+    public function getModerators(): array {
+        return $this->moderators->getValues();
     }
 
     /**
@@ -291,22 +291,28 @@ class Forum implements BackgroundImage, DomainEvents {
         return \count($this->submissions) === 0;
     }
 
-    /**
-     * @return Collection|Submission[]
-     */
-    public function getSubmissions(): Collection {
-        return $this->submissions;
+    public function getSubmissionCount(): int {
+        return \count($this->submissions);
+    }
+
+    public function addSubmission(Submission $submission): void {
+        if ($submission->getForum() !== $this) {
+            throw new \InvalidArgumentException(
+                'Forum does not belong to submission',
+            );
+        }
+
+        if (!$this->submissions->contains($submission)) {
+            $this->submissions->add($submission);
+        }
     }
 
     public function getCreated(): \DateTimeImmutable {
         return $this->created;
     }
 
-    /**
-     * @return ForumSubscription[]|Collection|Selectable
-     */
-    public function getSubscriptions(): Collection {
-        return $this->subscriptions;
+    public function getSubscriptionCount(): int {
+        return \count($this->subscriptions);
     }
 
     public function isSubscribed(User $user): bool {
@@ -373,7 +379,7 @@ class Forum implements BackgroundImage, DomainEvents {
         if (!$this->bans->contains($ban)) {
             $this->bans->add($ban);
 
-            $this->logEntries->add(new ForumLogBan($ban));
+            $this->addLogEntry(new ForumLogBan($ban));
         }
     }
 

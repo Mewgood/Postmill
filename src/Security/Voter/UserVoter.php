@@ -67,7 +67,7 @@ final class UserVoter extends Voter {
             return true;
         }
 
-        return \count($user->getSubmissions()) > 0 || \count($user->getComments()) > 0;
+        return $user->getSubmissionCount() > 0 || $user->getCommentCount() > 0;
     }
 
     private function canEditUser(User $user, TokenInterface $token): bool {

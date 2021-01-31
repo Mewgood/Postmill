@@ -164,7 +164,7 @@ class CommentData implements NormalizeMarkdownInterface {
 
         if ($this->body !== $comment->getBody()) {
             $comment->setBody($this->body);
-            $comment->setEditedAt(new \DateTimeImmutable('@'.time()));
+            $comment->updateEditedAt();
 
             if (!$comment->isModerated()) {
                 $comment->setModerated($comment->getUser() !== $editingUser);

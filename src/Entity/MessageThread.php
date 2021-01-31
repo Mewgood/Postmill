@@ -49,10 +49,10 @@ class MessageThread {
     }
 
     /**
-     * @return User[]|Collection|Selectable
+     * @return User[]
      */
-    public function getParticipants(): Collection {
-        return $this->participants;
+    public function getParticipants(): array {
+        return $this->participants->getValues();
     }
 
     /**
@@ -69,10 +69,10 @@ class MessageThread {
     }
 
     /**
-     * @return Message[]|Collection|Selectable
+     * @return Message[]
      */
-    public function getMessages(): Collection {
-        return $this->messages;
+    public function getMessages(): array {
+        return $this->messages->getValues();
     }
 
     public function addMessage(Message $message): void {

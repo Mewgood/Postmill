@@ -294,6 +294,7 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->mentions = new ArrayCollection();
         $this->addVote($this->createVote(self::VOTE_UP, $user, $ip));
         $this->updateLastActive();
+        $forum->addSubmission($this);
         $user->addSubmission($this);
     }
 
@@ -330,6 +331,10 @@ class Submission implements DomainEvents, Visibility, Votable {
     }
 
     public function setMediaType(string $mediaType): void {
+        if (!\in_array($mediaType, self::MEDIA_TYPES, true)) {
+            throw new \InvalidArgumentException("Bad media type '$mediaType'");
+        }
+
         if ($mediaType === self::MEDIA_IMAGE && $this->url !== null) {
             throw new \BadMethodCallException(
                 'Submission with URL cannot have image as media type'
@@ -346,7 +351,8 @@ class Submission implements DomainEvents, Visibility, Votable {
      */
     public function getComments(): array {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE));
+            ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE))
+            ->orderBy(['timestamp' => 'ASC']);
 
         return $this->comments->matching($criteria)->toArray();
     }
@@ -437,9 +443,9 @@ class Submission implements DomainEvents, Visibility, Votable {
             ->setMaxResults(1);
 
         $lastComment = $this->comments->matching($criteria)->first();
+        \assert($lastComment instanceof Comment || !$lastComment);
 
         if ($lastComment) {
-            \assert($lastComment instanceof Comment);
             $this->lastActive = $lastComment->getTimestamp();
         } else {
             $this->lastActive = $this->getTimestamp();
@@ -483,7 +489,7 @@ class Submission implements DomainEvents, Visibility, Votable {
     /**
      * @return Collection|SubmissionVote[]
      */
-    public function getVotes(): Collection {
+    protected function getVotes(): Collection {
         return $this->votes;
     }
 

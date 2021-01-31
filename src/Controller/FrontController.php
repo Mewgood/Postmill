@@ -44,7 +44,7 @@ final class FrontController extends AbstractController {
 
             if (
                 $listing === Submission::FRONT_SUBSCRIBED &&
-                $user->getSubscriptions()->isEmpty()
+                $user->getSubscriptionCount() === 0
             ) {
                 $listing = Submission::FRONT_FEATURED;
             }

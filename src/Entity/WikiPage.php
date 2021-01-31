@@ -84,10 +84,10 @@ class WikiPage {
     }
 
     /**
-     * @return Collection|WikiRevision[]
+     * @return WikiRevision[]
      */
-    public function getRevisions(): Collection {
-        return $this->revisions;
+    public function getRevisions(): array {
+        return $this->revisions->getValues();
     }
 
     public function getLatestRevision(): WikiRevision {

@@ -45,7 +45,7 @@ class VoteManagerTest extends TestCase {
         $user = EntityFactory::makeUser();
 
         $vote = $this->votable->createVote(Votable::VOTE_DOWN, $user, null);
-        $this->votable->getVotes()->add($vote);
+        $this->votable->addVote($vote);
 
         $this->entityManager
             ->expects($this->never())
@@ -62,7 +62,7 @@ class VoteManagerTest extends TestCase {
         $user = EntityFactory::makeUser();
 
         $vote = $this->votable->createVote(Votable::VOTE_DOWN, $user, null);
-        $this->votable->getVotes()->add($vote);
+        $this->votable->addVote($vote);
 
         $this->entityManager
             ->expects($this->once())

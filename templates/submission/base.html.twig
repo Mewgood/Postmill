@@ -9,7 +9,7 @@
   <section class="sidebar__section flow submission-meta">
     <p class="submission-meta__score">
       <strong class="submission-meta__vote-total">
-        {{- 'submission.total_votes'|trans({'%count%': submission.votes|length}) -}}
+        {{- 'submission.total_votes'|trans({'%count%': submission.upvotes + submission.downvotes}) -}}
       </strong>
 
       <span class="submission-meta__vote-stats">
