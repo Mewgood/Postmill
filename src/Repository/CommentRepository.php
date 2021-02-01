@@ -12,8 +12,8 @@ use App\Repository\Traits\PrunesIpAddressesTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use PagerWave\Adapter\DoctrineAdapter;
 use PagerWave\CursorInterface;
+use PagerWave\Extension\DoctrineOrm\QueryBuilderAdapter;
 use PagerWave\PaginatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -74,7 +74,11 @@ class CommentRepository extends ServiceEntityRepository implements PrunesIpAddre
             $queryModifier($qb);
         }
 
-        $cursor = $this->paginator->paginate(new DoctrineAdapter($qb), 25, new CommentPage());
+        $cursor = $this->paginator->paginate(
+            new QueryBuilderAdapter($qb),
+            25,
+            new CommentPage(),
+        );
 
         $this->hydrate(...$cursor);
 

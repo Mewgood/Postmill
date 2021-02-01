@@ -16,9 +16,9 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
-use PagerWave\Adapter\DoctrineAdapter;
 use PagerWave\Adapter\UnionAdapter;
 use PagerWave\CursorInterface;
+use PagerWave\Extension\DoctrineOrm\QueryBuilderAdapter;
 use PagerWave\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
@@ -122,8 +122,8 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
             ->setParameter('visibility', Comment::VISIBILITY_VISIBLE);
 
         $adapter = new UnionAdapter(
-            new DoctrineAdapter($submissionsQuery),
-            new DoctrineAdapter($commentsQuery)
+            new QueryBuilderAdapter($submissionsQuery),
+            new QueryBuilderAdapter($commentsQuery)
         );
 
         $cursor = $this->paginator->paginate($adapter, 25, new TimestampPage());
@@ -149,8 +149,8 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
             ->setParameter('visibilty', Comment::VISIBILITY_TRASHED);
 
         $adapter = new UnionAdapter(
-            new DoctrineAdapter($submissionsQuery),
-            new DoctrineAdapter($commentQuery)
+            new QueryBuilderAdapter($submissionsQuery),
+            new QueryBuilderAdapter($commentQuery)
         );
 
         $cursor = $this->paginator->paginate($adapter, 25, new TimestampPage());
@@ -185,7 +185,7 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
         $sth->bindValue(':id', $user->getId());
         $sth->execute();
 
-        while ($ip = $sth->fetchColumn()) {
+        while ($ip = $sth->fetchOne()) {
             yield $ip;
         }
     }

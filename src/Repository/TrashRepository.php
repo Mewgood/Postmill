@@ -11,9 +11,9 @@ use App\Pagination\TimestampPage;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\QueryBuilder;
-use PagerWave\Adapter\DoctrineAdapter;
 use PagerWave\Adapter\UnionAdapter;
 use PagerWave\CursorInterface;
+use PagerWave\Extension\DoctrineOrm\QueryBuilderAdapter;
 use PagerWave\PaginatorInterface;
 
 class TrashRepository {
@@ -88,8 +88,8 @@ class TrashRepository {
         $submissionQb = $this->submissionFinder->getQueryBuilder($submissionCriteria);
 
         $adapter = new UnionAdapter(
-            new DoctrineAdapter($submissionQb),
-            new DoctrineAdapter($commentQb)
+            new QueryBuilderAdapter($submissionQb),
+            new QueryBuilderAdapter($commentQb)
         );
 
         return $this->paginator->paginate($adapter, 25, new TimestampPage());
