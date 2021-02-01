@@ -15,8 +15,8 @@ use App\Security\Authentication;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use PagerWave\Adapter\DoctrineAdapter;
 use PagerWave\CursorInterface;
+use PagerWave\Extension\DoctrineOrm\QueryBuilderAdapter;
 use PagerWave\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -75,7 +75,7 @@ class SubmissionFinder {
         $qb = $this->getQueryBuilder($criteria);
 
         $results = $this->paginator->paginate(
-            new DoctrineAdapter($qb),
+            new QueryBuilderAdapter($qb),
             $criteria->getMaxPerPage(),
             new SubmissionPage($this->getSortMode($criteria->getSortBy()))
         );
