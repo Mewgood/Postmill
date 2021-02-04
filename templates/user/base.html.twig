@@ -7,9 +7,9 @@
 {% block sidebar %}
   {% from '_macros/time.html.twig' import relative_time %}
 
-  <section class="sidebar__section flow">
+  <section class="sidebar__section flow break-text">
     <header>
-      <h1 class="sidebar__title break-text">
+      <h1 class="sidebar__title">
         <a href="{{ path('user', {username: user.username}) }}">{{ user.username }}</a>
         {% if user.admin %}
           <span title="{{ 'user_flag.admin'|trans }}">
