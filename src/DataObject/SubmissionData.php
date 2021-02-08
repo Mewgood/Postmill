@@ -120,21 +120,21 @@ class SubmissionData implements NormalizeMarkdownInterface {
      *
      * @var int
      */
-    private $netScore;
+    private $netScore = 0;
 
     /**
      * @Groups("submission:read")
      *
      * @var int
      */
-    private $upvotes;
+    private $upvotes = 0;
 
     /**
      * @Groups("submission:read")
      *
      * @var int
      */
-    private $downvotes;
+    private $downvotes = 0;
 
     /**
      * @Groups("submission:read")
@@ -162,7 +162,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
      *
      * @var bool
      */
-    private $moderated;
+    private $moderated = false;
 
     /**
      * @Groups("submission:read")
@@ -178,67 +178,30 @@ class SubmissionData implements NormalizeMarkdownInterface {
      */
     private $locked = false;
 
-    public function __construct(Submission $submission = null) {
-        if ($submission) {
-            $this->id = $submission->getId();
-            $this->title = $submission->getTitle();
-            $this->url = $submission->getUrl();
-            $this->body = $submission->getBody();
-            $this->mediaType = $submission->getMediaType();
-            $this->commentCount = $submission->getCommentCount();
-            $this->timestamp = $submission->getTimestamp();
-            $this->lastActive = $submission->getLastActive();
-            $this->visibility = $submission->getVisibility();
-            $this->forum = $submission->getForum();
-            $this->user = $submission->getUser();
-            $this->netScore = $submission->getNetScore();
-            $this->upvotes = $submission->getUpvotes();
-            $this->downvotes = $submission->getDownvotes();
-            $this->image = $submission->getImage();
-            $this->sticky = $submission->isSticky();
-            $this->editedAt = $submission->getEditedAt();
-            $this->moderated = $submission->isModerated();
-            $this->userFlag = $submission->getUserFlag();
-            $this->locked = $submission->isLocked();
-        }
-    }
+    public static function createFromSubmission(Submission $submission): self {
+        $self = new self();
+        $self->id = $submission->getId();
+        $self->title = $submission->getTitle();
+        $self->url = $submission->getUrl();
+        $self->body = $submission->getBody();
+        $self->mediaType = $submission->getMediaType();
+        $self->commentCount = $submission->getCommentCount();
+        $self->timestamp = $submission->getTimestamp();
+        $self->lastActive = $submission->getLastActive();
+        $self->visibility = $submission->getVisibility();
+        $self->forum = $submission->getForum();
+        $self->user = $submission->getUser();
+        $self->netScore = $submission->getNetScore();
+        $self->upvotes = $submission->getUpvotes();
+        $self->downvotes = $submission->getDownvotes();
+        $self->image = $submission->getImage();
+        $self->sticky = $submission->isSticky();
+        $self->editedAt = $submission->getEditedAt();
+        $self->moderated = $submission->isModerated();
+        $self->userFlag = $submission->getUserFlag();
+        $self->locked = $submission->isLocked();
 
-    public function toSubmission(User $user, ?string $ip): Submission {
-        $submission = new Submission($this->title, $this->url, $this->body, $this->forum, $user, $ip);
-        $submission->setUserFlag($this->userFlag);
-        $submission->setSticky($this->sticky);
-        $submission->setLocked($this->locked);
-
-        if ($this->mediaType === Submission::MEDIA_IMAGE) {
-            $submission->setUrl(null);
-
-            if ($this->image) {
-                $submission->setImage($this->image);
-                $submission->setMediaType($this->mediaType);
-            }
-        }
-
-        return $submission;
-    }
-
-    public function updateSubmission(Submission $submission, User $editingUser): void {
-        if (
-            $this->url !== $submission->getUrl() ||
-            $this->title !== $submission->getTitle() ||
-            $this->body !== $submission->getBody()
-        ) {
-            $this->editedAt = new \DateTimeImmutable('@'.time());
-            $this->moderated = $this->moderated || $editingUser !== $submission->getUser();
-        }
-
-        $submission->setTitle($this->title);
-        $submission->setUrl($this->url);
-        $submission->setBody($this->body);
-        $submission->setEditedAt($this->editedAt);
-        $submission->setUserFlag($this->userFlag);
-        $submission->setModerated($this->moderated);
-        $submission->setSticky($this->sticky);
-        $submission->setLocked($this->locked);
+        return $self;
     }
 
     public function getId(): ?int {
@@ -341,7 +304,7 @@ class SubmissionData implements NormalizeMarkdownInterface {
         return $this->moderated;
     }
 
-    public function getUserFlag(): ?string {
+    public function getUserFlag(): string {
         return $this->userFlag;
     }
 

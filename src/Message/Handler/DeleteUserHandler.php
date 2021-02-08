@@ -2,6 +2,7 @@
 
 namespace App\Message\Handler;
 
+use App\DataTransfer\SubmissionManager;
 use App\DataTransfer\VoteManager;
 use App\Entity\Comment;
 use App\Entity\Contracts\Votable;
@@ -12,7 +13,6 @@ use App\Entity\Submission;
 use App\Entity\User;
 use App\Entity\UserBlock;
 use App\Event\DeleteComment;
-use App\Event\DeleteSubmission;
 use App\Message\DeleteUser;
 use App\Repository\CommentRepository;
 use App\Repository\MessageRepository;
@@ -62,6 +62,11 @@ final class DeleteUserHandler implements MessageHandlerInterface {
     private $messages;
 
     /**
+     * @var SubmissionManager
+     */
+    private $submissionManager;
+
+    /**
      * @var SubmissionRepository
      */
     private $submissions;
@@ -82,6 +87,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         MessageBusInterface $messageBus,
         CommentRepository $comments,
         MessageRepository $messages,
+        SubmissionManager $submissionManager,
         SubmissionRepository $submissions,
         VoteManager $voteManager,
         int $batchSize
@@ -91,6 +97,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
         $this->messageBus = $messageBus;
         $this->comments = $comments;
         $this->messages = $messages;
+        $this->submissionManager = $submissionManager;
         $this->submissions = $submissions;
         $this->voteManager = $voteManager;
         $this->batchSize = $batchSize;
@@ -186,9 +193,7 @@ final class DeleteUserHandler implements MessageHandlerInterface {
                 \assert($submission instanceof Submission);
                 $dispatchAgain = true;
 
-                $event = new DeleteSubmission($submission);
-
-                $this->eventDispatcher->dispatch($event);
+                $this->submissionManager->delete($submission);
             }
 
             $this->entityManager->commit();

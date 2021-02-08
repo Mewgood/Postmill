@@ -45,6 +45,7 @@ final class DeleteListener implements EventSubscriberInterface {
         } elseif ($submission->hasVisibleComments()) {
             $submission->softDelete();
         } else {
+            $submission->getForum()->removeSubmission($submission);
             $this->entityManager->remove($submission);
         }
 

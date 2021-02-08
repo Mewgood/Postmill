@@ -17,7 +17,7 @@ final class SubmissionNormalizer implements
     use NormalizerAwareTrait;
 
     public function normalize($object, string $format = null, array $context = []): array {
-        $object = new SubmissionData($object);
+        $object = SubmissionData::createFromSubmission($object);
 
         return $this->normalizer->normalize($object, $format, $context);
     }
