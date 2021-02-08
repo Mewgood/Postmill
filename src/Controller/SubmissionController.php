@@ -1,28 +1,21 @@
 <?php
 
-/** @noinspection PhpUnusedParameterInspection */
-
 namespace App\Controller;
 
 use App\DataObject\SubmissionData;
+use App\DataTransfer\SubmissionManager;
 use App\Entity\Comment;
 use App\Entity\Forum;
-use App\Entity\ForumLogSubmissionLock;
-use App\Entity\ForumLogSubmissionRestored;
 use App\Entity\Submission;
-use App\Event\DeleteSubmission;
 use App\Form\DeleteReasonType;
 use App\Form\SubmissionType;
-use App\Message\NewSubmission;
 use App\Repository\CommentRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
  * @Entity("forum", expr="repository.findOneOrRedirectToCanonical(forum_name, 'forum_name')")
@@ -36,13 +29,13 @@ final class SubmissionController extends AbstractController {
     private $comments;
 
     /**
-     * @var EntityManagerInterface
+     * @var SubmissionManager
      */
-    private $entityManager;
+    private $manager;
 
-    public function __construct(CommentRepository $comments, EntityManagerInterface $entityManager) {
+    public function __construct(CommentRepository $comments, SubmissionManager $manager) {
         $this->comments = $comments;
-        $this->entityManager = $entityManager;
+        $this->manager = $manager;
     }
 
     /**
@@ -107,7 +100,7 @@ final class SubmissionController extends AbstractController {
      *
      * @IsGranted("ROLE_USER")
      */
-    public function submit(Request $request, ?Forum $forum): Response {
+    public function submit(?Forum $forum, Request $request): Response {
         $data = new SubmissionData();
         $data->setForum($forum);
 
@@ -115,12 +108,10 @@ final class SubmissionController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $submission = $data->toSubmission($this->getUser(), $request->getClientIp());
+            $user = $this->getUserOrThrow();
+            $ip = $request->getClientIp();
 
-            $this->entityManager->persist($submission);
-            $this->entityManager->flush();
-
-            $this->dispatchMessage(new NewSubmission($submission));
+            $submission = $this->manager->submit($data, $user, $ip);
 
             return $this->redirect($this->generateSubmissionUrl($submission));
         }
@@ -136,15 +127,14 @@ final class SubmissionController extends AbstractController {
      * @IsGranted("edit", subject="submission", statusCode=403)
      */
     public function editSubmission(Forum $forum, Submission $submission, Request $request): Response {
-        $data = new SubmissionData($submission);
+        $data = SubmissionData::createFromSubmission($submission);
 
         $form = $this->createForm(SubmissionType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data->updateSubmission($submission, $this->getUser());
+            $this->manager->update($submission, $data, $this->getUser());
 
-            $this->entityManager->flush();
             $this->addFlash('success', 'flash.submission_edited');
 
             return $this->redirect($this->generateSubmissionUrl($submission));
@@ -161,7 +151,7 @@ final class SubmissionController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @Security("is_granted('mod_delete', submission)", statusCode=403)
      */
-    public function modDelete(Request $request, Forum $forum, Submission $submission, EventDispatcher $dispatcher): Response {
+    public function modDelete(Request $request, Forum $forum, Submission $submission): Response {
         $form = $this->createForm(DeleteReasonType::class, []);
         $form->handleRequest($request);
 
@@ -169,9 +159,7 @@ final class SubmissionController extends AbstractController {
             $user = $this->getUserOrThrow();
             $reason = $form->getData()['reason'];
 
-            $dispatcher->dispatch(
-                (new DeleteSubmission($submission))->asModerator($user, $reason)
-            );
+            $this->manager->remove($submission, $user, $reason);
 
             $this->addFlash('success', 'flash.submission_deleted');
 
@@ -191,10 +179,10 @@ final class SubmissionController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("delete_own", subject="submission", statusCode=403)
      */
-    public function deleteOwn(Request $request, Forum $forum, Submission $submission, EventDispatcher $dispatcher): Response {
+    public function deleteOwn(Request $request, Forum $forum, Submission $submission): Response {
         $this->validateCsrf('delete_submission', $request->request->get('token'));
 
-        $dispatcher->dispatch(new DeleteSubmission($submission));
+        $this->manager->delete($submission);
 
         $this->addFlash('success', 'flash.submission_deleted');
 
@@ -205,15 +193,10 @@ final class SubmissionController extends AbstractController {
      * @IsGranted("ROLE_USER")
      * @IsGranted("purge", subject="submission", statusCode=403)
      */
-    public function purge(
-        Forum $forum,
-        Submission $submission,
-        Request $request,
-        EventDispatcher $dispatcher
-    ): Response {
+    public function purge(Forum $forum, Submission $submission, Request $request): Response {
         $this->validateCsrf('purge_submission', $request->request->get('token'));
 
-        $dispatcher->dispatch((new DeleteSubmission($submission))->withPermanence());
+        $this->manager->purge($submission);
 
         $this->addFlash('success', 'flash.submission_purged');
 
@@ -227,9 +210,7 @@ final class SubmissionController extends AbstractController {
     public function restore(Forum $forum, Submission $submission, Request $request): Response {
         $this->validateCsrf('restore_submission', $request->request->get('token'));
 
-        $submission->restore();
-        $this->entityManager->persist(new ForumLogSubmissionRestored($submission, $this->getUser()));
-        $this->entityManager->flush();
+        $this->manager->restore($submission, $this->getUserOrThrow());
 
         $this->addFlash('success', 'flash.submission_restored');
 
@@ -247,10 +228,10 @@ final class SubmissionController extends AbstractController {
     public function lock(Request $request, Forum $forum, Submission $submission, bool $lock): Response {
         $this->validateCsrf('lock', $request->request->get('token'));
 
-        $submission->setLocked($lock);
+        $data = SubmissionData::createFromSubmission($submission);
+        $data->setLocked($lock);
 
-        $this->entityManager->persist(new ForumLogSubmissionLock($submission, $this->getUser(), $lock));
-        $this->entityManager->flush();
+        $this->manager->update($submission, $data, $this->getUserOrThrow());
 
         if ($lock) {
             $this->addFlash('success', 'flash.submission_locked');
@@ -272,9 +253,10 @@ final class SubmissionController extends AbstractController {
     public function pin(Request $request, Forum $forum, Submission $submission, bool $pin): Response {
         $this->validateCsrf('pin', $request->request->get('token'));
 
-        $submission->setSticky($pin);
+        $data = SubmissionData::createFromSubmission($submission);
+        $data->setSticky($pin);
 
-        $this->entityManager->flush();
+        $this->manager->update($submission, $data, $this->getUserOrThrow());
 
         if ($pin) {
             $this->addFlash('success', 'flash.submission_pinned');

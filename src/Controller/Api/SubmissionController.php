@@ -4,16 +4,14 @@ namespace App\Controller\Api;
 
 use App\Controller\AbstractController;
 use App\DataObject\SubmissionData;
+use App\DataTransfer\SubmissionManager;
 use App\Entity\Submission;
-use App\Event\DeleteSubmission;
 use App\SubmissionFinder\Criteria;
 use App\SubmissionFinder\SubmissionFinder;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -24,9 +22,8 @@ final class SubmissionController extends AbstractController {
      * @Route("", methods={"GET"})
      */
     public function list(Request $request, SubmissionFinder $finder): Response {
-        \assert($this->getUser() !== null);
-
-        $sortBy = $request->query->get('sortBy', $this->getUser()->getFrontPageSortMode());
+        $user = $this->getUserOrThrow();
+        $sortBy = $request->query->get('sortBy', $user->getFrontPageSortMode());
 
         if (!\in_array($sortBy, Submission::SORT_OPTIONS, true)) {
             return $this->json(['message' => 'unknown sort mode'], 400);
@@ -34,7 +31,7 @@ final class SubmissionController extends AbstractController {
 
         $criteria = new Criteria($sortBy);
 
-        switch ($request->query->get('filter', $this->getUser()->getFrontPage())) {
+        switch ($request->query->get('filter', $user->getFrontPage())) {
         case Submission::FRONT_FEATURED:
             $criteria
                 ->showFeatured()
@@ -74,18 +71,16 @@ final class SubmissionController extends AbstractController {
     /**
      * @Route("", methods={"POST"})
      */
-    public function create(EntityManagerInterface $em, Request $request): Response {
+    public function create(SubmissionManager $manager, Request $request): Response {
         return $this->apiCreate(SubmissionData::class, [
             'normalization_groups' => ['submission:read', 'abbreviated_relations'],
             'denormalization_groups' => ['submission:create'],
             'validation_groups' => ['create'],
-        ], function (SubmissionData $data) use ($em, $request) {
-            $submission = $data->toSubmission($this->getUser(), $request->getClientIp());
+        ], function (SubmissionData $data) use ($manager, $request) {
+            $user = $this->getUserOrThrow();
+            $ip = $request->getClientIp();
 
-            $em->persist($submission);
-            $em->flush();
-
-            return $submission;
+            return $manager->submit($data, $user, $ip);
         });
     }
 
@@ -93,17 +88,15 @@ final class SubmissionController extends AbstractController {
      * @Route("/{id}", methods={"PUT"})
      * @IsGranted("edit", subject="submission")
      */
-    public function update(Submission $submission, EntityManagerInterface $em): Response {
-        $data = new SubmissionData($submission);
+    public function update(Submission $submission, SubmissionManager $manager): Response {
+        $data = SubmissionData::createFromSubmission($submission);
 
         return $this->apiUpdate($data, SubmissionData::class, [
             'normalization_groups' => ['submission:read'],
             'denormalization_groups' => ['submission:update'],
             'validation_groups' => ['update'],
-        ], function (SubmissionData $data) use ($em, $submission): void {
-            $data->updateSubmission($submission, $this->getUser());
-
-            $em->flush();
+        ], function (SubmissionData $data) use ($manager, $submission): void {
+            $manager->update($submission, $data, $this->getUserOrThrow());
         });
     }
 
@@ -111,8 +104,8 @@ final class SubmissionController extends AbstractController {
      * @Route("/{id}", methods={"DELETE"})
      * @IsGranted("delete_own", subject="submission")
      */
-    public function delete(Submission $submission, EventDispatcherInterface $dispatcher): Response {
-        $dispatcher->dispatch(new DeleteSubmission($submission));
+    public function delete(Submission $submission, SubmissionManager $manager): Response {
+        $manager->delete($submission);
 
         return $this->createEmptyResponse();
     }

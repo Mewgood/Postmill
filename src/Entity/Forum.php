@@ -307,6 +307,10 @@ class Forum implements BackgroundImage, DomainEvents {
         }
     }
 
+    public function removeSubmission(Submission $submission): void {
+        $this->submissions->removeElement($submission);
+    }
+
     public function getCreated(): \DateTimeImmutable {
         return $this->created;
     }

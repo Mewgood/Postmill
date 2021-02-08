@@ -475,6 +475,16 @@ class Submission implements DomainEvents, Visibility, Votable {
     }
 
     public function restore(): void {
+        if (!\in_array($this->visibility, [
+            self::VISIBILITY_VISIBLE,
+            self::VISIBILITY_TRASHED,
+        ], true)) {
+            throw new \DomainException(sprintf(
+                'Cannot restore a submission in the "%s" state',
+                $this->visibility,
+            ));
+        }
+
         $this->visibility = self::VISIBILITY_VISIBLE;
     }
 

@@ -286,6 +286,15 @@ class SubmissionTest extends TestCase {
         );
     }
 
+    public function testCannotRestoreSoftDeleted(): void {
+        $submission = $this->submission();
+        $submission->softDelete();
+
+        $this->expectException(\DomainException::class);
+
+        $submission->restore();
+    }
+
     public function testGetForum(): void {
         $forum = EntityFactory::makeForum();
 
