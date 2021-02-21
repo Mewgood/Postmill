@@ -153,6 +153,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
      * URLs that need authentication to access.
      */
     public function authUrlProvider(): iterable {
+        yield ['/f/news/1/-/flair'];
         yield ['/subscribed/hot'];
         yield ['/subscribed/new'];
         yield ['/subscribed/active'];

@@ -10,14 +10,16 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class SubmissionVoter extends Voter {
     public const ATTRIBUTES = [
-        'view',
         'delete_own',
         'edit',
+        'flair',
         'lock',
         'mod_delete',
         'pin',
-        'restore',
         'purge',
+        'remove_flair',
+        'restore',
+        'view',
         'vote',
     ];
 
@@ -50,6 +52,8 @@ final class SubmissionVoter extends Voter {
             return $this->canDeleteOwn($subject, $user);
         case 'edit':
             return $this->canEdit($subject, $user);
+        case 'flair':
+            return $this->canFlair($subject, $user);
         case 'lock':
             return $this->canLock($subject, $user);
         case 'mod_delete':
@@ -58,6 +62,8 @@ final class SubmissionVoter extends Voter {
             return $this->canPin($subject, $user);
         case 'purge':
             return $this->canPurge($subject, $token);
+        case 'remove_flair':
+            return $this->canRemoveFlair($subject, $user);
         case 'restore':
             return $this->canRestore($subject, $user);
         case 'vote':
@@ -88,6 +94,18 @@ final class SubmissionVoter extends Voter {
         }
 
         if ($submission->getUser() !== $user) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function canFlair(Submission $submission, User $user): bool {
+        if (!$submission->getForum()->userIsModerator($user)) {
+            return false;
+        }
+
+        if (\count($submission->getFlairs()) >= 3) {
             return false;
         }
 
@@ -139,6 +157,10 @@ final class SubmissionVoter extends Voter {
     }
 
     private function canLock(Submission $submission, User $user): bool {
+        return $submission->getForum()->userIsModerator($user);
+    }
+
+    private function canRemoveFlair(Submission $submission, User $user): bool {
         return $submission->getForum()->userIsModerator($user);
     }
 

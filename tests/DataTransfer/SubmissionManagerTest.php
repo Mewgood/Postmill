@@ -2,8 +2,10 @@
 
 namespace App\Tests\DataTransfer;
 
+use App\DataObject\CustomTextFlairData;
 use App\DataObject\SubmissionData;
 use App\DataTransfer\SubmissionManager;
+use App\Entity\CustomTextFlair;
 use App\Entity\ForumLogSubmissionLock;
 use App\Entity\ForumLogSubmissionRestored;
 use App\Entity\Image;
@@ -14,6 +16,7 @@ use App\Tests\Fixtures\Factory\EntityFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -221,6 +224,36 @@ class SubmissionManagerTest extends TestCase {
         $logEntries = iterator_to_array($forum->getPaginatedLogEntries(1));
         $this->assertCount(1, $logEntries);
         $this->assertInstanceOf(ForumLogSubmissionRestored::class, $logEntries[0]);
+    }
+
+    public function testAddFlair(): void {
+        $submission = EntityFactory::makeSubmission();
+        $data = new CustomTextFlairData();
+        $data->setText('Crap post');
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->manager->addFlair($data, $submission);
+
+        $this->assertCount(1, $submission->getFlairs());
+        $this->assertSame('Crap post', $submission->getFlairs()[0]->getLabel());
+    }
+
+    public function testRemoveFlairsById(): void {
+        $submission = EntityFactory::makeSubmission();
+        $flair1 = new CustomTextFlair('remove');
+        $submission->addFlair($flair1);
+        $flair2 = new CustomTextFlair('remain');
+        $submission->addFlair($flair2);
+
+        $this->manager->removeFlairsById([
+            $flair1->getId()->toString(),
+            Uuid::uuid4()->toString(), // ignore non-existent flair
+        ], $submission);
+
+        $this->assertCount(1, $submission->getFlairs());
+        $this->assertEquals('remain', $submission->getFlairs()[0]->getLabel());
     }
 
     private function expectPersistAndDispatch(Submission $submission): void {

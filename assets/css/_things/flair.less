@@ -1,0 +1,30 @@
+.flair {
+  align-items: center;
+  background: var(--accent);
+  border: solid 1px var(--accent-alt);
+  border-radius: 4px;
+  color: var(--accent-fg);
+  display: inline-flex;
+  font-weight: 500;
+  overflow: hidden;
+  transition: opacity 0.3s;
+
+  &__label {
+    font-size: 0.75em;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+  }
+
+  &__buttons {
+    line-height: 0;
+  }
+
+  &__button {
+    padding-right: 0.125em;
+    transition: opacity 0.1s;
+
+    &:not(:hover):not(:focus) {
+      opacity: 0.5;
+    }
+  }
+}

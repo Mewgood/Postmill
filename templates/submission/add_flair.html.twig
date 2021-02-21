@@ -1,0 +1,17 @@
+{% extends 'submission/base.html.twig' %}
+{% from 'submission/_macros.html.twig' import submission %}
+{% from '_macros/form.html.twig' import button_row %}
+
+{% block title 'action.flair'|trans %}
+
+{% block body %}
+  <h1>{{ block('title') }}</h1>
+
+  {{ submission(submission) }}
+
+  {{ form_start(form) }}
+    {{ form_rest(form) }}
+
+    {{ button_row('action.flair'|trans) }}
+  {{ form_end(form) }}
+{% endblock body %}
