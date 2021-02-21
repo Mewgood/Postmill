@@ -281,6 +281,12 @@
       "css": "tag",
       "code": 59427,
       "src": "fontawesome"
+    },
+    {
+      "uid": "254077e7c0a9e6d303b32f9c35b96a40",
+      "css": "fire",
+      "code": 59428,
+      "src": "fontawesome"
     }
   ]
 }

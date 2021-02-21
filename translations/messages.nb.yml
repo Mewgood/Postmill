@@ -14,6 +14,7 @@ action.downvote: Stem ned
 action.edit: Rediger
 action.edit_theme: Rediger tema
 action.filter: Filtrer
+action.flair: Marker
 action.global_ban: Utesteng globalt
 action.go_to_home_page: Tilbake til forsiden
 action.hide: Skjul
@@ -24,6 +25,7 @@ action.pin: Klistre
 action.post: Send
 action.purge: Fjern permanent
 action.remove: Fjern
+action.remove_flair: Fjern merke
 action.restore: Gjenopprett
 action.retract_downvote: Fjern nedstemning
 action.retract_upvote: Fjern oppstemning
@@ -284,6 +286,7 @@ label.expires: Utløper
 label.featured: Utvalgt
 label.filter_by: Filtrer på
 label.filter_on_mode: 'Filtrer på: %mode%'
+label.flair: Merke
 label.forum: Forum
 label.forums_count: '{0} Ingen fora|{1} %count% forum|]1,Inf[ %count% fora'
 label.forums_with_this_tag: Fora med dette stikkordet
@@ -347,6 +350,7 @@ label.submissions_short: S
 label.subscribed: Subscribed
 label.suggested_theme: Suggested theme
 label.tags: Stikkord
+label.text: Tekst
 label.timezone: Time zone
 label.title: Tittel
 label.to: Til
@@ -457,6 +461,7 @@ placeholder.deleted: '[slettet]'
 placeholder.repeat: (repeter)
 
 prompt.confirm_comment_delete: Er du sikker på at du vil slette denne kommentaren?
+prompt.confirm_flair_remove: Er du sikker på at du vil fjerne dette merket?
 prompt.confirm_message_delete: Er du sikker på at du vil slette denne meldigen?
 prompt.confirm_submission_delete: Er du sikker på at du vil slette dette innlegget?
 prompt.confirm_theme_delete: Er du sikker på at du vil slette dette temaet? Alle brukere som valgte det vil få valget sitt reversert.

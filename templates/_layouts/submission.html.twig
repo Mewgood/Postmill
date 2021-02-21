@@ -10,32 +10,9 @@
 
       <div class="submission__inner">
         <header class="submission__header">
-          <h1 class="submission__title break-text">
-            <a href="{{ block('submission_url') }}"
-               class="submission__link"
-               {% if link_to is constant('App\\Entity\\Constants\\SubmissionLinkDestination::URL') %}
-                 rel="{{ submission.url ? 'nofollow noreferrer noopener' }}"
-                 target="{{ open_external ? '_blank' : '_self' }}"
-               {% endif %}>
-              {%- if has_thumbnail -%}
-                <img src="{{ submission.image|imagine_filter('submission_thumbnail_1x') }}"
-                     srcset="{{ submission.image|imagine_filter('submission_thumbnail_2x') }} 2x"
-                     class="submission__thumb"
-                     alt=""
-                     width="70"
-                     height="70"
-                     aria-hidden="true">
-              {%- endif -%}
-
-              {%- if raw_title is not null -%}
-                {{ raw_title|raw }}
-              {%- elseif submission.softDeleted -%}
-                <del>{{ 'placeholder.deleted'|trans }}</del>
-              {%- else -%}
-                {{ submission.title }}
-              {%- endif -%}
-            </a>
-
+          <div class="submission__title-row break-text">
+            {{- block('submission_flairs') -}}
+            {{- block('submission_title') -}}
             {% if submission.sticky %}
               <span class="submission__sticky-icon"
                     title="{{ 'submission.pinned'|trans }}">
@@ -64,7 +41,7 @@
                 </a>
               {%- endwith -%}
             {% endif %}
-          </h1>
+          </div>
 
           <p class="submission__info">
             <span class="text-sm fg-muted">
@@ -109,6 +86,82 @@
     </div>
   </article>
 {% endblock submission %}
+
+{%- block submission_title -%}
+  {%- apply spaceless -%}
+    <h1 class="submission__title unheaderize inline">
+      <a href="{{ block('submission_url') }}"
+         class="submission__link"
+        {% if link_to is constant('App\\Entity\\Constants\\SubmissionLinkDestination::URL') %}
+          rel="{{ submission.url ? 'nofollow noreferrer noopener' }}"
+          target="{{ open_external ? '_blank' : '_self' }}"
+        {% endif %}>
+        {%- if has_thumbnail -%}
+          <img src="{{ submission.image|imagine_filter('submission_thumbnail_1x') }}"
+               srcset="{{ submission.image|imagine_filter('submission_thumbnail_2x') }} 2x"
+               class="submission__thumb"
+               alt=""
+               width="70"
+               height="70"
+               aria-hidden="true">
+        {%- endif -%}
+
+        {%- if raw_title is not null -%}
+          {{ raw_title|raw }}
+        {%- elseif submission.softDeleted -%}
+          <del>{{ 'placeholder.deleted'|trans }}</del>
+        {%- else -%}
+          {{ submission.title }}
+        {%- endif -%}
+      </a>
+    </h1>
+  {%- endapply -%}
+{%- endblock submission_title -%}
+
+{% block submission_flairs %}
+  {%- if submission.flairs is not empty -%}
+    {%- set can_remove_flairs = is_granted('remove_flair', submission) -%}
+    {%- if can_remove_flairs -%}
+      <form action="{{ path('submission_remove_flairs', {
+            forum_name: submission.forum.name,
+            submission_id: submission.id,
+            slug: submission.title|slugify,
+          }) }}"
+          method="POST"
+          class="submission__flairs flex flex--inline flex--slim-gutters">
+        <input type="hidden" name="token" value="{{ csrf_token('remove_flair') }}">
+        {%- for flair in submission.flairs -%}
+          {{ block('submission_flair_item') }}
+        {%- endfor -%}
+      </form>
+    {%- else -%}
+      {%- for flair in submission.flairs -%}
+        {{ block('submission_flair_item') }}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endif -%}
+{% endblock submission_flairs %}
+
+{% block submission_flair_item %}
+  {% from '_macros/icon.html.twig' import icon %}
+  <span class="flair" aria-label="{{ 'label.flair'|trans }}">
+    <span class="flair__label">{{ flair.label }}</span>
+
+    {% if can_remove_flairs %}
+      <span class="flair__buttons">
+        <button class="unbuttonize flair__button"
+                name="id[]"
+                value="{{ flair.id }}"
+                title="{{ 'action.remove_flair'|trans }}"
+                data-controller="dialog"
+                data-action="dialog#confirm"
+                data-dialog-text-value="{{ 'prompt.confirm_flair_remove'|trans }}">
+          {{ icon('cancel-circled', '', 'icon--no-align') }}
+        </button>
+      </span>
+    {% endif %}
+  </span>
+{% endblock submission_flair_item %}
 
 {%- block submission_url -%}
   {%- if submission.url and link_to is constant('App\\Entity\\Constants\\SubmissionLinkDestination::URL') -%}
@@ -233,6 +286,7 @@
     {% if submission.user is not same as(self) %}
       {{ block('submission_nav_edit') }}
     {% endif %}
+    {{ block('submission_nav_flair') }}
     {{ block('submission_nav_restore') }}
     {{ block('submission_nav_purge') }}
     {{ block('submission_nav_mod_delete') }}
@@ -254,6 +308,22 @@
     </li>
   {% endif %}
 {% endblock submission_nav_actions %}
+
+{% block submission_nav_flair %}
+  {%- from '_macros/icon.html.twig' import icon -%}
+  {%- if is_granted('flair', submission) -%}
+    <li>
+      <a href="{{ path('submission_flair', {
+        forum_name: submission.forum.name,
+        submission_id: submission.id,
+        slug: submission.title|slugify,
+      }) }}" class="{{ nav_link_classes }}">
+        {{- icon('fire') }}
+        {{ 'action.flair'|trans -}}
+      </a>
+    </li>
+  {%- endif -%}
+{% endblock submission_nav_flair %}
 
 {% block submission_nav_purge %}
   {% from '_macros/icon.html.twig' import icon %}

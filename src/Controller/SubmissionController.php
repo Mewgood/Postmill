@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\DataObject\CustomTextFlairData;
 use App\DataObject\SubmissionData;
 use App\DataTransfer\SubmissionManager;
 use App\Entity\Comment;
 use App\Entity\Forum;
 use App\Entity\Submission;
+use App\Form\CustomTextFlairType;
 use App\Form\DeleteReasonType;
 use App\Form\SubmissionType;
 use App\Repository\CommentRepository;
+use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -269,6 +272,55 @@ final class SubmissionController extends AbstractController {
         }
 
         return $this->redirect($this->generateSubmissionUrl($submission));
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("flair", subject="submission", statusCode=403)
+     */
+    public function addFlair(
+        Forum $forum,
+        Submission $submission,
+        Request $request
+    ): Response {
+        $data = new CustomTextFlairData();
+        $form = $this->createForm(CustomTextFlairType::class, $data);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->addFlair($data, $submission);
+
+            return $this->redirect($this->generateSubmissionUrl($submission));
+        }
+
+        return $this->render('submission/add_flair.html.twig', [
+            'forum' => $forum,
+            'form' => $form->createView(),
+            'submission' => $submission,
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @IsGranted("remove_flair", subject="submission", statusCode=403)
+     */
+    public function removeFlairs(
+        Forum $forum,
+        Submission $submission,
+        Request $request
+    ): Response {
+        $this->validateCsrf('remove_flair', $request->request->get('token'));
+
+        $ids = array_filter($request->request->all('id'), 'is_string');
+        $ids = array_filter($ids, [Uuid::class, 'isValid']);
+
+        $this->manager->removeFlairsById($ids, $submission);
+
+        if (!$request->headers->has('Referer')) {
+            return $this->redirect($this->generateSubmissionUrl($submission));
+        }
+
+        return $this->redirect($request->headers->get('Referer'));
     }
 
     private function redirectAfterDelete(Request $request): Response {

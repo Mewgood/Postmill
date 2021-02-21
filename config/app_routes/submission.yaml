@@ -92,6 +92,20 @@ unpin:
     methods: [POST]
     requirements: { submission_id: "%number_regex%" }
 
+submission_flair:
+    controller: App\Controller\SubmissionController::addFlair
+    defaults: { slug: '-' }
+    path: /f/{forum_name}/{submission_id}/{slug}/flair
+    methods: [GET, POST]
+    requirements: { submission_id: "%number_regex%" }
+
+submission_remove_flairs:
+    controller: App\Controller\SubmissionController::removeFlairs
+    defaults: { slug: '-' }
+    path: /f/{forum_name}/{submission_id}/{slug}/remove_flairs
+    methods: [POST]
+    requirements: { submission_id: "%number_regex%", flair_id: "%uuid_regex%" }
+
 submit:
     controller: App\Controller\SubmissionController::submit
     defaults: { forum_name: null }

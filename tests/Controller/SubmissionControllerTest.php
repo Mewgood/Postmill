@@ -377,4 +377,40 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertCount(1, $link);
         $this->assertStringContainsString('://', $link->attr('href'));
     }
+
+    public function testCanAddFlairsToSubmissions(): void {
+        $client = self::createAdminClient();
+        $client->request('GET', '/f/news/1');
+        $this->assertResponseIsSuccessful();
+
+        $client->clickLink('Flair');
+        $this->assertResponseIsSuccessful();
+
+        $client->submitForm('Flair', [
+            'custom_text_flair[text]' => 'Some flair',
+        ]);
+        $this->assertResponseRedirects('/f/news/1/a-submission-with-a-url-and-body');
+
+        $client->followRedirect();
+        $this->assertSelectorExists('.flair__label');
+        $this->assertSelectorTextContains('.flair__label', 'Some flair');
+    }
+
+    public function testCanRemoveFlairsFromSubmissions(): void {
+        $client = self::createAdminClient();
+        $client->request('GET', '/f/news/1/-/flair');
+        $this->assertResponseIsSuccessful();
+        $client->submitForm('Flair', [
+            'custom_text_flair[text]' => 'Some flair',
+        ]);
+        $this->assertResponseRedirects('/f/news/1/a-submission-with-a-url-and-body');
+        $crawler = $client->followRedirect();
+        $this->assertSelectorExists('.flair');
+
+        $client->submit($crawler->filter('[title="Remove flair"]')->form());
+        $this->assertResponseRedirects('/f/news/1/a-submission-with-a-url-and-body');
+
+        $client->followRedirect();
+        $this->assertSelectorNotExists('.flair');
+    }
 }

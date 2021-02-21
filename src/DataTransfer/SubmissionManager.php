@@ -2,7 +2,10 @@
 
 namespace App\DataTransfer;
 
+use App\DataObject\CustomTextFlairData;
 use App\DataObject\SubmissionData;
+use App\Entity\CustomTextFlair;
+use App\Entity\Flair;
 use App\Entity\ForumLogSubmissionLock;
 use App\Entity\ForumLogSubmissionRestored;
 use App\Entity\Submission;
@@ -139,6 +142,33 @@ class SubmissionManager {
             $submission,
             $actingUser,
         ));
+
+        $this->entityManager->flush();
+    }
+
+    public function addFlair(
+        CustomTextFlairData $data,
+        Submission $submission
+    ): void {
+        $submission->addFlair(new CustomTextFlair($data->getText()));
+
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param string[] $ids
+     */
+    public function removeFlairsById(array $ids, Submission $submission): void {
+        $flairs = array_filter(
+            $submission->getFlairs(),
+            static function (Flair $flair) use ($ids) {
+                return \in_array($flair->getId()->toString(), $ids, false);
+            },
+        );
+
+        foreach ($flairs as $flair) {
+            $submission->removeFlair($flair);
+        }
 
         $this->entityManager->flush();
     }

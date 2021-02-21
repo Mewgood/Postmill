@@ -15,9 +15,9 @@ OUT="$PROJECT_ROOT/assets/icons/icons.svg"
 
 trap 'rm -rf "$TEMP"' EXIT
 
-SESSION_ID=$(curl -fsSL -X POST -F "config=@$PROJECT_ROOT/assets/fontello.json" http://fontello.com/)
+SESSION_ID=$(curl -fsSL -X POST -F "config=@$PROJECT_ROOT/assets/fontello.json" https://fontello.com/)
 TEMP_ZIP=$(mktemp)
-curl -fsSL -o "$TEMP_ZIP" "http://fontello.com/$SESSION_ID/get"
+curl -fsSL -o "$TEMP_ZIP" "https://fontello.com/$SESSION_ID/get"
 unzip -jn "$TEMP_ZIP" -d "$TEMP"
 
 font-blast "$TEMP/postmill.svg" "$TEMP"

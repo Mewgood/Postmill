@@ -3,6 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Contracts\Votable;
+use App\Entity\CustomTextFlair;
 use App\Entity\Exception\BannedFromForumException;
 use App\Entity\Forum;
 use App\Entity\ForumBan;
@@ -425,6 +426,29 @@ class SubmissionTest extends TestCase {
 
     public function testGetNetScore(): void {
         $this->assertSame(1, $this->submission()->getNetScore());
+    }
+
+    public function testGetFlairs(): void {
+        $this->assertSame([], $this->submission()->getFlairs());
+    }
+
+    public function testAddFlair(): void {
+        $submission = $this->submission();
+        $flair = new CustomTextFlair('foo');
+
+        $submission->addFlair($flair);
+
+        $this->assertSame([$flair], $submission->getFlairs());
+    }
+
+    public function testRemoveFlair(): void {
+        $submission = $this->submission();
+        $flair = new CustomTextFlair('foo');
+        $submission->addFlair($flair);
+
+        $submission->removeFlair($flair);
+
+        $this->assertSame([], $submission->getFlairs());
     }
 
     public function testOnCreate(): void {

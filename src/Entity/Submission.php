@@ -260,6 +260,18 @@ class Submission implements DomainEvents, Visibility, Votable {
     private $netScore = 0;
 
     /**
+     * @ORM\JoinTable(name="submissions_flairs", joinColumns={
+     *     @ORM\JoinColumn(name="submission_id", referencedColumnName="id"),
+     * }, inverseJoinColumns={
+     *     @ORM\JoinColumn(name="flair_id", referencedColumnName="id"),
+     * })
+     * @ORM\ManyToMany(targetEntity="Flair", cascade={"persist", "remove"})
+     *
+     * @var Flair[]|Collection|Selectable
+     */
+    private $flairs;
+
+    /**
      * @ORM\Column(type="tsvector", nullable=true)
      *
      * @var string
@@ -292,6 +304,7 @@ class Submission implements DomainEvents, Visibility, Votable {
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->mentions = new ArrayCollection();
+        $this->flairs = new ArrayCollection();
         $this->addVote($this->createVote(self::VOTE_UP, $user, $ip));
         $this->updateLastActive();
         $forum->addSubmission($this);
@@ -648,6 +661,23 @@ class Submission implements DomainEvents, Visibility, Votable {
 
     public function getNetScore(): int {
         return $this->netScore;
+    }
+
+    /**
+     * @return Flair[]
+     */
+    public function getFlairs(): array {
+        return $this->flairs->getValues();
+    }
+
+    public function addFlair(Flair $flair): void {
+        if (!$this->flairs->contains($flair)) {
+            $this->flairs->add($flair);
+        }
+    }
+
+    public function removeFlair(Flair $flair): void {
+        $this->flairs->removeElement($flair);
     }
 
     public function onCreate(): Event {

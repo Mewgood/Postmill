@@ -42,6 +42,16 @@ class SubmissionRepository extends ServiceEntityRepository implements PrunesIpAd
             ->getQuery()
             ->getResult();
 
+        $this->getEntityManager()->createQueryBuilder()
+            ->select('PARTIAL s.{id}')
+            ->addSelect('fl')
+            ->from(Submission::class, 's')
+            ->leftJoin('s.flairs', 'fl')
+            ->where('s IN (?1)')
+            ->setParameter(1, $submissions)
+            ->getQuery()
+            ->getResult();
+
         if ($this->authentication->getUser()) {
             // hydrate submission votes for fast checking of user choice
             $this->_em->createQueryBuilder()
