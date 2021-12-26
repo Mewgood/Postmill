@@ -1,0 +1,614 @@
+action.add: Aggiungi
+action.ban: Banna
+action.block: Blocca
+action.clear: Cancella
+action.clear_all: Cancella tutto
+action.compare: Confronta
+action.create: Crea
+action.create_theme: Crea tema
+action.delete: Elimina
+action.delete_account: Elimina account
+action.delete_thread: Elimina thread
+action.dismiss: Chiudi
+action.downvote: Downvote
+action.edit: Modifica
+action.edit_theme: Modifca tema
+action.filter: Filtra
+action.flair: Flair
+action.global_ban: Ban globale
+action.go_to_home_page: Vai alla pagina principale
+action.hide: Nascondi
+action.lock: Congela
+action.log_in: Log in
+action.log_out: Log out
+action.pin: Fissa
+action.post: Post
+action.purge: Ripulisci
+action.remove: Rimuovi
+action.remove_flair: Rimuovi flair
+action.restore: Ripristina
+action.retract_downvote: Togli downvote
+action.retract_upvote: Togli upvote
+action.save: Salva
+action.save_changes: Salva cambiamenti
+action.search: Cerca
+action.see_full_list: Vedi la lista completa
+action.see_full_list_of_tags: Vedi la lista completa di tag
+action.send: Invia
+action.sign_up: Registrati
+action.subscribe: Iscriviti
+action.subscribe_via_rss: Iscriviti con RSS
+action.sync_themes: Sincronizza temi
+action.unban: Rimuovi ban
+action.unblock: Rimuovi blocco
+action.unhide: Mostra
+action.unlock: Scongela
+action.unpin: Non fissare più
+action.unsubscribe: Rimuovi iscrizione
+action.upvote: Upvote
+action.whitelist: Whitelist
+action.whitelist_remove: Elimina da whitelist
+
+add_moderator.title: Aggiungi un moderatore a %forum%
+
+background.light_background_image: Immagine di sfondo chiara
+background.dark_background_image: Immagine di sfondo scura
+background.mode: Modalità di visualizzazione
+background.center: Centra
+background.fit_to_page: Adatta alla pagina
+background.tile: Affianca
+
+bad_phrase.help: Questo strumento permette di impedire che certe parole o frasi vengano pubblicate. Può essere usato per prevenire lo spam, o per sopprimere il dissenso.
+bad_phrase.phrase: Frase
+bad_phrase.phrase_to_ban: Frase da vietare
+bad_phrase.search_title: Cerca frasi vietate
+bad_phrase.title: Frasi vietate
+bad_phrase.type_text: Testo
+
+ban_add.title: Banna un indirizzo IP
+
+ban_list.banned_by: Bannato da
+ban_list.expires: Scade
+ban_list.expires_never: mai
+ban_list.reason: Ragione
+ban_list.remove: Rimuovi ban
+ban_list.timestamp: Orario
+ban_list.user: Utente
+ban_list.user_none: niente
+
+banned.banned_account: Il tuo account è stato bannato.
+banned.banned_ip: '{1} Il tuo indirizzo IP, %ip%, è stato bannato.|]1,Inf[ Il tuo indirizzo IP, %ip%, ha ricevuto %formatted_count% ban:'
+banned.set_on_date: Ban aggiunto il giorno %date%.
+banned.set_on_date_for_range: Ban per intervallo di indirizzi IP aggiunto il giorno %date%.
+banned.title: Bannato
+banned.whitelisted: Questi ban non si applicano a te perché sei nella whitelist.
+banned.will_expire: Questo ban scade il giorno %date%.
+banned.will_not_expire: Questo ban non ha scadenza.
+
+comments.comments: Commenti
+comments.context.comment_reply: Rispondi al commento di %comment_author% in %submission_title% di %submission_author%
+comments.context.top_level_reply: Rispondi a %submission_title% di %submission_author%
+comments.edit_info: (modificato %edited_at%)
+comments.form_load_error: Errore nel caricamento del form. Per favore riprova.
+comments.info: '%user% ha scritto %timestamp%'
+comments.linear: Lineare
+comments.moderator_info: (modificato da un moderatore %edited_at%)
+comments.nested: Annidato
+comments.not_logged_in: Devi fare %login_link% o %register_link% per commentare.
+comments.not_logged_in_login_link_label: login
+comments.not_logged_in_register_link_label: registrarti
+comments.parent: Superiore
+comments.reply: Rispondi
+comments.replying_to_comment: Rispondendo a %user% (%id%)
+comments.return_to_forum: Ritorna a %forum%
+comments.thread_return: Guarda tutti i commenti
+comments.viewing_thread: Stai guardando un thread singolo di commenti.
+
+comment_form.create_title: Aggiungendo un commento
+comment_form.edit_title: Modificando un commento
+
+compose_message.title: Inviando un messaggio a %username%
+
+content.empty: Non c'è niente qui…
+
+create_forum.create_new_forum: Crea un nuovo forum
+
+delete_account.comments: Rimuove i suoi commenti.
+delete_account.lead: 'Eliminare un account provoca le seguenti:'
+delete_account.messages: Rimuove i suoi messaggi inviati.
+delete_account.metadata: Impedisce di fare login, anonimizza l'username, reimposta le preferenze, ed elimina tutti gli altri dati associati all'account.
+delete_account.submissions: Rimuove le sue pubblicazioni.
+delete_account.votes: Toglie tutti i suoi voti da pubblicazioni e commenti.
+
+edit_forum.title: Modificando %forum%
+
+edit_user.title: Modificando utente %username%
+
+flash.account_deletion_in_progress: L'account è in corso di eliminazione.
+flash.ban_added: L'indirizzo IP è stato bannato.
+flash.comment_purged: Il commento è stato ripulito.
+flash.comment_restored: Il commento è stato ripristinato.
+flash.delete_account_warning: Dopo aver eliminato il tuo account, non potrai mai più riaverlo!
+flash.delete_someone_elses_account_warning: Stai eliminando l'account di qualcun'altro! Dopo aver fatto ciò, l'utente non potrà mai più riaverlo.
+flash.editing_biography_of_other_user: Stai modificando la biografia di un altro utente.
+flash.editing_credentials_of_other_user: Stai modificando le credenziali di un altro utente. Questo può impedirgli di fare il login.
+flash.forum_deleted: Il forum e tutto il suo contenuto sono stati eliminati.
+flash.forum_moderator_added: L'utente è stato promosso moderatore.
+flash.forum_updated: I cambiamenti sono stati salvati.
+flash.no_cookies_verification: L'immagine non carica correttamente? Per favore assicurati di non aver bloccato i cookie e prova di nuovo.
+flash.no_entries_to_display: Non ci sono voci da mostrare.
+flash.no_messages: Non ci sono messaggi da mostrare.
+flash.no_moderated_forums: Non sei moderatore di alcun forum.
+flash.no_moderators: Questo forum non ha moderatori.
+flash.no_password_resets: La reimpostazione della password è stata disabilitata dall'amministratore.
+flash.notification_cleared: La notifica è stata cancellata con successo.
+flash.notifications_cleared: Le tue notifiche sono state cancellate.
+flash.page_locked: Questa pagina è bloccata.
+flash.page_unlocked: Questa pagina è stata sbloccata.
+flash.registration_closed: Le registrazioni sono state disabilitate dall'amministratore.
+flash.reset_password_email_sent: Un'email è stata inviata all'indirizzo che hai specificato.
+flash.site_settings_saved: Le impostazioni sono state salvate.
+flash.submission_deleted: La pubblicazione è stata eliminata.
+flash.submission_edited: La pubblicazione è stata modificata.
+flash.submission_is_locked: La pubblicazione è congelata. Non puoi aggiungere nuovi commenti.
+flash.submission_locked: La pubblicazione è stata congelata.
+flash.submission_pinned: La pubblicazione è stata fissata.
+flash.submission_purged: La pubblicazione è stata ripulita.
+flash.submission_restored: La pubblicazione è stata ripristinata.
+flash.submission_unlocked: La pubblicazione non è più congelata.
+flash.submission_unpinned: La pubblicazione non è più fissata.
+flash.too_many_characters: Hai inserito troppi caratteri (massimo %max%, %count% inseriti)
+flash.user_account_registered: Il tuo account è stato registrato.
+flash.user_biography_updated: La biografia è stata aggiornata.
+flash.user_blocked: L'utente è stato bloccato.
+flash.user_password_updated: La password è stata aggiornata.
+flash.user_settings_updated: Le impostazioni utente sono state aggiornate.
+flash.user_unblocked: L'utente è stato sbloccato.
+flash.user_unmodded: L'utente non è più moderatore.
+flash.user_was_banned: L'utente è stato bannato.
+flash.user_was_unbanned: L'utente non è più bannato.
+flash.user_whitelisted: L'utente è stato inserito nella whitelisted.
+flash.user_whitelist_removed: L'utente è stato tolto dalla whitelisted.
+flash.wiki_page_deleted: La pagina wiki è stata eliminata.
+flash.you_must_reauthenticate: Devi riautenticarti per accedere a questa pagina.
+
+forum.add_as_moderator: Aggiungi come moderatore
+forum.add_moderator: Aggiungi moderatore
+forum.create: Crea forum
+forum.created_on: 'Creato %timestamp%'
+forum.delete: Elimina forum
+forum.edit: Modifica forum
+forum.moderators: Moderatori
+forum.submission_count: '{0} Nessuna pubblicazione|{1} %formatted_count% pubblicazione|[1,Inf[ %formatted_count% pubblicazioni'
+forum.subscriber_count: '{0} Nessun iscritto|{1} %formatted_count% iscritto|[1,Inf[ %formatted_count% iscritti'
+
+forum_form.featured: Mostra nella pagina principale
+
+forum_list.page_title: Lista di forum
+forum_list.submission_count: Pubblicazioni
+forum_list.subscribers: Iscritti
+
+forum_moderators.last_seen: Visto l'ultima volta
+forum_moderators.since: Da
+forum_moderators.title: Moderatori di %forum_name%
+
+front.all: Tutti
+front.all_forums: Tutti i forum
+front.featured: In primo piano
+front.featured_forums: Forum in primo piano
+front.moderated_forums: Forum moderati
+front.no_forums: Non ci sono forum in primo piano da mostrare.
+front.no_subscriptions: Non sei iscritto ad alcun forum. Vengono mostrati i forum in primo piano.
+front.subscribed: Iscrizioni
+front.subscribed_forums: Forum a cui sei iscritto
+
+heading.credentials: Credenziali
+heading.delete_account: Elimina account
+heading.forums_you_moderate: Forum di cui sei moderatore
+heading.hide_this_forum: Nascondi questo forum
+heading.message_reply: "%sender% ha risposto %timestamp%"
+heading.message_thread: "%sender% ha scritto a %receiver% %timestamp%"
+heading.multi_forum_view: Vista multi-forum
+heading.notifications: Notifiche
+heading.privacy: Privacy
+heading.search: Cerca
+heading.search_results: '{0} Nessun risultato per %query%|{1} 1 risultato per %query%:|]1,Inf[ %count% risultati per %query%:'
+heading.this_user_is_banned: Questo utente è bannato!
+heading.you_were_mentioned: Sei stato menzionato da %user%
+heading.whitelisting: Aggiunta in whitelist
+
+help.allow_private_messages: Se disabilitato, solo amministratori, co-moderatori, e moderatori di forum a cui hai partecipato recentemente potranno inviarti messaggi privati.
+help.ban_reason: Questo non sarà mostrato all'utente bannato.
+help.ban_reason_logged: Questo non sarà mostrato all'utente bannato, ma comparirà nel registro pubblico della moderazione.
+help.blocking_users: Bloccare un utente nasconde i suoi post, gli impedisce di inviarti messaggi privati, e non riceverai notifiche quando ti risponde. Gli utenti bloccati possono comunque vedere i tuoi post pubblici.
+help.delete_forum_warning: Tutto il contenuto di questo forum verrà cancellato irreversibilmente!
+help.forum_description: Una descrizione breve del forum. I motori di ricerca mostreranno questa descrizione nei risultati di ricerca.
+help.forum_is_featured: Questo forum è in primo piano.
+help.forum_is_hidden: Hai scelto di nascondere questo forum.
+help.front_trash: Questa pagina mostra i post che sono stati eliminati da un moderatore nei forum in cui sei moderatore.
+help.hidden_forums: Impostando un forum come nascosto, non vedrai pubblicazioni da quel forum nelle sezioni "in primo piano" e "tutti". Puoi lo stesso moderare e iscriverti a forum che hai deciso di nascondere.
+help.hidden_forums_no_comment_hiding: I commenti aggiunti a forum nascosti sono lo stesso mostrati nella sezione "commenti recenti".
+help.notify_on_mentions: Ricevi una notifica quando qualcuno menziona il tuo profilo.
+help.notify_on_reply: Ricevi una notifica quando qualcuno risponde a un tuo post.
+help.poppers_enabled: I popper sono dei piccoli pannelli che mostrano informazioni e bottoni quando passi il mouse sopra certe cose (ad esempio gli username). Sono disponibili solo se usi il mouse.
+help.preferred_fonts: 'Lista di font che preferisci separati da virgola. Questi possono essere font installati sul tuo sistema, o appartenenti alla lista seguente di font messi a disposizione dal server.'
+help.preferred_fonts_aliases: 'Nomi dei font secondo il loro alias: '
+help.preferred_fonts_served: 'Font messi a disposizione dal server (disponibili ovunque): '
+help.required_field: Questo campo è richiesto
+help.the_following_changes_will_be_made: 'I seguenti cambiamenti saranno compiuti:'
+help.theme_selector: Asterisco significa come di default.
+help.whitelisting: Aggiungere questo utente alla whitelist gli permette di essere escluso dai ban per indirizzi IP e da alcune protezioni contro richieste massive. Inoltre, il suo indirizzo IP non sarà più memorizzato.
+help.will_appear_in_the_url: Comparirà nell'URL.
+
+inbox.message_reply_head: 'Re: %title%'
+
+item.op: Autore
+item.op_abbr: OP
+item.short_url: 'URL corto: '
+
+label.action: Azione
+label.admin: Amministratore
+label.all: Tutti
+label.allow_private_messages: Permetti messaggi privati
+label.any: Qualunque
+label.appearance: Apparenza
+label.appearance_and_behavior: Apparenza e comportamento
+label.author: Autore
+label.auto_fetch_submission_titles: Scarica automaticamente i titoli delle pubblicazioni
+label.background_image: Immagine di sfondo
+label.ban: Banna
+label.ban_ip_addresses: Bannare indirizzo/i IP?
+label.banned: Bannato
+label.banned_by: Bannato da
+label.bans: Ban
+label.biography: Biografia
+label.blocked: Bloccato
+label.body: Corpo
+label.bundled: In bundle
+label.comment: Commento
+label.comment_votes: Voti al commento
+label.comment_votes_short: VC
+label.comments: Commenti
+label.comments_short: C
+label.compare: Confronta
+label.confirm_forum_name: Conferma il nome del forum
+label.confirm_username: Conferma username
+label.creation_date: Data di creazione
+label.css: CSS
+label.dark: Scuro
+label.date: Data
+label.default: Default
+label.delete_account_confirmation: Comprendo che non c'è alcuna maniera di recuperare questo account una volta che è stato eliminato.
+label.delete_forum_confirmation: Comprendo che non c'è alcuna maniera di recuperare i dati una volta che sono stati eliminati.
+label.description: Descrizione
+label.email_address: Indirizzo email
+label.expires: Scade
+label.featured: In primo piano
+label.filter_by: Filtra per
+label.filter_on_mode: 'Filtro su: %mode%'
+label.flair: Flair
+label.forum: Forum
+label.forums_count: '{0} Nessun forum|{1} %count% forum|]1,Inf[ %count% forum'
+label.forums_with_this_tag: Forum con questo tag
+label.from: Da
+label.from_time: 'Da: %time%'
+label.front_page: Pagina principale
+label.full_width_display: Visualizzazione a massima ampiezza
+label.general: Generale
+label.id: ID
+label.image: Immagine
+label.ip_address: Indirizzo IP
+label.ip_addresses: Indirizzi IP
+label.language: Lingue
+label.last_message: Ultimo messaggio
+label.last_revised: Ultima modifica
+label.let_forums_override_preferred_theme: Permetti ai forum di sovrascrivere il tema preferito
+label.light: Chiaro
+label.media_type: Tipo di media
+label.message: Messaggio
+label.moderated: Moderato
+label.moderates: Modera
+label.name: Nome
+label.never: Mai
+label.new_password: Nuova password
+label.night_mode: Modalità notturna
+label.none: Nessuno
+label.not_whitelisted: Non in whitelist
+label.notify_on_mentions: Ricevi notifiche per menzioni
+label.notify_on_reply: Ricevi notifiche per risposte
+label.open_external_links_in_new_tab: Apri link esterni in una nuova scheda
+label.order_by: Ordina per
+label.overview: Panoramica
+label.participants: Partecipanti
+label.password: Password
+label.permissions: Permessi
+label.poppers_enabled: Abilita i popper
+label.posting: Postare
+label.preferred_fonts: Font preferiti
+label.preferred_theme: Tema preferito
+label.reason: Ragione
+label.reason_for_banning: Ragione del ban
+label.recent_changes: Cambiamenti recenti
+label.regex: Regex
+label.registration_date: Data di registrazione
+label.repeat_new_password: Nuova password (ripeti)
+label.repeat_password: Password (ripeti)
+label.replies: Risposte
+label.role: Ruolo
+label.search_query: Query di ricerca
+label.sent: Inviato
+label.show_post_previews: Mostra anteprime del post
+label.show_thumbnails: Mostra miniature
+label.sidebar: Barra laterale
+label.sort_by: Ordina per
+label.sort_by_mode: 'Ordina per: %mode%'
+label.source_code: Codice sorgente
+label.submission_votes: Voti alla pubblicazione
+label.submission_votes_short: VP
+label.submissions: Pubblicazioni
+label.submissions_short: P
+label.subscribed: Iscritto
+label.suggested_theme: Temi suggeriti
+label.system_preference: Impostazione di sistema
+label.tags: Tag
+label.text: Testo
+label.timezone: Fuso orario
+label.title: Titolo
+label.to: A
+label.toolbox: Strumenti
+label.type: Tipo
+label.unban: Togli ban
+label.unban_associated_ips: Rimuovi i ban per indirizzi IP associati
+label.upload_image: Carica immagine
+label.url: URL
+label.user_associated_with_ip: Utente associato all'IP
+label.username: Username
+label.verification: Verifica
+label.verification_image: Immagine di verifica
+label.whitelisted: In whitelist
+
+log.ban: '%user% bannato %banned% (scade: %expires%). Ragione: "%reason%"'
+log.comment_deletion: '%user% ha cancellato il commento di %author% in "%submission%"'
+log.comment_deletion_with_reason: '%user% ha cancellato il commento %author% in "%submission%". Ragione: "%reason%"'
+log.comment_restored: '%user% ha ripristinato il commento di %author% in "%submission%"'
+log.submission_deletion: '%user% ha eliminato la pubblicazione "%title%" di %author%'
+log.submission_deletion_with_reason: '%user% ha eliminato la pubblicazione "%title%" di %author%. Ragione: "%reason%"'
+log.submission_lock: '%user% ha congelato la sottomissione "%title%" di %author%'
+log.submission_restored: '%user% ha ripristinato la sottomissione "%title%" di %author%'
+log.submission_unlock: '%user% ha reso non più congelata la pubblicazione "%title%" di %author%'
+log.unban: '%user% ha rimosso il ban %banned%. Ragione: "%reason%"'
+
+login.no_account: Nessun account?
+login.remember_me: Resta collegato
+login.reset_password: Reimpostare la password?
+
+markdown.allowed: Markdown abilitato.
+markdown.another_paragraph: Un altro paragrafo
+markdown.blockquote: Citazione
+markdown.break: interruzione
+markdown.code_block: Blocco di codice
+markdown.emphasis: Enfasi
+markdown.forum: forum
+markdown.heading: 'Titolo %count%'
+markdown.help: Aiuto per la formattazione
+markdown.horizontal_rule: Riga orizzontale
+markdown.inline_code: Codice in linea
+markdown.line: linea
+markdown.link: Link
+markdown.list_item: Elemento di una lista
+markdown.paragraph: Paragrafo
+markdown.preview: Anteprima
+markdown.strikethrough: Barrato
+markdown.strong_emphasis: Enfasi forte
+markdown.user: utente
+markdown.wiki_page: wiki_page
+
+nav.actions: Azioni
+nav.add_ban: Aggiungi ban
+nav.alphabetical: Alfabetico
+nav.appearance: Apparenza
+nav.ban_history: Cronologia dei ban
+nav.bans: Ban
+nav.block_list: Lista degli utenti bloccati
+nav.block_user: Blocca utente
+nav.censorship: Censura
+nav.comments: Commenti
+nav.current_page: Pagina corrente
+nav.dark_mode: Modalità notturna
+nav.delete_forum: Elimina forum
+nav.delete_this_account: Elimina questo account
+nav.edit_biography: Modifica biografia
+nav.filter_results: Filtra i risultati
+nav.forum_bans: Ban del forum
+nav.forums: Forum
+nav.global_moderation_log: Registro globale della moderazione
+nav.hidden_forums: Forum nascosti
+nav.home: Home
+nav.ip_bans: Ban IP
+nav.jump_to_main_content: Vai al contenuto principale
+nav.jump_to_sidebar: Vai alla barra laterale
+nav.light_mode: Modalità chiara
+nav.logged_in_as_user: Collegato come %user%
+nav.messages: Messaggi
+nav.moderated: Moderato
+nav.moderation_log: Registro della moderazione
+nav.more: Altro
+nav.my_account: Il mio account
+nav.next: Prossimo
+nav.notifications: Notifiche
+nav.notifications_count: 'Notifiche (%count%)'
+nav.page_number: 'Pagina %number%'
+nav.permalink: Collegamento permanente
+nav.places: Luoghi
+nav.previous: Precedente
+nav.profile: Profilo
+nav.search: Cerca
+nav.site_settings: Impostazioni sito
+nav.submissions: Pubblicazioni
+nav.submit: Crea
+nav.themes: Temi
+nav.trash: Cestino
+nav.user: Utente
+nav.user_bans: Ban dell'utente
+nav.user_settings: Impostazioni utente
+nav.users: Utenti
+nav.wiki: Wiki
+
+number.id: '#%number%'
+
+placeholder.choose_one: Scegli uno…
+placeholder.default: (default)
+placeholder.deleted: '[eliminato]'
+placeholder.repeat: (ripeti)
+
+prompt.confirm_comment_delete: Sei sicuro di voler eliminare questo commento?
+prompt.confirm_flair_remove: Sei sicuro di voler rimuovere questo flair?
+prompt.confirm_message_delete: Sei sicuro di voler eliminare questo messaggio?
+prompt.confirm_submission_delete: Sei sicuro di voler eliminare questa pubblicazione?
+prompt.confirm_theme_delete: Sei sicuro di voler eliminare questo tema? Verrà annulltata la scelta ad ogni utente che lo aveva selezionato.
+prompt.confirm_wiki_delete: Sei sicuro di voler eliminare questa pagina wiki? Sarà cancellata permanentemente.
+
+request_password_reset.multiple_accounts_notice: Se hai più account registrati con lo stesso indirizzo email, riceverai un email per account.
+request_password_reset.no_confirmation_notice: Se non hai ricevuto un'email, probabilmente l'indirizzo inserito non è corretto. Per ragioni di privacy, non possiamo confermare se un utente con l'indirizzo email fornito esista oopure no.
+request_password_reset.title: Richiedi link per reimpostare la password
+
+request_password_reset_form.submit: Invia
+
+reset_password.title: Reimposta password
+
+reset_password_email.entry: 'Reimposta la password per %username%:'
+reset_password_email.footer: 'Puoi tranquillamente ignorare questa email se non hai chiesto di reimpostare la password. Il link scadrà tra 24 ore.'
+reset_password_email.header: 'Qualcuno ha chiesto di reimpostare la password per il tuo (o tuoi) account su %site_name%.'
+reset_password_email.subject: '%site_name% - Reimposta password'
+
+role.admins: Amministratori
+role.everyone: Tutti
+role.whitelisted: In whitelist
+
+site_footer.app: Powered by %app% %version%
+site_footer.version: '%version% (%branch%)'
+
+site_settings.default_sort_mode: Modalità di ordinamento di default
+site_settings.forum_create_role: Chi può creare nuovi forum?
+site_settings.image_upload_role: Chi può caricare immagini?
+site_settings.trash_enabled: Abilita cestino
+site_settings.trash_enabled_help: Sposta i post cancellati dai moderatori nel cestino, da cui possono essere eventualmente ripristinati.
+site_settings.registration_captcha_enabled: Abilita CAPTCHA durante la registrazione
+site_settings.registration_captcha_enabled_help: Abilitare questo può fermare alcuni bot di spam, ma renderà il tuo sito meno accessibile a utenti ipovedenti. Tieni a mente che molti “bots” sono in realtà umani impiegati in organizzazioni, e abilitare questa opzione non li fermerà.
+site_settings.registration_open: Abilita registrazioni
+site_settings.site_name: Nome del sito
+site_settings.site_theme: Tema del sito
+site_settings.site_theme_help: Questo sarà il tema usato nel sito, a meno che non venga sovrascritto dalle impostazioni di un forum o dalla scelta dell'utente.
+site_settings.url_images_enabled: Scarica le miniature per i link inviati
+site_settings.wiki_edit_role: Chi può modificare la wiki?
+site_settings.wiki_enabled: Abilita la wiki
+
+submission_form.create: Crea pubblicazione
+submission_form.edit: Modifica pubblicazione
+
+submission.comments: '{0} Nessun commento|{1} %count% commento|[1,Inf[ %count% commenti'
+submission.deleted_by_moderator: Eliminato da un moderatore
+submission.edit_info: (modificato %edited_at%)
+submission.info_with_forum_name: Inviato da %submitter% %timestamp% in %forum%
+submission.info_without_forum_name: Inviato da %submitter% %timestamp%
+submission.locked: Questa pubblicazione è congelata
+submission.moderator_info: (modificato da un moderatore %edited_at%)
+submission.new_comments: '(%count% nuovi)'
+submission.pinned: Questa pubblicazione è fissata
+submission.sort_by_active: Attivi
+submission.sort_by_controversial: Controversi
+submission.sort_by_hot: Caldi
+submission.sort_by_most_commented: Più commentati
+submission.sort_by_new: Nuovi
+submission.sort_by_top: Più votati
+submission.time_all: Sempre
+submission.time_day: Ultime 24 ore
+submission.time_month: Ultimo mese
+submission.time_week: Ultima settimana
+submission.time_year: Ultimo anno
+submission.total_votes: '{1} %count% punto|[0,Inf[ %count% punti'
+submission.vote_stats: (+%up%, −%down%)
+
+submission_link_destination.label: Quando clicchi il link di una pubblicazione…
+submission_link_destination.submission: Apri la pubblicazione
+submission_link_destination.url: Apri il contenuto linkato
+
+theme.to_be_created: Da creare
+theme.to_be_deleted: Da eliminare
+
+time.at_relative_time: '%relative_time%'
+time.earlier_format: '%relative_time% prima'
+time.later_format: '%relative_time% dopo'
+time.on_timestamp: il %timestamp%
+
+title.active_global_user_bans: Ban globali attivi di utenti
+title.all_forums: Tutti i forum
+title.ban_user: Bannare %user%
+title.banning_user_from_forum: Bannare %user% da %forum%
+title.bans_in_forum: Ban di %forum%
+title.block_list: Lista di utenti bloccati
+title.blocking_user: Bloccare %user%
+title.create_submission: Crea pubblicazione
+title.delete_account: Elimina account
+title.delete_comment: Elimina commento
+title.delete_comment_thread: Elimina thread di commenti
+title.delete_forum: Elimina il forum %forum%
+title.delete_submission: Elimina pubblicazione
+title.editing_biography_for_user: Elimina biografia di %user%
+title.editing_forum: Modifica forum %forum%
+title.editing_forum_tag: Modifica tag %tag%
+title.editing_submission: Modifica pubblicazione %title%
+title.forum_appearance: Apparenza di %forum%
+title.global_moderation_log: Registro globale della moderazione
+title.hidden_forums: Forum nascosti
+title.ip_bans: Indirizzi IP bannati
+title.list_of_users: 'Lista di utenti, pagina #%page%'
+title.messages: Messaggi
+title.notifications: Notifiche
+title.recent_comments: Commenti recenti
+title.recent_comments_forum: Commenti recenti in %forum%
+title.showing_ban_history_for_user_in_forum: Cronologia dei ban di %user% in %forum%
+title.showing_moderation_log_for_forum: Registro della moderazione di %forum%
+title.showing_revision: 'Revisione #%revision% della pagina %path%'
+title.site_settings: Impostazioni sito
+title.site_wide_trash: Cestino del sito
+title.unban_user: Togliere ban a %user%
+title.unbanning_user_from_forum: Togliere ban a %user% da %forum%
+title.user_forum_bans: "Ban di %user% dai forum"
+title.wiki_diff: Differenze tra le revisioni %from% e %to%
+
+user.comments: Commenti
+user.email_optional: Fornire un indirizzo email è opzionale. Lo useremo solo per reimpostare la password.
+user.message: Invia messaggi
+user.moderates: '%username% è un moderatore in:'
+user.password_rules: Minimo 8 caratteri.
+user.registered: Registrato %timestamp%
+user.submissions: Pubblicazioni
+user.username_rules: I caratteri permessi sono A-Z, a-z, 0-9 e trattino basso.
+
+user_flag.admin: amministratore
+user_flag.admin_label: Amministratore
+user_flag.moderator: moderatore
+user_flag.moderator_label: Moderatore
+user_flag.none_label: (niente)
+user_flag.post_as_label: Posta come
+
+user_settings.title: Modifica le impostazioni utente per %username%
+
+wiki.all_pages: Tutte le pagine
+wiki.create_this_page: Crea questa pagina
+wiki.create_title: Crea "%path%"
+wiki.edit_page: Modifica pagina
+wiki.editing_title: Modifica "%path%"
+wiki.history_title: Cronologia di "%path%"
+wiki.id_label: ID
+wiki.last_edited: Ultima modifica da %username% %timestamp%
+wiki.locked_notice: Questa pagina è congelata. Solo gli amministratori possono modificarla.
+wiki.navigation: Navigazione
+wiki.not_found_message: La pagina richiesta non è stata trovata.
+wiki.not_found_title: Pagina non trovata
+wiki.page_history: Cronologia pagina
+wiki.page_title: Titolo pagina
+wiki.path: Percorso
+wiki.revision_time: Revisionata
+wiki.user: User

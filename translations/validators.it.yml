@@ -1,0 +1,17 @@
+bad_phrase.match: Questo campo contiene una parola o frase vietata.
+comment.empty: Il commento non può essere vuoto.
+forum.banned: Sei stato bannato da questo forum.
+forum.duplicate_name: Un forum con questo nome esiste già.
+forum.name_characters: Il nome può contenere soltanto lettere, numeri e trattini bassi.
+ip.cidr_missing: Manca maschera CIDR.
+ip.invalid: L'indirizzo IP non è validato.
+ip.invalid_cidr_mask: La maschera CIDR non è valida.
+ratelimit.error: Non puoi più postare. Aspetta un po' prima di riprovare.
+regex.invalid: Il campo deve contenere un'espressione regolare valida, senza delimitatori.
+regex.must_not_match_empty: La regex non può corrispondere a una riga vuota.
+tag.invalid_characters: I tag possono contenere soltato lettere, numeri e trattini bassi.
+tag.too_short: Il tag {{ value }} è troppo corto. Deve contenere almeno {{ limit }} caratteri.|Il tag {{ value }} è troppo corto. Deve contenere almeno {{ limit }} caratteri.
+tag.too_long: Il tag {{ value }} è troppo lungo. Può avere al massimo {{ limit }} caratteri.|Il tag {{ value }} è troppo lungo. Può avere al massimo {{ limit }} caratteri.
+user.already_moderator: Quell'utente è già un moderatore.
+user.none_by_username: Nessun utente trovato
+user.rate_limit: Al momento non puoi creare nuovi account. Per favore riprova più tardi.
