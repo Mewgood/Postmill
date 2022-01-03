@@ -29,6 +29,10 @@ final class SiteSettingsType extends AbstractType {
                 'label' => 'site_settings.registration_open',
                 'required' => false,
             ])
+            ->add('usernameChangeEnabled', CheckboxType::class, [
+                'label' => 'site_settings.username_change_enabled',
+                'required' => false,
+            ])
             ->add('defaultSortMode', ChoiceType::class, [
                 'choices' => [
                     'submission.sort_by_hot' => Submission::SORT_HOT,

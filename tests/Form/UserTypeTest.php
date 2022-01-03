@@ -7,6 +7,7 @@ use App\Entity\Site;
 use App\Form\Type\HoneypotType;
 use App\Form\UserType;
 use App\Repository\SiteRepository;
+use App\Security\Authentication;
 use Gregwar\CaptchaBundle\Generator\CaptchaGenerator;
 use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Symfony\Component\Form\PreloadedExtension;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -27,8 +29,20 @@ class UserTypeTest extends TypeTestCase {
      */
     private $siteRepository;
 
+    /**
+     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $authentication;
+
+    /**
+     * @var AuthorizationCheckerInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $authorizationChecker;
+
     protected function setUp(): void {
         $this->siteRepository = $this->createMock(SiteRepository::class);
+        $this->authentication = $this->createMock(Authentication::class);
+        $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
 
         parent::setUp();
     }
@@ -77,7 +91,9 @@ class UserTypeTest extends TypeTestCase {
                 new HoneypotType($requestStack),
                 new UserType(
                     $this->createMock(UserPasswordEncoderInterface::class),
-                    $this->siteRepository
+                    $this->siteRepository,
+                    $this->authentication,
+                    $this->authorizationChecker
                 ),
                 new CaptchaType(
                     new Session(new MockArraySessionStorage()),

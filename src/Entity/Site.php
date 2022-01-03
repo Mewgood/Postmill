@@ -40,6 +40,13 @@ class Site {
     private $registrationOpen = true;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @var bool
+     */
+    private $usernameChangeEnabled = true;
+
+    /**
      * @ORM\Column(type="text", options={"default": Submission::SORT_HOT})
      *
      * @var string
@@ -131,6 +138,14 @@ class Site {
 
     public function setRegistrationOpen(bool $registrationOpen): void {
         $this->registrationOpen = $registrationOpen;
+    }
+
+    public function isUsernameChangeEnabled(): bool {
+        return $this->usernameChangeEnabled;
+    }
+
+    public function setUsernameChangeEnabled(bool $usernameChangeEnabled): void {
+        $this->usernameChangeEnabled = $usernameChangeEnabled;
     }
 
     public function getDefaultSortMode(): string {
