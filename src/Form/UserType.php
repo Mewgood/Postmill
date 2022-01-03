@@ -6,6 +6,7 @@ use App\DataObject\UserData;
 use App\Form\EventListener\PasswordEncodingSubscriber;
 use App\Form\Type\HoneypotType;
 use App\Repository\SiteRepository;
+use App\Security\Authentication;
 use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -16,6 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class UserType extends AbstractType {
@@ -29,12 +31,26 @@ final class UserType extends AbstractType {
      */
     private $sites;
 
+    /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
     public function __construct(
         UserPasswordEncoderInterface $encoder,
-        SiteRepository $sites
+        SiteRepository $sites,
+        Authentication $authentication,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->encoder = $encoder;
         $this->sites = $sites;
+        $this->authentication = $authentication;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
@@ -44,10 +60,17 @@ final class UserType extends AbstractType {
 
         $editing = $builder->getData() && $builder->getData()->getId();
 
+        $editUsername = true;
+        if ($editing) {
+            $user = $this->authentication->getUser();
+            $editUsername = $this->authorizationChecker->isGranted('edit_username', $user);
+        }
+        
         $builder
             ->add('username', TextType::class, [
                 'label' => 'label.username',
                 'help' => 'user.username_rules',
+                'disabled' => !$editUsername,
             ])
             ->add('password', RepeatedType::class, [
                 'help' => 'user.password_rules',

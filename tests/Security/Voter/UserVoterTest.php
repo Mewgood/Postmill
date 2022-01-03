@@ -3,6 +3,7 @@
 namespace App\Tests\Security\Voter;
 
 use App\Repository\ModeratorRepository;
+use App\Repository\SiteRepository;
 use App\Security\Voter\UserVoter;
 use App\Tests\Fixtures\Factory\EntityFactory;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -16,14 +17,20 @@ class UserVoterTest extends VoterTestCase {
      */
     private $moderators;
 
+    /**
+     * @var SiteRepository|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $sites;
+
     protected function setUp(): void {
         $this->moderators = $this->createMock(ModeratorRepository::class);
+        $this->sites = $this->createMock(SiteRepository::class);
 
         parent::setUp();
     }
 
     protected function getVoter(): VoterInterface {
-        return new UserVoter($this->decisionManager, $this->moderators);
+        return new UserVoter($this->decisionManager, $this->moderators, $this->sites);
     }
 
     public function testNewUserWithoutPostsCannotSetBiography(): void {

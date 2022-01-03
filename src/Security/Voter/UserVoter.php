@@ -4,12 +4,13 @@ namespace App\Security\Voter;
 
 use App\Entity\User;
 use App\Repository\ModeratorRepository;
+use App\Repository\SiteRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class UserVoter extends Voter {
-    public const ATTRIBUTES = ['edit_biography', 'edit_user', 'message'];
+    public const ATTRIBUTES = ['edit_biography', 'edit_user', 'edit_username', 'message'];
 
     /**
      * @var AccessDecisionManagerInterface
@@ -21,12 +22,19 @@ final class UserVoter extends Voter {
      */
     private $moderators;
 
+    /**
+     * @var SiteRepository
+     */
+    private $siteRepository;
+
     public function __construct(
         AccessDecisionManagerInterface $decisionManager,
-        ModeratorRepository $moderators
+        ModeratorRepository $moderators,
+        SiteRepository $siteRepository
     ) {
         $this->decisionManager = $decisionManager;
         $this->moderators = $moderators;
+        $this->siteRepository = $siteRepository;
     }
 
     protected function supports(string $attribute, $subject): bool {
@@ -43,6 +51,8 @@ final class UserVoter extends Voter {
             return $this->canEditBiography($subject, $token);
         case 'edit_user':
             return $this->canEditUser($subject, $token);
+        case 'edit_username':
+            return $this->canEditUsername($subject, $token);
         case 'message':
             return $this->canMessage($subject, $token);
         default:
@@ -80,6 +90,20 @@ final class UserVoter extends Voter {
         }
 
         return $user === $token->getUser();
+    }
+
+    private function canEditUsername(User $user, TokenInterface $token): bool {
+        if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
+            return true;
+        }
+
+        if (!$token->getUser() instanceof User) {
+            return false;
+        }
+
+        $site = $this->siteRepository->findCurrentSite();
+
+        return $user === $token->getUser() && $site->isUsernameChangeEnabled();
     }
 
     private function canMessage(User $receiver, TokenInterface $token): bool {
