@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
@@ -43,7 +44,7 @@ class WikiPage {
     /**
      * @ORM\OneToMany(targetEntity="WikiRevision", mappedBy="page", cascade={"persist", "remove"})
      *
-     * @var WikiRevision[]|Collection
+     * @var Collection<array-key, WikiRevision>&Selectable<array-key, WikiRevision>
      */
     private $revisions;
 
@@ -95,7 +96,13 @@ class WikiPage {
             ->orderBy(['timestamp' => 'DESC'])
             ->setMaxResults(1);
 
-        return $this->revisions->matching($criteria)->first();
+        $revision = $this->revisions->matching($criteria)->first();
+
+        if (!$revision) {
+            throw new \DomainException('Missing wiki page revision');
+        }
+
+        return $revision;
     }
 
     public function addRevision(WikiRevision $revision): void {
@@ -105,7 +112,7 @@ class WikiPage {
     }
 
     /**
-     * @return Pagerfanta|WikiRevision[]
+     * @return Pagerfanta<WikiRevision>
      */
     public function getPaginatedRevisions(int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'DESC']);

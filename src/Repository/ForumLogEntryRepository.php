@@ -15,7 +15,7 @@ class ForumLogEntryRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pagerfanta|ForumLogEntry[]
+     * @return Pagerfanta<ForumLogEntry>
      */
     public function findAllPaginated(int $page, int $maxPerPage = 50): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'DESC']);

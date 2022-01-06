@@ -22,7 +22,7 @@ abstract class Notification {
      * @ORM\Column(type="uuid")
      * @ORM\Id()
      *
-     * @var int|null
+     * @var UuidInterface
      */
     private $id;
 

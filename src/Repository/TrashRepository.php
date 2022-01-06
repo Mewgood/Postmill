@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Comment;
 use App\Entity\Contracts\VisibilityInterface as Visibility;
 use App\Entity\Forum;
 use App\Entity\Moderator;
@@ -42,6 +43,9 @@ class TrashRepository {
         $this->commentRepository = $commentRepository;
     }
 
+    /**
+     * @return CursorInterface&\Traversable<Submission|Comment>
+     */
     public function findTrash(): CursorInterface {
         $submissionCriteria = (new Criteria(Submission::SORT_NEW))->trashed();
         $commentQb = $this->commentRepository
@@ -52,6 +56,9 @@ class TrashRepository {
         return $this->paginate($submissionCriteria, $commentQb);
     }
 
+    /**
+     * @return CursorInterface&\Traversable<Submission|Comment>
+     */
     public function findTrashForUser(User $user): CursorInterface {
         $submissionCriteria = (new Criteria(Submission::SORT_NEW))
             ->showModerated()
@@ -69,6 +76,9 @@ class TrashRepository {
         return $this->paginate($submissionCriteria, $commentQb);
     }
 
+    /**
+     * @return CursorInterface&\Traversable<Submission|Comment>
+     */
     public function findTrashInForum(Forum $forum): CursorInterface {
         $submissionCriteria = (new Criteria(Submission::SORT_NEW))
             ->showForums($forum)
@@ -84,6 +94,9 @@ class TrashRepository {
         return $this->paginate($submissionCriteria, $commentQb);
     }
 
+    /**
+     * @return CursorInterface&\Traversable<Submission|Comment>
+     */
     private function paginate(Criteria $submissionCriteria, QueryBuilder $commentQb): CursorInterface {
         $submissionQb = $this->submissionFinder->getQueryBuilder($submissionCriteria);
 

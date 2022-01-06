@@ -133,7 +133,7 @@ class Submission implements DomainEvents, Visibility, Votable {
      *     fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"timestamp": "ASC"})
      *
-     * @var Comment[]|Collection|Selectable
+     * @var Collection<array-key, Comment>&Selectable<array-key, Comment>
      */
     private $comments;
 
@@ -185,14 +185,14 @@ class Submission implements DomainEvents, Visibility, Votable {
      * @ORM\OneToMany(targetEntity="SubmissionVote", mappedBy="submission",
      *     fetch="EXTRA_LAZY", cascade={"persist"}, orphanRemoval=true)
      *
-     * @var SubmissionVote[]|Collection
+     * @var Collection<array-key, SubmissionVote>&Selectable<array-key, SubmissionVote>
      */
     private $votes;
 
     /**
      * @ORM\OneToMany(targetEntity="SubmissionMention", mappedBy="submission", cascade={"remove"}, orphanRemoval=true)
      *
-     * @var SubmissionMention[]|Collection
+     * @var Collection<array-key, SubmissionMention>&Selectable<array-key, SubmissionMention>
      */
     private $mentions;
 
@@ -267,7 +267,7 @@ class Submission implements DomainEvents, Visibility, Votable {
      * })
      * @ORM\ManyToMany(targetEntity="Flair", cascade={"persist", "remove"})
      *
-     * @var Flair[]|Collection|Selectable
+     * @var Collection<array-key, Flair>&Selectable<array-key, Flair>
      */
     private $flairs;
 
@@ -510,7 +510,7 @@ class Submission implements DomainEvents, Visibility, Votable {
     }
 
     /**
-     * @return Collection|SubmissionVote[]
+     * @return Collection<array-key, SubmissionVote>&Selectable<array-key, SubmissionVote>
      */
     protected function getVotes(): Collection {
         return $this->votes;

@@ -75,14 +75,14 @@ class Forum implements BackgroundImage, DomainEvents {
     /**
      * @ORM\OneToMany(targetEntity="Moderator", mappedBy="forum", cascade={"persist", "remove"})
      *
-     * @var Moderator[]|Collection
+     * @var Collection<array-key, Moderator>&Selectable<array-key, Moderator>
      */
     private $moderators;
 
     /**
      * @ORM\OneToMany(targetEntity="Submission", mappedBy="forum", cascade={"remove"}, fetch="EXTRA_LAZY")
      *
-     * @var Submission[]|Collection
+     * @var Collection<array-key, Submission>&Selectable<array-key, Submission>
      */
     private $submissions;
 
@@ -97,14 +97,14 @@ class Forum implements BackgroundImage, DomainEvents {
      * @ORM\OneToMany(targetEntity="ForumSubscription", mappedBy="forum",
      *     cascade={"persist", "remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      *
-     * @var ForumSubscription[]|Collection|Selectable
+     * @var Collection<array-key, ForumSubscription>&Selectable<array-key, ForumSubscription>
      */
     private $subscriptions;
 
     /**
      * @ORM\OneToMany(targetEntity="ForumBan", mappedBy="forum", cascade={"persist", "remove"})
      *
-     * @var ForumBan[]|Collection|Selectable
+     * @var Collection<array-key, ForumBan>&Selectable<array-key, ForumBan>
      */
     private $bans;
 
@@ -123,7 +123,7 @@ class Forum implements BackgroundImage, DomainEvents {
      * })
      * @ORM\ManyToMany(targetEntity="ForumTag", inversedBy="forums", cascade={"persist"}, fetch="EXTRA_LAZY")
      *
-     * @var ForumTag[]|Collection
+     * @var Collection<array-key, ForumTag>&Selectable<array-key, ForumTag>
      */
     private $tags;
 
@@ -160,7 +160,7 @@ class Forum implements BackgroundImage, DomainEvents {
      * @ORM\OneToMany(targetEntity="ForumLogEntry", mappedBy="forum", cascade={"persist", "remove"})
      * @ORM\OrderBy({"timestamp": "DESC"})
      *
-     * @var ForumLogEntry[]|Collection
+     * @var Collection<array-key, ForumLogEntry>&Selectable<array-key, ForumLogEntry>
      */
     private $logEntries;
 
@@ -231,14 +231,14 @@ class Forum implements BackgroundImage, DomainEvents {
     }
 
     /**
-     * @return Collection|Moderator[]
+     * @return array<Moderator>
      */
     public function getModerators(): array {
         return $this->moderators->getValues();
     }
 
     /**
-     * @return Pagerfanta|Moderator[]
+     * @return Pagerfanta<Moderator>
      */
     public function getPaginatedModerators(int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'ASC']);
@@ -365,7 +365,7 @@ class Forum implements BackgroundImage, DomainEvents {
     }
 
     /**
-     * @return Pagerfanta|ForumBan[]
+     * @return Pagerfanta<ForumBan>
      */
     public function getPaginatedBansByUser(User $user, int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()
@@ -466,7 +466,7 @@ class Forum implements BackgroundImage, DomainEvents {
     }
 
     /**
-     * @return Pagerfanta|ForumLogEntry[]
+     * @return Pagerfanta<ForumLogEntry>
      */
     public function getPaginatedLogEntries(int $page, int $max = 50): Pagerfanta {
         $pager = new Pagerfanta(new CollectionAdapter($this->logEntries));

@@ -14,7 +14,7 @@ final class HashingVersionStrategy implements VersionStrategyInterface {
         $this->webRoot = rtrim($webRoot, '/');
     }
 
-    public function getVersion($path): string {
+    public function getVersion(string $path): string {
         $hash = @hash_file('sha256', $this->webRoot.'/'.$path);
 
         return \is_string($hash) ? substr($hash, 0, 16) : '';

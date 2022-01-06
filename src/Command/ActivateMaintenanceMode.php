@@ -63,14 +63,13 @@ EOHELP
         }
 
         if (\function_exists('opcache_invalidate')) {
-            /* @noinspection PhpComposerExtensionStubsInspection */
             opcache_invalidate($this->includeFilePath, true);
         }
 
         return 0;
     }
 
-    private function writeIncludeFile($message): void {
+    private function writeIncludeFile(string $message): void {
         $title = $this->sites->getCurrentSiteName();
         $img = base64_encode(file_get_contents(__DIR__.'/../../public/apple-touch-icon-precomposed.png'));
         $message = nl2br($message ?: 'The site will return shortly.');

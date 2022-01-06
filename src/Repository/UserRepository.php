@@ -102,7 +102,7 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
      * at the same second, and if they were to appear on separate pages. This is
      * an edge case, so we don't really care.
      *
-     * @return CursorInterface|Submission[]|Comment[]
+     * @return CursorInterface&\Traversable<Submission|Comment>
      */
     public function findContributions(User $user): CursorInterface {
         $submissionsQuery = $this->_em->createQueryBuilder()
@@ -133,6 +133,9 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
         return $cursor;
     }
 
+    /**
+     * @return CursorInterface&\Traversable<Submission|Comment>
+     */
     public function findTrashedContributions(User $user): CursorInterface {
         $submissionsQuery = $this->submissionFinder->getQueryBuilder(
             (new SubmissionCriteria(Submission::SORT_NEW))
@@ -161,7 +164,7 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
     }
 
     /**
-     * @return Pagerfanta|User[]
+     * @return Pagerfanta<User>
      */
     public function findPaginated(int $page, Criteria $criteria): Pagerfanta {
         $pager = new Pagerfanta(new SelectableAdapter($this, $criteria));
@@ -171,6 +174,9 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
         return $pager;
     }
 
+    /**
+     * @return \Generator<string>
+     */
     public function findIpsUsedByUser(User $user): \Generator {
         $sql = 'SELECT DISTINCT ip FROM ('.
             'SELECT registration_ip AS ip FROM users WHERE id = :id AND registration_ip IS NOT NULL UNION ALL '.

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.x-dev@">
+  <file src="src/Controller/BannedController.php">
+    <RedundantCondition occurrences="2">
+      <code>$user</code>
+      <code>$user</code>
+    </RedundantCondition>
+    <TypeDoesNotContainType occurrences="1">
+      <code>null</code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/Controller/FrontController.php">
+    <RedundantCondition occurrences="1">
+      <code>\assert($user instanceof \App\Entity\User)</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/DataObject/CommentData.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;replyCount</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/DataObject/UserData.php">
+    <InvalidNullableReturnType occurrences="2">
+      <code>?string</code>
+      <code>bool</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="2">
+      <code>$this-&gt;enablePostPreviews</code>
+      <code>$this-&gt;username</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/DataTransfer/ForumManager.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>array_keys($tagNames)</code>
+    </InvalidScalarArgument>
+  </file>
+  <file src="src/Doctrine/Type/InetType.php">
+    <ParamNameMismatch occurrences="1">
+      <code>$fieldDeclaration</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="src/Doctrine/Type/TsvectorType.php">
+    <ParamNameMismatch occurrences="1">
+      <code>$fieldDeclaration</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="src/Entity/CssTheme.php">
+    <InvalidArgument occurrences="1">
+      <code>new CssThemeRevision($this, $css)</code>
+    </InvalidArgument>
+    <InvalidPropertyAssignmentValue occurrences="2">
+      <code>$this-&gt;revisions</code>
+      <code>new ArrayCollection()</code>
+    </InvalidPropertyAssignmentValue>
+    <UndefinedMethod occurrences="3">
+      <code>$this-&gt;revisions</code>
+      <code>contains</code>
+      <code>matching</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Entity/WikiPage.php">
+    <InvalidNullableReturnType occurrences="2">
+      <code>string</code>
+      <code>string</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="2">
+      <code>$this-&gt;normalizedPath</code>
+      <code>$this-&gt;path</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/EventListener/PruneImagesListener.php">
+    <RedundantCondition occurrences="2">
+      <code>$images</code>
+      <code>$images</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Form/DataTransformer/ForumTagDataListToStringsTransformer.php">
+    <MoreSpecificImplementedParamType occurrences="2">
+      <code>$value</code>
+      <code>$value</code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="src/Form/DataTransformer/TagArrayToStringTransformer.php">
+    <MoreSpecificImplementedParamType occurrences="2">
+      <code>$value</code>
+      <code>$value</code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="src/Form/Model/UserBanData.php">
+    <InvalidReturnType occurrences="1">
+      <code>IpBan[]</code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/Form/Type/BackgroundImageType.php">
+    <UndefinedInterfaceMethod occurrences="4">
+      <code>isClicked</code>
+      <code>isClicked</code>
+      <code>isClicked</code>
+      <code>isClicked</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Pagination/CommentPage.php">
+    <RedundantCondition occurrences="1">
+      <code>\is_int(+$value)</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Pagination/SubmissionPage.php">
+    <RedundantCondition occurrences="1">
+      <code>\is_int(+$value)</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Repository/ForumRepository.php">
+    <MethodSignatureMismatch occurrences="1">
+      <code>ForumRepository</code>
+    </MethodSignatureMismatch>
+    <MoreSpecificImplementedParamType occurrences="1">
+      <code>Forum|null find(int $id)</code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="src/Repository/ImageRepository.php">
+    <LessSpecificImplementedReturnType occurrences="2">
+      <code>Image[]</code>
+      <code>Image[]</code>
+    </LessSpecificImplementedReturnType>
+  </file>
+  <file src="src/Repository/IpBanRepository.php">
+    <TooManyArguments occurrences="2">
+      <code>orX</code>
+      <code>orX</code>
+    </TooManyArguments>
+  </file>
+  <file src="src/Repository/MessageThreadRepository.php">
+    <MismatchingDocblockReturnType occurrences="1">
+      <code>MessageThread[]|Pagerfanta</code>
+    </MismatchingDocblockReturnType>
+  </file>
+  <file src="src/Repository/ModeratorRepository.php">
+    <TooManyArguments occurrences="1">
+      <code>orX</code>
+    </TooManyArguments>
+  </file>
+  <file src="src/Repository/SearchRepository.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>$qb-&gt;getParameterType($key)</code>
+    </InvalidScalarArgument>
+  </file>
+  <file src="src/Security/LoginLinkGenerator.php">
+    <ImplicitToStringCast occurrences="1">
+      <code>$url</code>
+    </ImplicitToStringCast>
+  </file>
+  <file src="src/Security/Voter/SiteVoter.php">
+    <RedundantCondition occurrences="1">
+      <code>\assert($subject instanceof Site)</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Security/Voter/WikiVoter.php">
+    <RedundantCondition occurrences="1">
+      <code>\assert($site instanceof Site)</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Serializer/CommentNormalizer.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;normalizer-&gt;normalize($object, $format, $context)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;normalizer-&gt;normalize($object, $format, $context)</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Serializer/ForumNormalizer.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;normalizer-&gt;normalize($object, $format, $context)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;normalizer-&gt;normalize($object, $format, $context)</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Serializer/MarkdownNormalizer.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$data</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$data</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Serializer/SubmissionDataNormalizer.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$data</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$data</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Serializer/SubmissionNormalizer.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;normalizer-&gt;normalize($object, $format, $context)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;normalizer-&gt;normalize($object, $format, $context)</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Serializer/UserNormalizer.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;normalizer-&gt;normalize($object, $format, $context)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;normalizer-&gt;normalize($object, $format, $context)</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Storage/DsnAwareFilesystemFactory.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>$parts[$key]</code>
+    </InvalidScalarArgument>
+  </file>
+  <file src="src/SubmissionFinder/Criteria.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>string</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;visibility</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/SubmissionFinder/SubmissionFinder.php">
+    <InvalidArgument occurrences="1">
+      <code>$results</code>
+    </InvalidArgument>
+  </file>
+  <file src="vendor/doctrine/orm/lib/Doctrine/ORM/EntityRepository.php">
+    <InvalidDocblock occurrences="1">
+      <code>public function __construct(EntityManagerInterface $em, Mapping\ClassMetadata $class)</code>
+    </InvalidDocblock>
+  </file>
+</files>

@@ -63,7 +63,7 @@ class CommentRepository extends ServiceEntityRepository implements PrunesIpAddre
     }
 
     /**
-     * @return CursorInterface|Comment[]
+     * @return CursorInterface&\Traversable<Comment>
      */
     public function findPaginated(callable $queryModifier = null): CursorInterface {
         $qb = $this->createQueryBuilder('c')
@@ -80,13 +80,13 @@ class CommentRepository extends ServiceEntityRepository implements PrunesIpAddre
             new CommentPage(),
         );
 
-        $this->hydrate(...$cursor);
+        $this->hydrate(...iterator_to_array($cursor));
 
         return $cursor;
     }
 
     /**
-     * @return CursorInterface|Comment[]
+     * @return CursorInterface&\Traversable<Comment>
      */
     public function findPaginatedByForum(Forum $forum): CursorInterface {
         return $this->findPaginated(static function (QueryBuilder $qb) use ($forum): void {
@@ -96,7 +96,7 @@ class CommentRepository extends ServiceEntityRepository implements PrunesIpAddre
     }
 
     /**
-     * @return CursorInterface|Comment[]
+     * @return CursorInterface&\Traversable<Comment>
      */
     public function findPaginatedByUser(User $user): CursorInterface {
         return $this->findPaginated(static function (QueryBuilder $qb) use ($user): void {

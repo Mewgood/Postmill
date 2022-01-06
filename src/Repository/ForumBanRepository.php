@@ -20,7 +20,7 @@ class ForumBanRepository extends ServiceEntityRepository {
      * Find all bans in a forum that haven't been undone and which haven't
      * expired.
      *
-     * @return Pagerfanta|ForumBan[]
+     * @return Pagerfanta<ForumBan>
      */
     public function findValidBansInForum(Forum $forum, int $page, int $maxPerPage = 25): Pagerfanta {
         $now = new \DateTimeImmutable();
@@ -47,7 +47,7 @@ class ForumBanRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pagerfanta|ForumBan[]
+     * @return Pagerfanta<ForumBan>
      */
     public function findActiveBansByUser(User $user, int $page, int $maxPerPage = 25): Pagerfanta {
         $now = new \DateTimeImmutable();

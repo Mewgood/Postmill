@@ -15,7 +15,7 @@ class UserBanRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pagerfanta|UserBan[]
+     * @return Pagerfanta<UserBan>
      */
     public function findActiveBans(int $page, int $maxPerPage = 25): Pagerfanta {
         $now = new \DateTimeImmutable();

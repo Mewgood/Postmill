@@ -16,7 +16,7 @@ class ForumBan {
      * @ORM\Column(type="uuid")
      * @ORM\Id()
      *
-     * @var Uuid
+     * @var UuidInterface
      */
     private $id;
 
