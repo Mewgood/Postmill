@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 class VisibilityTraitTest extends TestCase {
     public function testVisibility(): void {
-        /** @var VisibilityTrait $entity */
+        /** @uses VisibilityTrait $entity */
         $entity = new class() {
             use VisibilityTrait;
 

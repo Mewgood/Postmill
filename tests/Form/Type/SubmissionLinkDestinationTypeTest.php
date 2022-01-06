@@ -4,13 +4,14 @@ namespace App\Tests\Form\Type;
 
 use App\Entity\Constants\SubmissionLinkDestination;
 use App\Form\Type\SubmissionLinkDestinationType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
  * @covers \App\Form\Type\SubmissionLinkDestinationType
  */
 class SubmissionLinkDestinationTypeTest extends TypeTestCase {
-    /** @var SubmissionLinkDestinationType $form */
+    /** @var FormInterface $form */
     private $form;
 
     protected function setUp(): void {

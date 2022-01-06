@@ -11,23 +11,29 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TranslatorLocaleMiddleware implements MiddlewareInterface {
     /**
-     * @var TranslatorInterface|LocaleAwareInterface
+     * @var TranslatorInterface&LocaleAwareInterface
      */
     private $translator;
 
+    /**
+     * @param TranslatorInterface&LocaleAwareInterface $translator
+     */
     public function __construct(TranslatorInterface $translator) {
         if (!$translator instanceof LocaleAwareInterface) {
-            throw new \InvalidArgumentException(
-                '$translator must implement '.LocaleAwareInterface::class
-            );
+            throw new \InvalidArgumentException(sprintf(
+                '$translator must implement %s and %s',
+                TranslatorInterface::class,
+                LocaleAwareInterface::class,
+            ));
         }
 
+        /** @var TranslatorInterface&LocaleAwareInterface $translator */
         $this->translator = $translator;
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope {
+        /** @var RequestInfoStamp|null $requestInfo */
         $requestInfo = $envelope->last(RequestInfoStamp::class);
-        \assert(!$requestInfo || $requestInfo instanceof RequestInfoStamp);
 
         if ($requestInfo) {
             $defaultLocale = $this->translator->getLocale();
@@ -38,7 +44,6 @@ final class TranslatorLocaleMiddleware implements MiddlewareInterface {
             return $stack->next()->handle($envelope, $stack);
         } finally {
             if ($requestInfo) {
-                /* @noinspection PhpUndefinedVariableInspection */
                 $this->translator->setLocale($defaultLocale);
             }
         }

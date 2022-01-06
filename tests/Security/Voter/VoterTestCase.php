@@ -15,7 +15,7 @@ abstract class VoterTestCase extends TestCase {
     private $voter;
 
     /**
-     * @var AccessDecisionManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var AccessDecisionManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     protected $decisionManager;
 

@@ -18,7 +18,7 @@ class PaginationExceptionListenerTest extends TestCase {
     public function testSetsExceptionOnPagerfantaException(): void {
         $e = new OutOfRangeCurrentPageException();
 
-        /** @var HttpKernelInterface|\PHPUnit\Framework\MockObject\MockObject $kernel */
+        /** @var HttpKernelInterface&\PHPUnit\Framework\MockObject\MockObject $kernel */
         $kernel = $this->createMock(HttpKernelInterface::class);
         $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $e);
 
@@ -31,7 +31,7 @@ class PaginationExceptionListenerTest extends TestCase {
     public function testSetsExceptionOnPagerWaveException(): void {
         $e = new InvalidQueryException();
 
-        /** @var HttpKernelInterface|\PHPUnit\Framework\MockObject\MockObject $kernel */
+        /** @var HttpKernelInterface&\PHPUnit\Framework\MockObject\MockObject $kernel */
         $kernel = $this->createMock(HttpKernelInterface::class);
         $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $e);
 
@@ -51,7 +51,7 @@ class PaginationExceptionListenerTest extends TestCase {
     }
 
     private function createExceptionEvent(\Throwable $throwable): ExceptionEvent {
-        /** @var HttpKernelInterface|\PHPUnit\Framework\MockObject\MockObject $kernel */
+        /** @var HttpKernelInterface&\PHPUnit\Framework\MockObject\MockObject $kernel */
         $kernel = $this->createMock(HttpKernelInterface::class);
 
         return new ExceptionEvent(

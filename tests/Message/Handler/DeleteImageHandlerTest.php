@@ -16,12 +16,12 @@ class DeleteImageHandlerTest extends TestCase {
     private const BATCH_SIZE = 5;
 
     /**
-     * @var ImageManager|\PHPUnit\Framework\MockObject\MockObject
+     * @var ImageManager&\PHPUnit\Framework\MockObject\MockObject
      */
     private $imageManager;
 
     /**
-     * @var MessageBusInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var MessageBusInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $messageBus;
 

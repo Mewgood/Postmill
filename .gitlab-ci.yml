@@ -88,16 +88,25 @@ lint:php:7.3:
     <<: *lint-php
     image: php:7.3-alpine
 
+lint:phpstan:
+    stage: lint
+    image: composer:2
+    needs: ['lint:composer', 'lint:php:7.3', 'lint:php:7.4', 'lint:php:8.0']
+    except: ['schedules']
+    before_script:
+        - composer install --ignore-platform-reqs --no-scripts
+    script:
+        - bin/phpstan
+
 lint:psalm:
     stage: lint
     image: composer:2
     needs: ['lint:composer', 'lint:php:7.3', 'lint:php:7.4', 'lint:php:8.0']
     except: ['schedules']
     before_script:
-        - composer global require vimeo/psalm:^4
-        - composer install --ignore-platform-reqs --no-dev --no-scripts
+        - composer install --ignore-platform-reqs --no-scripts
     script:
-        - $COMPOSER_HOME/vendor/bin/psalm
+        - bin/psalm
 
 
 # =========

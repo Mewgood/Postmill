@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class VoteManagerTest extends TestCase {
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
     private $voteManager;

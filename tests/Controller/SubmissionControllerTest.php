@@ -6,6 +6,7 @@ use App\Entity\Constants\SubmissionLinkDestination;
 use App\Repository\SiteRepository;
 use App\Tests\WebTestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DomCrawler\Field\FileFormField;
 
 /**
  * @covers \App\Controller\SubmissionController
@@ -47,7 +48,7 @@ class SubmissionControllerTest extends WebTestCase {
             'submission[mediaType]' => 'image',
             'submission[forum]' => '2',
         ]);
-        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        \assert($form['submission[image]'] instanceof FileFormField);
         $form['submission[image]']->upload(__DIR__.'/../Resources/120px-12-Color-SVG.svg.png');
 
         $client->submit($form);
@@ -71,7 +72,7 @@ class SubmissionControllerTest extends WebTestCase {
             'submission[mediaType]' => 'image',
             'submission[forum]' => '2',
         ]);
-        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        \assert($form['submission[image]'] instanceof FileFormField);
         $form['submission[image]']->upload(__DIR__.'/../Resources/garbage.bin');
 
         $client->submit($form);

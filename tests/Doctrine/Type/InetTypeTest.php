@@ -18,7 +18,7 @@ class InetTypeTest extends TestCase {
     private $type;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|PostgreSqlPlatform
+     * @var PostgreSqlPlatform&\PHPUnit\Framework\MockObject\MockObject
      */
     private $platform;
 
@@ -80,7 +80,7 @@ class InetTypeTest extends TestCase {
     }
 
     public function testDoesNotWorkWithNonPostgresPlatforms(): void {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MySqlPlatform $platform */
+        /** @var MySqlPlatform&\PHPUnit\Framework\MockObject\MockObject $platform */
         $platform = $this->createMock(MySqlPlatform::class);
 
         $this->expectException(\InvalidArgumentException::class);

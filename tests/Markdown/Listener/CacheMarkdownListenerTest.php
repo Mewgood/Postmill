@@ -15,12 +15,12 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 class CacheMarkdownListenerTest extends TestCase {
     /**
-     * @var CacheItemPoolInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var CacheItemPoolInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $cache;
 
     /**
-     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $dispatcher;
 
@@ -105,7 +105,7 @@ class CacheMarkdownListenerTest extends TestCase {
     }
 
     /**
-     * @return CacheItemInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return CacheItemInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private function expectCacheHit(BuildCacheContext $context): CacheItemInterface {
         $cacheItem = $this->createMock(CacheItemInterface::class);
@@ -128,7 +128,7 @@ class CacheMarkdownListenerTest extends TestCase {
     }
 
     /**
-     * @return CacheItemInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return CacheItemInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private function expectCacheMiss(BuildCacheContext $context): CacheItemInterface {
         $cacheItem = $this->createMock(CacheItemInterface::class);

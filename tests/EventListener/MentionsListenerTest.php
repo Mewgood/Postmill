@@ -71,7 +71,7 @@ EOF
             return [$this->identicalTo($user)];
         }, $users);
 
-        /** @var UserRepository|\PHPUnit\Framework\MockObject\MockObject $userRepository */
+        /** @var UserRepository&\PHPUnit\Framework\MockObject\MockObject $userRepository */
         $userRepository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->addMethods(['findByNormalizedUsername'])

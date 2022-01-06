@@ -37,7 +37,7 @@ docker-compose.override.yml
 /.env.*.local
 /public/bundles/
 /var/
-/vendor/
+vendor
 ###< symfony/framework-bundle ###
 
 ###> friendsofphp/php-cs-fixer ###

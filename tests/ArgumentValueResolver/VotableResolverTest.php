@@ -18,12 +18,12 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 class VotableResolverTest extends TestCase {
     /**
-     * @var SubmissionRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var SubmissionRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $submissions;
 
     /**
-     * @var CommentRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var CommentRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $comments;
 

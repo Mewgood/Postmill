@@ -33,7 +33,7 @@ class TagArrayToStringTransformerTest extends TestCase {
     public function testTransformThrowsOnNonArrayNonNullValue(): void {
         $this->expectException(\TypeError::class);
 
-        /** @noinspection PhpParamsInspection */
+        /** @noinspection PhpParamsInspection @phpstan-ignore-next-line */
         $this->transformer->transform("not null not array");
     }
 
@@ -71,7 +71,7 @@ class TagArrayToStringTransformerTest extends TestCase {
     public function testReverseTransformThrowsOnNonStringNonNullValue(): void {
         $this->expectException(\TypeError::class);
 
-        /** @noinspection PhpParamsInspection */
+        /** @noinspection PhpParamsInspection @phpstan-ignore-next-line */
         $this->transformer->reverseTransform([]);
     }
 }

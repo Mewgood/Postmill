@@ -12,12 +12,12 @@ use PHPUnit\Framework\TestCase;
  */
 class TsvectorTypeTest extends TestCase {
     /**
-     * @var TsvectorType
+     * @var Type
      */
     private $type;
 
     /**
-     * @var PostgreSqlPlatform|\PHPUnit\Framework\MockObject\MockObject
+     * @var PostgreSqlPlatform&\PHPUnit\Framework\MockObject\MockObject
      */
     private $platform;
 
@@ -29,6 +29,7 @@ class TsvectorTypeTest extends TestCase {
 
     protected function setUp(): void {
         $this->type = Type::getType('tsvector');
+        \assert($this->type instanceof TsvectorType);
         $this->platform = $this->createMock(PostgreSqlPlatform::class);
     }
 

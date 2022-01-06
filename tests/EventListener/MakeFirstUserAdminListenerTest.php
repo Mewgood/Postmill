@@ -13,12 +13,12 @@ use PHPUnit\Framework\TestCase;
  */
 class MakeFirstUserAdminListenerTest extends TestCase {
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $manager;
 
     /**
-     * @var User|\PHPUnit\Framework\MockObject\MockObject
+     * @var User&\PHPUnit\Framework\MockObject\MockObject
      */
     private $user;
 

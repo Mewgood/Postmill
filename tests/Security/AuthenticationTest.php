@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class AuthenticationTest extends TestCase {
     /**
-     * @var TokenStorageInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var TokenStorageInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $tokenStorage;
 

@@ -13,7 +13,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class UserTransformerTest extends TestCase {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UserRepository
+     * @var UserRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $userRepository;
 

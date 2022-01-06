@@ -22,12 +22,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class WikiListenerTest extends TestCase {
     /**
-     * @var SluggerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var SluggerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $slugger;
 
     /**
-     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var TranslatorInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $translator;
 

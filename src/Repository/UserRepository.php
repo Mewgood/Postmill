@@ -46,16 +46,30 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
      */
     private $submissionFinder;
 
+    /**
+     * @var SubmissionRepository
+     */
+    private $submissions;
+
+    /**
+     * @var CommentRepository
+     */
+    private $comments;
+
     public function __construct(
         ManagerRegistry $registry,
         PaginatorInterface $paginator,
         CanonicalRedirector $canonicalizer,
-        SubmissionFinder $submissionFinder
+        SubmissionFinder $submissionFinder,
+        SubmissionRepository $submissions,
+        CommentRepository $comments
     ) {
         parent::__construct($registry, User::class);
         $this->paginator = $paginator;
         $this->canonicalizer = $canonicalizer;
         $this->submissionFinder = $submissionFinder;
+        $this->submissions = $submissions;
+        $this->comments = $comments;
     }
 
     /**
@@ -215,7 +229,7 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
             }
         }
 
-        $this->_em->getRepository(Submission::class)->hydrate(...$submissions);
-        $this->_em->getRepository(Comment::class)->hydrate(...$comments);
+        $this->submissions->hydrate(...$submissions);
+        $this->comments->hydrate(...$comments);
     }
 }

@@ -22,7 +22,7 @@ class FormLoginAuthenticationFailureHandlerTest extends TestCase {
     private $session;
 
     /**
-     * @var AuthenticationFailureHandlerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var AuthenticationFailureHandlerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $decorated;
 

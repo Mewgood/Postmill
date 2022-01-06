@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class EntityRetrievingDenormalizerTest extends TestCase {
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 

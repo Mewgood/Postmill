@@ -29,7 +29,7 @@ final class LocaleListener implements EventSubscriberInterface {
     private $authentication;
 
     /**
-     * @var TranslatorInterface|LocaleAwareInterface
+     * @var TranslatorInterface&LocaleAwareInterface
      */
     private $translator;
 

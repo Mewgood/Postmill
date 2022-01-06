@@ -24,7 +24,7 @@ class FixCharsetListenerTest extends TestCase {
     private $event;
 
     protected function setUp(): void {
-        /** @var HttpKernelInterface|\PHPUnit\Framework\MockObject\MockObject $kernel */
+        /** @var HttpKernelInterface&\PHPUnit\Framework\MockObject\MockObject $kernel */
         $kernel = $this->createMock(HttpKernelInterface::class);
 
         $this->response = new Response();

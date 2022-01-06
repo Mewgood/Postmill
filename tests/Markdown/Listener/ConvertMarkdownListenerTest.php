@@ -7,7 +7,6 @@ use App\Markdown\Factory\EnvironmentFactory;
 use App\Markdown\Event\ConfigureCommonMark;
 use App\Markdown\Event\ConvertMarkdown;
 use App\Markdown\Listener\ConvertMarkdownListener;
-use League\CommonMark\ConfigurableEnvironmentInterface;
 use League\CommonMark\Environment;
 use League\CommonMark\MarkdownConverterInterface;
 use PHPUnit\Framework\TestCase;
@@ -18,22 +17,22 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 class ConvertMarkdownListenerTest extends TestCase {
     /**
-     * @var MarkdownConverterInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var MarkdownConverterInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $converter;
 
     /**
-     * @var ConverterFactory|\PHPUnit\Framework\MockObject\MockObject
+     * @var ConverterFactory&\PHPUnit\Framework\MockObject\MockObject
      */
     private $converterFactory;
 
     /**
-     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $dispatcher;
 
     /**
-     * @var ConfigurableEnvironmentInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var Environment
      */
     private $environment;
 

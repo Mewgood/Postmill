@@ -42,6 +42,7 @@ class CommentTest extends TestCase {
     public function testCannotCreateWithInvalidParent(): void {
         $this->expectException(\TypeError::class);
 
+        /** @phpstan-ignore-next-line */
         $this->comment(null, []);
     }
 

@@ -21,32 +21,27 @@ class ImageManagerTest extends TestCase {
     private const HEIGHT = 120;
 
     /**
-     * @var string
-     */
-    private $sha256;
-
-    /**
-     * @var CacheManager|\PHPUnit\Framework\MockObject\MockObject
+     * @var CacheManager&\PHPUnit\Framework\MockObject\MockObject
      */
     private $cacheManager;
 
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 
     /**
-     * @var ImageRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var ImageRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $images;
 
     /**
-     * @var ImageNameGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var ImageNameGeneratorInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $imageNameGenerator;
 
     /**
-     * @var StorageInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var StorageInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $storage;
 
@@ -56,8 +51,6 @@ class ImageManagerTest extends TestCase {
     private $manager;
 
     protected function setUp(): void {
-        $this->sha256 = hash_file('sha256', self::FILE_NAME, true);
-
         $this->cacheManager = $this->createMock(CacheManager::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->images = $this->getMockBuilder(ImageRepository::class)

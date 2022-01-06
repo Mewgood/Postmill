@@ -15,17 +15,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class SubmissionDataNormalizerTest extends TestCase {
     /**
-     * @var SluggerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var SluggerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $slugger;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|CacheManager
+     * @var CacheManager&\PHPUnit\Framework\MockObject\MockObject
      */
     private $cacheManager;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|NormalizerInterface
+     * @var NormalizerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $decorated;
 

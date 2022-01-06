@@ -19,7 +19,7 @@ class ImageRepositoryTest extends RepositoryTestCase {
     protected function setUp(): void {
         parent::setUp();
 
-        $this->repository = $this->entityManager->getRepository(Image::class);
+        $this->repository = self::$container->get(ImageRepository::class);
     }
 
     public function testCanFilterByOrphanedImages(): void {

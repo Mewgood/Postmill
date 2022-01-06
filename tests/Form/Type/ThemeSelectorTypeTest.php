@@ -12,6 +12,7 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
  * @covers \App\Form\Type\ThemeSelectorType
+ * @psalm-type TThemeConfigEntry = array{name: string, entrypoint: string}
  */
 class ThemeSelectorTypeTest extends TypeTestCase {
     /**
@@ -20,17 +21,17 @@ class ThemeSelectorTypeTest extends TypeTestCase {
     private $site;
 
     /**
-     * @var SiteRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var SiteRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $siteRepository;
 
     /**
-     * @var ThemeRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var ThemeRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $themeRepository;
 
     /**
-     * @var string[][]
+     * @var array<string, string|TThemeConfigEntry>
      */
     private $themesConfig;
 

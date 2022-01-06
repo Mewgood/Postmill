@@ -27,7 +27,7 @@ class AppExtensionTest extends TestCase {
     private $requestStack;
 
     /**
-     * @var SiteRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var SiteRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $siteRepository;
 
@@ -35,7 +35,7 @@ class AppExtensionTest extends TestCase {
         $this->requestStack = new RequestStack();
         $this->siteRepository = $this->createMock(SiteRepository::class);
 
-        /** @var UrlRewriter|\PHPUnit\Framework\MockObject\MockObject $urlRewriter */
+        /** @var UrlRewriter&\PHPUnit\Framework\MockObject\MockObject $urlRewriter */
         $urlRewriter = $this->createMock(UrlRewriter::class);
 
         $this->extension = new AppExtension(

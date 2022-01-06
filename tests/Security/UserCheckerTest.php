@@ -5,7 +5,6 @@ namespace App\Tests\Security;
 use App\Entity\User;
 use App\Security\Exception\AccountBannedException;
 use App\Security\UserChecker;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,7 +15,7 @@ class UserCheckerTest extends TestCase {
      * @doesNotPerformAssertions
      */
     public function testNonBannedUserDoesNotCauseExceptionOnAuth(): void {
-        /* @var User|MockObject $user */
+        /* @var User&\PHPUnit\Framework\MockObject\MockObject $user */
         $user = $this->createMock(User::class);
         $user->method('isBanned')->willReturn(false, false);
 
@@ -24,7 +23,7 @@ class UserCheckerTest extends TestCase {
     }
 
     public function testBannedUserCausesExceptionOnPostAuth(): void {
-        /* @var User|MockObject $user */
+        /* @var User&\PHPUnit\Framework\MockObject\MockObject $user */
         $user = $this->createMock(User::class);
         $user->method('isBanned')->willReturn(true);
 

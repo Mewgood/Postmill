@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.x-dev@">
-  <file src="src/Controller/BannedController.php">
-    <RedundantCondition occurrences="2">
-      <code>$user</code>
-      <code>$user</code>
-    </RedundantCondition>
-    <TypeDoesNotContainType occurrences="1">
-      <code>null</code>
-    </TypeDoesNotContainType>
-  </file>
-  <file src="src/Controller/FrontController.php">
-    <RedundantCondition occurrences="1">
-      <code>\assert($user instanceof \App\Entity\User)</code>
-    </RedundantCondition>
-  </file>
+<files psalm-version="4.17.0@6f4707aa41c9174353a6434bba3fc8840f981d9c">
   <file src="src/DataObject/CommentData.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
@@ -36,30 +22,6 @@
     <InvalidScalarArgument occurrences="1">
       <code>array_keys($tagNames)</code>
     </InvalidScalarArgument>
-  </file>
-  <file src="src/Doctrine/Type/InetType.php">
-    <ParamNameMismatch occurrences="1">
-      <code>$fieldDeclaration</code>
-    </ParamNameMismatch>
-  </file>
-  <file src="src/Doctrine/Type/TsvectorType.php">
-    <ParamNameMismatch occurrences="1">
-      <code>$fieldDeclaration</code>
-    </ParamNameMismatch>
-  </file>
-  <file src="src/Entity/CssTheme.php">
-    <InvalidArgument occurrences="1">
-      <code>new CssThemeRevision($this, $css)</code>
-    </InvalidArgument>
-    <InvalidPropertyAssignmentValue occurrences="2">
-      <code>$this-&gt;revisions</code>
-      <code>new ArrayCollection()</code>
-    </InvalidPropertyAssignmentValue>
-    <UndefinedMethod occurrences="3">
-      <code>$this-&gt;revisions</code>
-      <code>contains</code>
-      <code>matching</code>
-    </UndefinedMethod>
   </file>
   <file src="src/Entity/WikiPage.php">
     <InvalidNullableReturnType occurrences="2">
@@ -93,14 +55,6 @@
     <InvalidReturnType occurrences="1">
       <code>IpBan[]</code>
     </InvalidReturnType>
-  </file>
-  <file src="src/Form/Type/BackgroundImageType.php">
-    <UndefinedInterfaceMethod occurrences="4">
-      <code>isClicked</code>
-      <code>isClicked</code>
-      <code>isClicked</code>
-      <code>isClicked</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Pagination/CommentPage.php">
     <RedundantCondition occurrences="1">

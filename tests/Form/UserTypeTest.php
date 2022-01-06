@@ -25,17 +25,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class UserTypeTest extends TypeTestCase {
     /**
-     * @var SiteRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var SiteRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $siteRepository;
 
     /**
-     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication&\PHPUnit\Framework\MockObject\MockObject
      */
     private $authentication;
 
     /**
-     * @var AuthorizationCheckerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var AuthorizationCheckerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $authorizationChecker;
 

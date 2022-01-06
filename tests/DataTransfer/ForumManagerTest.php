@@ -19,12 +19,12 @@ use PHPUnit\Framework\TestCase;
  */
 class ForumManagerTest extends TestCase {
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 
     /**
-     * @var ForumTagRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var ForumTagRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $forumTagRepository;
 

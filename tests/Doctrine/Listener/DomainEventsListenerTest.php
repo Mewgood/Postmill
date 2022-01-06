@@ -23,11 +23,11 @@ class DomainEventsListenerTest extends TestCase {
     public function testDispatchesCreateEvent(): void {
         $entity = new Submission('a', null, null, EntityFactory::makeForum(), EntityFactory::makeUser(), null);
 
-        /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entityManager */
+        /** @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject $entityManager */
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $args = new LifecycleEventArgs($entity, $entityManager);
 
-        /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject $dispatcher */
+        /** @var EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $dispatcher
             ->expects($this->once())
@@ -43,11 +43,11 @@ class DomainEventsListenerTest extends TestCase {
     public function testDispatchesDeleteEvent(): void {
         $entity = EntityFactory::makeForum();
 
-        /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entityManager */
+        /** @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject $entityManager */
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $args = new LifecycleEventArgs($entity, $entityManager);
 
-        /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject $dispatcher */
+        /** @var EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $dispatcher
             ->expects($this->once())
@@ -69,7 +69,7 @@ class DomainEventsListenerTest extends TestCase {
             ->method('getName')
             ->willReturn(Forum::class);
 
-        /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entityManager */
+        /** @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject $entityManager */
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $entityManager
             ->method('getClassMetadata')
@@ -79,7 +79,7 @@ class DomainEventsListenerTest extends TestCase {
         $preArgs = new PreUpdateEventArgs($entity, $entityManager, $changeSet);
         $postArgs = new LifecycleEventArgs($entity, $entityManager);
 
-        /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject $dispatcher */
+        /** @var EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject $dispatcher */
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $dispatcher
             ->expects($this->once())

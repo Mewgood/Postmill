@@ -6,7 +6,6 @@ use App\Storage\FlysystemStorage;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 class FlysystemStorageTest extends TestCase {
     /**
-     * @var FilesystemInterface|MockObject
+     * @var FilesystemInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $filesystem;
 

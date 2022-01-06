@@ -1,0 +1,102 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Unary operation \"\\+\" on bool\\|float\\|int\\|string results in an error\\.$#"
+			count: 1
+			path: src/Controller/BanController.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Comment\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/Comment.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Comment\\:\\:\\$notifications is never read, only written\\.$#"
+			count: 1
+			path: src/Entity/Comment.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Comment\\:\\:\\$searchDoc is unused\\.$#"
+			count: 1
+			path: src/Entity/Comment.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Forum\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/Forum.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: src/Entity/Forum.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\IpBan\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/IpBan.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Message\\:\\:\\$notifications is unused\\.$#"
+			count: 1
+			path: src/Entity/Message.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\MessageThread\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/MessageThread.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
+			path: src/Entity/Submission.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Submission\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/Submission.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Submission\\:\\:\\$searchDoc is unused\\.$#"
+			count: 1
+			path: src/Entity/Submission.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: src/Entity/Submission.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Vote\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/Vote.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\WikiPage\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/WikiPage.php
+
+		-
+			message: "#^Strict comparison using \\!\\=\\= between null and null will always evaluate to false\\.$#"
+			count: 2
+			path: src/Form/DataTransformer/ForumTagDataListToStringsTransformer.php
+
+		-
+			message: "#^Strict comparison using \\!\\=\\= between null and null will always evaluate to false\\.$#"
+			count: 2
+			path: src/Form/DataTransformer/TagArrayToStringTransformer.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: src/Message/Middleware/RequestContextMiddleware.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: src/Message/Middleware/RequestContextMiddleware.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '\\:'\\|';' and '\\\\\\\\' will always evaluate to false\\.$#"
+			count: 1
+			path: tests/bootstrap.php
+
