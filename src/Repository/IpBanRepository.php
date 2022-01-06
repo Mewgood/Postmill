@@ -16,7 +16,7 @@ class IpBanRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pagerfanta|IpBan[]
+     * @return Pagerfanta<IpBan>
      */
     public function findAllPaginated(int $page, $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy(['timestamp' => 'DESC']);

@@ -26,7 +26,7 @@ class MessageThread {
      * })
      * @ORM\ManyToMany(targetEntity="User")
      *
-     * @var User[]|Collection|Selectable
+     * @var Collection<array-key, User>&Selectable<array-key, User>
      */
     private $participants;
 
@@ -35,7 +35,7 @@ class MessageThread {
      *     cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"timestamp": "ASC"})
      *
-     * @var Message[]|Collection|Selectable
+     * @var Collection<array-key, Message>&Selectable<array-key, Message>
      */
     private $messages;
 

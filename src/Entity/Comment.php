@@ -14,6 +14,7 @@ use App\Event\CommentUpdated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -83,7 +84,7 @@ class Comment implements DomainEvents, Visibility, Votable {
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="parent", cascade={"remove"})
      *
-     * @var Comment[]|Collection
+     * @var Collection<array-key, Comment>&Selectable<array-key, Comment>
      */
     private $children;
 
@@ -91,7 +92,7 @@ class Comment implements DomainEvents, Visibility, Votable {
      * @ORM\OneToMany(targetEntity="CommentVote", mappedBy="comment",
      *     fetch="EXTRA_LAZY", cascade={"persist"}, orphanRemoval=true)
      *
-     * @var CommentVote[]|Collection
+     * @var Collection<array-key, CommentVote>&Selectable<array-key, CommentVote>
      */
     private $votes;
 
@@ -133,14 +134,14 @@ class Comment implements DomainEvents, Visibility, Votable {
     /**
      * @ORM\OneToMany(targetEntity="CommentNotification", mappedBy="comment", cascade={"remove"}, orphanRemoval=true)
      *
-     * @var CommentNotification[]|Collection
+     * @var Collection<array-key, CommentNotification>&Selectable<array-key, CommentNotification>
      */
     private $notifications;
 
     /**
      * @ORM\OneToMany(targetEntity="CommentMention", mappedBy="comment", cascade={"remove"}, orphanRemoval=true)
      *
-     * @var CommentMention[]|Collection
+     * @var Collection<array-key, CommentMention>&Selectable<array-key, CommentMention>
      */
     private $mentions;
 

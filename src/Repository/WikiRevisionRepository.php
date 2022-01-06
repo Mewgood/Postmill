@@ -14,7 +14,7 @@ class WikiRevisionRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pagerfanta|WikiRevision[]
+     * @return Pagerfanta<WikiRevision>
      */
     public function findRecent(int $page): Pagerfanta {
         $qb = $this->createQueryBuilder('wr')

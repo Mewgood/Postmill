@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -29,7 +30,7 @@ class ForumTag {
      * @ORM\ManyToMany(targetEntity="Forum", mappedBy="tags", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"name": "DESC"})
      *
-     * @var Forum[]|Collection
+     * @var Collection<array-key, Forum>&Selectable<array-key, Forum>
      */
     private $forums;
 

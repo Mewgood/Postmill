@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Selectable;
 
 trait VotableTrait {
     /**
-     * @return Collection|Selectable|Vote[]
+     * @return Collection<array-key, Vote>&Selectable<array-key, Vote>
      */
     abstract protected function getVotes(): Collection;
 

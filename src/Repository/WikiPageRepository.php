@@ -25,7 +25,7 @@ class WikiPageRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pagerfanta|WikiPage[]
+     * @return Pagerfanta<WikiPage>
      */
     public function findAllPages(int $page): Pagerfanta {
         $qb = $this->createQueryBuilder('wp')

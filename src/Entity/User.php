@@ -113,14 +113,14 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     /**
      * @ORM\OneToMany(targetEntity="ForumSubscription", mappedBy="user")
      *
-     * @var ForumSubscription[]|Collection
+     * @var Collection<array-key, ForumSubscription>&Selectable<array-key, ForumSubscription>
      */
     private $subscriptions;
 
     /**
      * @ORM\OneToMany(targetEntity="Moderator", mappedBy="user")
      *
-     * @var Moderator[]|Collection
+     * @var Collection<array-key, Moderator>&Selectable<array-key, Moderator>
      */
     private $moderatorTokens;
 
@@ -128,14 +128,14 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * @ORM\OneToMany(targetEntity="Submission", mappedBy="user", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"id": "DESC"})
      *
-     * @var Submission[]|Collection|Selectable
+     * @var Collection<array-key, Submission>&Selectable<array-key, Submission>
      */
     private $submissions;
 
     /**
      * @ORM\OneToMany(targetEntity="SubmissionVote", mappedBy="user", fetch="EXTRA_LAZY")
      *
-     * @var SubmissionVote[]|Collection
+     * @var Collection<array-key, SubmissionVote>&Selectable<array-key, SubmissionVote>
      */
     private $submissionVotes;
 
@@ -143,14 +143,14 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="user", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"id": "DESC"})
      *
-     * @var Comment[]|Collection|Selectable
+     * @var Collection<array-key, Comment>&Selectable<array-key, Comment>
      */
     private $comments;
 
     /**
      * @ORM\OneToMany(targetEntity="CommentVote", mappedBy="user", fetch="EXTRA_LAZY")
      *
-     * @var CommentVote[]|Collection
+     * @var Collection<array-key, CommentVote>&Selectable<array-key, CommentVote>
      */
     private $commentVotes;
 
@@ -158,14 +158,14 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * @ORM\OneToMany(targetEntity="UserBan", mappedBy="user")
      * @ORM\OrderBy({"timestamp": "ASC"})
      *
-     * @var UserBan[]|Collection|Selectable
+     * @var Collection<array-key, UserBan>&Selectable<array-key, UserBan>
      */
     private $bans;
 
     /**
      * @ORM\OneToMany(targetEntity="IpBan", mappedBy="user")
      *
-     * @var IpBan[]|Collection|Selectable
+     * @var Collection<array-key, IpBan>&Selectable<array-key, IpBan>
      */
     private $ipBans;
 
@@ -176,7 +176,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * )
      * @ORM\ManyToMany(targetEntity="Forum")
      *
-     * @var Forum[]|Collection|Selectable
+     * @var Collection<array-key, Forum>&Selectable<array-key, Forum>
      */
     private $hiddenForums;
 
@@ -198,7 +198,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * @ORM\OneToMany(targetEntity="Notification", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\OrderBy({"timestamp": "DESC", "id": "DESC"})
      *
-     * @var Notification[]|Collection|Selectable
+     * @var Collection<array-key, Notification>&Selectable<array-key, Notification>
      */
     private $notifications;
 
@@ -235,7 +235,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
      * @ORM\OneToMany(targetEntity="UserBlock", mappedBy="blocker", cascade={"persist"}, fetch="EXTRA_LAZY", orphanRemoval=true)
      * @ORM\OrderBy({"timestamp": "DESC"})
      *
-     * @var UserBlock[]|Collection|Selectable
+     * @var Collection<array-key, UserBlock>&Selectable<array-key, UserBlock>
      */
     private $blocks;
 
@@ -440,7 +440,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     }
 
     /**
-     * @return Collection|Moderator[]|Selectable
+     * @return Collection<array-key, Moderator>&Selectable<array-key, Moderator>
      * @todo return an array instead
      */
     public function getModeratorTokens(): Collection {
@@ -564,7 +564,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     }
 
     /**
-     * @return Pagerfanta|Forum[]
+     * @return Pagerfanta<Forum>
      */
     public function getPaginatedHiddenForums(int $page): Pagerfanta {
         $pager = new Pagerfanta(new CollectionAdapter($this->hiddenForums));
@@ -610,7 +610,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
 
     /**
      * @param array<string|\Stringable> $ids
-     * @return array<self>
+     * @return array<Notification>
      */
     public function getNotificationsById(array $ids): array {
         $criteria = Criteria::create()
@@ -634,7 +634,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     }
 
     /**
-     * @return Pagerfanta|Notification[]
+     * @return Pagerfanta<Notification>
      */
     public function getPaginatedNotifications(int $page, int $maxPerPage = 25): Pagerfanta {
         $criteria = Criteria::create()->orderBy([
@@ -697,7 +697,7 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
     }
 
     /**
-     * @return Pagerfanta|UserBlock[]
+     * @return Pagerfanta<UserBlock>
      */
     public function getPaginatedBlocks(int $page, int $maxPerPage = 25): Pagerfanta {
         $pager = new Pagerfanta(new CollectionAdapter($this->blocks));

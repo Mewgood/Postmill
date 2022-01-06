@@ -69,6 +69,7 @@ class SubmissionFinder {
     /**
      * Finds submissions!
      *
+     * @return CursorInterface&\Traversable<Submission>
      * @throws NoSubmissionsException if there are no submissions
      */
     public function find(Criteria $criteria): CursorInterface {

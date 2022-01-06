@@ -3462,22 +3462,23 @@
         },
         {
             "name": "pagerfanta/core",
-            "version": "v2.5.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pagerfanta-packages/core.git",
-                "reference": "83c82d8189efa5a4bd0479c7db6e42d000c7cb03"
+                "url": "https://github.com/Pagerfanta/core.git",
+                "reference": "7fb7cacfb4916c9789e7a5999255214615218560"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pagerfanta-packages/core/zipball/83c82d8189efa5a4bd0479c7db6e42d000c7cb03",
-                "reference": "83c82d8189efa5a4bd0479c7db6e42d000c7cb03",
+                "url": "https://api.github.com/repos/Pagerfanta/core/zipball/7fb7cacfb4916c9789e7a5999255214615218560",
+                "reference": "7fb7cacfb4916c9789e7a5999255214615218560",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "php": "^7.2 || ^8.0",
-                "symfony/deprecation-contracts": "^2.1"
+                "symfony/deprecation-contracts": "^2.1",
+                "symfony/polyfill-php80": "^1.15"
             },
             "type": "library",
             "autoload": {
@@ -3494,22 +3495,22 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/pagerfanta-packages/core/tree/v2.5.1"
+                "source": "https://github.com/Pagerfanta/core/tree/v2.7.2"
             },
-            "time": "2020-11-11T00:40:39+00:00"
+            "time": "2021-07-25T19:56:13+00:00"
         },
         {
             "name": "pagerfanta/doctrine-collections-adapter",
-            "version": "v2.5.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pagerfanta-packages/doctrine-collections-adapter.git",
-                "reference": "598a12e5f7c35a51905414dff9416d9208f02d0f"
+                "url": "https://github.com/Pagerfanta/doctrine-collections-adapter.git",
+                "reference": "e9c1ff47fd7cc52995da8597ff964d8a72f3f4d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pagerfanta-packages/doctrine-collections-adapter/zipball/598a12e5f7c35a51905414dff9416d9208f02d0f",
-                "reference": "598a12e5f7c35a51905414dff9416d9208f02d0f",
+                "url": "https://api.github.com/repos/Pagerfanta/doctrine-collections-adapter/zipball/e9c1ff47fd7cc52995da8597ff964d8a72f3f4d5",
+                "reference": "e9c1ff47fd7cc52995da8597ff964d8a72f3f4d5",
                 "shasum": ""
             },
             "require": {
@@ -3534,22 +3535,22 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/pagerfanta-packages/doctrine-collections-adapter/tree/v2.5.1"
+                "source": "https://github.com/Pagerfanta/doctrine-collections-adapter/tree/v2.7.2"
             },
-            "time": "2020-11-11T00:40:39+00:00"
+            "time": "2021-07-25T19:56:13+00:00"
         },
         {
             "name": "pagerfanta/doctrine-orm-adapter",
-            "version": "v2.5.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pagerfanta-packages/doctrine-orm-adapter.git",
-                "reference": "b040b7d2fc5bd904b2059f28cbc1a71b283fd04b"
+                "url": "https://github.com/Pagerfanta/doctrine-orm-adapter.git",
+                "reference": "492d640993375b07ac6d23b2b8d3a724df8cf617"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pagerfanta-packages/doctrine-orm-adapter/zipball/b040b7d2fc5bd904b2059f28cbc1a71b283fd04b",
-                "reference": "b040b7d2fc5bd904b2059f28cbc1a71b283fd04b",
+                "url": "https://api.github.com/repos/Pagerfanta/doctrine-orm-adapter/zipball/492d640993375b07ac6d23b2b8d3a724df8cf617",
+                "reference": "492d640993375b07ac6d23b2b8d3a724df8cf617",
                 "shasum": ""
             },
             "require": {
@@ -3574,9 +3575,9 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/pagerfanta-packages/doctrine-orm-adapter/tree/v2.5.1"
+                "source": "https://github.com/Pagerfanta/doctrine-orm-adapter/tree/v2.7.2"
             },
-            "time": "2020-11-11T00:40:39+00:00"
+            "time": "2021-07-25T19:56:13+00:00"
         },
         {
             "name": "pagerwave/doctrine-collections-extension",

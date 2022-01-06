@@ -18,7 +18,7 @@ class ThemeRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @return Pagerfanta|Theme[]
+     * @return Pagerfanta<Theme>
      */
     public function findPaginated(int $page): Pagerfanta {
         $criteria = Criteria::create()

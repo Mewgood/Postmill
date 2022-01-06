@@ -40,7 +40,7 @@ class ForumRepository extends ServiceEntityRepository {
      *                       'subscribers', or 'creation_date', optionally with
      *                       'by_' prefix
      *
-     * @return Pagerfanta|Forum[]
+     * @return Pagerfanta<Forum>
      */
     public function findForumsByPage(int $page, string $sortBy): Pagerfanta {
         $qb = $this->createQueryBuilder('f');
