@@ -37,7 +37,7 @@ abstract class Notification {
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="User", inversedBy="notifications")
      *
-     * @var User
+     * @var User|null
      */
     private $user;
 

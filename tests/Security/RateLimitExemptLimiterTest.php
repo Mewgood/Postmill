@@ -13,7 +13,7 @@ use Symfony\Component\RateLimiter\RateLimit;
  */
 class RateLimitExemptLimiterTest extends TestCase {
     /**
-     * @var RequestRateLimiterInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var RequestRateLimiterInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $decorated;
 

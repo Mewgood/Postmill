@@ -38,7 +38,7 @@ class NewSubmissionTest extends TestCase {
     public function testThrowsWhenConstructorIsGivenInvalidParameter(): void {
         $this->expectException(\TypeError::class);
 
-        /** @noinspection PhpParamsInspection */
+        /** @noinspection PhpParamsInspection @phpstan-ignore-next-line */
         new NewSubmission(EntityFactory::makeComment());
     }
 }

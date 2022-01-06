@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\BundledTheme;
 use App\Entity\CssThemeRevision;
 use App\Entity\Theme;
+use App\Repository\BundledThemeRepository;
 use App\Repository\CssThemeRevisionRepository;
 use App\Tests\WebTestCase;
 use Doctrine\ORM\EntityManagerInterface;
@@ -104,11 +105,12 @@ class ThemeControllerTest extends WebTestCase {
 
     public function testCanSyncThemes(): void {
         $client = self::createAdminClient();
+        $bundledThemeRepository = self::$container->get(BundledThemeRepository::class);
 
         /** @var EntityManagerInterface $em */
         $em = self::$container->get(EntityManagerInterface::class);
         $em->persist(new BundledTheme('To be removed', 'to-be-removed'));
-        $em->remove($em->getRepository(BundledTheme::class)->findOneByName('Postmill'));
+        $em->remove($bundledThemeRepository->findOneByName('Postmill'));
         $em->flush();
 
         $crawler = $client->request('GET', '/site/themes');

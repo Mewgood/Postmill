@@ -13,12 +13,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  */
 class UserVoterTest extends VoterTestCase {
     /**
-     * @var ModeratorRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var ModeratorRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $moderators;
 
     /**
-     * @var SiteRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var SiteRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $sites;
 

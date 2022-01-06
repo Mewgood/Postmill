@@ -5,7 +5,6 @@ namespace App\Tests\EventListener;
 use App\Entity\User;
 use App\EventListener\UpdateLastSeenListener;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +18,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
  */
 class UpdateLastSeenListenerTest extends TestCase {
     /**
-     * @var MockObject|EntityManagerInterface
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 
@@ -36,7 +35,7 @@ class UpdateLastSeenListenerTest extends TestCase {
             ->expects($this->once())
             ->method('flush');
 
-        /** @var MockObject|User $user */
+        /** @var User&\PHPUnit\Framework\MockObject\MockObject $user */
         $user = $this->getMockBuilder(User::class)
             ->disableOriginalConstructor()
             ->getMock();

@@ -355,7 +355,7 @@ class Forum implements BackgroundImage, DomainEvents {
             ->setMaxResults(1);
 
         $ban = $this->bans->matching($criteria)->first();
-        \assert(!$ban || $ban instanceof ForumBan);
+        \assert($ban === false || $ban instanceof ForumBan);
 
         if (!$ban || !$ban->isBan()) {
             return false;

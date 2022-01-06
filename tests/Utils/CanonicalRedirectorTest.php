@@ -19,7 +19,7 @@ class CanonicalRedirectorTest extends TestCase {
     private $requestStack;
 
     /**
-     * @var UrlGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var UrlGeneratorInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $urlGenerator;
 

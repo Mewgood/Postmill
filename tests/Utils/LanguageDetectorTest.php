@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 class LanguageDetectorTest extends TestCase {
     /**
-     * @var Language|\PHPUnit\Framework\MockObject\MockObject
+     * @var Language&\PHPUnit\Framework\MockObject\MockObject
      */
     private $language;
 

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class NotForumBannedValidatorTest extends ConstraintValidatorTestCase {
     /**
-     * @var Authentication
+     * @var Authentication&\PHPUnit\Framework\MockObject\MockObject
      */
     private $authentication;
 

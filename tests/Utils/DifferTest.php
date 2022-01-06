@@ -11,7 +11,7 @@ use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
  */
 class DifferTest extends TestCase {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|DiffOutputBuilderInterface
+     * @var DiffOutputBuilderInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $outputBuilder;
 

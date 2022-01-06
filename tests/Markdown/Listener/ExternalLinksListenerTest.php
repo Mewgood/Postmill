@@ -24,17 +24,17 @@ class ExternalLinksListenerTest extends TestCase {
     private $listener;
 
     /**
-     * @var RequestStack|\PHPUnit\Framework\MockObject\MockObject
+     * @var RequestStack&\PHPUnit\Framework\MockObject\MockObject
      */
     private $requestStack;
 
     /**
-     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication&\PHPUnit\Framework\MockObject\MockObject
      */
     private $authentication;
 
     /**
-     * @var TrustedHosts|\PHPUnit\Framework\MockObject\MockObject
+     * @var TrustedHosts&\PHPUnit\Framework\MockObject\MockObject
      */
     private $trustedHosts;
 

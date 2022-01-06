@@ -19,12 +19,12 @@ class ForumSelectorTypeTest extends TypeTestCase {
     private $forumIdSequence = 0;
 
     /**
-     * @var ForumRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var ForumRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $forums;
 
     /**
-     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication&\PHPUnit\Framework\MockObject\MockObject
      */
     private $authentication;
 

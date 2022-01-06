@@ -12,7 +12,7 @@ use Symfony\Component\Mime\MimeTypesInterface;
  */
 class ImageNameGeneratorTest extends TestCase {
     /**
-     * @var MimeTypesInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var MimeTypesInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $mimeTypes;
 

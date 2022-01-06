@@ -2,7 +2,6 @@
 
 namespace App\Tests\Repository;
 
-use App\Entity\BundledTheme;
 use App\Repository\BundledThemeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -11,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BundledThemeRepositoryTest extends RepositoryTestCase {
     public function testSyncedConfigAndDatabase(): void {
-        $repository = $this->entityManager->getRepository(BundledTheme::class);
+        $repository = self::$container->get(BundledThemeRepository::class);
 
         $this->assertEmpty($repository->findThemesToCreate());
         $this->assertEmpty($repository->findThemesToRemove());

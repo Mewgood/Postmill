@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+PROJECT_ROOT="$(dirname $(dirname $(realpath $0)))"
+
+cd "$PROJECT_ROOT/tools/phpstan"
+if [ ! -d vendor ]; then
+    composer install
+fi
+
+cd "$PROJECT_ROOT"
+exec $PROJECT_ROOT/tools/phpstan/vendor/bin/phpstan --memory-limit=1G $@

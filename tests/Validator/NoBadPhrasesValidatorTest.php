@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
     /**
-     * @var BadPhraseMatcher|\PHPUnit\Framework\MockObject\MockObject
+     * @var BadPhraseMatcher&\PHPUnit\Framework\MockObject\MockObject
      */
     private $matcher;
 

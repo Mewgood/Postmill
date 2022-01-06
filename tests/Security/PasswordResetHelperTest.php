@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class PasswordResetHelperTest extends TestCase {
     /**
-     * @var UrlGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var UrlGeneratorInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $urlGenerator;
 
@@ -44,7 +44,7 @@ class PasswordResetHelperTest extends TestCase {
     }
 
     public function testGeneratesUrl(): void {
-        /** @var User|\PHPUnit\Framework\MockObject\MockObject $user */
+        /** @var User&\PHPUnit\Framework\MockObject\MockObject $user */
         $user = $this->createMock(User::class);
         $user
             ->expects($this->atLeastOnce())
@@ -78,7 +78,7 @@ class PasswordResetHelperTest extends TestCase {
         $this->expectException(AccessDeniedHttpException::class);
         $this->expectExceptionMessage('Link expired');
 
-        /** @var User|\PHPUnit\Framework\MockObject\MockObject $user */
+        /** @var User&\PHPUnit\Framework\MockObject\MockObject $user */
         $user = $this->createMock(User::class);
 
         $helper = new PasswordResetHelper($this->urlGenerator, 'no-reply@example.com', 'secret');
@@ -89,7 +89,7 @@ class PasswordResetHelperTest extends TestCase {
         $this->expectException(AccessDeniedHttpException::class);
         $this->expectExceptionMessage('Invalid checksum');
 
-        /** @var User|\PHPUnit\Framework\MockObject\MockObject $user */
+        /** @var User&\PHPUnit\Framework\MockObject\MockObject $user */
         $user = $this->createMock(User::class);
         $user
             ->expects($this->once())

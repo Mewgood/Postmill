@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class MarkdownNormalizerTest extends TestCase {
     public function testSupportMethodReturnsTrueForCorrectDataTypes(): void {
-        /** @var MarkdownConverter|\PHPUnit\Framework\MockObject\MockObject $converter */
+        /** @var MarkdownConverter&\PHPUnit\Framework\MockObject\MockObject $converter */
         $converter = $this->createMock(MarkdownConverter::class);
         $normalizer = new MarkdownNormalizer($converter);
         $data = $this->createMock(NormalizeMarkdownInterface::class);
@@ -22,7 +22,7 @@ class MarkdownNormalizerTest extends TestCase {
     }
 
     public function testSupportMethodReturnsFalseToAvoidRecursion(): void {
-        /** @var MarkdownConverter|\PHPUnit\Framework\MockObject\MockObject $converter */
+        /** @var MarkdownConverter&\PHPUnit\Framework\MockObject\MockObject $converter */
         $converter = $this->createMock(MarkdownConverter::class);
         $normalizer = new MarkdownNormalizer($converter);
         $data = $this->createMock(NormalizeMarkdownInterface::class);
@@ -46,7 +46,7 @@ class MarkdownNormalizerTest extends TestCase {
                 'nonexistent',
             ]);
 
-        /** @var MarkdownConverter|\PHPUnit\Framework\MockObject\MockObject $converter */
+        /** @var MarkdownConverter&\PHPUnit\Framework\MockObject\MockObject $converter */
         $converter = $this->createMock(MarkdownConverter::class);
         $converter
             ->expects($this->exactly(2))
@@ -60,7 +60,7 @@ class MarkdownNormalizerTest extends TestCase {
                 'rendered body'
             );
 
-        /** @var NormalizerInterface|\PHPUnit\Framework\MockObject\MockObject $decoratedNormalizer */
+        /** @var NormalizerInterface&\PHPUnit\Framework\MockObject\MockObject $decoratedNormalizer */
         $decoratedNormalizer = $this->createMock(NormalizerInterface::class);
         $decoratedNormalizer
             ->expects($this->once())

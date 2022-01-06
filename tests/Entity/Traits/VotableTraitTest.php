@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 class VotableTraitTest extends TestCase {
     /**
-     * @var VotableTrait
+     * @uses VotableTrait
      */
     private $votable;
 

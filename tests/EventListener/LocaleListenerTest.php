@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
  */
 class LocaleListenerTest extends TestCase {
     /**
-     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication&\PHPUnit\Framework\MockObject\MockObject
      */
     private $authentication;
 
@@ -42,7 +42,7 @@ class LocaleListenerTest extends TestCase {
     private $requestStack;
 
     /**
-     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var TranslatorInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $translator;
 
@@ -95,7 +95,7 @@ class LocaleListenerTest extends TestCase {
         $user = EntityFactory::makeUser();
         $user->setLocale('nb');
 
-        /** @var TokenInterface|\PHPUnit\Framework\MockObject\MockObject $token */
+        /** @var TokenInterface&\PHPUnit\Framework\MockObject\MockObject $token */
         $token = $this->createMock(TokenInterface::class);
         $token
             ->expects($this->atLeastOnce())

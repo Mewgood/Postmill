@@ -19,7 +19,7 @@ class NotificationTest extends TestCase {
     private $user;
 
     /**
-     * @var Notification|\PHPUnit\Framework\MockObject\MockObject
+     * @var Notification&\PHPUnit\Framework\MockObject\MockObject
      */
     private $notification;
 

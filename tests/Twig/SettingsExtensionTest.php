@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
  */
 class SettingsExtensionTest extends TestCase {
     /**
-     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication&\PHPUnit\Framework\MockObject\MockObject
      */
     private $authentication;
 
     /**
-     * @var SiteRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var SiteRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $sites;
 

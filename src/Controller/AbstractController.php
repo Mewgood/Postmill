@@ -24,7 +24,7 @@ abstract class AbstractController extends BaseAbstractController {
         ] + parent::getSubscribedServices();
     }
 
-    protected function getUser(): User {
+    protected function getUser(): ?User {
         return $this->get(Authentication::class)->getUser();
     }
 

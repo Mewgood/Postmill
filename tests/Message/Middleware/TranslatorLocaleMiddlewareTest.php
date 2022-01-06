@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Test\Middleware\MiddlewareTestCase;
  */
 class TranslatorLocaleMiddlewareTest extends MiddlewareTestCase {
     public function testSetsAndRestoresLocale(): void {
-        /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject $translator */
+        /** @var TranslatorInterface&\PHPUnit\Framework\MockObject\MockObject $translator */
         $translator = $this->createMock(TranslatorInterface::class);
         $translator
             ->expects($this->once())

@@ -27,17 +27,17 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class SubmissionManagerTest extends TestCase {
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|EventDispatcherInterface
+     * @var EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $eventDispatcher;
 
     /**
-     * @var MessageBusInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var MessageBusInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $messageBus;
 

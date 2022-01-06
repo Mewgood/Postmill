@@ -5,6 +5,7 @@ namespace App\DataObject;
 use App\Entity\BadPhrase;
 use App\Validator\RegularExpression;
 use App\Validator\Unique;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,6 +37,19 @@ class BadPhraseData {
 
     public function getId(): ?UuidInterface {
         return $this->id;
+    }
+
+    /**
+     * @param string|UuidInterface $id
+     */
+    public function setId($id): void {
+        if (\is_string($id)) {
+            $id = Uuid::fromString($id);
+        } elseif (!$id instanceof UuidInterface) {
+            throw new \TypeError('$id must be string or '.UuidInterface::class);
+        }
+
+        $this->id = $id;
     }
 
     public function toBadPhrase(): BadPhrase {

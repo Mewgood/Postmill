@@ -5,6 +5,7 @@ namespace App\Form\Type;
 use App\DataTransfer\ImageManager;
 use App\Entity\Contracts\BackgroundImageInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -76,13 +77,19 @@ final class BackgroundImageType extends AbstractType {
             $form = $event->getForm();
             $data = $form->getData();
 
-            if ($form->get('removeLightBackgroundImage')->isClicked()) {
+            $removeLightButton = $form->get('removeLightBackgroundImage');
+            \assert($removeLightButton instanceof ClickableInterface);
+
+            if ($removeLightButton->isClicked()) {
                 $data->setLightBackgroundImage(null);
 
                 $event->stopPropagation();
             }
 
-            if ($form->get('removeDarkBackgroundImage')->isClicked()) {
+            $removeDarkButton = $form->get('removeDarkBackgroundImage');
+            \assert($removeDarkButton instanceof ClickableInterface);
+
+            if ($removeDarkButton->isClicked()) {
                 $data->setDarkBackgroundImage(null);
 
                 $event->stopPropagation();
@@ -132,10 +139,13 @@ final class BackgroundImageType extends AbstractType {
             'data_class' => BackgroundImageInterface::class,
             'inherit_data' => true,
             'validation_groups' => static function (FormInterface $form) {
-                if (
-                    !$form->get('removeLightBackgroundImage')->isClicked() &&
-                    !$form->get('removeDarkBackgroundImage')->isClicked()
-                ) {
+                $removeLightButton = $form->get('removeLightBackgroundImage');
+                \assert($removeLightButton instanceof ClickableInterface);
+
+                $removeDarkButton = $form->get('removeDarkBackgroundImage');
+                \assert($removeDarkButton instanceof ClickableInterface);
+
+                if (!$removeLightButton->isClicked() && !$removeDarkButton->isClicked()) {
                     return ['Default', 'upload'];
                 }
 

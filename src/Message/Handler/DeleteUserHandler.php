@@ -105,7 +105,6 @@ final class DeleteUserHandler implements MessageHandlerInterface {
 
     public function __invoke(DeleteUser $message): void {
         $user = $this->entityManager->find(User::class, $message->getUserId());
-        \assert(!$user || $user instanceof User);
 
         if (!$user) {
             throw new UnrecoverableMessageHandlingException('User not found');

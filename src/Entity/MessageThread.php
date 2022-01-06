@@ -15,6 +15,8 @@ class MessageThread {
      * @ORM\Column(type="bigint")
      * @ORM\GeneratedValue()
      * @ORM\Id()
+     *
+     * @var int
      */
     private $id;
 

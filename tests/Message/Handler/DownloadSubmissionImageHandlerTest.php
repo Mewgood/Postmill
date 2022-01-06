@@ -20,32 +20,32 @@ use Psr\Log\LoggerInterface;
  */
 class DownloadSubmissionImageHandlerTest extends TestCase {
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 
     /**
-     * @var ImageManager|\PHPUnit\Framework\MockObject\MockObject
+     * @var ImageManager&\PHPUnit\Framework\MockObject\MockObject
      */
     private $imageManager;
 
     /**
-     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var LoggerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $logger;
 
     /**
-     * @var SiteRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var SiteRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $sites;
 
     /**
-     * @var SubmissionRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var SubmissionRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $submissions;
 
     /**
-     * @var UrlMetadataFetcherInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var UrlMetadataFetcherInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $urlMetadataFetcher;
 

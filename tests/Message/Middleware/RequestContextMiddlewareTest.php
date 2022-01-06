@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RequestContext;
  */
 class RequestContextMiddlewareTest extends MiddlewareTestCase {
     public function testSetsAndRestoresRequestContext(): void {
-        /** @var RequestContext|\PHPUnit\Framework\MockObject\MockObject $requestContext */
+        /** @var RequestContext&\PHPUnit\Framework\MockObject\MockObject $requestContext */
         $requestContext = $this->getMockBuilder(RequestContext::class)
             ->onlyMethods(['getHost', 'setHost'])
             ->getMock();
@@ -31,7 +31,7 @@ class RequestContextMiddlewareTest extends MiddlewareTestCase {
             )
             ->willReturn('localhost');
 
-        /** @var Request|\PHPUnit\Framework\MockObject\MockObject $request */
+        /** @var Request&\PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this->getMockBuilder(Request::class)
             ->enableOriginalConstructor()
             ->onlyMethods(['getHost'])

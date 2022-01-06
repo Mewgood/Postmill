@@ -261,6 +261,9 @@ class Comment implements DomainEvents, Visibility, Votable {
         $this->children->removeElement($reply);
     }
 
+    /**
+     * @return Collection<array-key, CommentVote>&Selectable<array-key, CommentVote>
+     */
     protected function getVotes(): Collection {
         return $this->votes;
     }

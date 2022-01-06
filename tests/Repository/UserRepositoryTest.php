@@ -2,7 +2,6 @@
 
 namespace App\Tests\Repository;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 
 /**
@@ -17,7 +16,7 @@ class UserRepositoryTest extends RepositoryTestCase {
     protected function setUp(): void {
         parent::setUp();
 
-        $this->repository = $this->entityManager->getRepository(User::class);
+        $this->repository = self::$container->get(UserRepository::class);
     }
 
     public function testFindIpsUsedByUser(): void {

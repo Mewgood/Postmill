@@ -56,14 +56,14 @@ class ForumTagDataListToStringsTransformerTest extends TestCase {
     public function testTransformThrowsOnBadValueType(): void {
         $this->expectException(\TypeError::class);
 
-        /** @noinspection PhpParamsInspection */
+        /** @noinspection PhpParamsInspection @phpstan-ignore-next-line */
         $this->transformer->transform("not iterable or null");
     }
 
     public function testReverseTransformThrowsBadValueType(): void {
         $this->expectException(\TypeError::class);
 
-        /** @noinspection PhpParamsInspection */
+        /** @noinspection PhpParamsInspection @phpstan-ignore-next-line */
         $this->transformer->reverseTransform("not iterable or null");
     }
 

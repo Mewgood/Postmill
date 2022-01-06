@@ -13,9 +13,9 @@ class PasswordResetHelper {
     private $urlGenerator;
 
     /**
-     * @var string|null
+     * @var bool
      */
-    private $noReplyAddress;
+    private $canReset;
 
     /**
      * @var string
@@ -32,12 +32,12 @@ class PasswordResetHelper {
         }
 
         $this->urlGenerator = $urlGenerator;
-        $this->noReplyAddress = $noReplyAddress;
+        $this->canReset = $noReplyAddress !== null && $noReplyAddress !== '';
         $this->secret = $secret;
     }
 
     public function canReset(): bool {
-        return !empty($this->noReplyAddress);
+        return $this->canReset;
     }
 
     public function generateResetUrl(User $user): string {

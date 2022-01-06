@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CursorNormalizerTest extends TestCase {
     public function testNormalizesCursor(): void {
-        /** @var NormalizerInterface|\PHPUnit\Framework\MockObject\MockObject $decorated */
+        /** @var NormalizerInterface&\PHPUnit\Framework\MockObject\MockObject $decorated */
         $decorated = $this->createMock(NormalizerInterface::class);
         $decorated
             ->expects($this->once())

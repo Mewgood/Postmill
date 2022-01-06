@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
  */
 class UserManagerTest extends TestCase {
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 
     /**
-     * @var NotificationRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var NotificationRepository&\PHPUnit\Framework\MockObject\MockObject
      */
     private $notifications;
 

@@ -12,7 +12,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 class MarkdownConverterTest extends TestCase {
     /**
-     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $dispatcher;
 

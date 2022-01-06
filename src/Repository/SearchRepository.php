@@ -107,7 +107,7 @@ class SearchRepository {
                 "ts_headline(%s, search_query, :{$name}_config) AS %s",
                 $headline['document'],
                 $name
-            ))->setParameter("{$name}_config", $headline['config'] ?? '');
+            ))->setParameter("{$name}_config", $headline['config']);
         }
 
         $table = $this->em->getClassMetadata($entityClass)->getTableName();

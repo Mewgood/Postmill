@@ -14,7 +14,7 @@ use Symfony\Component\Form\Test\TypeTestCase;
  */
 class UserTimezoneExtensionTest extends TypeTestCase {
     /**
-     * @var Authentication|\PHPUnit\Framework\MockObject\MockObject
+     * @var Authentication&\PHPUnit\Framework\MockObject\MockObject
      */
     private $authentication;
 
