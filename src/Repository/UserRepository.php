@@ -203,9 +203,9 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
 
         $sth = $this->_em->getConnection()->prepare($sql);
         $sth->bindValue(':id', $user->getId());
-        $sth->execute();
+        $result = $sth->executeQuery();
 
-        while ($ip = $sth->fetchOne()) {
+        while ($ip = $result->fetchOne()) {
             yield $ip;
         }
     }

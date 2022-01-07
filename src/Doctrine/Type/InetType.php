@@ -3,7 +3,7 @@
 namespace App\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 
 final class InetType extends Type {
@@ -16,7 +16,7 @@ final class InetType extends Type {
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string {
-        if (!$platform instanceof PostgreSqlPlatform) {
+        if (!$platform instanceof PostgreSQLPlatform) {
             throw new \InvalidArgumentException('Platform must be PostgreSQL');
         }
 
