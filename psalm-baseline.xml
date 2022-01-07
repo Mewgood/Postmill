@@ -200,9 +200,4 @@
       <code>$results</code>
     </InvalidArgument>
   </file>
-  <file src="vendor/doctrine/orm/lib/Doctrine/ORM/EntityRepository.php">
-    <InvalidDocblock occurrences="1">
-      <code>public function __construct(EntityManagerInterface $em, Mapping\ClassMetadata $class)</code>
-    </InvalidDocblock>
-  </file>
 </files>

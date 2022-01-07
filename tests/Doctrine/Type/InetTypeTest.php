@@ -3,8 +3,8 @@
 namespace App\Tests\Doctrine\Type;
 
 use App\Doctrine\Type\InetType;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,7 @@ class InetTypeTest extends TestCase {
 
     protected function setUp(): void {
         $this->type = Type::getType('inet');
-        $this->platform = $this->createMock(PostgreSqlPlatform::class);
+        $this->platform = $this->createMock(PostgreSQLPlatform::class);
     }
 
     public function testMetadata(): void {
@@ -80,8 +80,8 @@ class InetTypeTest extends TestCase {
     }
 
     public function testDoesNotWorkWithNonPostgresPlatforms(): void {
-        /** @var MySqlPlatform&\PHPUnit\Framework\MockObject\MockObject $platform */
-        $platform = $this->createMock(MySqlPlatform::class);
+        /** @var MySQLPlatform&\PHPUnit\Framework\MockObject\MockObject $platform */
+        $platform = $this->createMock(MySQLPlatform::class);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Platform must be PostgreSQL');

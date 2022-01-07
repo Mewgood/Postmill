@@ -3,7 +3,7 @@
 namespace App\Tests\Doctrine\Type;
 
 use App\Doctrine\Type\TsvectorType;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
@@ -17,7 +17,7 @@ class TsvectorTypeTest extends TestCase {
     private $type;
 
     /**
-     * @var PostgreSqlPlatform&\PHPUnit\Framework\MockObject\MockObject
+     * @var PostgreSQLPlatform&\PHPUnit\Framework\MockObject\MockObject
      */
     private $platform;
 
