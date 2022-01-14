@@ -84,6 +84,11 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
     private $featured = false;
 
     /**
+     * @var bool
+     */
+    private $moderationLogPublic = true;
+
+    /**
      * @var Image|null
      */
     private $lightBackgroundImage;
@@ -126,6 +131,7 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
         $self->sidebar = $forum->getSidebar();
         $self->description = $forum->getDescription();
         $self->featured = $forum->isFeatured();
+        $self->moderationLogPublic = $forum->isModerationLogPublic();
         $self->lightBackgroundImage = $forum->getLightBackgroundImage();
         $self->darkBackgroundImage = $forum->getDarkBackgroundImage();
         $self->backgroundImageMode = $forum->getBackgroundImageMode();
@@ -191,6 +197,14 @@ class ForumData implements BackgroundImageInterface, NormalizeMarkdownInterface 
 
     public function setFeatured(bool $featured): void {
         $this->featured = $featured;
+    }
+
+    public function isModerationLogPublic(): bool {
+        return $this->moderationLogPublic;
+    }
+
+    public function setModerationLogPublic(bool $moderationLogPublic): void {
+        $this->moderationLogPublic = $moderationLogPublic;
     }
 
     public function getSuggestedTheme(): ?Theme {

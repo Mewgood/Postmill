@@ -6,6 +6,7 @@ use App\DataObject\ForumData;
 use App\Form\Type\HoneypotType;
 use App\Form\Type\MarkdownType;
 use App\Form\Type\ForumTagsType;
+use App\Repository\ForumRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -21,8 +22,17 @@ final class ForumType extends AbstractType {
      */
     private $authorizationChecker;
 
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker) {
+    /**
+     * @var ForumRepository
+     */
+    private $forums;
+
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        ForumRepository $forums
+    ) {
         $this->authorizationChecker = $authorizationChecker;
+        $this->forums = $forums;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
@@ -49,6 +59,16 @@ final class ForumType extends AbstractType {
                 'required' => false,
             ])
         ;
+
+        $forumId = $builder->getData() ? $builder->getData()->getId() : null;
+        $forum = $forumId !== null ? $this->forums->find($forumId) : null;
+
+        if ($forum && $this->authorizationChecker->isGranted('set_log_visibility', $forum)) {
+            $builder->add('moderationLogPublic', CheckboxType::class, [
+                'label' => 'forum_form.moderation_log_public',
+                'required' => false,
+            ]);
+        }
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             $builder->add('featured', CheckboxType::class, [

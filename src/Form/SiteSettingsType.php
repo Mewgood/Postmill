@@ -63,6 +63,10 @@ final class SiteSettingsType extends AbstractType {
                 'choices' => self::ROLES,
                 'label' => 'site_settings.forum_create_role',
             ])
+            ->add('moderatorsCanSetForumLogVisibility', CheckboxType::class, [
+                'label' => 'site_settings.moderators_can_set_forum_log_visibility',
+                'required' => false,
+            ])
             ->add('imageUploadRole', ChoiceType::class, [
                 'choices' => self::ROLES,
                 'label' => 'site_settings.image_upload_role',
