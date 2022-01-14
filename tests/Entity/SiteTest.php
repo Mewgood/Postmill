@@ -173,6 +173,18 @@ class SiteTest extends TestCase {
         $this->assertTrue($site->isRegistrationCaptchaEnabled());
     }
 
+    public function testGetModeratorsCanSetForumLogVisibility(): void {
+        $this->assertFalse($this->site()->getModeratorsCanSetForumLogVisibility());
+    }
+
+    public function testSetModeratorsCanSetForumLogVisibility(): void {
+        $site = $this->site();
+
+        $site->setModeratorsCanSetForumLogVisibility(true);
+
+        $this->assertTrue($site->getModeratorsCanSetForumLogVisibility());
+    }
+
     public function testIsUrlImagesEnabled(): void {
         $this->assertTrue($this->site()->isUrlImagesEnabled());
     }

@@ -116,6 +116,13 @@ class Forum implements BackgroundImage, DomainEvents {
     private $featured = false;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @var bool
+     */
+    private $moderationLogPublic = true;
+
+    /**
      * @ORM\JoinTable(name="forums_tags", joinColumns={
      *     @ORM\JoinColumn(name="forum_id", referencedColumnName="id"),
      * }, inverseJoinColumns={
@@ -393,6 +400,14 @@ class Forum implements BackgroundImage, DomainEvents {
 
     public function setFeatured(bool $featured): void {
         $this->featured = $featured;
+    }
+
+    public function isModerationLogPublic(): bool {
+        return $this->moderationLogPublic;
+    }
+
+    public function setModerationLogPublic(bool $moderationLogPublic): void {
+        $this->moderationLogPublic = $moderationLogPublic;
     }
 
     /**

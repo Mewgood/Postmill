@@ -459,6 +459,17 @@ class ForumTest extends TestCase {
         $this->assertContainsOnlyInstancesOf(ForumLogEntry::class, $pager);
     }
 
+    public function testIsModerationLogPublic(): void {
+        $this->assertTrue($this->forum()->isModerationLogPublic());
+    }
+
+    public function testSetModerationLogPublic(): void {
+        $forum = $this->forum();
+        $forum->setModerationLogPublic(false);
+
+        $this->assertFalse($forum->isModerationLogPublic());
+    }
+
     public function testOnCreate(): void {
         $this->assertEquals(new Event(), $this->forum()->onCreate());
     }

@@ -55,6 +55,11 @@ class SiteData {
     public $forumCreateRole;
 
     /**
+     * @var bool
+     */
+    public $moderatorsCanSetForumLogVisibility;
+
+    /**
      * @Assert\Choice(User::ROLES)
      * @Assert\NotBlank()
      *
@@ -102,6 +107,7 @@ class SiteData {
         $self->defaultTheme = $site->getDefaultTheme();
         $self->wikiEnabled = $site->isWikiEnabled();
         $self->forumCreateRole = $site->getForumCreateRole();
+        $self->moderatorsCanSetForumLogVisibility = $site->getModeratorsCanSetForumLogVisibility();
         $self->imageUploadRole = $site->getImageUploadRole();
         $self->wikiEditRole = $site->getWikiEditRole();
         $self->trashEnabled = $site->isTrashEnabled();
@@ -120,6 +126,7 @@ class SiteData {
         $site->setDefaultTheme($this->defaultTheme);
         $site->setWikiEnabled($this->wikiEnabled);
         $site->setForumCreateRole($this->forumCreateRole);
+        $site->setModeratorsCanSetForumLogVisibility($this->moderatorsCanSetForumLogVisibility);
         $site->setImageUploadRole($this->imageUploadRole);
         $site->setWikiEditRole($this->wikiEditRole);
         $site->setTrashEnabled($this->trashEnabled);

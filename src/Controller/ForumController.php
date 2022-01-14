@@ -24,6 +24,7 @@ use App\SubmissionFinder\SubmissionFinder;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -279,6 +280,9 @@ final class ForumController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("view_moderation_log", subject="forum", statusCode=403)
+     */
     public function moderationLog(Forum $forum, int $page): Response {
         return $this->render('forum/moderation_log.html.twig', [
             'forum' => $forum,
@@ -287,9 +291,17 @@ final class ForumController extends AbstractController {
     }
 
     public function globalModerationLog(ForumLogEntryRepository $forumLogs, int $page): Response {
+        if ($this->isGranted('ROLE_USER')) {
+            $user = $this->getUserOrThrow();
+            $logs = $forumLogs->findAllPaginatedPrivileged($page, $user);
+        }
+        else {
+            $logs = $forumLogs->findAllPaginated($page);
+        }
+
         return $this->render('forum/global_moderation_log.html.twig', [
-            'logs' => $forumLogs->findAllPaginated($page),
-        ]);
+            'logs' => $logs,
+        ]);        
     }
 
     /**
@@ -325,6 +337,9 @@ final class ForumController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("view_moderation_log", subject="forum", statusCode=403)
+     */
     public function bans(Forum $forum, ForumBanRepository $banRepository, int $page = 1): Response {
         return $this->render('forum/bans.html.twig', [
             'bans' => $banRepository->findValidBansInForum($forum, $page),

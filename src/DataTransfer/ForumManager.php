@@ -38,6 +38,7 @@ class ForumManager {
         );
 
         $forum->setFeatured($data->isFeatured());
+        $forum->setModerationLogPublic($data->isModerationLogPublic());
         $forum->setLightBackgroundImage($data->getLightBackgroundImage());
         $forum->setDarkBackgroundImage($data->getDarkBackgroundImage());
         $forum->setBackgroundImageMode($data->getBackgroundImageMode());
@@ -56,6 +57,7 @@ class ForumManager {
         $forum->setSidebar($data->getSidebar());
         $forum->setDescription($data->getDescription());
         $forum->setFeatured($data->isFeatured());
+        $forum->setModerationLogPublic($data->isModerationLogPublic());
         $forum->setLightBackgroundImage($data->getLightBackgroundImage());
         $forum->setDarkBackgroundImage($data->getDarkBackgroundImage());
         $forum->setBackgroundImageMode($data->getBackgroundImageMode());

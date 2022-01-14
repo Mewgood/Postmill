@@ -75,6 +75,13 @@ class Site {
     private $forumCreateRole = 'ROLE_USER';
 
     /**
+     * @ORM\Column(type="text", options={"default": false})
+     *
+     * @var bool
+     */
+    private $moderatorsCanSetForumLogVisibility = false;
+
+    /**
      * @ORM\Column(type="text")
      *
      * @var string
@@ -182,6 +189,14 @@ class Site {
         }
 
         $this->forumCreateRole = $forumCreateRole;
+    }
+
+    public function getModeratorsCanSetForumLogVisibility(): bool {
+        return $this->moderatorsCanSetForumLogVisibility;
+    }
+
+    public function setModeratorsCanSetForumLogVisibility(bool $moderatorsCanSetForumLogVisibility): void {
+        $this->moderatorsCanSetForumLogVisibility = $moderatorsCanSetForumLogVisibility;
     }
 
     public function getImageUploadRole(): string {

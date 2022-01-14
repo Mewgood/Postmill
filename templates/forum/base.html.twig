@@ -92,46 +92,50 @@
     </details>
   {% endif %}
 
-  <section class="sidebar__section flow">
-    <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
+  {% if is_granted('moderator', forum) or is_granted('view_moderation_log', forum) %}
+    <section class="sidebar__section flow">
+      <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
 
-    {% set toolbox_items = {
-      ('nav.bans'|trans): {
-        route: 'forum_bans',
-      },
-      ('nav.moderation_log'|trans): {
-        route: 'moderation_log',
-      },
-      ('forum.edit'|trans): {
-        route: 'edit_forum',
-        condition: is_granted('moderator', forum),
-      },
-      ('nav.appearance'|trans): {
-        route: 'forum_appearance',
-        condition: is_granted('moderator', forum),
-      },
-      ('nav.delete_forum'|trans): {
-        route: 'delete_forum',
-        condition: is_granted('delete', forum),
-      },
-      ('nav.trash'|trans): {
-        route: 'forum_trash',
-        condition: is_granted('moderator', forum),
-      },
-    } %}
+      {% set toolbox_items = {
+        ('nav.bans'|trans): {
+          route: 'forum_bans',
+          condition: is_granted('view_moderation_log', forum)
+        },
+        ('nav.moderation_log'|trans): {
+          route: 'moderation_log',
+          condition: is_granted('view_moderation_log', forum)
+        },
+        ('forum.edit'|trans): {
+          route: 'edit_forum',
+          condition: is_granted('moderator', forum),
+        },
+        ('nav.appearance'|trans): {
+          route: 'forum_appearance',
+          condition: is_granted('moderator', forum),
+        },
+        ('nav.delete_forum'|trans): {
+          route: 'delete_forum',
+          condition: is_granted('delete', forum),
+        },
+        ('nav.trash'|trans): {
+          route: 'forum_trash',
+          condition: is_granted('moderator', forum),
+        },
+      } %}
 
-    <ul class="unlistify sidebar__no-padding">
-      {% for label in toolbox_items|keys|sort|filter(label => toolbox_items[label].condition ?? true) %}
-        {% set item = toolbox_items[label] %}
-        <li>
-          <a href="{{ path(item.route, { forum_name: forum.name }) }}"
-             class="menu-item {{ block('forum_toolbox_active') == item.route ? 'menu-item--active' }}">
-            {{- label -}}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  </section>
+      <ul class="unlistify sidebar__no-padding">
+        {% for label in toolbox_items|keys|sort|filter(label => toolbox_items[label].condition ?? true) %}
+          {% set item = toolbox_items[label] %}
+          <li>
+            <a href="{{ path(item.route, { forum_name: forum.name }) }}"
+              class="menu-item {{ block('forum_toolbox_active') == item.route ? 'menu-item--active' }}">
+              {{- label -}}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
 
   {% with { tags: forum.tags } %}
     {% if tags is not empty %}

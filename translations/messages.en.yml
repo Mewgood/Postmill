@@ -183,6 +183,7 @@ forum.submission_count: '{0} No submissions|{1} %formatted_count% submission|[1,
 forum.subscriber_count: '{0} No subscribers|{1} %formatted_count% subscriber|[1,Inf[ %formatted_count% subscribers'
 
 forum_form.featured: Show on front page
+forum_form.moderation_log_public: Moderation log is public
 
 forum_list.page_title: List of forums
 forum_list.submission_count: Submissions
@@ -489,6 +490,7 @@ site_footer.app: Running %app% %version%
 site_footer.version: '%version% (%branch%)'
 
 site_settings.default_sort_mode: Default sort mode
+site_settings.moderators_can_set_forum_log_visibility: Moderators can change forum log visibility
 site_settings.forum_create_role: Who can create new forums?
 site_settings.image_upload_role: Who can upload images?
 site_settings.trash_enabled: Enable trash
