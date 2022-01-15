@@ -58,6 +58,11 @@
             {{ block('comment_context') }}
           {% endif %}
 
+          {% if comment.trashed and (show_trashed or is_moderator or
+                (comment.user is same as(app.user))) %}
+            {{ block('comment_is_trashed') }}
+          {% endif %}
+
           {% if post_numbers and comment.parent %}
             {{ block('comment_replying_to') }}
           {% endif %}
@@ -65,7 +70,10 @@
           <div class="comment__body break-text text-flow">
             {%- if raw_body is not null -%}
               {{ raw_body|raw }}
-            {%- elseif (comment.visible or show_trashed) and comment.body is not null -%}
+            {%- elseif (comment.visible or show_trashed or
+                       (comment.trashed and (is_moderator or
+                       comment.user is same as(app.user))))
+                       and comment.body is not null -%}
               {{ comment.body|markdown|raw }}
             {%- endif -%}
           </div>
@@ -89,7 +97,10 @@
     </div>
 
     {% if recurse %}
-      {% set children = comment.children|filter(c => c.threadVisible) %}
+      {% set children = comment.children %}
+      {% if not is_moderator %}
+        {% set children = children|filter(c => c.threadVisible) %}
+      {% endif %}
       {% if children|length > 0 %}
         <div class="comment__replies hideable__hide flow">
           {%- for reply in children -%}
@@ -160,6 +171,16 @@
   </div>
 {% endblock comment_replying_to %}
 
+{% block comment_is_trashed %}
+  {% from '_macros/icon.html.twig' import icon %}
+  <div class="fg-muted flex flex--slim-gutters flex--no-wrap comment__is-trashed">
+    {{ icon('trash') }}
+    <p>
+      {{ 'comments.context.trashed'|trans -}}
+    </p>
+  </div>
+{% endblock %}
+
 {%- block comment_context_link_format -%}
   <a href="%s" class="fg-inherit"><strong>%s</strong></a>
 {%- endblock -%}
@@ -168,7 +189,8 @@
   {%- from 'user/_macros.html.twig' import user_flag -%}
 
   {% apply spaceless %}
-    {%- if comment.visible or show_trashed -%}
+    {%- if comment.visible or show_trashed or (comment.trashed and
+       (is_moderator or comment.user is same as(app.user))) -%}
       <a href="{{ path('user', { username: comment.user.username }) }}" class="fg-inherit">
         <strong>{{ comment.user.username }}</strong>
       </a>
