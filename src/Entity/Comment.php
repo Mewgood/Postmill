@@ -355,6 +355,40 @@ class Comment implements DomainEvents, Visibility, Votable {
         return false;
     }
 
+    public function isVisibleToUser(?User $user): bool {
+        if (\in_array($this->getVisibility(), [
+            Comment::VISIBILITY_VISIBLE,
+            Comment::VISIBILITY_SOFT_DELETED,
+        ], true)) {
+            return true;
+        }
+
+        if($user === $this->getUser()) {
+            return true;
+        }
+
+        return $this->getSubmission()->getForum()->userIsModerator($user);
+    }
+
+    public function isThreadVisibleToUser(?User $user): bool {
+        if (!$user instanceof User) {
+            return $this->isThreadVisible();
+        }
+
+        if ($this->isVisibleToUser($user)) {
+            return true;
+        }
+
+        // TODO: avoid doing this more than once for an entire comment tree
+        foreach ($this->getChildrenRecursive() as $child) {
+            if ($child->isVisibleToUser($user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Delete a comment without deleting its replies.
      */
