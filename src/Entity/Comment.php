@@ -363,7 +363,7 @@ class Comment implements DomainEvents, Visibility, Votable {
             return true;
         }
 
-        if($user === $this->getUser()) {
+        if ($user === $this->getUser()) {
             return true;
         }
 
