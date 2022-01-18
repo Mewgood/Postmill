@@ -506,6 +506,7 @@ site_settings.username_change_enabled: Users are allowed to change their usernam
 site_settings.url_images_enabled: Fetch thumbnails for submitted links
 site_settings.wiki_edit_role: Who can edit the wiki?
 site_settings.wiki_enabled: Enable wiki
+site_settings.wiki_log_public: Wiki history is available to non-editors
 
 submission_form.create: Create submission
 submission_form.edit: Edit submission

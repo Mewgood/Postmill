@@ -75,27 +75,31 @@
     {% endif %}
   </section>
 
-  <section class="sidebar__section flow">
-    <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
+  {% if is_granted('write', page) or is_granted('view_log', page) %}
+    <section class="sidebar__section flow">
+      <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
 
-    <ul class="unlistify sidebar__no-padding">
-      {% if is_granted('write', page) %}
-        <li>
-          <a href="{{ path('wiki_edit', {path: page.path}) }}"
-             class="menu-item {{ block('wiki_page_toolbox_active') == 'wiki_edit' ? 'menu-item--active' }}">
-            {{ 'wiki.edit_page'|trans }}
-          </a>
-        </li>
-      {% endif %}
+      <ul class="unlistify sidebar__no-padding">
+        {% if is_granted('write', page) %}
+          <li>
+            <a href="{{ path('wiki_edit', {path: page.path}) }}"
+              class="menu-item {{ block('wiki_page_toolbox_active') == 'wiki_edit' ? 'menu-item--active' }}">
+              {{ 'wiki.edit_page'|trans }}
+            </a>
+          </li>
+        {% endif %}
 
-      <li>
-        <a href="{{ path('wiki_history', {path: page.path}) }}"
-           class="menu-item {{ block('wiki_page_toolbox_active') == 'wiki_history' ? 'menu-item--active' }}">
-          {{- 'wiki.page_history'|trans -}}
-        </a>
-      </li>
-    </ul>
-  </section>
+        {% if is_granted('view_log', page) %}
+          <li>
+            <a href="{{ path('wiki_history', {path: page.path}) }}"
+              class="menu-item {{ block('wiki_page_toolbox_active') == 'wiki_history' ? 'menu-item--active' }}">
+              {{- 'wiki.page_history'|trans -}}
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </section>
+  {% endif %}
 
   {{ parent() }}
 {% endblock %}

@@ -133,6 +133,7 @@ final class WikiController extends AbstractController {
 
     /**
      * @Entity("wikiPage", expr="repository.findOneCaseInsensitively(path)")
+     * @IsGranted("view_log", subject="wikiPage", statusCode=403)
      */
     public function history(WikiPage $wikiPage, int $page): Response {
         return $this->render('wiki/history.html.twig', [
@@ -164,6 +165,9 @@ final class WikiController extends AbstractController {
             throw $this->createNotFoundException('Tried to compare two different pages');
         }
 
+        $this->denyAccessUnlessGranted('view', $from);
+        $this->denyAccessUnlessGranted('view', $to);
+
         return $this->render('wiki/diff.html.twig', [
             'from' => $from,
             'to' => $to,
@@ -171,6 +175,9 @@ final class WikiController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("view", subject="revision", statusCode=403)
+     */
     public function revision(WikiRevision $revision): Response {
         return $this->render('wiki/revision.html.twig', [
             'page' => $revision->getPage(),
@@ -186,6 +193,9 @@ final class WikiController extends AbstractController {
         ]);
     }
 
+    /**
+     * @IsGranted("view_wiki_log", statusCode=403)
+     */
     public function recentChanges(WikiRevisionRepository $repository, int $page): Response {
         return $this->render('wiki/recent.html.twig', [
             'revisions' => $repository->findRecent($page),

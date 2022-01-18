@@ -13,12 +13,15 @@
           {{- 'wiki.all_pages'|trans -}}
         </a>
       </li>
-      <li>
-        <a href="{{ path('wiki_recent_changes') }}"
-           class="menu-item {{ block('wiki_nav_toolbox_active') == 'wiki_recent_changes' ? 'menu-item--active' }}">
-          {{- 'label.recent_changes'|trans -}}
-        </a>
-      </li>
+
+      {% if is_granted('view_wiki_log') %}
+        <li>
+          <a href="{{ path('wiki_recent_changes') }}"
+            class="menu-item {{ block('wiki_nav_toolbox_active') == 'wiki_recent_changes' ? 'menu-item--active' }}">
+            {{- 'label.recent_changes'|trans -}}
+          </a>
+        </li>
+      {% endif %}
     </ul>
   </section>
 {% endblock %}
