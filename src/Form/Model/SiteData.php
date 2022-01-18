@@ -47,6 +47,11 @@ class SiteData {
     public $wikiEnabled;
 
     /**
+     * @var bool
+     */
+    public $wikiLogPublic;
+
+    /**
      * @Assert\Choice(User::ROLES)
      * @Assert\NotBlank()
      *
@@ -106,6 +111,7 @@ class SiteData {
         $self->defaultSortMode = $site->getDefaultSortMode();
         $self->defaultTheme = $site->getDefaultTheme();
         $self->wikiEnabled = $site->isWikiEnabled();
+        $self->wikiLogPublic = $site->isWikiLogPublic();
         $self->forumCreateRole = $site->getForumCreateRole();
         $self->moderatorsCanSetForumLogVisibility = $site->getModeratorsCanSetForumLogVisibility();
         $self->imageUploadRole = $site->getImageUploadRole();
@@ -125,6 +131,7 @@ class SiteData {
         $site->setDefaultSortMode($this->defaultSortMode);
         $site->setDefaultTheme($this->defaultTheme);
         $site->setWikiEnabled($this->wikiEnabled);
+        $site->setWikiLogPublic($this->wikiLogPublic);
         $site->setForumCreateRole($this->forumCreateRole);
         $site->setModeratorsCanSetForumLogVisibility($this->moderatorsCanSetForumLogVisibility);
         $site->setImageUploadRole($this->imageUploadRole);

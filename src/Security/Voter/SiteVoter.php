@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Site;
+use App\Entity\User;
 use App\Repository\SiteRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -14,12 +15,14 @@ final class SiteVoter extends Voter {
         self::CREATE_FORUM,
         self::UPLOAD_IMAGE,
         self::VIEW_WIKI,
+        self::VIEW_WIKI_LOG
     ];
 
     public const REGISTER = 'register';
     public const CREATE_FORUM = 'create_forum';
     public const UPLOAD_IMAGE = 'upload_image';
     public const VIEW_WIKI = 'view_wiki';
+    public const VIEW_WIKI_LOG = 'view_wiki_log';
 
     /**
      * @var AccessDecisionManagerInterface
@@ -58,6 +61,8 @@ final class SiteVoter extends Voter {
             return $this->decide($token, $subject->getImageUploadRole());
         case self::VIEW_WIKI:
             return $subject->isWikiEnabled();
+        case self::VIEW_WIKI_LOG:
+            return $this->canViewWikiLog($token, $subject);
         case self::REGISTER:
             return $subject->isRegistrationOpen();
         default:
@@ -67,5 +72,21 @@ final class SiteVoter extends Voter {
 
     private function decide(TokenInterface $token, string $role): bool {
         return $this->decisionManager->decide($token, [$role]);
+    }
+
+    private function canViewWikiLog(TokenInterface $token, Site $site): bool {
+        if ($site->isWikiLogPublic()) {
+            return true;
+        }
+
+        if (!$token->getUser() instanceof User) {
+            return false;
+        }
+
+        if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
+            return true;
+        }
+
+        return $this->decisionManager->decide($token, [$site->getWikiEditRole()]);
     }
 }

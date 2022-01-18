@@ -68,6 +68,13 @@ class Site {
     private $wikiEnabled = true;
 
     /**
+     * @ORM\Column(type="boolean")
+     *
+     * @var bool
+     */
+    private $wikiLogPublic = true;
+
+    /**
      * @ORM\Column(type="text")
      *
      * @var string
@@ -177,6 +184,14 @@ class Site {
 
     public function setWikiEnabled(bool $wikiEnabled): void {
         $this->wikiEnabled = $wikiEnabled;
+    }
+
+    public function isWikiLogPublic(): bool {
+        return $this->wikiLogPublic;
+    }
+
+    public function setWikiLogPublic(bool $wikiLogPublic): void {
+        $this->wikiLogPublic = $wikiLogPublic;
     }
 
     public function getForumCreateRole(): string {

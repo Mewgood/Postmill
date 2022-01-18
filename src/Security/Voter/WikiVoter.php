@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class WikiVoter extends Voter {
-    public const ATTRIBUTES = ['write', 'delete', 'lock'];
+    public const ATTRIBUTES = ['write', 'delete', 'lock', 'view_log'];
 
     /**
      * @var AccessDecisionManagerInterface
@@ -37,6 +37,11 @@ final class WikiVoter extends Voter {
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
+        if ($attribute === 'view_log') {
+            $site = $this->siteRepository->findCurrentSite();
+            return $this->decisionManager->decide($token, ['view_wiki_log'], $site);
+        }
+
         if (!$token->getUser() instanceof User) {
             return false;
         }

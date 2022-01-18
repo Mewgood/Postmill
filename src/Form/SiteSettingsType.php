@@ -59,6 +59,10 @@ final class SiteSettingsType extends AbstractType {
                 'label' => 'site_settings.wiki_enabled',
                 'required' => false,
             ])
+            ->add('wikiLogPublic', CheckboxType::class, [
+                'label' => 'site_settings.wiki_log_public',
+                'required' => false,
+            ])
             ->add('forumCreateRole', ChoiceType::class, [
                 'choices' => self::ROLES,
                 'label' => 'site_settings.forum_create_role',
