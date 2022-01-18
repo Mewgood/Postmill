@@ -29,6 +29,11 @@ class SiteData {
     public $usernameChangeEnabled;
 
     /**
+     * @var bool
+     */
+    public $unwhitelistedUserMessagesEnabled;
+
+    /**
      * @Assert\Choice({Submission::SORT_HOT, Submission::SORT_ACTIVE, Submission::SORT_NEW})
      * @Assert\NotBlank()
      *
@@ -103,6 +108,7 @@ class SiteData {
         $self->siteName = $site->getSiteName();
         $self->registrationOpen = $site->isRegistrationOpen();
         $self->usernameChangeEnabled = $site->isUsernameChangeEnabled();
+        $self->unwhitelistedUserMessagesEnabled = $site->isUnwhitelistedUserMessagesEnabled();
         $self->defaultSortMode = $site->getDefaultSortMode();
         $self->defaultTheme = $site->getDefaultTheme();
         $self->wikiEnabled = $site->isWikiEnabled();
@@ -122,6 +128,7 @@ class SiteData {
         $site->setSiteName($this->siteName);
         $site->setRegistrationOpen($this->registrationOpen);
         $site->setUsernameChangeEnabled($this->usernameChangeEnabled);
+        $site->setUnwhitelistedUserMessagesEnabled($this->unwhitelistedUserMessagesEnabled);
         $site->setDefaultSortMode($this->defaultSortMode);
         $site->setDefaultTheme($this->defaultTheme);
         $site->setWikiEnabled($this->wikiEnabled);

@@ -121,6 +121,15 @@ final class UserVoter extends Voter {
             return false;
         }
 
+        $site = $this->siteRepository->findCurrentSite();
+
+        if (
+            !$sender->isWhitelisted() &&
+            !$site->isUnwhitelistedUserMessagesEnabled()
+        ) {
+            return false;
+        }
+
         if ($receiver->isBlocking($sender) || $sender->isBlocking($receiver)) {
             return false;
         }

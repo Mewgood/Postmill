@@ -33,6 +33,10 @@ final class SiteSettingsType extends AbstractType {
                 'label' => 'site_settings.username_change_enabled',
                 'required' => false,
             ])
+            ->add('unwhitelistedUserMessagesEnabled', CheckboxType::class, [
+                'label' => 'site_settings.unwhitelisted_user_messages_enabled',
+                'required' => false,
+            ])
             ->add('defaultSortMode', ChoiceType::class, [
                 'choices' => [
                     'submission.sort_by_hot' => Submission::SORT_HOT,
