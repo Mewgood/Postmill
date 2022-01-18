@@ -47,6 +47,13 @@ class Site {
     private $usernameChangeEnabled = true;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @var bool
+     */
+    private $unwhitelistedUserMessagesEnabled = true;
+
+    /**
      * @ORM\Column(type="text", options={"default": Submission::SORT_HOT})
      *
      * @var string
@@ -153,6 +160,14 @@ class Site {
 
     public function setUsernameChangeEnabled(bool $usernameChangeEnabled): void {
         $this->usernameChangeEnabled = $usernameChangeEnabled;
+    }
+
+    public function isUnwhitelistedUserMessagesEnabled(): bool {
+        return $this->unwhitelistedUserMessagesEnabled;
+    }
+
+    public function setUnwhitelistedUserMessagesEnabled(bool $unwhitelistedUserMessagesEnabled): void {
+        $this->unwhitelistedUserMessagesEnabled = $unwhitelistedUserMessagesEnabled;
     }
 
     public function getDefaultSortMode(): string {

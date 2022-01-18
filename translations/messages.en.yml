@@ -493,6 +493,7 @@ site_settings.default_sort_mode: Default sort mode
 site_settings.moderators_can_set_forum_log_visibility: Moderators can change forum log visibility
 site_settings.forum_create_role: Who can create new forums?
 site_settings.image_upload_role: Who can upload images?
+site_settings.unwhitelisted_user_messages_enabled: Unwhitelisted users can compose messages
 site_settings.trash_enabled: Enable trash
 site_settings.trash_enabled_help: Move posts deleted by moderators to the trash, where they can later be restored.
 site_settings.registration_captcha_enabled: Enable CAPTCHA during sign-up

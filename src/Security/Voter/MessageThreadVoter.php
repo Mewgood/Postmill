@@ -4,6 +4,7 @@ namespace App\Security\Voter;
 
 use App\Entity\MessageThread;
 use App\Entity\User;
+use App\Repository\SiteRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -16,8 +17,17 @@ final class MessageThreadVoter extends Voter {
      */
     private $decisionManager;
 
-    public function __construct(AccessDecisionManagerInterface $decisionManager) {
+    /**
+     * @var SiteRepository
+     */
+    private $siteRepository;
+
+    public function __construct(
+        AccessDecisionManagerInterface $decisionManager,
+        SiteRepository $siteRepository
+    ) {
         $this->decisionManager = $decisionManager;
+        $this->siteRepository = $siteRepository;
     }
 
     protected function supports(string $attribute, $subject): bool {
@@ -52,6 +62,15 @@ final class MessageThreadVoter extends Voter {
 
         if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
             return true;
+        }
+
+        $site = $this->siteRepository->findCurrentSite();
+
+        if (
+            !$user->isWhitelisted() &&
+            !$site->isUnwhitelistedUserMessagesEnabled()
+        ) {
+            return false;
         }
 
         $otherParticipants = $thread->getOtherParticipants($user);
