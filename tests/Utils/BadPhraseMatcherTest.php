@@ -26,6 +26,7 @@ class BadPhraseMatcherTest extends TestCase {
                 new BadPhrase('coffee', BadPhrase::TYPE_TEXT),
                 new BadPhrase('[bs]ad', BadPhrase::TYPE_REGEX),
                 new BadPhrase('(?x) should # not break', BadPhrase::TYPE_REGEX),
+                new BadPhrase('@juice', BadPhrase::TYPE_TEXT),
             ]);
 
         $this->matcher = new BadPhraseMatcher($repository, null);
@@ -48,6 +49,13 @@ class BadPhraseMatcherTest extends TestCase {
 
     public function testBannedRegexInsideWordWillMatch(): void {
         $this->assertTrue($this->matcher->matches('sadist'));
+    }
+
+    /**
+     * @see https://gitlab.com/postmill/Postmill/-/issues/83
+     */
+    public function testBannedPhraseStartingWithNonWordCharacterWillMatchItself(): void {
+        $this->assertTrue($this->matcher->matches('@juice'));
     }
 
     public function provideBannedWords(): iterable {

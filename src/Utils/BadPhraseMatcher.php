@@ -53,7 +53,7 @@ class BadPhraseMatcher {
         foreach ($this->repository->findAll() as $entry) {
             switch ($entry->getPhraseType()) {
             case BadPhrase::TYPE_TEXT:
-                $regex = '@\b'.preg_quote($entry->getPhrase(), '@').'\b@u';
+                $regex = '@(?<!\w)'.preg_quote($entry->getPhrase(), '@').'(?!\w)@u';
                 break;
             case BadPhrase::TYPE_REGEX:
                 $regex = '@'.addcslashes($entry->getPhrase(), '@');
@@ -69,7 +69,7 @@ class BadPhraseMatcher {
                 throw new \DomainException('Unknown phrase type');
             }
 
-            $match = @preg_match($regex, $subject, $matches);
+            $match = @preg_match($regex, $subject);
 
             if ($match) {
                 $ids[] = $entry->getId();
@@ -107,7 +107,7 @@ class BadPhraseMatcher {
 
             switch ($entry->getPhraseType()) {
             case BadPhrase::TYPE_TEXT:
-                $part .= '(?i)\b'.preg_quote($entry->getPhrase(), '@').'\b';
+                $part .= '(?i)(?<!\w)'.preg_quote($entry->getPhrase(), '@').'(?!\w)';
                 break;
             case BadPhrase::TYPE_REGEX:
                 $part .= addcslashes($entry->getPhrase(), '@');
