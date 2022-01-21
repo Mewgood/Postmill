@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\BadPhrase;
+use App\PatternMatcher\PatternCollection;
+use App\PatternMatcher\PatternCollectionInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -25,5 +27,12 @@ class BadPhraseRepository extends ServiceEntityRepository {
         $pager->setCurrentPage($page);
 
         return $pager;
+    }
+
+    public function toPatternCollection(): PatternCollectionInterface {
+        $criteria = Criteria::create()
+            ->orderBy(['timestamp' => 'DESC', 'id' => 'ASC']);
+
+        return new PatternCollection($this->matching($criteria)->toArray());
     }
 }

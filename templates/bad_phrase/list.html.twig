@@ -23,4 +23,10 @@
   {% endif %}
 
   {{ include('bad_phrase/_list.html.twig', { bad_phrases: bad_phrases }, with_context=false) }}
+
+  {% if app.environment == 'dev' %}
+    <p>
+      <a href="{{ path('bad_phrase_debug') }}">{{ 'action.debug'|trans }}</a>
+    </p>
+  {% endif %}
 {% endblock body %}

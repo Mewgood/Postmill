@@ -2,18 +2,28 @@
 
 namespace App\Validator;
 
-use App\Utils\BadPhraseMatcher;
+use App\PatternMatcher\PatternMatcherInterface;
+use App\Repository\BadPhraseRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class NoBadPhrasesValidator extends ConstraintValidator {
     /**
-     * @var BadPhraseMatcher
+     * @var BadPhraseRepository
+     */
+    private $badPhrases;
+
+    /**
+     * @var PatternMatcherInterface
      */
     private $matcher;
 
-    public function __construct(BadPhraseMatcher $matcher) {
+    public function __construct(
+        BadPhraseRepository $badPhrases,
+        PatternMatcherInterface $matcher
+    ) {
+        $this->badPhrases = $badPhrases;
         $this->matcher = $matcher;
     }
 
@@ -36,7 +46,9 @@ final class NoBadPhrasesValidator extends ConstraintValidator {
             return;
         }
 
-        if ($this->matcher->matches($value)) {
+        $patterns = $this->badPhrases->toPatternCollection();
+
+        if ($this->matcher->matches($value, $patterns)) {
             $this->context->buildViolation($constraint->message)
                 ->setCode(NoBadPhrases::CONTAINS_BAD_PHRASE_ERROR)
                 ->addViolation();
