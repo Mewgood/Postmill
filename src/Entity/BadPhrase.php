@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\PatternMatcher\PatternInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -12,7 +13,7 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\UniqueConstraint(name="bad_phrases_phrase_type_idx", columns={"phrase", "phrase_type"}),
  * })
  */
-class BadPhrase {
+class BadPhrase implements PatternInterface {
     public const TYPES = [self::TYPE_TEXT, self::TYPE_REGEX];
     public const TYPE_TEXT = 'text';
     public const TYPE_REGEX = 'regex';
@@ -81,7 +82,22 @@ class BadPhrase {
         return $this->phrase;
     }
 
+    public function getPattern(): string {
+        return $this->phrase;
+    }
+
     public function getPhraseType(): string {
         return $this->phraseType;
+    }
+
+    public function getPatternType(): int {
+        switch ($this->phraseType) {
+        case self::TYPE_TEXT:
+            return PatternInterface::TYPE_PHRASE;
+        case self::TYPE_REGEX:
+            return PatternInterface::TYPE_REGEX_FRAGMENT;
+        default:
+            throw new \DomainException('Unknown pattern type');
+        }
     }
 }

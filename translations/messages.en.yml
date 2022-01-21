@@ -6,6 +6,7 @@ action.clear_all: Clear all
 action.compare: Compare
 action.create: Create
 action.create_theme: Create theme
+action.debug: Debug
 action.delete: Delete
 action.delete_account: Delete account
 action.delete_thread: Delete thread

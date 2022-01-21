@@ -2,7 +2,9 @@
 
 namespace App\Tests\Validator;
 
-use App\Utils\BadPhraseMatcher;
+use App\PatternMatcher\PatternCollectionInterface;
+use App\PatternMatcher\PatternMatcherInterface;
+use App\Repository\BadPhraseRepository;
 use App\Validator\IpWithCidr;
 use App\Validator\NoBadPhrases;
 use App\Validator\NoBadPhrasesValidator;
@@ -14,26 +16,28 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
     /**
-     * @var BadPhraseMatcher&\PHPUnit\Framework\MockObject\MockObject
+     * @var PatternMatcherInterface&\PHPUnit\Framework\MockObject\MockObject
      */
     private $matcher;
 
+    /**
+     * @var BadPhraseRepository&\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $badPhrases;
+
     protected function setUp(): void {
-        $this->matcher = $this->createMock(BadPhraseMatcher::class);
+        $this->matcher = $this->createMock(PatternMatcherInterface::class);
+        $this->badPhrases = $this->createMock(BadPhraseRepository::class);
 
         parent::setUp();
     }
 
     protected function createValidator(): NoBadPhrasesValidator {
-        return new NoBadPhrasesValidator($this->matcher);
+        return new NoBadPhrasesValidator($this->badPhrases, $this->matcher);
     }
 
     public function testMatchingInputWillRaise(): void {
-        $this->matcher
-            ->expects($this->once())
-            ->method('matches')
-            ->with('fly')
-            ->willReturn(true);
+        $this->expectPatternMatch('fly', true);
 
         $constraint = new NoBadPhrases();
         $this->validator->validate('fly', $constraint);
@@ -44,11 +48,7 @@ class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
     }
 
     public function testNonMatchingInputWillNotRaise(): void {
-        $this->matcher
-            ->expects($this->once())
-            ->method('matches')
-            ->with('bee')
-            ->willReturn(false);
+        $this->expectPatternMatch('bee', false);
 
         $this->validator->validate('bee', new NoBadPhrases());
 
@@ -57,12 +57,10 @@ class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
 
     /**
      * @dataProvider provideEmptyInputs
-     * @param mixed $emptyInput
+     * @param \Stringable|scalar|null $emptyInput
      */
     public function testEmptyInputWillNotRaise($emptyInput): void {
-        $this->matcher
-            ->expects($this->never())
-            ->method('matches');
+        $this->expectNoPatternMatch();
 
         $this->validator->validate($emptyInput, new NoBadPhrases());
 
@@ -70,23 +68,22 @@ class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
     }
 
     public function testThrowsOnNonScalarNonStringableValue(): void {
-        $this->matcher
-            ->expects($this->never())
-            ->method('matches');
+        $this->expectNoPatternMatch();
 
         $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate([], new NoBadPhrases());
     }
 
     public function testThrowsOnWrongConstraintType(): void {
-        $this->matcher
-            ->expects($this->never())
-            ->method('matches');
+        $this->expectNoPatternMatch();
 
         $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate('aa', new IpWithCidr());
     }
 
+    /**
+     * @return iterable<array{\Stringable|scalar|null}>
+     */
     public function provideEmptyInputs(): iterable {
         yield [null];
         yield [''];
@@ -96,5 +93,30 @@ class NoBadPhrasesValidatorTest extends ConstraintValidatorTestCase {
                 return '';
             }
         }];
+    }
+
+    private function expectPatternMatch(string $subject, bool $result): void {
+        $patternCollection = $this->createMock(PatternCollectionInterface::class);
+
+        $this->badPhrases
+            ->expects($this->once())
+            ->method('toPatternCollection')
+            ->willReturn($patternCollection);
+
+        $this->matcher
+            ->expects($this->once())
+            ->method('matches')
+            ->with($subject, $this->identicalTo($patternCollection))
+            ->willReturn($result);
+    }
+
+    private function expectNoPatternMatch(): void {
+        $this->badPhrases
+            ->expects($this->never())
+            ->method('toPatternCollection');
+
+        $this->matcher
+            ->expects($this->never())
+            ->method('matches');
     }
 }

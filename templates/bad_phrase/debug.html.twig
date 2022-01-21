@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% from '_macros/return_nav.html.twig' import return_nav %}
+
+{% block title 'action.debug'|trans %}
+
+{% block body %}
+  {{ return_nav('bad_phrase.title'|trans, path('bad_phrase_list')) }}
+
+  <h1 class="page-heading">{{ block('title') }}</h1>
+
+  {% apply spaceless %}
+    {% for regex in regexes %}
+      <p><kbd>{{ regex }}</kbd></p>
+    {% endfor %}
+  {% endapply %}
+{% endblock body %}

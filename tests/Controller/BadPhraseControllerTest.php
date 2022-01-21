@@ -27,4 +27,12 @@ class BadPhraseControllerTest extends WebTestCase {
             }
         ));
     }
+
+    public function testDebug(): void {
+        $client = self::createAdminClient();
+        $client->request('GET', '/site/bad_phrases/debug');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('.body > p > kbd');
+    }
 }

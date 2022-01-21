@@ -10,6 +10,11 @@ bad_phrase_search:
     controller: App\Controller\BadPhraseController::search
     methods: [GET]
 
+bad_phrase_debug:
+    path: /site/bad_phrases/debug
+    controller: App\Controller\BadPhraseController::debug
+    methods: [GET]
+
 bad_phrase_add:
     path: /site/bad_phrases/add
     controller: App\Controller\BadPhraseController::add

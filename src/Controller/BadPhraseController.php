@@ -6,8 +6,9 @@ use App\DataObject\BadPhraseData;
 use App\Entity\BadPhrase;
 use App\Form\BadPhraseSearchType;
 use App\Form\BadPhraseType;
+use App\PatternMatcher\PatternMatcherInterface;
+use App\PatternMatcher\RegexCompilerInterface;
 use App\Repository\BadPhraseRepository;
-use App\Utils\BadPhraseMatcher;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -55,18 +56,39 @@ final class BadPhraseController extends AbstractController {
         ]);
     }
 
-    public function search(BadPhraseMatcher $matcher, Request $request): Response {
+    public function search(
+        BadPhraseRepository $badPhrases,
+        PatternMatcherInterface $matcher,
+        Request $request
+    ): Response {
         $form = $this->createForm(BadPhraseSearchType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $query = $form->getData()['query'];
-            $matches = isset($query) ? $matcher->findMatching($query) : null;
+
+            if ($query !== null) {
+                $patterns = $badPhrases->toPatternCollection();
+                $matches = $matcher->findMatching($query, $patterns)->toArray();
+            }
         }
 
         return $this->render('bad_phrase/search.html.twig', [
             'bad_phrases' => $matches ?? null,
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function debug(
+        BadPhraseRepository $badPhrases,
+        RegexCompilerInterface $regexCompiler
+    ): Response {
+        $regexes = $regexCompiler->compileForFastMatch(
+            $badPhrases->toPatternCollection(),
+        );
+
+        return $this->render('bad_phrase/debug.html.twig', [
+            'regexes' => $regexes,
         ]);
     }
 
