@@ -632,9 +632,6 @@
     "symfony/string": {
         "version": "v5.0.3"
     },
-    "symfony/templating": {
-        "version": "v4.3.0"
-    },
     "symfony/test-pack": {
         "version": "v1.0.6"
     },
