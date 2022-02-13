@@ -3,6 +3,7 @@
 namespace App\Tests\Storage;
 
 use App\Storage\DsnAwareFilesystemFactory;
+use App\Storage\SlowFlysystemAdapter;
 use Aws\Credentials\CredentialsInterface;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Adapter\NullAdapter;
@@ -56,5 +57,31 @@ class DsnAwareFilesystemFactoryTest extends TestCase {
         $this->expectExceptionMessage("Unknown filesystem 'poop'");
 
         DsnAwareFilesystemFactory::createFilesystem('poop://crap');
+    }
+
+    /**
+     * @group time-sensitive
+     */
+    public function testCreateSlowFilesystem(): void {
+        $filesystem = DsnAwareFilesystemFactory::createFilesystem('slow+null://');
+        $time = time();
+
+        $this->assertInstanceOf(SlowFlysystemAdapter::class, $filesystem->getAdapter());
+
+        $filesystem->has('foo');
+
+        $this->assertSame($time + 1, time());
+    }
+
+    /**
+     * @group time-sensitive
+     */
+    public function testCreateSlowFilesystemWithCustomSleepTime(): void {
+        $filesystem = DsnAwareFilesystemFactory::createFilesystem('slow+null://null?slow_seconds=100');
+        $time = time();
+
+        $filesystem->has('foo');
+
+        $this->assertSame($time + 100, time());
     }
 }

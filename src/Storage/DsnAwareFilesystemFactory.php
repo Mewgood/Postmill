@@ -10,6 +10,12 @@ use League\Flysystem\Filesystem;
 
 final class DsnAwareFilesystemFactory {
     public static function createFilesystem(string $dsn, array $options = []): Filesystem {
+        $slow = false;
+        if (strpos($dsn, 'slow+') === 0) {
+            $dsn = substr($dsn, 5);
+            $slow = true;
+        }
+
         $parts = parse_url($dsn) ?: ['scheme' => preg_replace('/\W.*/', '', $dsn)];
         $parts += [
             'scheme' => null,
@@ -65,6 +71,13 @@ final class DsnAwareFilesystemFactory {
         default:
             throw new \InvalidArgumentException(
                 "Unknown filesystem '{$parts['scheme']}'"
+            );
+        }
+
+        if ($slow) {
+            $adapter = new SlowFlysystemAdapter(
+                $adapter,
+                (float) ($query['slow_seconds'] ?? 1.0),
             );
         }
 

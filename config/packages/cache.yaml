@@ -15,3 +15,6 @@ framework:
             cache.ratelimit:
                 adapter: cache.app
                 public: true
+            cache.image_resolver:
+                adapter: cache.app
+                public: true
