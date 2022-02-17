@@ -146,6 +146,7 @@ final class WikiController extends AbstractController {
         /* @var WikiRevision $from
          * @var WikiRevision $to */
         [$from, $to] = array_map(function ($q) use ($request, $repository) {
+            /** @var string $id */
             $id = $request->query->get($q);
 
             if (!Uuid::isValid($id)) {

@@ -117,7 +117,8 @@ final class BanController extends AbstractController {
         $this->validateCsrf('unban_ips', $request->request->get('token'));
 
         $ids = array_filter((array) $request->request->get('ban'), static function ($id) {
-            return \is_int(+$id);
+            /** @var string $id */
+            return is_numeric($id) && \is_int(+$id);
         });
 
         foreach ($repository->findBy(['id' => $ids]) as $ban) {

@@ -45,6 +45,7 @@ final class AjaxController extends AbstractController {
      * @IsGranted("ROLE_USER")
      */
     public function fetchTitle(Request $request): Response {
+        /** @var string $url */
         $url = $request->request->get('url');
         $errors = $this->validator->validate($url, [new NotBlank(), new Url()]);
 
