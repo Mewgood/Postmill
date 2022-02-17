@@ -102,6 +102,7 @@ final class BadPhraseController extends AbstractController {
 
     public function remove(Request $request, EntityManager $em, Validator $validator): Response {
         $this->validateCsrf('remove_bad_phrase', $request->request->get('token'));
+        /** @var array<string> $ids */
         $ids = (array) $request->request->get('remove_bad_phrase');
 
         $errors = $validator->validate($ids, new Assert\All([

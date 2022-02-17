@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Unary operation \"\\+\" on bool\\|float\\|int\\|string results in an error\\.$#"
-			count: 1
-			path: src/Controller/BanController.php
-
-		-
 			message: "#^Property App\\\\Entity\\\\Comment\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Entity/Comment.php

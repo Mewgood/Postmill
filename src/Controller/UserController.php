@@ -400,8 +400,11 @@ final class UserController extends AbstractController {
     public function changeNightMode(EntityManager $em, Request $request, Validator $validator): Response {
         $this->validateCsrf('night_mode', $request->request->get('token'));
 
+        /** @var string $nightMode */
+        $nightMode = $request->request->get('nightMode');
+
         $data = new UserData($this->getUser());
-        $data->setNightMode($request->request->get('nightMode'));
+        $data->setNightMode($nightMode);
         $errors = $validator->validate($data);
 
         if (\count($errors) > 0) {
