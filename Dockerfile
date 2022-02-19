@@ -104,6 +104,7 @@ COPY composer.* symfony.lock .env LICENSE ./
 COPY assets/fonts.json assets/themes.json assets/
 COPY bin/console bin/
 COPY config config/
+COPY migrations migrations/
 COPY public/index.php public/
 COPY --from=postmill_assets /app/public/build/*.json public/build/
 COPY src src/
