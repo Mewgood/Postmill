@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -81,22 +81,25 @@ class UserTypeTest extends TypeTestCase {
     }
 
     protected function getExtensions(): array {
-        $requestStack = new RequestStack();
-        $requestStack->push(Request::create('/', 'POST', [], [], [], [
+        $request = Request::create('/', 'POST', [], [], [], [
             'REMOTE_ADDR' => '127.0.0.1',
-        ]));
+        ]);
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
 
         return [
             new PreloadedExtension([
                 new HoneypotType($requestStack),
                 new UserType(
-                    $this->createMock(UserPasswordEncoderInterface::class),
+                    $this->createMock(UserPasswordHasherInterface::class),
                     $this->siteRepository,
                     $this->authentication,
                     $this->authorizationChecker
                 ),
                 new CaptchaType(
-                    new Session(new MockArraySessionStorage()),
+                    $requestStack,
                     $this->createMock(CaptchaGenerator::class),
                     $this->createMock(TranslatorInterface::class),
                     [

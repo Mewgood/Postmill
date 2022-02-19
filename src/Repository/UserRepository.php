@@ -83,6 +83,11 @@ class UserRepository extends ServiceEntityRepository implements PrunesIpAddresse
         return $this->findOneByNormalizedUsername(User::normalizeUsername($username));
     }
 
+    public function loadUserByIdentifier(string $identifier): ?User
+    {
+        return $this->loadUserByUsername($identifier);
+    }
+
     public function findOneOrRedirectToCanonical(?string $username, string $param): ?User {
         $user = $this->loadUserByUsername($username);
 

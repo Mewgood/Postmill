@@ -1,5 +1,5 @@
 ARG COMPOSER_VERSION=2
-ARG PHP_VERSION=8.0
+ARG PHP_VERSION=8.1
 ARG NODE_VERSION=14
 ARG NGINX_VERSION=1.18
 
@@ -53,7 +53,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 RUN set -eux; \
     install-php-extensions \
-        $(php -r 'die(PHP_VERSION_ID < 80000 ? 0 : 1);' && echo "amqp") \
+        amqp \
         apcu \
         gd \
         intl \
@@ -65,7 +65,10 @@ RUN set -eux; \
         acl \
         su-exec \
     ; \
-    echo 'apc.enable_cli = On' >> "$PHP_INI_DIR/conf.d/zz-postmill.ini";
+    { \
+        echo 'apc.enable_cli = On'; \
+        echo 'memory_limit = 192m'; \
+    } >> 'apc.enable_cli = On' >> "$PHP_INI_DIR/conf.d/zz-postmill.ini";
 
 COPY --from=postmill_composer_cache /usr/bin/composer /usr/bin
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
@@ -125,10 +128,8 @@ RUN set -eux; \
         echo 'opcache.validate_timestamps = Off'; \
         echo 'realpath_cache_size = 4096K'; \
         echo 'realpath_cache_ttl = 600'; \
-        if php -r 'die(PHP_VERSION_ID >= 70403 ? 0 : 1);'; then \
-            echo 'opcache.preload = /app/var/cache/prod/App_KernelProdContainer.preload.php'; \
-            echo 'opcache.preload_user = "${SU_USER}"'; \
-        fi; \
+        echo 'opcache.preload = /app/config/preload.php'; \
+        echo 'opcache.preload_user = "${SU_USER}"'; \
     } >> "$PHP_INI_DIR/conf.d/zz-postmill.ini"; \
     cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
     composer install \

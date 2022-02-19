@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class ChangePasswordCommand extends Command {
     protected static $defaultName = 'postmill:change-password';
@@ -20,10 +20,7 @@ final class ChangePasswordCommand extends Command {
      */
     private $entityManager;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
+    private UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @var UserRepository
@@ -32,11 +29,11 @@ final class ChangePasswordCommand extends Command {
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         UserRepository $users
     ) {
         $this->entityManager = $entityManager;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->users = $users;
 
         parent::__construct();
@@ -75,7 +72,7 @@ final class ChangePasswordCommand extends Command {
             return $input;
         });
 
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+        $user->setPassword($this->passwordHasher->hashPassword($user, $password));
         $this->entityManager->flush();
 
         $io->success(sprintf('The password was changed for %s', $username));

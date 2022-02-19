@@ -63,7 +63,7 @@ abstract class WebTestCase extends BaseWebTestCase {
             'HTTP_X_EXPERIMENTAL_API' => 1,
         ]);
 
-        $user = self::$container
+        $user = self::getContainer()
             ->get(UserRepository::class)
             ->loadUserByUsername($username);
 

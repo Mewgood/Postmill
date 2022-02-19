@@ -1,5 +1,5 @@
 security:
     # speed up unit tests
-    encoders:
+    password_hashers:
         App\DataObject\UserData: plaintext
         App\Entity\User: plaintext

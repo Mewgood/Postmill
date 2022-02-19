@@ -99,14 +99,14 @@ class SecurityControllerTest extends WebTestCase {
     }
 
     private function assertLoggedIn(): void {
-        $token = self::$container->get(TokenStorageInterface::class)->getToken();
+        $token = self::getContainer()->get(TokenStorageInterface::class)->getToken();
         $this->assertNotNull($token);
         $this->assertInstanceOf(User::class, $token->getUser());
     }
 
     private function assertNotLoggedIn(): void {
         $this->assertNull(
-            self::$container->get(TokenStorageInterface::class)
+            self::getContainer()->get(TokenStorageInterface::class)
                 ->getToken()
         );
     }

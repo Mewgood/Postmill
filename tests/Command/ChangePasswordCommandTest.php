@@ -26,7 +26,7 @@ class ChangePasswordCommandTest extends KernelTestCase {
         $application = new Application(self::bootKernel());
 
         $this->command = $application->find('postmill:change-password');
-        $this->users = self::$container->get(UserRepository::class);
+        $this->users = self::getContainer()->get(UserRepository::class);
     }
 
     public function testChangesPassword(): void {

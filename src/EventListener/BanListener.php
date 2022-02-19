@@ -54,7 +54,7 @@ final class BanListener implements EventSubscriberInterface {
         // they're considered read-only). As only POST/PUT/etc. requests should
         // result in the state of the application mutating, banned users should
         // not be able to do any damage with GET/HEAD requests.
-        if (!$event->isMasterRequest() || $request->isMethodSafe()) {
+        if (!$event->isMainRequest() || $request->isMethodSafe()) {
             return;
         }
 

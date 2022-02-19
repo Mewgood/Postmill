@@ -29,7 +29,7 @@ final class BadPhraseController extends AbstractController {
         ]);
     }
 
-    public function renderForm(): Response {
+    public function form(): Response {
         $form = $this->createForm(BadPhraseType::class, null, [
             'action' => $this->generateUrl('bad_phrase_add'),
         ]);

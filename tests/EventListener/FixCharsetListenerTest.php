@@ -32,7 +32,7 @@ class FixCharsetListenerTest extends TestCase {
         $this->event = new ResponseEvent(
             $kernel,
             new Request(),
-            HttpKernelInterface::MASTER_REQUEST,
+            HttpKernelInterface::MAIN_REQUEST,
             $this->response
         );
     }

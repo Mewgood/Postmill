@@ -56,9 +56,9 @@ class UserControllerTest extends WebTestCase {
         $client = self::createClient();
 
         /** @var \App\Entity\Site $site */
-        $site = self::$container->get(SiteRepository::class)->findCurrentSite();
+        $site = self::getContainer()->get(SiteRepository::class)->findCurrentSite();
         $site->setRegistrationOpen(false);
-        self::$container->get(EntityManagerInterface::class)->flush();
+        self::getContainer()->get(EntityManagerInterface::class)->flush();
 
         $client->request('GET', '/registration');
 
@@ -339,8 +339,8 @@ class UserControllerTest extends WebTestCase {
 
     private static function enableRegistrationCaptcha(): void {
         /** @var Site $site */
-        $site = self::$container->get(SiteRepository::class)->findCurrentSite();
+        $site = self::getContainer()->get(SiteRepository::class)->findCurrentSite();
         $site->setRegistrationCaptchaEnabled(true);
-        self::$container->get(EntityManagerInterface::class)->flush();
+        self::getContainer()->get(EntityManagerInterface::class)->flush();
     }
 }

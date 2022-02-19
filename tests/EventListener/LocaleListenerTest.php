@@ -148,7 +148,7 @@ class LocaleListenerTest extends TestCase {
         /** @var HttpKernelInterface $kernel */
         $kernel = $this->createMock(HttpKernelInterface::class);
 
-        return new RequestEvent($kernel, $this->request, HttpKernelInterface::MASTER_REQUEST);
+        return new RequestEvent($kernel, $this->request, HttpKernelInterface::MAIN_REQUEST);
     }
 
     private function havePreviousSession(): void {

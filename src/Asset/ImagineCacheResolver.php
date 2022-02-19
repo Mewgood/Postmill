@@ -46,7 +46,7 @@ final class ImagineCacheResolver implements ResolverInterface {
         return $item->get() !== false;
     }
 
-    public function resolve($path, $filter) {
+    public function resolve($path, $filter): string {
         $cacheKey = self::getCacheKey($path, $filter);
         $item = $this->cacheItemPool->getItem($cacheKey);
 

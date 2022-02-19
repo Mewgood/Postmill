@@ -9,7 +9,7 @@ use App\Security\PasswordResetHelper;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * @covers \App\Controller\ResetPasswordController
@@ -33,7 +33,7 @@ class ResetPasswordControllerTest extends WebTestCase {
 
     protected function setUp(): void {
         $this->client = self::createClient();
-        $this->helper = self::$container->get(PasswordResetHelper::class);
+        $this->helper = self::getContainer()->get(PasswordResetHelper::class);
     }
 
     public function testCanRequestPasswordReset(): void {
@@ -71,12 +71,11 @@ class ResetPasswordControllerTest extends WebTestCase {
 
         self::assertResponseRedirects();
 
-        /** @var UserPasswordEncoderInterface $encoder */
-        $encoder = self::$container->get('security.password_encoder');
+        $hasher = self::getContainer()->get(UserPasswordHasherInterface::class);
 
-        $user = self::$container->get(UserRepository::class)->findOneByUsername('emma');
+        $user = self::getContainer()->get(UserRepository::class)->findOneByUsername('emma');
 
-        $this->assertTrue($encoder->isPasswordValid($user, 'badshit1'));
+        $this->assertTrue($hasher->isPasswordValid($user, 'badshit1'));
     }
 
     public function testResetLinkDoesNotWorkAfterTwentyFourHours(): void {
@@ -100,7 +99,7 @@ class ResetPasswordControllerTest extends WebTestCase {
     }
 
     private function getUser(): User {
-        return self::$container->get(UserRepository::class)
+        return self::getContainer()->get(UserRepository::class)
             ->findOneByUsername('emma');
     }
 }

@@ -19,7 +19,7 @@ class ImageRepositoryTest extends RepositoryTestCase {
     protected function setUp(): void {
         parent::setUp();
 
-        $this->repository = self::$container->get(ImageRepository::class);
+        $this->repository = self::getContainer()->get(ImageRepository::class);
     }
 
     public function testCanFilterByOrphanedImages(): void {
@@ -27,7 +27,7 @@ class ImageRepositoryTest extends RepositoryTestCase {
         $this->entityManager->persist($orphanedImage);
 
         /** @var Submission $submission */
-        $submission = self::$container
+        $submission = self::getContainer()
             ->get(SubmissionRepository::class)
             ->findOneBy(['url' => null]);
 

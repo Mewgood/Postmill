@@ -12,12 +12,12 @@ final class FixCharsetListener implements EventSubscriberInterface {
      * Add UTF-8 character set to XML and JSON responses that don't have this.
      */
     public function fixResponseCharset(ResponseEvent $event): void {
-        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        if ($event->getRequestType() !== HttpKernelInterface::MAIN_REQUEST) {
             return;
         }
 
         $response = $event->getResponse();
-        $contentType = $response->headers->get('Content-Type');
+        $contentType = $response->headers->get('Content-Type', '');
         $charset = $response->getCharset() ?: 'UTF-8';
 
         if (preg_match('#[/+](?:json|xml)\b(?!;.*charset=)#i', $contentType)) {

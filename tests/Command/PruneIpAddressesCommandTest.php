@@ -92,7 +92,7 @@ class PruneIpAddressesCommandTest extends KernelTestCase {
     private function assertIpCount(int $count, string $entityClass): void {
         $criteria = (new Criteria())->where(Criteria::expr()->neq('ip', null));
 
-        $repository = self::$container
+        $repository = self::getContainer()
             ->get(EntityManagerInterface::class)
             ->getRepository($entityClass);
 

@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Pagerfanta\Doctrine\Collections\CollectionAdapter;
 use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -24,7 +25,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  *     @ORM\UniqueConstraint(name="users_normalized_username_idx", columns={"normalized_username"}),
  * })
  */
-class User implements DomainEventsInterface, UserInterface, \Serializable {
+class User implements DomainEventsInterface, UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * User roles, from most privileged to least privileged.
      */
@@ -361,6 +362,10 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
 
     public function getUsername(): string {
         return $this->username;
+    }
+
+    public function getUserIdentifier(): string {
+        return $this->getUsername();
     }
 
     public function setUsername(string $username): void {
@@ -893,16 +898,12 @@ class User implements DomainEventsInterface, UserInterface, \Serializable {
         return sprintf('%s@%s', $username, $domain);
     }
 
-    public function serialize(): string {
-        return serialize([$this->id, $this->username, $this->password]);
+    public function __serialize(): array {
+        return [$this->id, $this->username, $this->password];
     }
 
-    public function unserialize($serialized): void {
-        [
-            $this->id,
-            $this->username,
-            $this->password,
-        ] = @unserialize($serialized, ['allowed_classes' => false]);
+    public function __unserialize(array $data): void {
+        [$this->id, $this->username, $this->password] = $data;
     }
 
     public function onCreate(): Event {

@@ -21,11 +21,11 @@ class FrontControllerTest extends WebTestCase {
     public function testShowsCorrectNumberOfSubmissionsWhenBlockingUser(): void {
         $client = self::createAdminClient();
 
-        $users = self::$container->get(UserRepository::class);
+        $users = self::getContainer()->get(UserRepository::class);
         $blocker = $users->loadUserByUsername('emma');
         $blocked = $users->loadUserByUsername('zach');
 
-        $em = self::$container->get(EntityManagerInterface::class);
+        $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->persist(new UserBlock($blocker, $blocked, null));
         $em->flush();
 

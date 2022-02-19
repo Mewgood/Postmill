@@ -40,7 +40,7 @@ class ThemeControllerTest extends WebTestCase {
         $client = self::createClient();
 
         /** @var CssThemeRevision $revision */
-        $revision = self::$container
+        $revision = self::getContainer()
             ->get(CssThemeRevisionRepository::class)
             ->findOneBy([]);
         /** @var Theme $theme */
@@ -65,7 +65,7 @@ class ThemeControllerTest extends WebTestCase {
         self::assertResponseRedirects('/site/themes');
 
         /** @var CssThemeRevision $revision */
-        $revision = self::$container
+        $revision = self::getContainer()
             ->get(CssThemeRevisionRepository::class)
             ->findOneBy([], ['timestamp' => 'DESC']);
 
@@ -86,7 +86,7 @@ class ThemeControllerTest extends WebTestCase {
         self::assertResponseRedirects('/site/themes');
 
         /** @var CssThemeRevision $revision */
-        $revision = self::$container
+        $revision = self::getContainer()
             ->get(CssThemeRevisionRepository::class)
             ->findOneBy([], ['timestamp' => 'DESC']);
 
@@ -105,10 +105,10 @@ class ThemeControllerTest extends WebTestCase {
 
     public function testCanSyncThemes(): void {
         $client = self::createAdminClient();
-        $bundledThemeRepository = self::$container->get(BundledThemeRepository::class);
+        $bundledThemeRepository = self::getContainer()->get(BundledThemeRepository::class);
 
         /** @var EntityManagerInterface $em */
-        $em = self::$container->get(EntityManagerInterface::class);
+        $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->persist(new BundledTheme('To be removed', 'to-be-removed'));
         $em->remove($bundledThemeRepository->findOneByName('Postmill'));
         $em->flush();
