@@ -12,6 +12,7 @@ use App\Security\PasswordResetHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class ResetPasswordController extends AbstractController {
     /**
@@ -29,7 +30,7 @@ final class ResetPasswordController extends AbstractController {
         $this->manager = $manager;
     }
 
-    public function requestReset(Request $request): Response {
+    public function requestReset(Request $request, MessageBusInterface $bus): Response {
         if (!$this->helper->canReset()) {
             $view = $this->renderView('reset_password/cannot_reset.html.twig');
 
@@ -42,7 +43,7 @@ final class ResetPasswordController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->getData()->getEmail();
 
-            $this->dispatchMessage(new SendPasswordResetEmail($email), [
+            $bus->dispatch(new SendPasswordResetEmail($email), [
                 RequestInfoStamp::createFromRequest($request),
             ]);
 

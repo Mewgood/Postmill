@@ -195,8 +195,8 @@ class SubmissionControllerTest extends WebTestCase {
         $client = self::createAdminClient();
         $client->followRedirects();
 
-        self::$container->get(SiteRepository::class)->findCurrentSite()->setTrashEnabled(true);
-        self::$container->get(EntityManagerInterface::class)->flush();
+        self::getContainer()->get(SiteRepository::class)->findCurrentSite()->setTrashEnabled(true);
+        self::getContainer()->get(EntityManagerInterface::class)->flush();
 
         $crawler = $client->request('GET', '/f/cats/3');
         self::assertSelectorNotExists('.submission__trashed-icon');
@@ -347,10 +347,10 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertCount(1, $link);
         $this->assertStringContainsString('://', $link->attr('href'));
 
-        self::$container->get(SiteRepository::class)
+        self::getContainer()->get(SiteRepository::class)
             ->findCurrentSite()
             ->setSubmissionLinkDestination(SubmissionLinkDestination::SUBMISSION);
-        self::$container->get(EntityManagerInterface::class)->flush();
+        self::getContainer()->get(EntityManagerInterface::class)->flush();
 
         $crawler = $client->request('GET', '/f/news');
         $link = $crawler->filterXPath('//a[normalize-space(text()) = "A submission with a URL and body"]');
@@ -367,10 +367,10 @@ class SubmissionControllerTest extends WebTestCase {
         $this->assertCount(1, $link);
         $this->assertStringContainsString('://', $link->attr('href'));
 
-        self::$container->get(SiteRepository::class)
+        self::getContainer()->get(SiteRepository::class)
             ->findCurrentSite()
             ->setSubmissionLinkDestination(SubmissionLinkDestination::SUBMISSION);
-        self::$container->get(EntityManagerInterface::class)->flush();
+        self::getContainer()->get(EntityManagerInterface::class)->flush();
 
         $crawler = $client->request('GET', '/f/news/1');
         $link = $crawler->filterXPath('//a[normalize-space(text()) = "A submission with a URL and body"]');

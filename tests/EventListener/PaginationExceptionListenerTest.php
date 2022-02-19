@@ -20,7 +20,7 @@ class PaginationExceptionListenerTest extends TestCase {
 
         /** @var HttpKernelInterface&\PHPUnit\Framework\MockObject\MockObject $kernel */
         $kernel = $this->createMock(HttpKernelInterface::class);
-        $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $e);
+        $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MAIN_REQUEST, $e);
 
         (new PaginationExceptionListener())->onKernelException($event);
 
@@ -33,7 +33,7 @@ class PaginationExceptionListenerTest extends TestCase {
 
         /** @var HttpKernelInterface&\PHPUnit\Framework\MockObject\MockObject $kernel */
         $kernel = $this->createMock(HttpKernelInterface::class);
-        $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MASTER_REQUEST, $e);
+        $event = new ExceptionEvent($kernel, new Request(), HttpKernelInterface::MAIN_REQUEST, $e);
 
         (new PaginationExceptionListener())->onKernelException($event);
 
@@ -57,7 +57,7 @@ class PaginationExceptionListenerTest extends TestCase {
         return new ExceptionEvent(
             $kernel,
             new Request(),
-            HttpKernelInterface::MASTER_REQUEST,
+            HttpKernelInterface::MAIN_REQUEST,
             $throwable
         );
     }

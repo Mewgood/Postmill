@@ -32,9 +32,9 @@ class SubmissionFinderTest extends KernelTestCase {
         self::bootKernel();
 
         $this->request = Request::create('/');
-        self::$container->get(RequestStack::class)->push($this->request);
+        self::getContainer()->get(RequestStack::class)->push($this->request);
 
-        $this->submissionFinder = self::$container->get(SubmissionFinder::class);
+        $this->submissionFinder = self::getContainer()->get(SubmissionFinder::class);
     }
 
     public function testQueryWithEmptyResultsThrowsNotFoundException(): void {
@@ -63,7 +63,7 @@ class SubmissionFinderTest extends KernelTestCase {
 
     public function testShowForums(): void {
         /** @var Forum $forum */
-        $forum = self::$container->get(ForumRepository::class)
+        $forum = self::getContainer()->get(ForumRepository::class)
             ->findOneByName('cats');
 
         $criteria = (new Criteria(Submission::SORT_NEW))
@@ -85,7 +85,7 @@ class SubmissionFinderTest extends KernelTestCase {
 
     public function testShowUsers(): void {
         /** @var User $user */
-        $user = self::$container->get(UserRepository::class)
+        $user = self::getContainer()->get(UserRepository::class)
             ->loadUserByUsername('emma');
 
         $criteria = (new Criteria(Submission::SORT_NEW))

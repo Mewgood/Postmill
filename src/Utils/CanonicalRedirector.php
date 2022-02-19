@@ -40,7 +40,7 @@ class CanonicalRedirector {
 
         if (
             !$request ||
-            $request !== $this->requestStack->getMasterRequest() ||
+            $request !== $this->requestStack->getMainRequest() ||
             !$request->isMethodCacheable()
         ) {
             return;

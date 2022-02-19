@@ -31,6 +31,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface as Validator;
 
@@ -166,7 +167,12 @@ final class UserController extends AbstractController {
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @IsGranted("edit_user", subject="user", statusCode=403)
      */
-    public function deleteAccount(User $user, Request $request, TokenStorageInterface $tokenStorage): Response {
+    public function deleteAccount(
+        User $user,
+        Request $request,
+        TokenStorageInterface $tokenStorage,
+        MessageBusInterface $bus
+    ): Response {
         $form = $this->createForm(ConfirmDeletionType::class, null, [
             'name' => $user->getUsername(),
         ]);
@@ -177,7 +183,7 @@ final class UserController extends AbstractController {
                 $tokenStorage->setToken(null);
             }
 
-            $this->dispatchMessage(new DeleteUser($user));
+            $bus->dispatch(new DeleteUser($user));
 
             $this->addFlash('notice', 'flash.account_deletion_in_progress');
 

@@ -16,7 +16,7 @@ class UserRepositoryTest extends RepositoryTestCase {
     protected function setUp(): void {
         parent::setUp();
 
-        $this->repository = self::$container->get(UserRepository::class);
+        $this->repository = self::getContainer()->get(UserRepository::class);
     }
 
     public function testFindIpsUsedByUser(): void {

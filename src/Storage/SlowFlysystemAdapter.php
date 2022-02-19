@@ -27,24 +27,36 @@ class SlowFlysystemAdapter implements AdapterInterface {
         $this->sleepSeconds = $sleepSeconds;
     }
 
+    /**
+     * @return array|false
+     */
     public function write($path, $contents, Config $config) {
         $this->sleep();
 
         return $this->adapter->write($path, $contents, $config);
     }
 
+    /**
+     * @return array|false
+     */
     public function writeStream($path, $resource, Config $config) {
         $this->sleep();
 
         return $this->adapter->writeStream($path, $resource, $config);
     }
 
+    /**
+     * @return array|false
+     */
     public function update($path, $contents, Config $config) {
         $this->sleep();
 
         return $this->adapter->update($path, $contents, $config);
     }
 
+    /**
+     * @return array|false
+     */
     public function updateStream($path, $resource, Config $config) {
         $this->sleep();
 
@@ -75,30 +87,45 @@ class SlowFlysystemAdapter implements AdapterInterface {
         return $this->adapter->deleteDir($dirname);
     }
 
+    /**
+     * @return array|false
+     */
     public function createDir($dirname, Config $config) {
         $this->sleep();
 
         return $this->adapter->createDir($dirname, $config);
     }
 
+    /**
+     * @return array|false
+     */
     public function setVisibility($path, $visibility) {
         $this->sleep();
 
         return $this->adapter->setVisibility($path, $visibility);
     }
 
+    /**
+     * @return array|bool|null
+     */
     public function has($path) {
         $this->sleep();
 
         return $this->adapter->has($path);
     }
 
+    /**
+     * @return array|false
+     */
     public function read($path) {
         $this->sleep();
 
         return $this->adapter->read($path);
     }
 
+    /**
+     * @return array|false
+     */
     public function readStream($path) {
         $this->sleep();
 
@@ -111,30 +138,45 @@ class SlowFlysystemAdapter implements AdapterInterface {
         return $this->adapter->listContents($directory, $recursive);
     }
 
+    /**
+     * @return array|false
+     */
     public function getMetadata($path) {
         $this->sleep();
 
         return $this->adapter->getMetadata($path);
     }
 
+    /**
+     * @return array|false
+     */
     public function getSize($path) {
         $this->sleep();
 
         return $this->adapter->getSize($path);
     }
 
+    /**
+     * @return array|false
+     */
     public function getMimetype($path) {
         $this->sleep();
 
         return $this->adapter->getMimetype($path);
     }
 
+    /**
+     * @return array|false
+     */
     public function getTimestamp($path) {
         $this->sleep();
 
         return $this->adapter->getTimestamp($path);
     }
 
+    /**
+     * @return array|false
+     */
     public function getVisibility($path) {
         $this->sleep();
 

@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\DataObject\UserData;
-use App\Form\EventListener\PasswordEncodingSubscriber;
+use App\Form\EventListener\PasswordHashingSubscriber;
 use App\Form\Type\HoneypotType;
 use App\Repository\SiteRepository;
 use App\Security\Authentication;
@@ -17,14 +17,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class UserType extends AbstractType {
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private $encoder;
+    private $hasher;
 
     /**
      * @var SiteRepository
@@ -42,12 +42,12 @@ final class UserType extends AbstractType {
     private $authorizationChecker;
 
     public function __construct(
-        UserPasswordEncoderInterface $encoder,
+        UserPasswordHasherInterface $hasher,
         SiteRepository $sites,
         Authentication $authentication,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->encoder = $encoder;
+        $this->hasher = $hasher;
         $this->sites = $sites;
         $this->authentication = $authentication;
         $this->authorizationChecker = $authorizationChecker;
@@ -65,7 +65,7 @@ final class UserType extends AbstractType {
             $user = $this->authentication->getUser();
             $editUsername = $this->authorizationChecker->isGranted('edit_username', $user);
         }
-        
+
         $builder
             ->add('username', TextType::class, [
                 'label' => 'label.username',
@@ -94,7 +94,7 @@ final class UserType extends AbstractType {
             ]);
         }
 
-        $builder->addEventSubscriber(new PasswordEncodingSubscriber($this->encoder));
+        $builder->addEventSubscriber(new PasswordHashingSubscriber($this->hasher));
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options): void {

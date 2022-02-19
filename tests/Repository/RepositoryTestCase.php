@@ -14,7 +14,7 @@ abstract class RepositoryTestCase extends KernelTestCase {
     protected function setUp(): void {
         self::bootKernel();
 
-        $this->entityManager = self::$container->get(EntityManagerInterface::class);
+        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
     }
 
     protected function tearDown(): void {

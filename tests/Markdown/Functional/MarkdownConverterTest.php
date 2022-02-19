@@ -16,7 +16,7 @@ class MarkdownConverterTest extends KernelTestCase {
 
     protected function setUp(): void {
         self::bootKernel();
-        $this->converter = self::$container->get(MarkdownConverter::class);
+        $this->converter = self::getContainer()->get(MarkdownConverter::class);
     }
 
     /**

@@ -47,7 +47,7 @@ final class ImageWithFixedClassRenderer implements InlineRendererInterface, Conf
 
     public function setConfiguration(
         ConfigurationInterface $configuration
-    ) {
+    ): void {
         $this->config = $configuration;
     }
 }

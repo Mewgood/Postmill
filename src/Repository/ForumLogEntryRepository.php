@@ -9,6 +9,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
+use Pagerfanta\Adapter\AdapterInterface;
 use Pagerfanta\Doctrine\Collections\SelectableAdapter;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -35,6 +36,7 @@ class ForumLogEntryRepository extends ServiceEntityRepository {
             $adapter = new SelectableAdapter($this, $criteria);
         }
 
+        /** @psalm-suppress InvalidArgument */
         $pager = new Pagerfanta($adapter);
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($page);

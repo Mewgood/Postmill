@@ -20,7 +20,7 @@ class AjaxControllerTest extends WebTestCase {
             ->with('http://www.example.com/')
             ->willReturn('Example dot com');
 
-        self::$container->set(UrlMetadataFetcherInterface::class, $urlMetadataFetcher);
+        self::getContainer()->set(UrlMetadataFetcherInterface::class, $urlMetadataFetcher);
 
         $client->request('POST', '/ft.json', [
             'url' => 'http://www.example.com/',
@@ -56,7 +56,7 @@ class AjaxControllerTest extends WebTestCase {
             ->with('http://www.example.com/')
             ->willReturn(null);
 
-        self::$container->set(UrlMetadataFetcherInterface::class, $urlMetadataFetcher);
+        self::getContainer()->set(UrlMetadataFetcherInterface::class, $urlMetadataFetcher);
 
         $client->request('POST', '/ft.json', [
             'url' => 'http://www.example.com/',

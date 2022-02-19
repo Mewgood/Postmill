@@ -6,16 +6,13 @@ use App\DataObject\UserData;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final class PasswordEncodingSubscriber implements EventSubscriberInterface {
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $encoder;
+final class PasswordHashingSubscriber implements EventSubscriberInterface {
+    private UserPasswordHasherInterface $hasher;
 
-    public function __construct(UserPasswordEncoderInterface $encoder) {
-        $this->encoder = $encoder;
+    public function __construct(UserPasswordHasherInterface $hasher) {
+        $this->hasher = $hasher;
     }
 
     public function onPostSubmit(FormEvent $event): void {
@@ -33,8 +30,8 @@ final class PasswordEncodingSubscriber implements EventSubscriberInterface {
         }
 
         if ($user->getPlainPassword() !== null) {
-            $encoded = $this->encoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($encoded);
+            $hashed = $this->hasher->hashPassword($user, $user->getPlainPassword());
+            $user->setPassword($hashed);
         }
     }
 

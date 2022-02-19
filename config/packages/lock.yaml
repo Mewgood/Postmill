@@ -4,7 +4,7 @@ services:
         public: false
 
     postmill.lock_store:
-        class: Symfony\Component\Lock\Store\PostgreSqlStore
+        class: Symfony\Component\Lock\Store\DoctrineDbalPostgreSqlStore
         arguments:
             - "@doctrine.dbal.default_connection"
 

@@ -18,8 +18,8 @@ class NotificationRepositoryTest extends RepositoryTestCase {
     protected function setUp(): void {
         parent::setUp();
 
-        $this->entityManager = self::$container->get(EntityManagerInterface::class);
-        $this->repository = self::$container->get(NotificationRepository::class);
+        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
+        $this->repository = self::getContainer()->get(NotificationRepository::class);
     }
 
     public function testGetsOnlyNotificationsBySpecifiedUser(): void {

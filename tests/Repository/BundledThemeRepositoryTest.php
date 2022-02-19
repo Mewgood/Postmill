@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BundledThemeRepositoryTest extends RepositoryTestCase {
     public function testSyncedConfigAndDatabase(): void {
-        $repository = self::$container->get(BundledThemeRepository::class);
+        $repository = self::getContainer()->get(BundledThemeRepository::class);
 
         $this->assertEmpty($repository->findThemesToCreate());
         $this->assertEmpty($repository->findThemesToRemove());
@@ -24,7 +24,7 @@ class BundledThemeRepositoryTest extends RepositoryTestCase {
         ];
 
         $repository = new BundledThemeRepository(
-            self::$container->get(ManagerRegistry::class),
+            self::getContainer()->get(ManagerRegistry::class),
             $themesConfig
         );
 
@@ -43,7 +43,7 @@ class BundledThemeRepositoryTest extends RepositoryTestCase {
         unset($themesConfig['postmill-classic']);
 
         $repository = new BundledThemeRepository(
-            self::$container->get(ManagerRegistry::class),
+            self::getContainer()->get(ManagerRegistry::class),
             $themesConfig
         );
 

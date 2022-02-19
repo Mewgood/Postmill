@@ -29,7 +29,7 @@ final class DsnAwareFilesystemFactory {
             $parts[$key] = isset($parts[$key]) ? urldecode($parts[$key]) : null;
         }
 
-        parse_str($parts['query'], $query);
+        parse_str($parts['query'] ?? '', $query);
 
         switch ($parts['scheme']) {
         case 'local':

@@ -10,6 +10,7 @@ use App\Serializer\Contracts\NormalizeMarkdownInterface;
 use App\Validator\NoBadPhrases;
 use App\Validator\RateLimit;
 use App\Validator\Unique;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Unique("normalizedUsername", idFields={"id"}, errorPath="username",
  *     entityClass="App\Entity\User", groups={"registration", "edit"})
  */
-class UserData implements UserInterface, NormalizeMarkdownInterface {
+class UserData implements UserInterface, NormalizeMarkdownInterface, PasswordAuthenticatedUserInterface  {
     /**
      * @Groups({"user:read", "abbreviated_relations"})
      *
@@ -334,6 +335,10 @@ class UserData implements UserInterface, NormalizeMarkdownInterface {
 
     public function getUsername(): ?string {
         return $this->username;
+    }
+
+    public function getUserIdentifier(): string {
+        return $this->getUsername();
     }
 
     public function setUsername(?string $username): void {
