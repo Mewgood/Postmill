@@ -52,7 +52,7 @@ FROM php:${PHP_VERSION}-fpm-alpine AS postmill_php_base
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN set -eux; \
-    install-php-extensions \
+    IPE_GD_WITHOUTAVIF=1 install-php-extensions \
         amqp \
         apcu \
         gd \
