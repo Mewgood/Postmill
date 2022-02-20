@@ -89,6 +89,7 @@ banned.will_not_expire: This ban will not expire.
 comments.comments: Comments
 comments.context.comment_reply: Reply to comment by %comment_author% in %submission_title% by %submission_author%
 comments.context.top_level_reply: Reply to %submission_title% by %submission_author%
+comments.deleted_by_moderator: Deleted by a moderator
 comments.edit_info: (edited %edited_at%)
 comments.form_load_error: Error loading form. Please try again.
 comments.info: '%user% wrote %timestamp%'

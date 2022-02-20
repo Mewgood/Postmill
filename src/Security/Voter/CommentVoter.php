@@ -59,20 +59,7 @@ final class CommentVoter extends Voter {
     }
 
     private function canView(Comment $comment, TokenInterface $token): bool {
-        if (\in_array($comment->getVisibility(), [
-            Comment::VISIBILITY_VISIBLE,
-            Comment::VISIBILITY_SOFT_DELETED,
-        ], true)) {
-            return true;
-        }
-
-        $user = $token->getUser();
-
-        if ($user === $comment->getUser()) {
-            return true;
-        }
-
-        return $comment->getSubmission()->getForum()->userIsModerator($user);
+        return $comment->isVisibleToUser($token->getUser());
     }
 
     private function canDeleteOwn(Comment $comment, User $user): bool {
