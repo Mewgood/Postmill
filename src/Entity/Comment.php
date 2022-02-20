@@ -355,7 +355,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         return false;
     }
 
-    public function isVisibleToUser(?User $user): bool {
+    public function isVisibleToUser($user): bool {
         if (\in_array($this->getVisibility(), [
             Comment::VISIBILITY_VISIBLE,
             Comment::VISIBILITY_SOFT_DELETED,
@@ -370,7 +370,7 @@ class Comment implements DomainEvents, Visibility, Votable {
         return $this->getSubmission()->getForum()->userIsModerator($user);
     }
 
-    public function isThreadVisibleToUser(?User $user): bool {
+    public function isThreadVisibleToUser($user): bool {
         if (!$user instanceof User) {
             return $this->isThreadVisible();
         }
