@@ -204,7 +204,7 @@ class CommentControllerTest extends WebTestCase {
 
         $crawler = $client->request('GET', '/f/cats/3/-/comment/4');
         self::assertSelectorExists('.comment--visibility-trashed');
-        self::assertSelectorTextNotContains('.comment__body', 'trashed comment');
+        self::assertSelectorExists('.comment__trashed-icon');
 
         $client->submit($crawler->filter('.comment')->selectButton('Restore')->form());
         self::assertResponseRedirects();
