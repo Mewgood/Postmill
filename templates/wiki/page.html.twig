@@ -75,12 +75,12 @@
     {% endif %}
   </section>
 
-  {% if is_granted('write', page) or is_granted('view_log', page) %}
+  {% if is_granted('edit', page) or is_granted('view_log', page) %}
     <section class="sidebar__section flow">
       <h1 class="sidebar__title">{{ 'label.toolbox'|trans }}</h1>
 
       <ul class="unlistify sidebar__no-padding">
-        {% if is_granted('write', page) %}
+        {% if is_granted('edit', page) %}
           <li>
             <a href="{{ path('wiki_edit', {path: page.path}) }}"
               class="menu-item {{ block('wiki_page_toolbox_active') == 'wiki_edit' ? 'menu-item--active' }}">

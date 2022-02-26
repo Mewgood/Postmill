@@ -8,6 +8,7 @@ use App\Form\Model\WikiData;
 use App\Form\WikiType;
 use App\Repository\WikiPageRepository;
 use App\Repository\WikiRevisionRepository;
+use App\Security\Voter\WikiVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -40,6 +41,7 @@ final class WikiController extends AbstractController {
      * Creates a wiki page.
      *
      * @IsGranted("ROLE_USER")
+     * @IsGranted(WikiVoter::ATTR_CREATE, statusCode=403)
      *
      * @todo handle conflicts
      * @todo do something if the page already exists
@@ -86,7 +88,7 @@ final class WikiController extends AbstractController {
      *
      * @Entity("page", expr="repository.findOneCaseInsensitively(path)")
      * @IsGranted("ROLE_USER")
-     * @IsGranted("write", subject="page", statusCode=403)
+     * @IsGranted(WikiVoter::ATTR_EDIT, subject="page", statusCode=403)
      *
      * @todo handle conflicts
      */
@@ -113,7 +115,7 @@ final class WikiController extends AbstractController {
 
     /**
      * @IsGranted("ROLE_USER")
-     * @IsGranted("lock", subject="page", statusCode=403)
+     * @IsGranted(WikiVoter::ATTR_LOCK, subject="page", statusCode=403)
      */
     public function lock(Request $request, WikiPage $page, bool $lock, EntityManagerInterface $em): Response {
         $this->validateCsrf('wiki_lock', $request->request->get('token'));
@@ -133,7 +135,7 @@ final class WikiController extends AbstractController {
 
     /**
      * @Entity("wikiPage", expr="repository.findOneCaseInsensitively(path)")
-     * @IsGranted("view_log", subject="wikiPage", statusCode=403)
+     * @IsGranted(WikiVoter::ATTR_VIEW_LOG, subject="wikiPage", statusCode=403)
      */
     public function history(WikiPage $wikiPage, int $page): Response {
         return $this->render('wiki/history.html.twig', [

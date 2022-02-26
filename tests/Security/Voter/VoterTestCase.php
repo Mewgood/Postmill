@@ -26,18 +26,19 @@ abstract class VoterTestCase extends TestCase {
         $this->voter = $this->getVoter();
     }
 
+    /**
+     * @psalm-param VoterInterface::ACCESS_* $decision
+     */
+    protected function assertDecision(int $decision, string $attribute, $subject, TokenInterface $token): void {
+        $this->assertSame($decision, $this->voter->vote($token, $subject, [$attribute]));
+    }
+
     protected function assertDenied(string $attribute, $subject, TokenInterface $token): void {
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $subject, [$attribute])
-        );
+        $this->assertDecision(VoterInterface::ACCESS_DENIED, $attribute, $subject, $token);
     }
 
     protected function assertGranted(string $attribute, $subject, TokenInterface $token): void {
-        $this->assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $this->voter->vote($token, $subject, [$attribute])
-        );
+        $this->assertDecision(VoterInterface::ACCESS_GRANTED, $attribute, $subject, $token);
     }
 
     protected function expectRoleLookup(string $role, TokenInterface $token): void {

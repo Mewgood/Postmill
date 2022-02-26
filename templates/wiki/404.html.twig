@@ -12,7 +12,7 @@
 
   <p>{{ 'wiki.not_found_message'|trans }}</p>
 
-  {% if is_granted('ROLE_USER') %}
+  {% if is_granted('create_wiki_page') %}
     <p>
       <a href="{{ path('wiki_create', {path: path}) }}" class="button">
         {{- 'wiki.create_this_page'|trans -}}
