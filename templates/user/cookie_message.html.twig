@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% from '_macros/alert.html.twig' import alert %}
+
+{% block title 'label.error'|trans %}
+
+{% block body %}
+  <h1 class="page-heading">{{ 'label.error'|trans }}</h1>
+
+  {{ alert('login.cookie_message'|trans, 'error')}}
+{% endblock body %}

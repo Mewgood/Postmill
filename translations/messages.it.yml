@@ -135,7 +135,6 @@ flash.editing_credentials_of_other_user: Stai modificando le credenziali di un a
 flash.forum_deleted: Il forum e tutto il suo contenuto sono stati eliminati.
 flash.forum_moderator_added: L'utente è stato promosso moderatore.
 flash.forum_updated: I cambiamenti sono stati salvati.
-flash.no_cookies_verification: L'immagine non carica correttamente? Per favore assicurati di non aver bloccato i cookie e prova di nuovo.
 flash.no_entries_to_display: Non ci sono voci da mostrare.
 flash.no_messages: Non ci sono messaggi da mostrare.
 flash.no_moderated_forums: Non sei moderatore di alcun forum.

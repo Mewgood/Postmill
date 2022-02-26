@@ -135,7 +135,6 @@ flash.editing_credentials_of_other_user: You are editing the credentials of anot
 flash.forum_deleted: Forumet og all dets innhold har blitt slettet.
 flash.forum_moderator_added: Brukeren har blitt lagt til som moderator.
 flash.forum_updated: Endringene har blitt lagret.
-flash.no_cookies_verification: Laster ikke bildet riktig? Sørg for at du ikke blokkerer informasjonskapsler («cookies») og prøv på nytt.
 flash.no_entries_to_display: Det er ingenting å vise.
 flash.no_messages: Det finnes ingen meldinger å vise.
 flash.no_moderated_forums: Du modererer ingen fora.

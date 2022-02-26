@@ -133,7 +133,6 @@ flash.editing_credentials_of_other_user: Estás editando los credenciales de otr
 flash.forum_deleted: El foro y todos sus contenidos han sido borrados.
 flash.forum_moderator_added: La usuaria ha sido ascendida a moderadora.
 flash.forum_updated: Los cambios han sido guardados.
-flash.no_cookies_verification: ¿La imagen no carga correctamente? Asegúrate de que no estás bloqueando las cookies e inténtalo de nuevo.
 flash.no_entries_to_display: No hay entradas que mostrar.
 flash.no_messages: No hay mensajes que mostrar.
 flash.no_moderated_forums: No moderas ningún foro.

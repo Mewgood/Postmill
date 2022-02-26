@@ -80,7 +80,6 @@ flash.ban_added: L'adresse IP a été bannie.
 flash.forum_deleted: Le forum et son contenu a été supprimé.
 flash.forum_moderator_added: L'utilisateur a été promu modérateur.
 flash.forum_updated: Les changements ont été sauvegardés.
-flash.no_cookies_verification: Est-ce que l'image ne se charge pas correctement? Veuillez vous assurer que vous ne bloquez pas les cookies et essayez à nouveau.
 flash.no_entries_to_display: Il n'y a pas d'entrées à afficher.
 flash.no_messages: Il n'y a pas de message à afficher.
 flash.no_moderated_forums: Vous n'êtes le modérateur d'aucun forum.

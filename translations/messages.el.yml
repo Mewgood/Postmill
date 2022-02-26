@@ -67,7 +67,6 @@ flash.ban_added: Η διεύθυνση IP έχει απαγορευτεί.
 flash.forum_deleted: Το φόρουμ και όλο το περιεχόμενό του έχουν αφαιρεθεί.
 flash.forum_moderator_added: Ο χρήστης έχει γίνει συντονιστής.
 flash.forum_updated: Οι αλλαγές έχουν αποθηκευτεί.
-flash.no_cookies_verification: Η εικόνα δεν φορτώνεται σωστά; Βεβαιωθείτε ότι δεν αποκλείετε τα cookies και προσπαθήστε ξανά.
 flash.no_entries_to_display: Δεν υπάρχουν καταχωρήσεις για εμφάνιση.
 flash.no_messages: Δεν υπάρχουν μηνύματα.
 flash.no_moderated_forums: Δεν συντονίζετε κανένα φόρουμ.

@@ -3,16 +3,44 @@
 namespace App\Tests\Controller;
 
 use App\Entity\User;
+use App\EventListener\CookieCheckingListener;
 use App\Tests\WebTestCase;
+use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @covers \App\Controller\SecurityController
  */
 class SecurityControllerTest extends WebTestCase {
+    /**
+     * @group time-sensitive
+     * @covers \App\EventListener\CookieCheckingListener
+     */
+    public function testCookieCheckApplies(): void {
+        ClockMock::register(CookieCheckingListener::class);
+
+        $client = self::createClient();
+        $client->request('GET', '/login');
+
+        self::assertResponseRedirects('http://localhost/login?_cookie_check='.time());
+    }
+
+    /**
+     * @covers \App\EventListener\CookieCheckingListener
+     */
+    public function testFailedCookieCheckShowsError(): void {
+        $client = self::createClient();
+        $client->request('GET', '/login');
+        $client->getCookieJar()->clear();
+        $client->followRedirect();
+
+        self::assertResponseStatusCodeSame(403);
+    }
+
     public function testLoginRedirectsToFrontAndIsRemembered(): void {
         $client = self::createClient();
         $client->request('GET', '/login');
+        $client->followRedirect();
         $client->submitForm('Log in', [
             '_username' => 'emma',
             '_password' => 'goodshit',
@@ -26,6 +54,7 @@ class SecurityControllerTest extends WebTestCase {
     public function testCannotLogInWithInvalidCredentials(): void {
         $client = self::createClient();
         $client->request('GET', '/login');
+        $client->followRedirect();
         $client->submitForm('Log in', [
             '_username' => 'emma',
             '_password' => 'badshit',
@@ -38,6 +67,7 @@ class SecurityControllerTest extends WebTestCase {
     public function testCannotLogInWithInvalidCsrfToken(): void {
         $client = self::createClient();
         $client->request('GET', '/login');
+        $client->followRedirect();
         $client->submitForm('Log in', [
             '_username' => 'emma',
             '_password' => 'goodshit',
@@ -51,6 +81,7 @@ class SecurityControllerTest extends WebTestCase {
     public function testLoginFailureRetainsUsernameAndRememberMeInForm(): void {
         $client = self::createClient();
         $client->request('GET', '/login');
+        $client->followRedirect();
         $client->submitForm('Log in', [
             '_username' => 'emma',
             '_password' => 'badshit',
@@ -69,6 +100,7 @@ class SecurityControllerTest extends WebTestCase {
     public function testUserCanChooseNotToBeRemembered(): void {
         $client = self::createClient();
         $client->request('GET', '/login');
+        $client->followRedirect();
         $client->submitForm('Log in', [
             '_username' => 'emma',
             '_password' => 'goodshit',

@@ -9,12 +9,6 @@
   {{ form_row(form.email) }}
 
   {% if form.verification is defined %}
-    {% if app.request.method == 'POST' and not app.request.hasPreviousSession %}
-      <div class="form__row">
-        {{ alert('flash.no_cookies_verification'|trans, 'error', true) }}
-      </div>
-    {% endif %}
-
     {{ form_row(form.verification) }}
   {% endif %}
 
