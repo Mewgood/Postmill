@@ -2,7 +2,6 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Site;
 use App\Entity\User;
 use App\Entity\WikiPage;
 use App\Repository\SiteRepository;
@@ -11,7 +10,11 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class WikiVoter extends Voter {
-    public const ATTRIBUTES = ['write', 'delete', 'lock', 'view_log'];
+    public const ATTR_CREATE = 'create_wiki_page';
+    public const ATTR_EDIT = 'edit';
+    public const ATTR_DELETE = 'delete';
+    public const ATTR_LOCK = 'lock';
+    public const ATTR_VIEW_LOG = 'view_log';
 
     /**
      * @var AccessDecisionManagerInterface
@@ -32,25 +35,31 @@ final class WikiVoter extends Voter {
     }
 
     protected function supports(string $attribute, $subject): bool {
-        return $subject instanceof WikiPage &&
-            \in_array($attribute, self::ATTRIBUTES, true);
+        if ($subject === null && $attribute === self::ATTR_CREATE) {
+            return true;
+        }
+
+        return $subject instanceof WikiPage && \in_array($attribute, [
+            self::ATTR_EDIT,
+            self::ATTR_DELETE,
+            self::ATTR_LOCK,
+            self::ATTR_VIEW_LOG,
+        ], true);
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
-        if ($attribute === 'view_log') {
+        if ($attribute === self::ATTR_VIEW_LOG) {
             $site = $this->siteRepository->findCurrentSite();
             return $this->decisionManager->decide($token, ['view_wiki_log'], $site);
         }
 
-        if (!$token->getUser() instanceof User) {
-            return false;
-        }
-
         switch ($attribute) {
-        case 'write':
-            return $this->canWrite($subject, $token);
-        case 'delete':
-        case 'lock':
+        case self::ATTR_CREATE:
+            return $this->canCreate($token);
+        case self::ATTR_EDIT:
+            return $this->canEdit($subject, $token);
+        case self::ATTR_DELETE:
+        case self::ATTR_LOCK:
             // todo: make this configurable
             return $this->decisionManager->decide($token, ['ROLE_ADMIN']);
         default:
@@ -58,7 +67,19 @@ final class WikiVoter extends Voter {
         }
     }
 
-    private function canWrite(WikiPage $page, TokenInterface $token): bool {
+    private function canCreate(TokenInterface $token): bool {
+        if (!$token->getUser() instanceof User) {
+            return false;
+        }
+
+        $wikiEditRole = $this->siteRepository
+            ->findCurrentSite()
+            ->getWikiEditRole();
+
+        return $this->decisionManager->decide($token, [$wikiEditRole]);
+    }
+
+    private function canEdit(WikiPage $page, TokenInterface $token): bool {
         if (!$token->getUser() instanceof User) {
             return false;
         }
@@ -72,8 +93,6 @@ final class WikiVoter extends Voter {
         }
 
         $site = $this->siteRepository->findCurrentSite();
-
-        \assert($site instanceof Site);
 
         return $this->decisionManager->decide($token, [$site->getWikiEditRole()]);
     }
