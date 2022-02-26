@@ -13,6 +13,7 @@ class ApplicationAvailabilityTest extends WebTestCase {
      */
     public function testCanAccessPublicPages(string $url): void {
         $client = self::createClient();
+        $client->followRedirects();
         $client->request('GET', $url);
 
         self::assertResponseIsSuccessful("URL: $url");

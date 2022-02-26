@@ -133,7 +133,6 @@ flash.editing_credentials_of_other_user: 다른 사용자의 자격 증명을 �
 flash.forum_deleted: 포럼과 모든 내용이 삭제되었습니다.
 flash.forum_moderator_added: 사용자가 운영자로 승격되었습니다.
 flash.forum_updated: 변경 사항이 저장되었습니다.
-flash.no_cookies_verification: 이미지가 올바르게 로드되지 않습니까? 쿠키를 차단하고 있지 않은지 확인하고 다시 시도하십시오.
 flash.no_entries_to_display: 표시 할 항목이 없습니다.
 flash.no_messages: 표시 할 메시지가 없습니다.
 flash.no_moderated_forums: 어떤 포럼도 중재하지 않습니다.

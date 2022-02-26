@@ -6,6 +6,11 @@
 {% block site_nav_active 'login' %}
 {% block title 'action.log_in'|trans %}
 
+{% block head %}
+  {{ parent() }}
+  <link rel="canonical" href="{{ url('login') }}">
+{% endblock head %}
+
 {% block body %}
   <h1 class="page-heading">{{ block('title') }}</h1>
 

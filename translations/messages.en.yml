@@ -137,7 +137,6 @@ flash.editing_credentials_of_other_user: You are editing the credentials of anot
 flash.forum_deleted: The forum and all its contents have been deleted.
 flash.forum_moderator_added: The user has been promoted to moderator.
 flash.forum_updated: The changes have been saved.
-flash.no_cookies_verification: Does the image not load correctly? Please make sure you aren't blocking cookies and try again.
 flash.no_entries_to_display: There are no entries to display.
 flash.no_messages: There are no messages to display.
 flash.no_moderated_forums: You don't moderate any forums.
@@ -285,6 +284,7 @@ label.delete_account_confirmation: I understand there's no way of retrieving thi
 label.delete_forum_confirmation: I understand there's no way of reviving the data on this forum once it's gone.
 label.description: Description
 label.email_address: Email address
+label.error: Error
 label.expires: Expires
 label.featured: Featured
 label.filter_by: Filter by
@@ -384,6 +384,7 @@ log.unban: '%user% unbanned %banned%. Reason: "%reason%"'
 login.no_account: No account?
 login.remember_me: Keep me logged in
 login.reset_password: Reset password?
+login.cookie_message: You must enable cookies to log in. If you recently enabled cookies, try clicking the 'log in' link again (do not refresh this page).
 
 markdown.allowed: Markdown allowed.
 markdown.another_paragraph: Another paragraph
