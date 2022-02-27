@@ -29,6 +29,14 @@ final class CommentVoter extends Voter {
         return $subject instanceof Comment && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
+    public function supportsAttribute(string $attribute): bool {
+        return \in_array($attribute, self::ATTRIBUTES, true);
+    }
+
+    public function supportsType(string $subjectType): bool {
+        return is_a($subjectType, Comment::class, true);
+    }
+
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if ($attribute === 'view') {
             return $this->canView($subject, $token);

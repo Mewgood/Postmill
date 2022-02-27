@@ -47,6 +47,14 @@ final class SiteVoter extends Voter {
             \in_array($attribute, self::ATTRIBUTES, true);
     }
 
+    public function supportsAttribute(string $attribute): bool {
+        return \in_array($attribute, self::ATTRIBUTES, true);
+    }
+
+    public function supportsType(string $subjectType): bool {
+        return $subjectType === 'null' || is_a($subjectType, Site::class, true);
+    }
+
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$subject) {
             $subject = $this->siteRepository->findCurrentSite();

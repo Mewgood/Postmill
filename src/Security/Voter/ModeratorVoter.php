@@ -11,6 +11,14 @@ final class ModeratorVoter extends Voter {
         return $attribute === 'remove' && $subject instanceof Moderator;
     }
 
+    public function supportsAttribute(string $attribute): bool{
+        return $attribute === 'remove';
+    }
+
+    public function supportsType(string $subjectType): bool {
+        return is_a($subjectType, Moderator::class, true);
+    }
+
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$subject instanceof Moderator) {
             throw new \InvalidArgumentException('$subject must be '.Moderator::class);

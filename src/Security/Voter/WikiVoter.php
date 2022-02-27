@@ -47,6 +47,21 @@ final class WikiVoter extends Voter {
         ], true);
     }
 
+    public function supportsAttribute(string $attribute): bool {
+        return in_array($attribute, [
+            self::ATTR_CREATE,
+            self::ATTR_EDIT,
+            self::ATTR_DELETE,
+            self::ATTR_LOCK,
+            self::ATTR_VIEW_LOG,
+        ], true);
+    }
+
+    public function supportsType(string $subjectType): bool {
+        return $subjectType === 'null' ||
+            is_a($subjectType, WikiPage::class, true);
+    }
+
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if ($attribute === self::ATTR_VIEW_LOG) {
             $site = $this->siteRepository->findCurrentSite();
