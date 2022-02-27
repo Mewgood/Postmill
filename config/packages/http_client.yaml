@@ -1,13 +1,25 @@
+parameters:
+    postmill.http_client.default_user_agent: "Postmill/%env(APP_VERSION)% (https://postmill.xyz)"
+    postmill.http_client.external_client_options:
+        headers:
+            User-Agent: "%postmill.http_client.default_user_agent%"
+
 services:
-    Symfony\Contracts\HttpClient\HttpClientInterface $imageDownloadingClient: "@postmill.http_client.image_downloading"
+    _defaults:
+        public: false
 
-    postmill.http_client.image_downloading:
-        class: Symfony\Component\HttpClient\NoPrivateNetworkHttpClient
+    Symfony\Contracts\HttpClient\HttpClientInterface $externalClient: "@postmill.http_client.external_client"
+
+    postmill.http_client.default:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['@Symfony\Contracts\HttpClient\HttpClientInterface', withOptions]
         arguments:
-            - '@Symfony\Contracts\HttpClient\HttpClientInterface'
+            - "%postmill.http_client.external_client_options%"
 
-framework:
-    http_client:
-        default_options:
-            headers:
-                User-Agent: "Postmill/%env(APP_VERSION)% (https://postmill.xyz)"
+    postmill.http_client.external_client:
+        class: Symfony\Component\HttpClient\NoPrivateNetworkHttpClient
+        arguments: ['@postmill.http_client.default']
+
+    postmill.http_client.external_client.psr18:
+        class: Symfony\Component\HttpClient\Psr18Client
+        arguments: ['@postmill.http_client.external_client']

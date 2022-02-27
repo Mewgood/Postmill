@@ -10,43 +10,36 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class UrlMetadataFetcher implements UrlMetadataFetcherInterface {
-    private const MAX_IMAGE_BYTES = 4000000;
+    public const DEFAULT_MAX_IMAGE_BYTES = 4000000;
 
-    /**
-     * @var HttpClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private Embed $embed;
+    private HttpClientInterface $httpClient;
+    private LoggerInterface $logger;
+    private ValidatorInterface $validator;
+    private int $maxImageBytes;
 
     public function __construct(
-        HttpClientInterface $imageDownloadingClient,
+        Embed $embed,
+        HttpClientInterface $externalClient,
         LoggerInterface $logger,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        int $maxImageBytes = self::DEFAULT_MAX_IMAGE_BYTES
     ) {
-        $this->httpClient = $imageDownloadingClient;
+        $this->embed = $embed;
+        $this->httpClient = $externalClient;
         $this->logger = $logger;
         $this->validator = $validator;
+        $this->maxImageBytes = $maxImageBytes;
     }
 
     public function fetchTitle(string $url): ?string {
-        // TODO: remove dependency on this library
-        return Embed::create($url)->getTitle();
+        return $this->embed->get($url)->title;
     }
 
     public function downloadRepresentativeImage(string $url): ?string {
-        // TODO: remove dependency on this library
-        $url = Embed::create($url)->getImage();
+        $url = $this->embed->get($url)->image;
 
-        if (!\is_string($url)) {
+        if ($url === null) {
             return null;
         }
 
@@ -59,17 +52,17 @@ final class UrlMetadataFetcher implements UrlMetadataFetcherInterface {
         $fh = fopen($tempFile, 'wb');
 
         try {
-            $response = $this->httpClient->request('GET', $url, [
+            $response = $this->httpClient->request('GET', (string) $url, [
                 'headers' => [
                     'Accept' => 'image/jpeg, image/gif, image/png',
                 ],
                 'on_progress' => function (int $downloaded, int $downloadSize) {
                     if (
-                        $downloaded > self::MAX_IMAGE_BYTES ||
-                        $downloadSize > self::MAX_IMAGE_BYTES
+                        $downloaded > $this->maxImageBytes ||
+                        $downloadSize > $this->maxImageBytes
                     ) {
                         throw new ImageDownloadTooLargeException(
-                            self::MAX_IMAGE_BYTES,
+                            $this->maxImageBytes,
                             max($downloadSize, $downloaded),
                         );
                     }
@@ -94,16 +87,20 @@ final class UrlMetadataFetcher implements UrlMetadataFetcherInterface {
             throw $e;
         }
 
-        $errors = $this->validator->validate($tempFile, new Image([
-            'detectCorrupted' => true,
-        ]));
-
-        if (\count($errors) > 0) {
+        if (!$this->validateImage($tempFile)) {
             unlink($tempFile);
 
             return null;
         }
 
         return $tempFile;
+    }
+
+    private function validateImage(string $path): bool {
+        $errors = $this->validator->validate($path, new Image([
+            'detectCorrupted' => true,
+        ]));
+
+        return \count($errors) === 0;
     }
 }

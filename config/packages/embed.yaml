@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        public: false
+
+    embed.http.crawler:
+        class: Embed\Http\Crawler
+        arguments:
+            $client: '@postmill.http_client.external_client.psr18'
+            $requestFactory: '@Psr\Http\Message\RequestFactoryInterface'
+            $uriFactory: '@Psr\Http\Message\UriFactoryInterface'
+        calls:
+            - [addDefaultHeaders, [{ User-Agent: "%postmill.http_client.default_user_agent%" }]]
+
+    Embed\Embed:
+        arguments:
+            $crawler: '@embed.http.crawler'
