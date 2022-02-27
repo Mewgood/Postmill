@@ -13,6 +13,14 @@ final class MessageVoter extends Voter {
         return $subject instanceof Message && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
+    public function supportsAttribute(string $attribute): bool {
+        return \in_array($attribute, self::ATTRIBUTES, true);
+    }
+
+    public function supportsType(string $subjectType): bool {
+        return is_a($subjectType, Message::class, true);
+    }
+
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$subject instanceof Message) {
             throw new \InvalidArgumentException('$subject must be '.Message::class);

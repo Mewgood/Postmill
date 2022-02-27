@@ -6,7 +6,6 @@ use App\Entity\Forum;
 use App\Entity\User;
 use App\Repository\SiteRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class ForumVoter extends Voter {
@@ -22,13 +21,20 @@ final class ForumVoter extends Voter {
      */
     private $sites;
 
-    public function __construct(SiteRepository $siteRepository)
-    {
+    public function __construct(SiteRepository $siteRepository) {
         $this->sites = $siteRepository;
     }
 
     protected function supports(string $attribute, $subject): bool {
         return $subject instanceof Forum && \in_array($attribute, self::ATTRIBUTES, true);
+    }
+
+    public function supportsAttribute(string $attribute): bool {
+        return \in_array($attribute, self::ATTRIBUTES, true);
+    }
+
+    public function supportsType(string $subjectType): bool {
+        return is_a($subjectType, Forum::class, true);
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {

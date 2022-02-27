@@ -26,6 +26,14 @@ final class WikiRevisionVoter extends Voter {
             \in_array($attribute, self::ATTRIBUTES, true);
     }
 
+    public function supportsAttribute(string $attribute): bool {
+        return \in_array($attribute, self::ATTRIBUTES, true);
+    }
+
+    public function supportsType(string $subjectType): bool {
+        return is_a($subjectType, WikiRevision::class, true);
+    }
+
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         \assert($subject instanceof WikiRevision);
 

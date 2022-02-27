@@ -34,6 +34,14 @@ final class MessageThreadVoter extends Voter {
         return $subject instanceof MessageThread && \in_array($attribute, self::ATTRIBUTES, true);
     }
 
+    public function supportsAttribute(string $attribute): bool {
+        return \in_array($attribute, self::ATTRIBUTES, true);
+    }
+
+    public function supportsType(string $subjectType): bool {
+        return is_a($subjectType, MessageThread::class, true);
+    }
+
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         if (!$subject instanceof MessageThread) {
             throw new \InvalidArgumentException('$subject must be '.MessageThread::class);
