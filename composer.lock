@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e1ff67bb59420ea1616573a3580905b",
+    "content-hash": "6c6b4845776011181ad228fc4dec7c43",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3910,29 +3910,25 @@
         },
         {
             "name": "pagerwave/doctrine-collections-extension",
-            "version": "v1.1.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/pagerwave/doctrine-collections-extension.git",
-                "reference": "62c494c984edaf01133a808c7c59a3784b3b2d8a"
+                "reference": "b23e4be56df5074d792db954dadf1d3ecf9da299"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/pagerwave%2Fdoctrine-collections-extension/repository/archive.zip?sha=62c494c984edaf01133a808c7c59a3784b3b2d8a",
-                "reference": "62c494c984edaf01133a808c7c59a3784b3b2d8a",
+                "url": "https://gitlab.com/api/v4/projects/pagerwave%2Fdoctrine-collections-extension/repository/archive.zip?sha=b23e4be56df5074d792db954dadf1d3ecf9da299",
+                "reference": "b23e4be56df5074d792db954dadf1d3ecf9da299",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|8.0.*"
+                "doctrine/collections": "^1.4",
+                "php": "7.2.*|7.3.*|7.4.*|8.0.*|8.1.*",
+                "postmill/pagerwave": "^2.0"
             },
             "require-dev": {
-                "doctrine/collections": "^1.4",
-                "phpunit/phpunit": "^8.5",
-                "postmill/pagerwave": "^1.2"
-            },
-            "suggest": {
-                "doctrine/collections": "To paginate Doctrine collections",
-                "postmill/pagerwave": "To be able to use this adapter"
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -3952,9 +3948,10 @@
             ],
             "description": "PagerWave extension for Doctrine Collections support",
             "support": {
-                "issues": "https://gitlab.com/api/v4/projects/21506345/issues"
+                "issues": "https://gitlab.com/pagerwave/doctrine-collections-extension/-/issues",
+                "source": "https://gitlab.com/pagerwave/doctrine-collections-extension/-/tree/v2.0.0"
             },
-            "time": "2020-11-29T21:54:50+00:00"
+            "time": "2022-02-28T17:08:20+00:00"
         },
         {
             "name": "pagerwave/doctrine-orm-extension",
