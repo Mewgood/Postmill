@@ -22,6 +22,15 @@
           </a>
         </li>
       {% endif %}
+
+      {% if is_granted('create_wiki_page') %}
+        <li>
+          <a href="{{ path('wiki_create') }}"
+            class="menu-item {{ block('wiki_nav_toolbox_active') == 'wiki_create' ? 'menu-item--active' }}">
+            {{- 'wiki.create_new_page'|trans -}}
+          </a>
+        </li>
+      {% endif %}
     </ul>
   </section>
 {% endblock %}

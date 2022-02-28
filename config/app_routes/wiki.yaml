@@ -13,6 +13,7 @@ wiki_shortcut:
 
 wiki_create:
     controller: App\Controller\WikiController::create
+    defaults: { path: '' }
     path: /wiki/_create/{path}
     methods: [GET, POST]
     requirements: { path: "%wiki_page_regex%" }

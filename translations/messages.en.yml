@@ -604,6 +604,7 @@ user_flag.post_as_label: Post as
 user_settings.title: Editing user settings for %username%
 
 wiki.all_pages: All pages
+wiki.create_new_page: Create new page
 wiki.create_this_page: Create this page
 wiki.create_title: Creating "%path%"
 wiki.edit_page: Edit page

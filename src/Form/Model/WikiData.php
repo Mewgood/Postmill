@@ -10,6 +10,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class WikiData {
     /**
+     * @Assert\NotBlank(groups={"path"})
+     * @Assert\Regex(WikiPage::WIKI_PAGE_REGEX, groups={"path"})
+     *
+     * @var string|null
+     */
+    private $path;
+
+    /**
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=80)
      * @NoBadPhrases()
@@ -30,6 +38,7 @@ class WikiData {
     public static function createFromPage(WikiPage $page): self {
         $self = new self();
 
+        $self->path = $page->getPath();
         $self->title = $page->getLatestRevision()->getTitle();
         $self->body = $page->getLatestRevision()->getBody();
 
@@ -44,6 +53,14 @@ class WikiData {
         $revision = new WikiRevision($page, $this->title, $this->body, $user);
 
         $page->addRevision($revision);
+    }
+
+    public function getPath(): ?string {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): void {
+        $this->path = $path;
     }
 
     public function getTitle(): ?string {
