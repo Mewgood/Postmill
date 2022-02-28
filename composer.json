@@ -40,7 +40,7 @@
         "pagerfanta/core": "^3.5",
         "pagerfanta/doctrine-collections-adapter": "^3.5",
         "pagerfanta/doctrine-orm-adapter": "^3.5",
-        "pagerwave/doctrine-collections-extension": "^1.1",
+        "pagerwave/doctrine-collections-extension": "^2.0",
         "pagerwave/doctrine-orm-extension": "^1.1",
         "pagerwave/symfony-http-foundation-integration": "^1.1",
         "patrickschur/language-detection": "^5.0",
