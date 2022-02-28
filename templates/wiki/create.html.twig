@@ -4,7 +4,11 @@
 {% block site_nav_main_menu_active 'wiki' %}
 
 {% block title %}
-  {{ 'wiki.create_title'|trans({'%path%': path}) }}
+  {% if path is empty %}
+    {{ 'wiki.create_new_page'|trans }}
+  {% else %}
+    {{ 'wiki.create_title'|trans({'%path%': path}) }}
+  {% endif %}
 {% endblock %}
 
 {% block body %}

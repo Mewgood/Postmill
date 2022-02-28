@@ -48,17 +48,21 @@ final class WikiController extends AbstractController {
      */
     public function create(Request $request, string $path, EntityManagerInterface $em): Response {
         $data = new WikiData();
+        $data->setPath($path);
 
-        $form = $this->createForm(WikiType::class, $data);
+        $form = $this->createForm(WikiType::class, $data, [
+            'has_path' => true,
+            'path_mutable' => empty($path),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $page = $data->toPage($path, $this->getUser());
+            $page = $data->toPage($data->getPath(), $this->getUser());
 
             $em->persist($page);
             $em->flush();
 
-            return $this->redirectToRoute('wiki', ['path' => $path]);
+            return $this->redirectToRoute('wiki', ['path' => $data->getPath()]);
         }
 
         return $this->render('wiki/create.html.twig', [

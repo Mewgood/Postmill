@@ -55,6 +55,8 @@ class WikiPage {
      */
     private $locked = false;
 
+    public const WIKI_PAGE_REGEX = "#^[A-Za-z][A-Za-z0-9_-]*(/[A-Za-z][A-Za-z0-9_-]*)*$#";
+
     public function __construct(
         string $path,
         string $title,
