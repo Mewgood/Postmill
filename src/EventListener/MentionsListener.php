@@ -72,6 +72,11 @@ final class MentionsListener implements EventSubscriberInterface {
 
     public function onNewComment(CommentCreated $event): void {
         $comment = $event->getComment();
+
+        if ($comment->getBody() === '') {
+            return;
+        }
+
         $html = $this->converter->convertToHtml($comment->getBody());
         $users = $this->getUsersToNotify($html);
 
