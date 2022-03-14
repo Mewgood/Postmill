@@ -38,6 +38,9 @@ class MentionsListenerTest extends TestCase {
 
         $comment = $this->createMock(Comment::class);
         $comment
+            ->method('getBody')
+            ->willReturn('a');
+        $comment
             ->method('addMention')
             ->withConsecutive(...$userParams);
 
