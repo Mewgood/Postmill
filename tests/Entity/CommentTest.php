@@ -39,6 +39,25 @@ class CommentTest extends TestCase {
         );
     }
 
+    /**
+     * @param Submission|Comment $parent
+     */
+    private function commentWithId(
+        User $user = null,
+        $parent = null,
+        int $id = 0,
+        string $ip = null
+    ): Comment {
+        $comment = $this->comment($user, $parent, $ip);
+
+        $r = (new \ReflectionClass(Comment::class))->getProperty('id');
+        $r->setAccessible(true);
+        $r->setValue($comment, $id);
+        $r->setAccessible(false);
+
+        return $comment;
+    }
+
     public function testCannotCreateWithInvalidParent(): void {
         $this->expectException(\TypeError::class);
 
@@ -407,6 +426,84 @@ class CommentTest extends TestCase {
 
     public function testIsThreadVisible(): void {
         $this->assertTrue($this->comment()->isThreadVisible());
+    }
+
+    public function provideThreadAndVisibilities(): \Generator {
+        $comments = [$this->commentWithId()];
+
+        $comments[] = $this->commentWithId(null, $comments[0], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[0], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[0], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[0], count($comments));
+
+        $comments[0]->softDelete();
+        $comments[2]->softDelete();
+        $comments[3]->trash();
+        $comments[4]->trash();
+
+        $comments[] = $this->commentWithId(null, $comments[1], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[2], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[2], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[4], count($comments));
+
+        $comments[5]->softDelete();
+        $comments[6]->softDelete();
+        $comments[8]->softDelete();
+
+        $comments[] = $this->commentWithId(null, $comments[8], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[8], count($comments));
+
+        $comments[10]->trash();
+
+        $comments[] = $this->commentWithId(null, $comments[9], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[9], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[10], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[10], count($comments));
+
+        $comments[11]->softDelete();
+        $comments[12]->softDelete();
+        $comments[13]->softDelete();
+        $comments[14]->trash();
+
+        $comments[] = $this->commentWithId(null, $comments[11], count($comments));
+        $comments[] = $this->commentWithId(null, $comments[14], count($comments));
+
+        $comments[15]->trash();
+        $comments[16]->softDelete();
+
+        yield 'soft deleted leaf' => [false, $comments[16]];
+        yield 'trashed leaf' => [false, $comments[15]];
+        yield 'depth 4 trashed parents soft deleted' => [false, $comments[14]];
+        yield 'depth 4 soft deleted sibling of comment 14' => [false, $comments[13]];
+        yield 'soft deleted child of visible with no descendants' => [false, $comments[12]];
+        yield 'soft deleted child of visible with invisible descendants' => [false, $comments[11]];
+        yield 'trashed with invisible descendants and visible sibling' => [false, $comments[10]];
+        yield 'visible with invisible descendants' => [true, $comments[9]];
+        yield 'soft deleted with visible child' => [true, $comments[8]];
+        yield 'visible with no descendants' => [true, $comments[7]];
+        yield 'soft deleted with no descendants and sibling of visible' => [false, $comments[6]];
+        yield 'depth 2 soft deleted child of visible' => [false, $comments[5]];
+        yield 'depth 1 trashed comment with visible descendant on depth 3' => [true, $comments[4]];
+        yield 'depth 1 trashed leaf' => [false, $comments[3]];
+        yield 'soft deleted with visible leaf' => [true, $comments[2]];
+        yield 'visible with soft deleted leaf' => [true, $comments[1]];
+        yield 'soft deleted root with visible descendant' => [true, $comments[0]];
+    }
+
+    /**
+     * @dataProvider provideThreadAndVisibilities
+     */
+    public function testThreadVisibleToUser(bool $expected, Comment $comment): void {
+        $this->assertSame($expected, $comment->isThreadVisibleToUser(null));
+
+        $user = EntityFactory::makeUser();
+
+        $r = (new \ReflectionClass(User::class))->getProperty('id');
+        $r->setAccessible(true);
+        $r->setValue($user, 123);
+        $r->setAccessible(false);
+
+        $this->assertSame($expected, $comment->isThreadVisibleToUser($user));
     }
 
     public function testTrashedThreadWithNoVisibleChildrenIsNotVisible(): void {
