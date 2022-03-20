@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\CommentTree\CommentTree;
 use App\Entity\Contracts\DomainEventsInterface as DomainEvents;
 use App\Entity\Contracts\VisibilityInterface as Visibility;
 use App\Entity\Contracts\Votable;
@@ -102,6 +103,8 @@ class Comment implements DomainEvents, Visibility, Votable {
      * @var string
      */
     private $visibility = self::VISIBILITY_VISIBLE;
+
+    private ?\ArrayObject $cachedUserThreadVisibilityMap = null;
 
     /**
      * @ORM\Column(type="inet", nullable=true)
@@ -355,12 +358,22 @@ class Comment implements DomainEvents, Visibility, Votable {
         return false;
     }
 
-    public function isVisibleToUser($user): bool {
-        if (\in_array($this->getVisibility(), [
-            Comment::VISIBILITY_VISIBLE,
-            Comment::VISIBILITY_SOFT_DELETED,
-        ], true)) {
-            return true;
+    public function isVisibleToUser($user, bool $search = false): bool {
+        $visibility = $this->getVisibility();
+
+        if ($search) {
+            if ($visibility === self::VISIBILITY_VISIBLE) {
+                return true;
+            } else if ($visibility === self::VISIBILITY_SOFT_DELETED) {
+                return false;
+            }
+        } else {
+            if (\in_array($visibility, [
+                self::VISIBILITY_VISIBLE,
+                self::VISIBILITY_SOFT_DELETED,
+            ], true)) {
+                return true;
+            }
         }
 
         if ($user === $this->getUser()) {
@@ -371,22 +384,59 @@ class Comment implements DomainEvents, Visibility, Votable {
     }
 
     public function isThreadVisibleToUser($user): bool {
-        if (!$user instanceof User) {
-            return $this->isThreadVisible();
+        $userKey = $user instanceof User ? $user->getId() : -1;
+        if (!isset($this->cachedUserThreadVisibilityMap[$userKey])) {
+            $this->cacheThreadVisibilitiesForUser($user, $userKey);
         }
 
-        if ($this->isVisibleToUser($user)) {
-            return true;
-        }
+        return $this->cachedUserThreadVisibilityMap[$userKey][$this->getId()];
+    }
 
-        // TODO: avoid doing this more than once for an entire comment tree
-        foreach ($this->getChildrenRecursive() as $child) {
-            if ($child->isVisibleToUser($user)) {
-                return true;
+    private function setCachedUserThreadVisibilityMap(
+        int $userKey,
+        \ArrayObject $threadVisibilityMap
+    ): void {
+        if (!isset($this->cachedUserThreadVisibilityMap)) {
+            $this->cachedUserThreadVisibilityMap = new \ArrayObject();
+        }
+        $this->cachedUserThreadVisibilityMap[$userKey] = $threadVisibilityMap;
+    }
+
+    private function cacheThreadVisibilitiesForUser($user, int $userKey): void {
+        $search = [new CommentTree(
+            null,
+            $this,
+            $this->isVisibleToUser($user, true)
+        )];
+        $threadVisibilityMap = new \ArrayObject();
+
+        for ($parentTree = 0; $parentTree < count($search); $parentTree++) {
+            $children = $search[$parentTree]->getComment()->getChildren();
+
+            foreach ($children as $child) {
+                $search[] = new CommentTree(
+                    $search[$parentTree],
+                    $child,
+                    $child->isVisibleToUser($user, true)
+                );
             }
         }
 
-        return false;
+        for ($childTree = count($search) - 1; $childTree > 0; $childTree--) {
+            $visible = $search[$childTree]->getVisible();
+
+            if ($visible) {
+                $search[$childTree]->getParent()->setVisible(true);
+            }
+            $threadVisibilityMap[$search[$childTree]->getComment()->getId()] =
+                $visible;
+
+            $search[$childTree]->getComment()
+                ->setCachedUserThreadVisibilityMap($userKey, $threadVisibilityMap);
+        }
+        $threadVisibilityMap[$this->getId()] = $search[0]->getVisible();
+
+        $this->setCachedUserThreadVisibilityMap($userKey, $threadVisibilityMap);
     }
 
     /**
