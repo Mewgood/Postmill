@@ -1,6 +1,19 @@
 {% from '_macros/form.html.twig' import button_row -%}
+{% from '_macros/icon.html.twig' import icon %}
 
-{{ form_start(form, { attr: { 'data-controller': (app.user.autoFetchSubmissionTitles ?? true) ? 'fetch-titles' }}) }}
+{{ form_start(form, { attr: {
+  'data-controller': [
+    (form.image is defined) ? 'file-drop',
+    (app.user.autoFetchSubmissionTitles ?? true) ? 'fetch-titles',
+  ]|filter(v => v is not empty)|join(' '),
+  'data-file-drop-active-overlay-class': 'drop-zone--active',
+}}) }}
+  {% if form.image is defined %}
+    <div class="drop-zone" data-file-drop-target="overlay" aria-hidden="true" hidden>
+      <p>{{ icon('file-image') }}</p>
+    </div>
+  {% endif %}
+
   {{ form_errors(form) }}
 
   {% if form.image is defined %}
@@ -17,7 +30,11 @@
         }) }}
 
         {{ form_widget(form.mediaType.image, {
-          attr: { class: 'form-tabs__checkbox hidden', 'data-for': 1 },
+          attr: {
+            class: 'form-tabs__checkbox hidden',
+            'data-for': 1,
+            'data-file-drop-target': 'toggle',
+          },
           unstyled: true,
         }) }}
 
@@ -38,7 +55,10 @@
       </div>
 
       <div class="form-tabs__content" data-id="1">
-        {{ form_row(form.image, { label_attr: { hidden: true }}) }}
+        {{ form_row(form.image, {
+          attr: { 'data-file-drop-target': 'fileInput' },
+          label_attr: { hidden: true },
+        }) }}
       </div>
     </div>
   {% elseif form.url is defined %}
