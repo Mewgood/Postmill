@@ -287,6 +287,12 @@
       "css": "fire",
       "code": 59428,
       "src": "fontawesome"
+    },
+    {
+      "uid": "3c961c1a8d874815856fc6637dc5a13c",
+      "css": "file-image",
+      "code": 61893,
+      "src": "fontawesome"
     }
   ]
 }
