@@ -362,12 +362,15 @@ class Submission implements DomainEvents, Visibility, Votable {
      *
      * @return Comment[]
      */
-    public function getComments(): array {
+    public function getComments($user = null): array {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE))
             ->orderBy(['timestamp' => 'ASC']);
 
-        return $this->comments->matching($criteria)->toArray();
+        return $this->comments->matching($criteria)
+                              ->filter(function ($comment) use ($user) {
+                                  return $comment->isVisibleToUser($user, true);
+                              })
+                              ->toArray();
     }
 
     /**
@@ -375,12 +378,15 @@ class Submission implements DomainEvents, Visibility, Votable {
      *
      * @return Comment[]
      */
-    public function getTopLevelComments(): array {
+    public function getTopLevelComments($user = null): array {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->isNull('parent'))
-            ->andWhere(Criteria::expr()->eq('visibility', Comment::VISIBILITY_VISIBLE));
+            ->where(Criteria::expr()->isNull('parent'));
 
-        $comments = $this->comments->matching($criteria)->toArray();
+        $comments = $this->comments->matching($criteria)
+                                   ->filter(function ($comment) use ($user) {
+                                       return $comment->isThreadVisibleToUser($user);
+                                   })
+                                   ->toArray();
 
         usort($comments, static function (Comment $a, Comment $b) {
             return $b->getNetScore() <=> $a->getNetScore();

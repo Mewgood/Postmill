@@ -49,10 +49,12 @@ final class SubmissionController extends AbstractController {
      * @Cache(smaxage="10 seconds")
      */
     public function submission(Forum $forum, Submission $submission, string $commentView): Response {
+        $user = $this->getUser();
+
         if ($commentView === 'nested') {
-            $comments = $submission->getTopLevelComments();
+            $comments = $submission->getTopLevelComments($user);
         } else {
-            $comments = $submission->getComments();
+            $comments = $submission->getComments($user);
         }
 
         $this->comments->hydrate(...$comments);
