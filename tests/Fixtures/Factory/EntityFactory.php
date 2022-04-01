@@ -48,4 +48,30 @@ class EntityFactory {
             $ip
         );
     }
+
+    /**
+     * @param Submission|Comment|null $parent
+     *
+     * @return Comment
+     */
+    public static function makeCommentWithId(
+        User $user = null,
+        $parent = null,
+        int $id = 0,
+        string $ip = null
+    ): Comment {
+        $comment = new Comment(
+            'a',
+            $user ?? self::makeUser(),
+            $parent ?? self::makeSubmission(),
+            $ip
+        );
+
+        $r = (new \ReflectionClass(Comment::class))->getProperty('id');
+        $r->setAccessible(true);
+        $r->setValue($comment, $id);
+        $r->setAccessible(false);
+
+        return $comment;
+    }
 }

@@ -154,15 +154,15 @@ class SubmissionTest extends TestCase {
         yield 'no comments' => [[], $this->submission()];
 
         $submission = $this->submission();
-        $comment1 = EntityFactory::makeComment(null, $submission);
-        $comment2 = EntityFactory::makeComment(null, $submission);
+        $comment1 = EntityFactory::makeCommentWithId(null, $submission, 1);
+        $comment2 = EntityFactory::makeCommentWithId(null, $submission, 2);
         yield 'only top-level comments' => [[$comment1, $comment2], $submission];
 
         $submission = $this->submission();
-        $comment1 = EntityFactory::makeComment(null, $submission);
-        $comment2 = EntityFactory::makeComment(null, $comment1);
-        EntityFactory::makeComment(null, $comment2);
-        $comment4 = EntityFactory::makeComment(null, $submission);
+        $comment1 = EntityFactory::makeCommentWithId(null, $submission, 1);
+        $comment2 = EntityFactory::makeCommentWithId(null, $comment1, 2);
+        EntityFactory::makeCommentWithId(null, $comment2, 3);
+        $comment4 = EntityFactory::makeCommentWithId(null, $submission, 4);
         yield 'nested comments' => [[$comment1, $comment4], $submission];
     }
 
