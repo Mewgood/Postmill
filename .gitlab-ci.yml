@@ -193,7 +193,9 @@ test:8.1: &test
         - bin/phpunit --coverage-cobertura=coverage.xml --log-junit=report.xml
     artifacts:
         reports:
-            cobertura: coverage.xml
+            coverage_report:
+                coverage_format: cobertura
+                path: coverage.xml
             junit: report.xml
 
 test:8.0:
