@@ -113,10 +113,19 @@ class ForumControllerTest extends WebTestCase {
             date_default_timezone_get()
         )->format(time());
 
+        // Even though the expiry is a fixed value, the formatted string is
+        // still dependent on ICU data. This may change between operating
+        // systems and PHP versions, so we generate the expected string here.
+        $expiresFormatted = \IntlDateFormatter::create('en',
+            \IntlDateFormatter::SHORT,
+            \IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+        )->format(new \DateTimeImmutable('3017-07-07 12:00'));
+
         self::assertSelectorTextContains('main tbody tr td:nth-child(1)', 'zach');
         self::assertSelectorTextContains('main tbody tr td:nth-child(2)', 'troll');
         self::assertSelectorTextContains('main tbody tr td:nth-child(3)', $nowFormatted);
-        self::assertSelectorTextContains('main tbody tr td:nth-child(4)', '7/7/17, 12:00 PM');
+        self::assertSelectorTextContains('main tbody tr td:nth-child(4)', $expiresFormatted);
     }
 
     public function testCanAddModerator(): void {
