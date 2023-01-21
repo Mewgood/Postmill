@@ -24,7 +24,7 @@ class CssTheme extends Theme {
         parent::__construct($name);
 
         $this->revisions = new ArrayCollection();
-        $this->revisions[] = new CssThemeRevision($this, $css);
+        $this->revisions->add(new CssThemeRevision($this, $css));
     }
 
     public function getLatestRevision(): CssThemeRevision {
@@ -47,7 +47,7 @@ class CssTheme extends Theme {
 
     public function addRevision(CssThemeRevision $revision): void {
         if (!$this->revisions->contains($revision)) {
-            $this->revisions[] = $revision;
+            $this->revisions->add($revision);
         }
     }
 

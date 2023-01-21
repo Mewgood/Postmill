@@ -69,9 +69,9 @@ lint:js:
     script:
         - yarn run lint:js
 
-lint:php:8.1: &lint-php
+lint:php:8.2: &lint-php
     stage: lint
-    image: php:8.1-alpine
+    image: php:8.2-alpine
     needs: []
     except:
         - schedules
@@ -79,6 +79,10 @@ lint:php:8.1: &lint-php
         - find config public src tests -type f -name "*.php" -print0 |
           xargs -0 -n1 -P4 php -l -n |
           (! grep -v "No syntax errors detected" )
+
+lint:php:8.1:
+    <<: *lint-php
+    image: php:8.1-alpine
 
 lint:php:8.0:
     <<: *lint-php
@@ -91,7 +95,7 @@ lint:php:7.4:
 lint:phpstan:
     stage: lint
     image: composer:2
-    needs: ['lint:composer', 'lint:php:7.4', 'lint:php:8.0', 'lint:php:8.1']
+    needs: ['lint:composer', 'lint:php:7.4', 'lint:php:8.0', 'lint:php:8.1', 'lint:php:8.2']
     except: ['schedules']
     before_script:
         - composer install --ignore-platform-reqs --no-scripts
@@ -101,7 +105,7 @@ lint:phpstan:
 lint:psalm:
     stage: lint
     image: composer:2
-    needs: ['lint:composer', 'lint:php:7.4', 'lint:php:8.0', 'lint:php:8.1']
+    needs: ['lint:composer', 'lint:php:7.4', 'lint:php:8.0', 'lint:php:8.1', 'lint:php:8.2']
     except: ['schedules']
     before_script:
         - composer install --ignore-platform-reqs --no-scripts
@@ -113,16 +117,16 @@ lint:psalm:
 # Build app
 # =========
 
-build-app:8.1: &build-app
+build-app:8.2: &build-app
     image: docker:19-git
     stage: build-app
-    needs: ['lint:php:8.1']
+    needs: ['lint:php:8.2']
     except:
         - schedules
     services:
         - docker:dind
     variables: &build-app-vars
-        PHP_VERSION: '8.1'
+        PHP_VERSION: '8.2'
         TEST_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:${PHP_VERSION}-${CI_COMMIT_SHA}
         TEST_IMAGE_WEB: ${CI_REGISTRY_IMAGE}/web:${CI_COMMIT_SHA}
         RELEASE_IMAGE_APP: ${CI_REGISTRY_IMAGE}/app:latest
@@ -149,6 +153,13 @@ build-app:8.1: &build-app
         - docker push $TEST_IMAGE_APP
         - docker push $TEST_IMAGE_APP-test
 
+build-app:8.1:
+    <<: *build-app
+    needs: ['lint:php:8.1']
+    variables:
+        <<: *build-app-vars
+        PHP_VERSION: '8.1'
+
 build-app:8.0:
     <<: *build-app
     needs: ['lint:php:8.0']
@@ -168,10 +179,10 @@ build-app:7.4:
 # Test
 # ====
 
-test:8.1: &test
-    image: ${CI_REGISTRY_IMAGE}/app:8.0-${CI_COMMIT_SHA}-test
+test:8.2: &test
+    image: ${CI_REGISTRY_IMAGE}/app:8.2-${CI_COMMIT_SHA}-test
     stage: test
-    needs: ['build-app:8.1']
+    needs: ['build-app:8.2']
     except:
         - schedules
     services:
@@ -193,8 +204,15 @@ test:8.1: &test
         - bin/phpunit --coverage-cobertura=coverage.xml --log-junit=report.xml
     artifacts:
         reports:
-            cobertura: coverage.xml
+            coverage_report:
+                path: coverage.xml
+                coverage_format: cobertura
             junit: report.xml
+
+test:8.1:
+    <<: *test
+    image: ${CI_REGISTRY_IMAGE}/app:8.1-${CI_COMMIT_SHA}-test
+    needs: ['build-app:8.1']
 
 test:8.0:
     <<: *test
@@ -216,7 +234,7 @@ build-web:
     image: docker:19
     services:
         - docker:dind
-    needs: ['test:8.1']
+    needs: ['test:8.2']
     variables:
         <<: *build-app-vars
     except:
@@ -228,7 +246,7 @@ build-web:
         - docker build
             --build-arg APP_VERSION="$(git describe --tags)"
             --build-arg APP_BRANCH="$CI_COMMIT_REF_NAME"
-            --build-arg PHP_VERSION="8.0"
+            --build-arg PHP_VERSION="8.2"
             --cache-from $TEST_IMAGE_APP
             --target postmill_web
             -t $TEST_IMAGE_WEB
@@ -243,7 +261,7 @@ build-web:
 release:
     image: docker:19
     stage: release
-    needs: ['test:8.1', 'build-web']
+    needs: ['test:8.2', 'build-web']
     services:
         - docker:dind
     variables:
