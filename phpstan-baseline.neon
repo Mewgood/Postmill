@@ -1,24 +1,14 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Property App\\\\Entity\\\\Comment\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
+			message: "#^ArrayObject\\<\\*NEVER\\*, \\*NEVER\\*\\> does not accept bool\\.$#"
+			count: 2
 			path: src/Entity/Comment.php
 
 		-
-			message: "#^Property App\\\\Entity\\\\Comment\\:\\:\\$notifications is never read, only written\\.$#"
+			message: "#^Property App\\\\Entity\\\\Comment\\:\\:\\$searchDoc is never written, only read\\.$#"
 			count: 1
 			path: src/Entity/Comment.php
-
-		-
-			message: "#^Property App\\\\Entity\\\\Comment\\:\\:\\$searchDoc is unused\\.$#"
-			count: 1
-			path: src/Entity/Comment.php
-
-		-
-			message: "#^Property App\\\\Entity\\\\Forum\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Entity/Forum.php
 
 		-
 			message: "#^Result of \\|\\| is always true\\.$#"
@@ -26,19 +16,9 @@ parameters:
 			path: src/Entity/Forum.php
 
 		-
-			message: "#^Property App\\\\Entity\\\\IpBan\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Entity/IpBan.php
-
-		-
-			message: "#^Property App\\\\Entity\\\\Message\\:\\:\\$notifications is unused\\.$#"
+			message: "#^Property App\\\\Entity\\\\Message\\:\\:\\$notifications is never written, only read\\.$#"
 			count: 1
 			path: src/Entity/Message.php
-
-		-
-			message: "#^Property App\\\\Entity\\\\MessageThread\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Entity/MessageThread.php
 
 		-
 			message: "#^Negated boolean expression is always true\\.$#"
@@ -46,12 +26,7 @@ parameters:
 			path: src/Entity/Submission.php
 
 		-
-			message: "#^Property App\\\\Entity\\\\Submission\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Entity/Submission.php
-
-		-
-			message: "#^Property App\\\\Entity\\\\Submission\\:\\:\\$searchDoc is unused\\.$#"
+			message: "#^Property App\\\\Entity\\\\Submission\\:\\:\\$searchDoc is never written, only read\\.$#"
 			count: 1
 			path: src/Entity/Submission.php
 
@@ -59,16 +34,6 @@ parameters:
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: src/Entity/Submission.php
-
-		-
-			message: "#^Property App\\\\Entity\\\\Vote\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Entity/Vote.php
-
-		-
-			message: "#^Property App\\\\Entity\\\\WikiPage\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Entity/WikiPage.php
 
 		-
 			message: "#^Strict comparison using \\!\\=\\= between null and null will always evaluate to false\\.$#"
@@ -91,12 +56,32 @@ parameters:
 			path: src/Message/Middleware/RequestContextMiddleware.php
 
 		-
+			message: "#^Parameter \\#2 \\$array of method App\\\\Tests\\\\Controller\\\\Api\\\\ForumControllerTest\\:\\:assertArraySubset\\(\\) expects array\\|ArrayAccess, null given\\.$#"
+			count: 1
+			path: tests/Controller/Api/ForumControllerTest.php
+
+		-
+			message: "#^App\\\\PatternMatcher\\\\PatternCollection\\<\\*NEVER\\*, \\*NEVER\\*\\> does not accept App\\\\Tests\\\\Fixtures\\\\Pattern\\.$#"
+			count: 1
+			path: tests/PatternMatcher/PatternCollectionTest.php
+
+		-
 			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertArrayHasKey\\(\\) with 'a' and App\\\\PatternMatcher\\\\PatternCollection\\<int\\|string, App\\\\Tests\\\\Fixtures\\\\Pattern\\> will always evaluate to false\\.$#"
 			count: 1
 			path: tests/PatternMatcher/PatternCollectionTest.php
 
 		-
+			message: "#^Cannot assign offset 'a' to App\\\\PatternMatcher\\\\PatternCollection\\<\\*NEVER\\*, \\*NEVER\\*\\>\\.$#"
+			count: 1
+			path: tests/PatternMatcher/PatternCollectionTest.php
+
+		-
 			message: "#^Expression \"\\(new \\\\App\\\\PatternMatcher\\\\PatternCollection\\(\\[\\]\\)\\)\\[0\\]\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: tests/PatternMatcher/PatternCollectionTest.php
+
+		-
+			message: "#^Offset 0 does not exist on App\\\\PatternMatcher\\\\PatternCollection\\<\\*NEVER\\*, \\*NEVER\\*\\>\\.$#"
 			count: 1
 			path: tests/PatternMatcher/PatternCollectionTest.php
 

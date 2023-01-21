@@ -547,7 +547,7 @@ class User implements DomainEventsInterface, UserInterface, PasswordAuthenticate
 
     public function addBan(UserBan $ban): void {
         if (!$this->bans->contains($ban)) {
-            $this->bans[] = $ban;
+            $this->bans->add($ban);
         }
     }
 

@@ -14,7 +14,7 @@
         }
     },
     "require": {
-        "php": "7.4.*|8.0.*|8.1.*",
+        "php": "7.4.*|8.0.*|8.1.*|8.2.*",
         "ext-dom": "*",
         "ext-gd": "*",
         "ext-iconv": "*",
@@ -135,8 +135,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.4.0",
-            "ext-amqp": "1.6.0"
+            "php": "7.4.99"
         },
         "sort-packages": true,
         "allow-plugins": {
