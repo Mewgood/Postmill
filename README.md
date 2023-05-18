@@ -54,5 +54,5 @@ details.
 
 [issues]: https://gitlab.com/edgyemma/Postmill/issues
 [matrix]: https://matrix.to/#/#postmill:matrix.org
-[wiki]: https://gitlab.com/postmill/Postmill/wikis/getting-started
+[wiki]: https://gitlab.com/postmill/Postmill/-/wikis/getting-started
 [#transcrowdfund]: https://twitter.com/search?q=%23TransCrowdFund

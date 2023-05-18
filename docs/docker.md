@@ -1,1 +1,1 @@
-Moved to <https://gitlab.com/postmill/Postmill/wikis/docker>
+Moved to <https://gitlab.com/postmill/Postmill/-/wikis/docker>

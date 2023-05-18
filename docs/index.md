@@ -1,1 +1,1 @@
-Moved to <https://gitlab.com/postmill/Postmill/wikis/home>
+Moved to <https://gitlab.com/postmill/Postmill/-/wikis/home>

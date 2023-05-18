@@ -1,1 +1,1 @@
-Moved to <https://gitlab.com/postmill/Postmill/wikis/upgrading>
+Moved to <https://gitlab.com/postmill/Postmill/-/wikis/upgrading>

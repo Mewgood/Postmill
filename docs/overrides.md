@@ -1,1 +1,1 @@
-Moved to <https://gitlab.com/postmill/Postmill/wikis/overrides>
+Moved to <https://gitlab.com/postmill/Postmill/-/wikis/overrides>

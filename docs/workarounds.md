@@ -1,1 +1,1 @@
-Moved to <https://gitlab.com/postmill/Postmill/wikis/workarounds>
+Moved to <https://gitlab.com/postmill/Postmill/-/wikis/workarounds>

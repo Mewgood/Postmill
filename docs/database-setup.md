@@ -1,1 +1,1 @@
-Moved to <https://gitlab.com/postmill/Postmill/wikis/database-setup>
+Moved to <https://gitlab.com/postmill/Postmill/-/wikis/database-setup>
