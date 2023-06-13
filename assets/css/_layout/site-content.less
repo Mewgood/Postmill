@@ -19,6 +19,13 @@
     @media screen and (min-width: @desktop-min-width) {
       margin-top: 1rem;
     }
+
+    @media not screen and (min-width: @desktop-min-width) {
+      & > .submission {
+        // let submissions cut into the generous padding on mobile
+        margin-left: -0.75rem;
+      }
+    }
   }
 
   &__sidebar {

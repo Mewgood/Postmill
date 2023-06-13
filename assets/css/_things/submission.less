@@ -13,8 +13,12 @@
 
   &__title-row {
     display: inline;
-    font-size: 1.33rem;
+    font-size: 1.2rem;
     font-weight: normal;
+
+    @media screen and (min-width: @desktop-min-width) {
+      font-size: 1.33rem;
+    }
 
     // don't make giant new lines if only the tiny host text wraps.
     // also aligns icons correctly.
@@ -79,22 +83,31 @@
     margin-right: 0.5em;
   }
 
-  @media screen and (max-width: 480px) {
-    &__thumb {
-      display: none;
-    }
-  }
-
-  @media not screen and (max-width: 480px) {
-    &--has-thumbnail &__inner {
-      padding-left: calc(1rem + 70px);
+  &--has-thumbnail &__inner {
+    @media screen and (min-width: @medium-phone-min-width) {
+      padding-left: calc(0.75rem + @submission-thumb-width-mobile);
       position: relative;
     }
 
-    &__thumb {
-      position: absolute;
-      left: 0;
-      top: 0;
+    @media screen and (min-width: @desktop-min-width) {
+      padding-left: calc(1rem + @submission-thumb-width-desktop);
+    }
+  }
+
+  &__thumb {
+    display: none;
+    object-fit: scale-down;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    @media screen and (min-width: @medium-phone-min-width) {
+      display: block;
+      width: @submission-thumb-width-mobile;
+    }
+
+    @media screen and (min-width: @desktop-min-width) {
+      width: @submission-thumb-width-desktop;
     }
   }
 }
